@@ -1,0 +1,133 @@
+{
+  "id": 1549217,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNTQ5MjE3",
+  "url": "https://hackerone.com/reports/1549217",
+  "title": "Storage of old passwords in plain text format",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2022-04-24T06:40:14.290Z",
+  "submitted_at": "2022-04-24T06:40:14.362Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "subuganz",
+    "url": "/subuganz",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 51940,
+    "url": "https://hackerone.com/recorded-future",
+    "handle": "recorded-future",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/hfpmdmmjccjett62x4qowyjxvgtn/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22RF.png%22%3B%20filename%2A%3DUTF-8%27%27RF.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221118Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b8f6ba771916f7b4844d5d896462816908210ecd4b3e1906ac87c735920364ac",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/hfpmdmmjccjett62x4qowyjxvgtn/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22RF.png%22%3B%20filename%2A%3DUTF-8%27%27RF.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221118Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=de4481297bf7f436b10d5a2320b130386f4606de7cb0db0e41407c0e47c1d49d"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Recorded Future",
+      "twitter_handle": "",
+      "website": "http://recordedfuture.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2022-05-12T13:06:30.085Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-05-09T19:48:11.029Z",
+  "team_member_agreed_on_going_public_at": "2022-05-12T13:06:29.972Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\nServer response from app.recordedfuture.com has old passwords for a logged in account in plain text format. Storage of password(s) in any readable format or using weak hashes put the account or system at great risk. What's interesting is how RecordedFuture store multiple passwords (not just 1 but 2 latest passwords) in a readable format. Anybody within Recorded Future has now access to those passwords and also, users who share their account access internally within their teammates during emergency investigations can get access to those passwords too.  Regardless of old or current password storing them in a plain text is a big no. \n\n## Steps To Reproduce:\n\n- Login to Recorded Future\n- Send a POST request to  https://app.recordedfuture.com/rf/kobradata/user/get/user\n- Intercept the request through a web proxy and take a look at the server response\n- Look under 'params'\n-'_password1' and '_password2' shows the old passwords in plain text\n\n  \n\n## Supporting Material/References:\n Attached is the obfuscated screenshot showing the password params\n\n## Impact\n\n-Storing passwords in plaintext is bad because it puts both the system and users at risk.\n-RF internal devs get access to accidentally look at those passwords\n- Account sharing (which happens within companies) put the seat holder at risk because the password pattern can be used elsewhere to compromise other accounts (Insider threat/malicious intention). Also, people tend to reuse the passwords",
+  "weakness": {
+    "id": 21,
+    "name": "Plaintext Storage of a Password"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1704913,
+      "file_name": "Screen_Shot_2022-04-24_at_1.34.50_AM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/notya0885vvp46tkte1htkozpl7c?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2022-04-24_at_1.34.50_AM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2022-04-24_at_1.34.50_AM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221118Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=26eae923cb8a02e02fcc765146de28e793609adaf06c241e261cf471c9cb0528",
+      "file_size": 67817,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2022-06-08T19:48:11.118Z",
+  "allow_singular_disclosure_after": -116907787.52119201,
+  "singular_disclosure_allowed": true,
+  "vote_count": 14,
+  "voters": [
+    "alp",
+    "zy9ard3",
+    "shreyaschavhan",
+    "thalaivar304",
+    "pacmanx",
+    "mahashivaratri",
+    "shivammusic",
+    "hackx00r",
+    "montimous",
+    "bbrriiee",
+    "and 4 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 61842,
+    "asset_type": "URL",
+    "asset_identifier": "api.recordedfuture.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "id": 690010,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82OTAwMTA=",
+  "url": "https://hackerone.com/reports/690010",
+  "title": "OS Command Injection on Jison [all-parser-ports]",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-09-07T05:36:16.351Z",
+  "submitted_at": "2019-09-07T05:36:16.351Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "0x48piraj",
+    "url": "/0x48piraj",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/enjZfKWpT1EjeUw1mMxbXjW7/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-8178"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-05-28T10:39:50.786Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2020-04-28T10:39:48.723Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report **OS Command Injection** vulnerability on [Jison](https://www.npmjs.com/package/jison) in parser ports. *(CSharp, PHP)*\n\nIt allows arbitrary OS shell command execution through a crafted command-line argument.\n\n# Basic Information\n\n**Module:** ***jison***\n**Version:** `0.4.18`\n**NPM Project Page:** `https://www.npmjs.com/package/jison`\n\n## Module Description\n\n##### An API for creating parsers in JavaScript\n\n> Jison generates bottom-up parsers in JavaScript. Its API is similar to Bison's, hence the name. It supports many of Bison's major features, plus some of its own. If you are new to parser generators such as Bison, and Context-free Grammars in general, a good introduction is found in the Bison manual. If you already know Bison, Jison should be easy to pickup.\n> Briefly, Jison takes a JSON encoded grammar or Bison style grammar and outputs a JavaScript file capable of parsing the language described by that grammar. You can then use the generated script to parse inputs and accept, reject, or perform actions based on the input.\n\n## Module Stats\n\n##### Downloads in the last week: (https://api.npmjs.org/downloads/point/last-week/jison)\n\n```\ndownloads : 138857\nstart : 2019-08-31\nend : 2019-09-06\npackage : jison\n```\n\n##### Downloads in the last month: (https://api.npmjs.org/downloads/point/last-month/jison)\n\n```\ndownloads : 678197\nstart : 2019-08-08\nend : 2019-09-06\npackage : jison\n```\n> Stats by npm-stat: https://npm-stat.com/charts.html?package=jison\n\n# Vulnerability\n\n**Jison** has parsing/lexing template to php, C# which don't sanitize `process.argv` (command line arguments), before passing it to `child_process.exec()`, hence allowing arbitrary shell command injection.\n\nThe vulnerable code is in `/ports/csharp/Jison/Jison/csharp.js` at [csharp.js#L19](https://github.com/zaach/jison/blob/bcf986e180359aa2404b1b73ecbfef1df4c6b011/ports/csharp/Jison/Jison/csharp.js#L19)\n\n```\nconsole.log(\"Executing: \" + \"jison \" + process.argv[2]);\n\nexec(\"jison \" + process.argv[2], function (error) {\n    if (error) {\n        console.log(error);\n        return;\n    }\n```\n\n## Steps To Reproduce:\n1. Installing Jison command-line tool via `npm install jison -g`\n2. Obtaining *Jison* parsing templates : `git clone https://github.com/zaach/jison`\n3. `cd jison/ports/csharp/Jison/Jison/`\n4. Payload : `node csharp.js \"echo''>pwned\"`\n5. Check if the attack was successful or not (dummy payload was executed or not): `ls -la`\n\nSimilarly, `/ports/php/php.js` is vulnerable too as it contains the same blob ([php.js#L19](https://github.com/zaach/jison/blob/bcf986e180359aa2404b1b73ecbfef1df4c6b011/ports/php/php.js#L19)). `\"\"` was added just to isolate the payload.\n\n## Patch\n\nSanitizing the input. Using `execFile` (this method signatures force developers to separate the command and its arguments)\n\n## Supporting Material/References:\n\n- Windows 10 1803 (OS Build 17134.950)\n- **NodeJS Version:** v10.16.3\n- **NPM Version:** 6.9.0 \n\n# Wrap up\n\n- I contacted the maintainer to let them know: N \n- I opened an issue in the related repository: N\n\n## Impact\n\nArbitrary OS command execution.",
+  "weakness": {
+    "id": 59,
+    "name": "OS Command Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 576968,
+      "file_name": "jison-osi.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/Y3g55me2ZuFvb12SUtXQ6Ea6?response-content-disposition=attachment%3B%20filename%3D%22jison-osi.png%22%3B%20filename%2A%3DUTF-8%27%27jison-osi.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZYMZR427%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003036Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIEz7%2B6Fclt0sZGGztCf7hoII%2B29ucpFm48k1NNy9k%2FlfAiAc4kTf7hS7R7RPH6Y5zm077oLXEZ%2B%2BIhXlCxDAUJsSyCq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM%2BHAV6D213XqU0wn9Ko4FwYnHIZn7qYON5mIfTRLuqOsJFi9D3ZrE8Cc23zAXRWSClaDN46AGDvpssicXZQjWGc8nnvl10lUER2pNa1Kr1rYoVG%2BfhyLwlJcFddXFXzdynFNBTZV666To7QWx6gjiOd%2FrpTZs22HYWKXKgyBX74gmkYQF%2B7jrO%2BhK7MBP03ur1l%2FzaOJtDUydRiJEvnYu8nHlSuvmCPJWiA5hZwUX4PyBxgdj3STAyzWM1P2vihP9Se1g%2FokdMzzpL%2FXDMRjKWY6EVR1iidYlQsDtiMeyBGrGIYiEkwY9D2fHzoAbBPLho%2FI3bD3pNxn5M6I%2F2rTSbpmZbQf3SYXt0tupjw3vWsRLNg6O%2FdcSS35vmX%2Fkbnxvv6v%2FW%2FyIE6Y8D1QDZ5%2BABlPQzWgHV1o9UtOz6grnu%2Fc75sJtdzu4S%2FvEjFy9SYrgGeWBCWloUXaMF%2F%2BdO608zdZ9zM1SzorLRpHWDN%2F8iQPTZU7DLD9%2Bri7iS3lbfWFH%2BHHMrXexxWq3z%2Fpc%2B%2BHgePgxzCWAGJBNcwp9dGc4Nhn5N1Fszi%2BuapXmFORKtnASFL0%2BWu1PqiyLEDMUHbrpwld63OJShBfYhr5MedRavSUQb0RGMlStr3xopPPcElCjNKe%2Bpm27vkPVKQGIbOcZpt6c8R9D%2Bn%2FgPaAFlroH1U8sjuniPRr2r8Sklfs164A2thK1JmO1m%2B5KbB3%2B%2F0RIh1zER75O1w3MHhSiL%2FNtEytZljBf6y%2FL0v0o0xoLtCYjAiGP%2B3QEQtvwIyYc4jtfkR0wEwhr2gfKLgUEdfW2SrcNRDb9P4Z0Wju1grX6lcK8JxAHX7JV0%2F8H2ulXCXbJEsgmk%2BBpeGrh52PZsdHFFKZPrezXSOEDsSn5tlATMJ%2FH48wGOrIBQpjt%2B4sfkKbAuf3KC56EsWqsGfdg4pLTCAjRF4tRv8On9oA5s6jGiWb9SJAIPjroL2ZJ7poq78lNvP28N4e1qD6rIgQWmaZLakaYvm29nALWve8IB2R0kZMsGRgArRgsGtss8Qtgh9v13ssW%2BD8c4T7f%2FSb9H0VMibe4qXQQEQCNazAmU1xZzYN%2B8iurGSCZ8PX9d9Nvg%2FDsraWzo1h9qt50YmHkIwEsJV2kw%2F%2FlRDlxFw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=00b045110879a19febf6a34ddcbfeecf2d3695a43c47abd4d38c10f014fa47c9",
+      "file_size": 41322,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-05-28T10:39:48.941Z",
+  "allow_singular_disclosure_after": -180971447.18418851,
+  "singular_disclosure_allowed": true,
+  "vote_count": 14,
+  "voters": [
+    "m4khn0",
+    "ali",
+    "mik317",
+    "brahim_boufakri01",
+    "h2x0",
+    "mwanamume",
+    "actarus",
+    "malone5923",
+    "0x48piraj",
+    "sraja",
+    "and 4 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 49407,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "jison",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

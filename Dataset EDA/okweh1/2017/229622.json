@@ -1,0 +1,163 @@
+{
+  "id": 229622,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMjk2MjI=",
+  "url": "https://hackerone.com/reports/229622",
+  "title": "Directory traversal at https://nightly.ubnt.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2017-05-18T13:43:30.530Z",
+  "submitted_at": "2017-05-18T13:43:30.530Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "grampae",
+    "url": "/grampae",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/061/805/fac5743057c4434b9f550a99f2d8d4481395aaec_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 800,
+    "url": "https://hackerone.com/ui",
+    "handle": "ui",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fpqjzgms7de9639u414bw6vid1be/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fpqjzgms7de9639u414bw6vid1be/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Ubiquiti Inc.",
+      "twitter_handle": "ubiquiti",
+      "website": "https://ui.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-10-10T06:11:49.525Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-09-10T06:11:45.743Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "From within the http request function of the Acunetix and IronWasp programs I was able to view the passwd and hosts files at https://nightly.ubnt.com.  \n\nPlease see the attached screenshots for proof.\n\nI have tried to reproduce from within firefox and internet explorer without much luck however if you need it I will try to come up with a work around.\n\nFor reference the response header is as follows:\nHTTP/1.1 200 OK\nDate: Thu, 18 May 2017 13:35:08 GMT\nContent-Type: application/octet-stream\nContent-Length: 1339\nConnection: keep-alive\nX-Powered-By: Express\nStrict-Transport-Security: max-age=15552000; includeSubDomains\nLast-Modified: Wed, 25 May 2016 20:30:37 GMT\n\n",
+  "weakness": {
+    "id": 19,
+    "name": "Path Traversal"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 185723,
+      "file_name": "Screenshot_1.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/185/723/8f3b07fd675b623a0c3384b9c559dbde7f7b5f4f/Screenshot_1.jpg?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_1.jpg%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_1.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=40b0fb1b31ca28f2e68062c4c53da85bf948319da9ad700c1e46aba3a973ba32",
+      "file_size": 203861,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 185724,
+      "file_name": "Screenshot_2.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/185/724/f644076ce9eddfc5d5cd97e80ae154857a052d60/Screenshot_2.jpg?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2.jpg%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=123dda5ac42db41376454b0bbb9fae0088ae15f206683fac8b160bdc8687e24f",
+      "file_size": 96422,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 185734,
+      "file_name": "Screenshot_3.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/185/734/a1813e0875505eb125692d83e077ad26babeecc8/Screenshot_3.jpg?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_3.jpg%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_3.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b918d5af3a753e2440709cf41e326e62b6d77331fda1747e324b73c5bc058513",
+      "file_size": 100806,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 185736,
+      "file_name": "Screenshot_4.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/185/736/d192cf7a4b0cdee118062d993769a9ec48a40c50/Screenshot_4.jpg?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_4.jpg%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_4.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=09820af27870353d998e5fcc5a0cf0fef21cb257dfc5366e5dc5c112e3c893ee",
+      "file_size": 205497,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-10-10T06:11:45.820Z",
+  "allow_singular_disclosure_after": -264027788.97246477,
+  "singular_disclosure_allowed": true,
+  "vote_count": 26,
+  "voters": [
+    "m4khn0",
+    "inhibitor181",
+    "bogdantc",
+    "ali",
+    "jmo740",
+    "gamliel",
+    "madrobot",
+    "r3y",
+    "eveeez",
+    "khizer47",
+    "and 16 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.5,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

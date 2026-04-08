@@ -1,0 +1,141 @@
+{
+  "id": 1208453,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMjA4NDUz",
+  "url": "https://hackerone.com/reports/1208453",
+  "title": "Account takeover through multistage CSRF at https://autochoice.fas.gsa.gov/AutoChoice/changeQAOktaAnswer and ../AutoChoice/changePwOktaAnswer",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-05-25T12:08:45.244Z",
+  "submitted_at": "2021-05-25T12:08:45.284Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rptl",
+    "url": "/rptl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/HSnGP4ZA9NoaVBJ9pAHjSPSQ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 50553,
+    "url": "https://hackerone.com/gsa_vdp",
+    "handle": "gsa_vdp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/9AGCZikBbg78ZgLS65KZumei/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/9AGCZikBbg78ZgLS65KZumei/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "U.S. General Services Administration",
+      "twitter_handle": null,
+      "website": "http://gsa.gov",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-07-23T02:07:47.706Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-06-23T02:07:47.389Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nAccount takeover is possible through CSRF vulnerability at 'Change Security Question/Answer'  & ' Change Password'.\nThe endpoints - https://autochoice.fas.gsa.gov/AutoChoice/changeQAOktaAnswer & https://autochoice.fas.gsa.gov/AutoChoice/changePwOktaAnswer both are vulnerable to CSRF attack .==The CSRF token/or its presence is not validated at server side.==\n\nSince, the password update functionality requires 'Secret Answer' Value & 'New Password'. Therefore, in multistage CSRF Secret Answer was updated first & then using that new secret answer, new password was set for the account using second stage.\n\nBoth CSRF request are performed through the same html POC. Upon execution of POC html, changes will  be reflected after few seconds as timeout is set for the first request to complete.  Also, there is no need to know the security question either, which itself is updated in the first stage.\n\nPOC Video - {F1314428}\n\nCSRF Html file -  {F1314439}\n\n@Triage Team - Since, this report involves two CSRFs for different functionalities, should I have filed two different  reports ?  as I would be losing rep. points.\n\n## Impact\n\nAccount takeover through CSRF",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1314428,
+      "file_name": "recording-1621943105665.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1n7tai991r67s4re1knk4z8dqsac?response-content-disposition=attachment%3B%20filename%3D%22recording-1621943105665.webm%22%3B%20filename%2A%3DUTF-8%27%27recording-1621943105665.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225646Z&X-Amz-Expires=3422&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1307e28f6b659836dcf46290124f2cb6ac5926b2cf124c2f54cb39577e9586db",
+      "file_size": 14054632,
+      "type": "video/webm",
+      "moderated": null
+    },
+    {
+      "id": 1314439,
+      "file_name": "secret_answer_and_pwd_csrf.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/12zk259qmehzglhdauqegnohzqgi?response-content-disposition=attachment%3B%20filename%3D%22secret_answer_and_pwd_csrf.html%22%3B%20filename%2A%3DUTF-8%27%27secret_answer_and_pwd_csrf.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225646Z&X-Amz-Expires=3422&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cf8e0bd74506bb4c01f8dd7fc42e07eec3797d4579d8aba10df498fc5c097492",
+      "file_size": 913,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-07-23T02:07:47.484Z",
+  "allow_singular_disclosure_after": -144622139.163813,
+  "singular_disclosure_allowed": true,
+  "vote_count": 32,
+  "voters": [
+    "osman1337",
+    "tess",
+    "lu3ky-13",
+    "akashhamal0x01",
+    "g0ktug",
+    "grmx",
+    "mirazdevox",
+    "eveeez",
+    "khizer47",
+    "cypher-28",
+    "and 22 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 60003,
+    "asset_type": "URL",
+    "asset_identifier": "autochoice.fas.gsa.gov",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

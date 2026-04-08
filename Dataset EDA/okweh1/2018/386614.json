@@ -1,0 +1,128 @@
+{
+  "id": 386614,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zODY2MTQ=",
+  "url": "https://hackerone.com/reports/386614",
+  "title": "Slack Token exposed over internet (Github)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "none",
+  "readable_substate": "Resolved",
+  "created_at": "2018-07-25T09:15:44.993Z",
+  "submitted_at": "2018-07-25T09:15:44.993Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sanjogpanda",
+    "url": "/sanjogpanda",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/017/410/eef7a8e9f2e72c66e64e08c6f6f2a1be0aabebf0_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19858,
+    "url": "https://hackerone.com/rocket_chat",
+    "handle": "rocket_chat",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Rocket.Chat",
+      "twitter_handle": "RocketChat",
+      "website": "https://rocket.chat",
+      "about": "Rocket.Chat is a company built on open source values and a love for efficiency. The company is driven by our amazing community of contributors."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-07-11T13:58:21.854Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-12-21T16:21:47.342Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "> NOTE! Thanks for submitting a report! Please replace *all* the [square] sections below with the pertinent details. Remember, the more detail you provide, the easier it is for us to verify and then potentially issue a bounty, so be sure to take your time filling out the report!\n\n**Summary:** Slack token is exposed in public github​ repositoty​ \n\n**Description:** [This file](https://github.com/RocketChat/RCMarkdownParser/blob/1b8a052bcd38bcf459ecb6bb644daa7d70769434/.travis.yml) on one of your github​ repos contains a Slack token for the R​ocketChat​ account.\n\nAs noted in the official documentation, if this is to be published, it should be encrypted, which isn't the case here.\n\n## Releases Affected:\n\nRCMarkdownParser file on the latest github​ master branch\n\n## Steps To Reproduce (from initial installation to vulnerability):\n\n(Add details for how we can reproduce the issue)\n \n1. Go to https://github.com/RocketChat/RCMarkdownParser/blob/1b8a052bcd38bcf459ecb6bb644daa7d70769434/.travis.yml\n2. Notice the slack token present which can be used to access the account and communications.\n\n## Supporting Material/References:\n\nScreenshot attached.\n\n## Suggested mitigation\n\nRemove the slack token from the repo and also from the history\n\n## Impact\n\nThe token can be used to control the account and read internal communications.",
+  "weakness": {
+    "id": 33,
+    "name": "Cleartext Storage of Sensitive Information"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 324261,
+      "file_name": "RocketChat_slack_token.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/324/261/44efe3bdd8bd32ad26673264a031865032d15b12/RocketChat_slack_token.png?response-content-disposition=attachment%3B%20filename%3D%22RocketChat_slack_token.png%22%3B%20filename%2A%3DUTF-8%27%27RocketChat_slack_token.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZYMZR427%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014233Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIEz7%2B6Fclt0sZGGztCf7hoII%2B29ucpFm48k1NNy9k%2FlfAiAc4kTf7hS7R7RPH6Y5zm077oLXEZ%2B%2BIhXlCxDAUJsSyCq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM%2BHAV6D213XqU0wn9Ko4FwYnHIZn7qYON5mIfTRLuqOsJFi9D3ZrE8Cc23zAXRWSClaDN46AGDvpssicXZQjWGc8nnvl10lUER2pNa1Kr1rYoVG%2BfhyLwlJcFddXFXzdynFNBTZV666To7QWx6gjiOd%2FrpTZs22HYWKXKgyBX74gmkYQF%2B7jrO%2BhK7MBP03ur1l%2FzaOJtDUydRiJEvnYu8nHlSuvmCPJWiA5hZwUX4PyBxgdj3STAyzWM1P2vihP9Se1g%2FokdMzzpL%2FXDMRjKWY6EVR1iidYlQsDtiMeyBGrGIYiEkwY9D2fHzoAbBPLho%2FI3bD3pNxn5M6I%2F2rTSbpmZbQf3SYXt0tupjw3vWsRLNg6O%2FdcSS35vmX%2Fkbnxvv6v%2FW%2FyIE6Y8D1QDZ5%2BABlPQzWgHV1o9UtOz6grnu%2Fc75sJtdzu4S%2FvEjFy9SYrgGeWBCWloUXaMF%2F%2BdO608zdZ9zM1SzorLRpHWDN%2F8iQPTZU7DLD9%2Bri7iS3lbfWFH%2BHHMrXexxWq3z%2Fpc%2B%2BHgePgxzCWAGJBNcwp9dGc4Nhn5N1Fszi%2BuapXmFORKtnASFL0%2BWu1PqiyLEDMUHbrpwld63OJShBfYhr5MedRavSUQb0RGMlStr3xopPPcElCjNKe%2Bpm27vkPVKQGIbOcZpt6c8R9D%2Bn%2FgPaAFlroH1U8sjuniPRr2r8Sklfs164A2thK1JmO1m%2B5KbB3%2B%2F0RIh1zER75O1w3MHhSiL%2FNtEytZljBf6y%2FL0v0o0xoLtCYjAiGP%2B3QEQtvwIyYc4jtfkR0wEwhr2gfKLgUEdfW2SrcNRDb9P4Z0Wju1grX6lcK8JxAHX7JV0%2F8H2ulXCXbJEsgmk%2BBpeGrh52PZsdHFFKZPrezXSOEDsSn5tlATMJ%2FH48wGOrIBQpjt%2B4sfkKbAuf3KC56EsWqsGfdg4pLTCAjRF4tRv8On9oA5s6jGiWb9SJAIPjroL2ZJ7poq78lNvP28N4e1qD6rIgQWmaZLakaYvm29nALWve8IB2R0kZMsGRgArRgsGtss8Qtgh9v13ssW%2BD8c4T7f%2FSb9H0VMibe4qXQQEQCNazAmU1xZzYN%2B8iurGSCZ8PX9d9Nvg%2FDsraWzo1h9qt50YmHkIwEsJV2kw%2F%2FlRDlxFw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0ebed685bd164fd52c91d0c9a656da26a1ab0a7fd1954288a9a295011c1c0f33",
+      "file_size": 171875,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-01-20T16:21:47.470Z",
+  "allow_singular_disclosure_after": -223636846.07860014,
+  "singular_disclosure_allowed": true,
+  "vote_count": 14,
+  "voters": [
+    "ali",
+    "absshax",
+    "tiago-danin",
+    "cryptographer",
+    "sanjogpanda",
+    "ba89af06bed666d134754de",
+    "armansameer",
+    "witchking_h1",
+    "0x00zeta",
+    "com30n",
+    "and 4 more..."
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "id": 282209,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODIyMDk=",
+  "url": "https://hackerone.com/reports/282209",
+  "title": "Stored XSS in the Custom Logo link (non-Basic plan required)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2017-10-23T20:49:44.789Z",
+  "submitted_at": "2017-10-23T20:49:44.789Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sp1d3rs",
+    "url": "/sp1d3rs",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/079/690/6853ada3e124bdd8616b1be752223b558de38195_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21745,
+    "url": "https://hackerone.com/infogram",
+    "handle": "infogram",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Infogram",
+      "twitter_handle": "infogram",
+      "website": "http://infogram.com",
+      "about": "Make Infographics and Charts that People Love"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-11-23T12:56:01.220Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-11-22T19:52:45.169Z",
+  "team_member_agreed_on_going_public_at": "2017-11-23T12:56:01.038Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "##Description\nHello. Recently i contacted with Infogram, and requested trial of the Business version to test some features, which was unavailable in the Basic version.\nI discovered the stored cross-site scripting issue in the Custom Logo link.\n{F232084}\nThere was some URL checks in place, but i was able to bypass them, because position of the `http[s]://` was not checked (string could start with other arbitrary symbols)\n\n\n##POC\nVisit this infographic:\nhttps://infogram.com/your-first-project-title-1ggk269n94yj2n0\nScroll to the end of the page, and click the logo in the borrom-right (green triangle):\n{F232086}\nThe XSS with `document.domain` payload will be executed.\n\n##Reproduction steps\n1) You need a Business account.\n2) Visit the https://infogram.com/app/#settings/infographic -> `Project Settings`\n3) Change the logo link to the\n```\njavascripT://https://google.com%0aalert(1);//https://google.com\n```\n4) Create some infographic, make it public, visit and click the logo\n\n##Why it works\nThe `javascript` string was blacklisted, but using capital letter, i was able to bypass the filter.\n`javascript:alert` didn't work (looks like due to the protocol check - `http://` became appended to the payload),\nbut `javascripT://` successfully bypassed the filter. Now, since it checks for the `http[s]` protocol, we can bypass it using comment:\n```\njavascripT://https://google.com%0aalert(1);//https://google.com\n```\nWhen clicking such link, \nbrowser sees it as `javascript:` payload with following JS code:\n```\n//https://google.com\nalert(1);\n//https://google.com\n```\n\n##Suggested fix\nThe validator should check, that Logo Link string must strictly start with `http[s]://`.\n",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 232084,
+      "file_name": "test.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/232/084/ad378d8c1b0ec0f0aacdf7e1dcb6ebd278424ebd/test.JPG?response-content-disposition=attachment%3B%20filename%3D%22test.JPG%22%3B%20filename%2A%3DUTF-8%27%27test.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWXLXNBDT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030359Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDHZsYFFID3%2BAzDTl7Hmq6XD1ibesN4xpN2tCdZBczJaQIgMFvgzsimnr1JdtNQHjCjjvdCiLn7vF%2Bkx65bzV%2F7XT4quwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMcRYEvOQ9mZCVLEISqPBT7VGWMxXC2gjnCd5L1aC3PiriuKRTbWqKijg6Jais0UKSAZc4W0O%2Bxvq32M%2FEt%2B9SvX%2BMeXVJs4cma7a%2FqzteeMCwCofAVGpS6AmJkFef4xtPbbzOCa0nD%2BkYRr8DrTmMtWp9uzSZjPKhITT%2BO1Uk0W19i0rGgQ14VQkfHjQpY0kRKTtZ173CJTrH9f5TEniCmyYmErtV4U1X2fXYdIRHdmT16q6csGxdgjiOwCyJefiCmpQIvGb7ef%2BCaiEhCax0hE%2BvLLN2eEytVZ5gKTLkJckh%2Fm8ffB1saExT6TpC6SSPz26wmwhWwFHehph7bMyEGiG%2Bu3iWlvF5wbCgo7kPVltnbX%2Fr%2BbGaNHa8V6%2BryjPVgGQbfrL9nTqz%2B7oauwvHDrtMOVVW3vlVziLHdHrNzDdfuGtq%2BzffixE6KcHgvu56kLLjvMeAX0q5FU%2B0eaOA6Z0KblqWgdI1YlVBIn5zIp4g8icfVCMEPFY7CP9JHPptMX0MiLSonHItZviZa%2B7JmdHhIY9vWrbEbWVcjZbJt8M1GykDbjQo6XqSpr3op51HJUBDyBj6UeBESJsyE2TBiOCqW0D0AURXlSnHfTXBUxVjtVWF84LLVoF%2FUESJ6gVEwB6I3v8K5%2Bg%2BShRJ5J8wu4CtAj1alRWnz5%2FpQYBWXEc8lmi6NKxIigJBJj5VgaVu7ieKfywu7pimfYMmt64xnSg3fAlbJEjfp%2BBnogTWVJ%2FMwGJfw1F3X1m1XUn9TfZiQq23z1WjspyeydJzKFwG7YA7wv1J5RU82U9VLnzTIGU%2FPG9fUu0S0OzWgsEmUzQ4z08rHxQBubh6TdTc8xy%2Fv2yu1HiCkDN1Qumyb3VGv34pQz9NpAvL%2FBjZKTk2cw75fkzAY6sQF6z5tjFBkdtoWjoPwhXXOuGs%2F7fZ9%2FSYI5Dlhxs%2BY2yemf6H9noe%2BcpMETqmtz6zgqHMMUCfF3R80A7fnpsC%2FF9prHXeNYBwwlaH8sFGshMpgBVidaW4%2B8EbrEAopAZRxuGgm8LGvFISMIWFl9EWLqSWje53JhS9jrdixXLI7T8Vu%2FdPSGVlbmy%2BqT0bAIioaXdDgvRVwWwOI9Qx6VCuByyVC5ywTVS76JxmBU%2Fj8j0ng%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b40283ae0c4c0f8e8fae0750daeb310831f90959dbff7c2d2500933201919580",
+      "file_size": 52543,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 232086,
+      "file_name": "c.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/232/086/0ca4cd121ee373e36efa283a077fc4045a571fc3/c.JPG?response-content-disposition=attachment%3B%20filename%3D%22c.JPG%22%3B%20filename%2A%3DUTF-8%27%27c.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWXLXNBDT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030359Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDHZsYFFID3%2BAzDTl7Hmq6XD1ibesN4xpN2tCdZBczJaQIgMFvgzsimnr1JdtNQHjCjjvdCiLn7vF%2Bkx65bzV%2F7XT4quwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMcRYEvOQ9mZCVLEISqPBT7VGWMxXC2gjnCd5L1aC3PiriuKRTbWqKijg6Jais0UKSAZc4W0O%2Bxvq32M%2FEt%2B9SvX%2BMeXVJs4cma7a%2FqzteeMCwCofAVGpS6AmJkFef4xtPbbzOCa0nD%2BkYRr8DrTmMtWp9uzSZjPKhITT%2BO1Uk0W19i0rGgQ14VQkfHjQpY0kRKTtZ173CJTrH9f5TEniCmyYmErtV4U1X2fXYdIRHdmT16q6csGxdgjiOwCyJefiCmpQIvGb7ef%2BCaiEhCax0hE%2BvLLN2eEytVZ5gKTLkJckh%2Fm8ffB1saExT6TpC6SSPz26wmwhWwFHehph7bMyEGiG%2Bu3iWlvF5wbCgo7kPVltnbX%2Fr%2BbGaNHa8V6%2BryjPVgGQbfrL9nTqz%2B7oauwvHDrtMOVVW3vlVziLHdHrNzDdfuGtq%2BzffixE6KcHgvu56kLLjvMeAX0q5FU%2B0eaOA6Z0KblqWgdI1YlVBIn5zIp4g8icfVCMEPFY7CP9JHPptMX0MiLSonHItZviZa%2B7JmdHhIY9vWrbEbWVcjZbJt8M1GykDbjQo6XqSpr3op51HJUBDyBj6UeBESJsyE2TBiOCqW0D0AURXlSnHfTXBUxVjtVWF84LLVoF%2FUESJ6gVEwB6I3v8K5%2Bg%2BShRJ5J8wu4CtAj1alRWnz5%2FpQYBWXEc8lmi6NKxIigJBJj5VgaVu7ieKfywu7pimfYMmt64xnSg3fAlbJEjfp%2BBnogTWVJ%2FMwGJfw1F3X1m1XUn9TfZiQq23z1WjspyeydJzKFwG7YA7wv1J5RU82U9VLnzTIGU%2FPG9fUu0S0OzWgsEmUzQ4z08rHxQBubh6TdTc8xy%2Fv2yu1HiCkDN1Qumyb3VGv34pQz9NpAvL%2FBjZKTk2cw75fkzAY6sQF6z5tjFBkdtoWjoPwhXXOuGs%2F7fZ9%2FSYI5Dlhxs%2BY2yemf6H9noe%2BcpMETqmtz6zgqHMMUCfF3R80A7fnpsC%2FF9prHXeNYBwwlaH8sFGshMpgBVidaW4%2B8EbrEAopAZRxuGgm8LGvFISMIWFl9EWLqSWje53JhS9jrdixXLI7T8Vu%2FdPSGVlbmy%2BqT0bAIioaXdDgvRVwWwOI9Qx6VCuByyVC5ywTVS76JxmBU%2Fj8j0ng%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=aa5a03805145698431008c092c8b423b8f4779b27f60b8a767b11bdb285509b9",
+      "file_size": 26069,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-12-22T19:52:45.414Z",
+  "allow_singular_disclosure_after": -257670674.12472594,
+  "singular_disclosure_allowed": true,
+  "vote_count": 11,
+  "voters": [
+    "muon4",
+    "003random",
+    "its_afolic",
+    "edoverflow",
+    "akaash_pantherdefence",
+    "gamliel",
+    "whitesector",
+    "eveeez",
+    "shepard",
+    "alfredsaonoy",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 870,
+    "asset_type": "URL",
+    "asset_identifier": "infogram.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

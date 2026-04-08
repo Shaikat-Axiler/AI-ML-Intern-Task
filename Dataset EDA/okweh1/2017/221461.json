@@ -1,0 +1,115 @@
+{
+  "id": 221461,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMjE0NjE=",
+  "url": "https://hackerone.com/reports/221461",
+  "title": "homograph-attack (unicode vuln)",
+  "state": "Closed",
+  "substate": "duplicate",
+  "readable_substate": "Duplicate",
+  "created_at": "2017-04-16T20:32:35.590Z",
+  "submitted_at": "2017-04-16T20:32:35.590Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "siyadlbug",
+    "url": "/siyadlbug",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/HXadaZqU1iBxxV5iRpVDoDHJ/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-08-10T05:10:52.303Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-04-17T17:59:30.645Z",
+  "team_member_agreed_on_going_public_at": "2017-08-10T05:10:52.268Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi team\nSummary:\nAffacted product  appears identicaly different  websites domains\nattacker  uses unicode to register domains that look identical to real domains ,These fake domains can be used  to fool users into signing into a fake website, thereby handing over their login credentials to an attacker...\nexample to demonstrate how an attacker can register their own domain that looks identical to another company’s domain in the browser, \n  ‘epic.com’(healthcare site)  by registering fake site  unicode domain: http://www.xn--e1awd7f.com/\n\nand affected product show unicode domain looks like real domain \n{F176374}\n{F176375}\n\nProducts affected:\n\n    Brave 1.0.19 (Tested on android 6.0.1;nexus5)\n\nSteps To Reproduce:\n1.In browser open http://www.xn--e1awd7f.com/ unicode domain demo \n2. you can see brave browser show fake site like real site in address bar\n\n \nThe fix:\n make sure it's display the punycode ..and warning or proper handlings\nReferences:\n http://www.crypto-it.net/eng/attacks/homograph-attack.html\n  https://www.wordfence.com/blog/2017/04/chrome-firefox-unicode-phishing/\n\n",
+  "original_report_id": 218801,
+  "original_report_url": "https://hackerone.com/reports/218801",
+  "attachments": [
+    {
+      "id": 176374,
+      "file_name": "2017-04-16_2023-brave-android6.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/176/374/91241505b589b362067798ac749af062cb199684/2017-04-16_2023-brave-android6.png?response-content-disposition=attachment%3B%20filename%3D%222017-04-16_2023-brave-android6.png%22%3B%20filename%2A%3DUTF-8%27%272017-04-16_2023-brave-android6.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV4YEW6ML%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033222Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDqM9ZU3dfXkJNhMHaHZqCyv62uMjtDEt1VUptyZn62pgIhAMGOZJHS7d5UCx6i5D7tU9cMgDKnBKsBlEnOM4UP8qWoKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwwsquZz0wgJDWlq2oqjgWKFY%2BOXnrG%2BAauwJ6Z4ApiLssKdwozS4PcNCIZuTKSSuYzhLeBkEMkjAau5IWnNjzwAcJIK9iJdY%2F4HG3muw5ALevudoxGbGKiQoyH2dnEcArTI1WSsQq2eSvRRCUVx8sFNVA3Tx8zJ%2BBYIGmINPCLQSaS%2FMB%2BXil1bQl4i%2BMMJQRHdJ8p1Ql%2BNHMA7v2e8MrO5kxOlITVbKTEDkXuJNahNEvz2EPMxVBMKjyw4C8sUDEAAEDz1x5ZLypzpM%2FywtJeHT1QYddrvUAhCuksJWUHBoJ8svDZC7d8wr0KKH%2Bdeq8ymWPX9SEdtDGgkdGkUxP2xjE%2B7z4%2BUGKpiedWV33Opp0gSESF1u99Jv9L%2BI206vAHnoqgK7Er7TswAx%2Bnz99NwWsTc8h%2B8wrkH2dzOYin%2F7N0xWSTKfHw7%2FRlvsZzqujeeBhts89pw7m%2BHDnVyTzKBZbwMLyyRDZTGeb0Uiu6e49OT6jQT8zsak789IQc%2Bh%2BLcKVYeqPTw45tUE%2FCOvdqv49Fh2IT%2Bdx9SOQfMD2ljglIPDtyhR5u2fxGM3m%2FLLnTclGik1kRfsO3qThA1Hp5KjmDnRnJo%2F%2By8N1j5YXX7GO4ehh208M8%2FyNAQSntSEAdC5uzd83QFETKDWpZlC5LfctR0UgHnmfugQBU7Vjz6nnkArPOcOEl9nRrky1IGNnnAgTe%2FBFiBr%2F92jezhAJFnHlVbQRXixuvTn8CjUVr0xWlqrsucUCYEDswMp8nzjOm6od1jP97IwOwKRc5Q0BaRdtN5swBJqLk3nZbUbFJeYlxnkVvYw4YevdMDlmZV5a6zdN9PdaUiqgj7EKGJDGs%2BO5yG8tAwAsD2psbaGSqwd%2FPN97OdOoTXzAiZAMwguLjzAY6sAF0TawxTKESuwC6TSO1Z4y01CFY2IUXk88HTsyBGcLvhaN%2BQL9GYmr2guLNm%2BIZZd%2FrNHJuGTBwbadVSEci%2Ft5G8jV%2B3%2FQtOia%2F0hi5IHRm6GNbtqLiK7wm4n%2B95mScnhF9cjQbLvFg%2BjNQyHLAX9bjAQXAbCv3UyrquwH1iXqZ53rye639UEGlHIsa5tlgE9J43rWnxgYDopFXyhAe6kOb7Qmu9SCah%2BJ2UOLMPXBh0Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b4638165b3c9061489f26e8a93deafe5ebd119f935b474341b0917effe596217",
+      "file_size": 216569,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 176375,
+      "file_name": "2017-04-16_2053-real-epic-site.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/176/375/efbd078360daf1363fb4b0b4c3bccf046e2f46d5/2017-04-16_2053-real-epic-site.png?response-content-disposition=attachment%3B%20filename%3D%222017-04-16_2053-real-epic-site.png%22%3B%20filename%2A%3DUTF-8%27%272017-04-16_2053-real-epic-site.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV4YEW6ML%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033222Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDqM9ZU3dfXkJNhMHaHZqCyv62uMjtDEt1VUptyZn62pgIhAMGOZJHS7d5UCx6i5D7tU9cMgDKnBKsBlEnOM4UP8qWoKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwwsquZz0wgJDWlq2oqjgWKFY%2BOXnrG%2BAauwJ6Z4ApiLssKdwozS4PcNCIZuTKSSuYzhLeBkEMkjAau5IWnNjzwAcJIK9iJdY%2F4HG3muw5ALevudoxGbGKiQoyH2dnEcArTI1WSsQq2eSvRRCUVx8sFNVA3Tx8zJ%2BBYIGmINPCLQSaS%2FMB%2BXil1bQl4i%2BMMJQRHdJ8p1Ql%2BNHMA7v2e8MrO5kxOlITVbKTEDkXuJNahNEvz2EPMxVBMKjyw4C8sUDEAAEDz1x5ZLypzpM%2FywtJeHT1QYddrvUAhCuksJWUHBoJ8svDZC7d8wr0KKH%2Bdeq8ymWPX9SEdtDGgkdGkUxP2xjE%2B7z4%2BUGKpiedWV33Opp0gSESF1u99Jv9L%2BI206vAHnoqgK7Er7TswAx%2Bnz99NwWsTc8h%2B8wrkH2dzOYin%2F7N0xWSTKfHw7%2FRlvsZzqujeeBhts89pw7m%2BHDnVyTzKBZbwMLyyRDZTGeb0Uiu6e49OT6jQT8zsak789IQc%2Bh%2BLcKVYeqPTw45tUE%2FCOvdqv49Fh2IT%2Bdx9SOQfMD2ljglIPDtyhR5u2fxGM3m%2FLLnTclGik1kRfsO3qThA1Hp5KjmDnRnJo%2F%2By8N1j5YXX7GO4ehh208M8%2FyNAQSntSEAdC5uzd83QFETKDWpZlC5LfctR0UgHnmfugQBU7Vjz6nnkArPOcOEl9nRrky1IGNnnAgTe%2FBFiBr%2F92jezhAJFnHlVbQRXixuvTn8CjUVr0xWlqrsucUCYEDswMp8nzjOm6od1jP97IwOwKRc5Q0BaRdtN5swBJqLk3nZbUbFJeYlxnkVvYw4YevdMDlmZV5a6zdN9PdaUiqgj7EKGJDGs%2BO5yG8tAwAsD2psbaGSqwd%2FPN97OdOoTXzAiZAMwguLjzAY6sAF0TawxTKESuwC6TSO1Z4y01CFY2IUXk88HTsyBGcLvhaN%2BQL9GYmr2guLNm%2BIZZd%2FrNHJuGTBwbadVSEci%2Ft5G8jV%2B3%2FQtOia%2F0hi5IHRm6GNbtqLiK7wm4n%2B95mScnhF9cjQbLvFg%2BjNQyHLAX9bjAQXAbCv3UyrquwH1iXqZ53rye639UEGlHIsa5tlgE9J43rWnxgYDopFXyhAe6kOb7Qmu9SCah%2BJ2UOLMPXBh0Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=02d750a9287d2187f3a317a81c913e8f6ae9f3383123778759bc47796ee28e59",
+      "file_size": 351660,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "khizer47"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

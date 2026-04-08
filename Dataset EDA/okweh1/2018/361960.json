@@ -1,0 +1,193 @@
+{
+  "id": 361960,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNjE5NjA=",
+  "url": "https://hackerone.com/reports/361960",
+  "title": "Insufficient validation of sides/modifiers quantity",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-06-05T03:33:30.844Z",
+  "submitted_at": "2018-06-05T03:33:30.844Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "liquid8",
+    "url": "/liquid8",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/265/119/7be3109fac23b68fab389f7cf5057bd8032dca84_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21981,
+    "url": "https://hackerone.com/upserve",
+    "handle": "upserve",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/021/981/780e51432acea84f3fe52455f0009230a87ee31e_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/021/981/780e51432acea84f3fe52455f0009230a87ee31e_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Upserve ",
+      "twitter_handle": "getupserve",
+      "website": "http://upserve.com",
+      "about": "Upserve offers cloud point of sale for restaurants, actionable analytics, payment processing, and mobile restaurant management."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-06-06T22:41:21.679Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-06-06T22:41:21.587Z",
+  "team_member_agreed_on_going_public_at": "2019-06-06T18:01:37.378Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:**\nThe Upserve Online Ordering (OLO) application does not properly verify on the server side the number of sides/modifiers that have been added\n\n**Description:**\nCertain items allow for selection of a limited number of sides/modifiers, and the application restricts the number of sides/modifies that can be selected on the client side through javascript, but does not validate the request on the server side for the number of sides/modifiers. By intercepting and modifying the traffic when the order request is sent, an attacker will be able to place an order with more than the allowed number of sides/modifiers.\n\n**Steps To Reproduce:**\nThe issue can be demonstrated using the test store https://app.upserve.com/s/upserve-lounge-test-providence-2 and the menu item \"Char Boil Trou\". \n\n1) Select the \"Char Boil Trou\" option and add it to the cart. Note that only 1 side can be added (exceed-max-sides-1.png)\n2) Checkout and submit the order\n3) Intercept the request and add additional sides in the JSON request. In this example 3 sides are added instead of the maximum of 1 by changing the \"sides\" JSON parameter to (exceed-max-sides-3.png):\n```\"sides\":[{\"id\":\"aa79b4fe-d8be-40d8-8693-21fd5b94ef50\",\"name\":\"Brussel Sprouts\",\"price\":0,\"side_id\":\"1cbde3ee-0f16-4938-8139-3b5af5781c4c\",\"price_cents\":0,\"tax_rate_id\":\"40eb334a-300c-4b02-8d70-54b199d1c197\",\"tax_rate\":{\"id\":\"40eb334a-300c-4b02-8d70-54b199d1c197\",\"name\":\"Sales Tax\",\"percentage_rate\":\"0.1\"}},{\"id\":\"1074ac11-2c37-48d1-b4dd-13d8deaf183f\",\"name\":\"Asparagus\",\"price\":0,\"side_id\":\"573ff30a-1dd4-44be-9179-d4c81c088963\",\"price_cents\":0,\"tax_rate_id\":\"40eb334a-300c-4b02-8d70-54b199d1c197\",\"tax_rate\":{\"id\":\"40eb334a-300c-4b02-8d70-54b199d1c197\",\"name\":\"Sales Tax\",\"percentage_rate\":\"0.1\"}},{\"id\":\"d3f0aebe-e71b-4f6a-9f57-a449dd518422\",\"name\":\"Mashed Potatoes\",\"price\":0,\"side_id\":\"32b8f396-e779-4252-86cb-e0a8f41745dc\",\"price_cents\":0,\"tax_rate_id\":\"40eb334a-300c-4b02-8d70-54b199d1c197\",\"tax_rate\":{\"id\":\"40eb334a-300c-4b02-8d70-54b199d1c197\",\"name\":\"Sales Tax\",\"percentage_rate\":\"0.1\"}}]```\n4) The request is accepted by the application (exceed-max-sides-2.png)\n5) Viewing the submitted order in the users profile shows that the order was made with 3 sides (exceed-max-sides-4.png)\n\n## Impact\n\nA malicious user will be able to add additional sides/modifiers beyond the maximum number allowed, which the restaurant might include if the discrepancy is not noticed, which would result in monetary loss to the restaurant.",
+  "bounty_amount": "500.0",
+  "formatted_bounty": "$500",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 305375,
+      "file_name": "exceed-max-sides-1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/305/375/2413427058b1e884366376ab55fa19faf6cb721b/exceed-max-sides-1.png?response-content-disposition=attachment%3B%20filename%3D%22exceed-max-sides-1.png%22%3B%20filename%2A%3DUTF-8%27%27exceed-max-sides-1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014634Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=20365c1974c405a8327333c9d4b200cadb9b4d965716c4c02dce5a770e7522ae",
+      "file_size": 174661,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 305376,
+      "file_name": "exceed-max-sides-2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/305/376/400806ad0696ef22cddc25251bb98854cd48c61f/exceed-max-sides-2.png?response-content-disposition=attachment%3B%20filename%3D%22exceed-max-sides-2.png%22%3B%20filename%2A%3DUTF-8%27%27exceed-max-sides-2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014634Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=213125da587176119ddf6aa745839d8bb02ac2c2687739f04a65d12582a4b733",
+      "file_size": 151714,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 305377,
+      "file_name": "exceed-max-sides-3.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/305/377/480a92c5a3d190010b46c1c78245eed11c6b01aa/exceed-max-sides-3.png?response-content-disposition=attachment%3B%20filename%3D%22exceed-max-sides-3.png%22%3B%20filename%2A%3DUTF-8%27%27exceed-max-sides-3.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014634Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=942ff28075f92e3dc81da658d3e907cf9316604c554863074a422417798be5ad",
+      "file_size": 136953,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 305378,
+      "file_name": "exceed-max-sides-4.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/305/378/b60c19f6de026a0953348fe9bcad1aecf640e33a/exceed-max-sides-4.png?response-content-disposition=attachment%3B%20filename%3D%22exceed-max-sides-4.png%22%3B%20filename%2A%3DUTF-8%27%27exceed-max-sides-4.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014634Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=81dc03f4d0704d817b4c8c4b9ce7b5a5d2a46ab43827cd996ca66b2ce8a7ff9b",
+      "file_size": 143516,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-07-06T18:01:37.472Z",
+  "allow_singular_disclosure_after": -209202297.17512727,
+  "singular_disclosure_allowed": true,
+  "vote_count": 10,
+  "voters": [
+    "ezzra",
+    "loaymorad",
+    "ali",
+    "mohaned0101",
+    "thalaivar304",
+    "harrymg",
+    "fir3drvgon",
+    "cryptographer",
+    "ndubrutal",
+    "zico0099"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.1,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 9988,
+    "asset_type": "URL",
+    "asset_identifier": "orders.upserve.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 16537,
+      "category": "team",
+      "content": "An order could be modified to include more sides/modifiers than was permitted due to a lack of server-side validation.",
+      "updated_at": "2019-06-06T18:01:29.750Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 177914,
+        "username": "upserve-bryan",
+        "name": "Bryan Brannigan",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "https://upserve.com",
+        "location": "",
+        "created_at": "2017-06-23T12:52:45.774Z",
+        "url": "https://hackerone.com/upserve-bryan",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/177/914/953184670ceb43d71870f5de769683ac4614b579_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/177/914/953184670ceb43d71870f5de769683ac4614b579_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/177/914/953184670ceb43d71870f5de769683ac4614b579_original.png/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

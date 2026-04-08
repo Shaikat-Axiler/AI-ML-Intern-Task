@@ -1,0 +1,121 @@
+{
+  "id": 363658,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNjM2NTg=",
+  "url": "https://hackerone.com/reports/363658",
+  "title": "Buffer overflow",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "none",
+  "readable_substate": "N/A",
+  "created_at": "2018-06-09T06:51:22.024Z",
+  "submitted_at": "2018-06-09T06:51:22.024Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kaushalag29",
+    "url": "/kaushalag29",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 28411,
+    "url": "https://hackerone.com/liberapay",
+    "handle": "liberapay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Liberapay",
+      "twitter_handle": "",
+      "website": "https://liberapay.com",
+      "about": "An open source platform designed to facilitate recurrent donations."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-06-10T06:06:40.411Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-06-09T16:10:52.931Z",
+  "team_member_agreed_on_going_public_at": "2018-06-10T06:06:40.326Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "A buffer overflow condition exists when a program attempts to put more data in a buffer than it can hold or when a program attempts to put data in a memory area past a buffer. In this case, a buffer is a sequential section of memory allocated to contain anything from a character string to an array of integers. Writing outside the bounds of a block of allocated memory can corrupt data, crash the program, or cause the execution of malicious code. \nFor better refernce:\nhttps://www.owasp.org/index.php/Buffer_Overflow\n\nPOC:\nGo to\nhttps://liberapay.com/sign-up\nNow type(copy and paste using python) email address of size more than 100mb or in gbs and sign up.\nAfter signing up for few times u will receive this error as shown in sent pic.\n\nSteps to resolve:\nRestrict size limit on input parameter.\n\n## Impact\n\nCategory:Availability: Buffer overflows generally lead to crashes. Other attacks leading to lack of availability are possible, including putting the program into an infinite loop.\n    Access control (instruction processing): Buffer overflows often can be used to execute arbitrary code, which is usually outside the scope of a program’s implicit security policy.\n    Other: When the consequence is arbitrary code execution, this can often be used to subvert any other security service.",
+  "weakness": {
+    "id": 3,
+    "name": "Classic Buffer Overflow"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 306937,
+      "file_name": "Screenshot_from_2018-06-09_12-15-18.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/306/937/7bee940cf61bec14005144a621729355d97b8275/Screenshot_from_2018-06-09_12-15-18.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2018-06-09_12-15-18.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2018-06-09_12-15-18.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023326Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6c6fa8fb1545ad1af03e2ebbe26af0a1a3844fab59e906842e605449975aafb2",
+      "file_size": 80448,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "savitar0x01"
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 8926,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.liberapay.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

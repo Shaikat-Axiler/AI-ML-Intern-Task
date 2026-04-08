@@ -1,0 +1,136 @@
+{
+  "id": 282748,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODI3NDg=",
+  "url": "https://hackerone.com/reports/282748",
+  "title": "Detecting Tor Browser UI Language",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2017-10-25T08:11:59.728Z",
+  "submitted_at": "2017-10-25T08:11:59.728Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "newfunction",
+    "url": "/newfunction",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2miia86h6gou58lati8p3usdvhan/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1800,
+    "url": "https://hackerone.com/torproject",
+    "handle": "torproject",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tor",
+      "twitter_handle": "torproject",
+      "website": "https://www.torproject.org/",
+      "about": "Anonymity Online"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-05-21T08:48:31.664Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-05-21T08:48:31.597Z",
+  "team_member_agreed_on_going_public_at": "2019-05-21T07:38:22.424Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Suppose that a user downloads a non-English version of Tor Browser from https://www.torproject.org/projects/torbrowser.html.en, there is a way to detect which UI language the user is using. I don't think you want websites to detect this info, because at the first time I launched non-English Tor Browser, there's a warning dialog asking if I want to send my UI language to websites in the \"Accept-Language\" header, which may violate my privacy. **This trick works even if I choose \"Don't send my language\" in that warning dialog**.\n\nSteps to reproduce:\n1. Download and install 简体字 (zh-CN) version (i.e. Simplified Chinese) of Tor Browser from https://www.torproject.org/projects/torbrowser.html.en.\n2. In the Chinese Tor Browser, navigate to https://xiaoyinl.github.io/juyt75/ttude.html. The page should be able to tell you \"Your browser UI language is: Simplified Chinese\".\n3. Launch an English Tor Browser, and navigate to https://xiaoyinl.github.io/juyt75/ttude.html. The page should be able to tell you \"Your browser UI language is: English\".\n\nThe trick is that when I specify a button <input type=\"submit\"> without a \"value\" property, the default text of the button depends on the UI language. If the UI language is Chinese, its text is 提交查询; if the UI language is English, its text is \"Submit Query\". Thus, these two buttons will have different width. If its width equals the width of <input type=\"submit\" value=\"Submit Query\">, the UI language is English. If its width equals the width of <input type=\"submit\" value=\"提交查询\">, the UI language is Simplified Chinese.\n\nTo fix this, always use the button with default text in English.",
+  "weakness": {
+    "id": 46,
+    "name": "Privacy Violation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 232599,
+      "file_name": "screenshot.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/232/599/96271073f30294009a2a71e4547bfe0d6c6168dd/screenshot.png?response-content-disposition=attachment%3B%20filename%3D%22screenshot.png%22%3B%20filename%2A%3DUTF-8%27%27screenshot.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2PPGKUPX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014752Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIHLuGZcGnvXm50doyTuEQuvS1KWRRUfILYloWKG8z17vAiEAwm%2Bd%2FxZTyBqubxpcWNduXjpRzTBGwxeJx5m2gRIp68gqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMY5aCx5ornu4LbxLCqOBVugZlS%2FEFRS%2BuSQXC3TgOXSENRjnk71%2Blmi9lJgLusZZGORWPIvlPzguFDwHQ2kYL3jVTv2eaLyPLfbT6FyCuzWX1mk8nfbnKmI3miMT%2Fj%2FYCXRGbHw6XBtusXtshD1KKas8JMagvOSSWWh7nkef848tJcOJ4rZOZ7xDLA3NrjtovzyKF1K%2FLaR836OhWWL87ihiwq9TobPJ712btcIJa0SrABTNiaZiDUXnMWM5ky%2BMaXpGd6fxEn%2B5pPzZXSv1zzRBraB741nYdQ%2FLd4Gh0yNEB7rSpm%2FyHveCjemnZePmzM01ubdFJXi%2FcXdC1v54IH4OFM6pQy8u8GY0B3hZn%2Fl%2BsPIyHwiK90eUwXbGLdMCJJTcfYSRTHQdA5X24fTxo%2FA2zPxC%2BgaSLeMDKKfQr4ZPUH1EISCQPOuMIaHuVSVLexGm%2BM2XE9oDlcHbutNyBjoVcI9hLuM%2BiBbfRfUj9%2B26mTMcSyCMVLACsGcWZZ3IcbfFiY62p5kXzO5fmFmYNIgMC4%2FCfL70NuVrxVRXudv%2FEgWNxT80eo%2B743s2%2BXrM1VOQaCWL2tdfkdNNxHsl1PN%2FyQdscAvebdaNhEaM5GkSGmsonaNzCREhPXPprjeVN15UjdcOeJnUiHnEUPUpUHWyzi%2BvvEIrV87Zf%2F1qaW0X2cU%2Facke0S5lj4SVBPqAvmvLt9sWRK3YkgjRyamPDcv1Dz2iS1xdoL4dN%2F%2BNYUg7Ix18hjlXFjX%2Br%2B3x5paRV1cmM0tcWaWoak%2FNGv%2BqSAlrvOL1RTQUl9z2fTterFQ9VxMIvpg4t31QvM9HKgGwWh7Hw8%2FBTZ0ub9qQd4XdO530Y9DsPwhbpLzR%2Bus1TgvXsdDdWGPw4q3Je3aETDE2ePMBjqxAb41hWlhrlcpst4sWkcp0JVkfT%2BfxIOEUrHnTALlgOzJ5EZbjOr09ySRm0N8wKh2YRdbIFI9V6jeboUsTWi01HkD3pQXaAbVTM58p9Cp%2BJl58CyMhEN2oOuNo9gg8ncCmCF%2F7GvdRF0iOh0R2y8sSmYZpfYQNR2Xs8WDimn8EtjHqC5OWrZxQHrGx3c9APT57ePzkFPj%2FgjQD%2B28fZz6NEEvl%2Fd02O%2FfxVBJwl5QkYv8zQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b3a773ca68b96b79677e9cfed0c7170292d45a6df1afa65d9fd6ccb48b8ea8ee",
+      "file_size": 13338,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 232600,
+      "file_name": "PoC.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/232/600/69453f6e49c4705ebd7f26d15539d461b7ac5e65/PoC.html?response-content-disposition=attachment%3B%20filename%3D%22PoC.html%22%3B%20filename%2A%3DUTF-8%27%27PoC.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2PPGKUPX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014752Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIHLuGZcGnvXm50doyTuEQuvS1KWRRUfILYloWKG8z17vAiEAwm%2Bd%2FxZTyBqubxpcWNduXjpRzTBGwxeJx5m2gRIp68gqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMY5aCx5ornu4LbxLCqOBVugZlS%2FEFRS%2BuSQXC3TgOXSENRjnk71%2Blmi9lJgLusZZGORWPIvlPzguFDwHQ2kYL3jVTv2eaLyPLfbT6FyCuzWX1mk8nfbnKmI3miMT%2Fj%2FYCXRGbHw6XBtusXtshD1KKas8JMagvOSSWWh7nkef848tJcOJ4rZOZ7xDLA3NrjtovzyKF1K%2FLaR836OhWWL87ihiwq9TobPJ712btcIJa0SrABTNiaZiDUXnMWM5ky%2BMaXpGd6fxEn%2B5pPzZXSv1zzRBraB741nYdQ%2FLd4Gh0yNEB7rSpm%2FyHveCjemnZePmzM01ubdFJXi%2FcXdC1v54IH4OFM6pQy8u8GY0B3hZn%2Fl%2BsPIyHwiK90eUwXbGLdMCJJTcfYSRTHQdA5X24fTxo%2FA2zPxC%2BgaSLeMDKKfQr4ZPUH1EISCQPOuMIaHuVSVLexGm%2BM2XE9oDlcHbutNyBjoVcI9hLuM%2BiBbfRfUj9%2B26mTMcSyCMVLACsGcWZZ3IcbfFiY62p5kXzO5fmFmYNIgMC4%2FCfL70NuVrxVRXudv%2FEgWNxT80eo%2B743s2%2BXrM1VOQaCWL2tdfkdNNxHsl1PN%2FyQdscAvebdaNhEaM5GkSGmsonaNzCREhPXPprjeVN15UjdcOeJnUiHnEUPUpUHWyzi%2BvvEIrV87Zf%2F1qaW0X2cU%2Facke0S5lj4SVBPqAvmvLt9sWRK3YkgjRyamPDcv1Dz2iS1xdoL4dN%2F%2BNYUg7Ix18hjlXFjX%2Br%2B3x5paRV1cmM0tcWaWoak%2FNGv%2BqSAlrvOL1RTQUl9z2fTterFQ9VxMIvpg4t31QvM9HKgGwWh7Hw8%2FBTZ0ub9qQd4XdO530Y9DsPwhbpLzR%2Bus1TgvXsdDdWGPw4q3Je3aETDE2ePMBjqxAb41hWlhrlcpst4sWkcp0JVkfT%2BfxIOEUrHnTALlgOzJ5EZbjOr09ySRm0N8wKh2YRdbIFI9V6jeboUsTWi01HkD3pQXaAbVTM58p9Cp%2BJl58CyMhEN2oOuNo9gg8ncCmCF%2F7GvdRF0iOh0R2y8sSmYZpfYQNR2Xs8WDimn8EtjHqC5OWrZxQHrGx3c9APT57ePzkFPj%2FgjQD%2B28fZz6NEEvl%2Fd02O%2FfxVBJwl5QkYv8zQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fb472e3e13f79d42d7f29ea5ccae38898efc470eaa57f81079ae3c4be552d298",
+      "file_size": 1693,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-06-20T07:38:22.510Z",
+  "allow_singular_disclosure_after": -210622169.7224457,
+  "singular_disclosure_allowed": true,
+  "vote_count": 64,
+  "voters": [
+    "rootz491",
+    "nrockhouse",
+    "vavkamil",
+    "foobar7",
+    "mheranco",
+    "sameerphad72",
+    "mik317",
+    "savitar0x01",
+    "newfunction",
+    "catferq",
+    "and 54 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

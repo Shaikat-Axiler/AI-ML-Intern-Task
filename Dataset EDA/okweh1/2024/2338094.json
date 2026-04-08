@@ -1,0 +1,171 @@
+{
+  "id": 2338094,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMzM4MDk0",
+  "url": "https://hackerone.com/reports/2338094",
+  "title": "RPC service DOS",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2024-01-28T19:29:51.828Z",
+  "submitted_at": "2024-01-28T19:29:52.023Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ptrstr",
+    "url": "/ptrstr",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/8kyw0rmt6hdkr0i7nx3snkzhv8w9/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 7731,
+    "url": "https://hackerone.com/monero",
+    "handle": "monero",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/007/731/55634f7fcd917725c7a5771cc6e7c9b4d5fe0c22_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/007/731/55634f7fcd917725c7a5771cc6e7c9b4d5fe0c22_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Monero",
+      "twitter_handle": "monero",
+      "website": "https://getmonero.org",
+      "about": " Monero: the secure, private, untraceable cryptocurrency"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2025-05-23T14:25:17.381Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2025-04-23T14:25:16.884Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nThe RPC service running port 18081 (or 28081, 38081) is vulnerable to a DOS rendering the service unusable. This is due to the possibility of a for loop going up until uint64_t's max range (1<<64 - 1).\n\nOn the `get_fee_estimate` JSON RPC endpoint, a `uint64_t` parameter `grace_blocks` can be passed. If this parameter is big and the node is on a `hard_fork` version `15` or above, `get_dynamic_base_fee_estimate_2021_scaling` will be called.\nhttps://github.com/monero-project/monero/blob/v0.18.3.1/src/rpc/core_rpc_server.h#L177\n{F3012477}\n\nThis handler will then be called:\nhttps://github.com/monero-project/monero/blob/v0.18.3.1/src/rpc/core_rpc_server.cpp#L2956\n{F3012488}\n\nThis function is then called\nhttps://github.com/monero-project/monero/blob/v0.18.3.1/src/cryptonote_core/blockchain.cpp#L3830\n{F3012496}\n\n## Releases Affected:\nFrom my research, all versions after commit [b030f207517f59a5122409398549a02ac23829ae](https://github.com/monero-project/monero/commit/b030f207517f59a5122409398549a02ac23829ae) are vulnerable.\n  * v0.18.3.1\n  * v0.18.3.0\n  * v0.18.2.2\n  * v0.18.2.1\n  * v0.18.2.0\n  * v0.18.1.2\n  * v0.18.1.1\n  * v0.18.1.0\n  * v0.18.0.0 \n\n## Steps To Reproduce:\n  1. Start a Monero node with the RPC port opened.\n  2. Verify the node is using `hard_fork` version `15` or above\n    - To do this, you can do the [`hard_fork_info` JSON RPC request](https://www.getmonero.org/resources/developer-guides/daemon-rpc.html#hard_fork_info)\n  3. Perform a few asynchronous requests to the [`get_fee_estimate` JSON RPC endpoint](https://www.getmonero.org/resources/developer-guides/daemon-rpc.html#get_fee_estimate) with `grace_blocks` set to a very very large integer (can go up to 18446744073709551615)\n  4. The server should now not be responsive on the RPC port.\n\n## Supporting Material/References:\n**Attached is a PoC script using Python's `requests` module to send 500 requests to a server.**\n*To run the script, make sure to change the `HOST` variable at the top of the file. You can just replace `127.0.0.1` with any IP you want where a Monero node is running.*\n\n\nCPU exhaustion in `htop`. From my understanding, the RPC server runs on two threads.\n{F3012501}\n\nAfter this, any request to the port times out, furthermore, it is not shown in Monero's log (with `seg_log 4`)\n\n## Housekeeping\n\n1. Be sure to read our policy before submitting\n2. Provide an XMR address within the report if you wish to receive bounty (assuming that the report is valid)\n    - `47ZpAkp3sYGhHM6HEMUMDK7WBi6uLXy2H9LtB3aVNJfB54a3c12LybvWH3EjAF3echFrthjMvw17k7hn9Sbwr5Uh9VgKNNS`\n\n## Impact\n\nAn attacker could find all open Monero RPC services using a Censys query such as:\n- `services.port = 18081 and (services.port = 18080 and services=monero)`\n\nhttps://search.censys.io/search?resource=hosts&sort=RELEVANCE&per_page=25&virtual_hosts=EXCLUDE&q=services.port+%3D+18081+and+%28services.port+%3D+18080+and+services%3Dmonero%29\n\nAnd bring all those services down.",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3012477,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7ivvd1q0kb6502bz5mp0t61ux2az?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQMN3TFTB%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200618Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCJ1XoJ2rvDUT%2FvQwDNKTsq1Xz%2FdwtAeQzv02Xu%2Bvu5ywIhAMItGtSE3kESm5svXrkmpOUZIoQXb2dukK0z%2FECso8CPKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwff4mY8daR2nqlCgsqjwVLvgbC2HWlCoH81sI7Vvyk3yWvTwS4bv21vpbCrZjDd8TgvTNH4CR6kFYHKrg%2FJ2n01%2FjoLxtNauoZgbFsgGNbrxVjyFu5LyRSuR63Zm1kVQ055VtsctuDWr8MBCkY6wBKpFNjRtwOV647gs2HEcIQC4jlvyEUFYpXSPk1HtWqGehxH0MTR21zU%2FntW9GuVrLgf%2BOxPO%2BVJscGmTkw24QJBDXe7p76resq807H8qbGCSeGtHDl8UfD2KZ7hZRByeAj3gMSX8M1j12nG1ckBrnlLaGqrzGa2K8V5h4veerwsMPHpYXTb%2B%2FeXu2mRivttjUb1PrqwwX23AjdMeRPc3D4rmBSiBfMYcSO2WNcxn6VR4sbQdCPFqiHhPPZOFBTQYgtP04Uglz0CKIQst6%2FHCFM1Vf9xreWuUGXvMdRxWIaCgAlB6jXhzna938WvVr6R5wL1zeNGLvfHcaBNI%2B%2FPXgqyl35DB7s9yK1HJIb4X7jQJZ6TmePhB85QCvuoIQDrEfP2Kb%2BzL4MtoztUlmDYu8JOLH%2B4rwNYwkL2hMbcUir4M5LkPRNctJA5d6XoZ%2FWLX5%2FfgMWbBgd6qO%2BMK1Tg3Rqw649Z92BDKJ%2BaM7jcHP9xA7n3JK8dkyWJsGfZduBN%2Fv7O9cDJCL6%2BHQDe6x3MVE8%2FIrBUUbown%2BQwFaRqVIxNqUlTGKsKcmluhGAGxD7A4S8MeDFDKSqAIBn%2FjZ%2FSJ0XsOmUo9ntNthmOr8Oo7dYAzisaeg5XyDqOpa7P2dZNuUoMTJOjg5ufOteqAq5HgvJ3VPyw0FoQ4Ve1Y1iQCi2jpkoyf5GqMRNe4XJndxXbOfc2ABf6CsWAA3LJzfbyClEZhCKWtovDeVdN8xa8x93MKDC4swGOrABMIag7bHRmk0YR3QrHBqOrwYZ2n7py6iPbYZ9%2BTicKKjXO%2BdTTOOdbo%2FCcQASZs7sI%2B2ZrjBdY4nd9waDJgK%2FVh0Epv5aENQf57rplZq%2BfUjlcVd1vZJ1%2BCEmgqxxcQ0eLwM7zf51deHj1eVktSNGVP%2FPJAAr5miE9vtz9jRiN%2BWwO0yrDOnM4uykApBX6SopTj%2FEA1iZ%2FXj9DRIce4XGkiDEO%2BqRmQs5iMCkfQFeeg0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=40482662550a7a60e931c2ec2ffb56e98368485eb3cd32d63085493c06b00de3",
+      "file_size": 95053,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3012488,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/tbdv875bqwsk567o9lvwg1ucu08u?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQMN3TFTB%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200618Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCJ1XoJ2rvDUT%2FvQwDNKTsq1Xz%2FdwtAeQzv02Xu%2Bvu5ywIhAMItGtSE3kESm5svXrkmpOUZIoQXb2dukK0z%2FECso8CPKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwff4mY8daR2nqlCgsqjwVLvgbC2HWlCoH81sI7Vvyk3yWvTwS4bv21vpbCrZjDd8TgvTNH4CR6kFYHKrg%2FJ2n01%2FjoLxtNauoZgbFsgGNbrxVjyFu5LyRSuR63Zm1kVQ055VtsctuDWr8MBCkY6wBKpFNjRtwOV647gs2HEcIQC4jlvyEUFYpXSPk1HtWqGehxH0MTR21zU%2FntW9GuVrLgf%2BOxPO%2BVJscGmTkw24QJBDXe7p76resq807H8qbGCSeGtHDl8UfD2KZ7hZRByeAj3gMSX8M1j12nG1ckBrnlLaGqrzGa2K8V5h4veerwsMPHpYXTb%2B%2FeXu2mRivttjUb1PrqwwX23AjdMeRPc3D4rmBSiBfMYcSO2WNcxn6VR4sbQdCPFqiHhPPZOFBTQYgtP04Uglz0CKIQst6%2FHCFM1Vf9xreWuUGXvMdRxWIaCgAlB6jXhzna938WvVr6R5wL1zeNGLvfHcaBNI%2B%2FPXgqyl35DB7s9yK1HJIb4X7jQJZ6TmePhB85QCvuoIQDrEfP2Kb%2BzL4MtoztUlmDYu8JOLH%2B4rwNYwkL2hMbcUir4M5LkPRNctJA5d6XoZ%2FWLX5%2FfgMWbBgd6qO%2BMK1Tg3Rqw649Z92BDKJ%2BaM7jcHP9xA7n3JK8dkyWJsGfZduBN%2Fv7O9cDJCL6%2BHQDe6x3MVE8%2FIrBUUbown%2BQwFaRqVIxNqUlTGKsKcmluhGAGxD7A4S8MeDFDKSqAIBn%2FjZ%2FSJ0XsOmUo9ntNthmOr8Oo7dYAzisaeg5XyDqOpa7P2dZNuUoMTJOjg5ufOteqAq5HgvJ3VPyw0FoQ4Ve1Y1iQCi2jpkoyf5GqMRNe4XJndxXbOfc2ABf6CsWAA3LJzfbyClEZhCKWtovDeVdN8xa8x93MKDC4swGOrABMIag7bHRmk0YR3QrHBqOrwYZ2n7py6iPbYZ9%2BTicKKjXO%2BdTTOOdbo%2FCcQASZs7sI%2B2ZrjBdY4nd9waDJgK%2FVh0Epv5aENQf57rplZq%2BfUjlcVd1vZJ1%2BCEmgqxxcQ0eLwM7zf51deHj1eVktSNGVP%2FPJAAr5miE9vtz9jRiN%2BWwO0yrDOnM4uykApBX6SopTj%2FEA1iZ%2FXj9DRIce4XGkiDEO%2BqRmQs5iMCkfQFeeg0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2f8801f201f0c694b46b0183e883a386b4759a7dc833e90fa0ea7d18846f2c57",
+      "file_size": 114168,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3012496,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/buygiqjwl13gucl4b4lf2vke3l1o?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQMN3TFTB%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200618Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCJ1XoJ2rvDUT%2FvQwDNKTsq1Xz%2FdwtAeQzv02Xu%2Bvu5ywIhAMItGtSE3kESm5svXrkmpOUZIoQXb2dukK0z%2FECso8CPKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwff4mY8daR2nqlCgsqjwVLvgbC2HWlCoH81sI7Vvyk3yWvTwS4bv21vpbCrZjDd8TgvTNH4CR6kFYHKrg%2FJ2n01%2FjoLxtNauoZgbFsgGNbrxVjyFu5LyRSuR63Zm1kVQ055VtsctuDWr8MBCkY6wBKpFNjRtwOV647gs2HEcIQC4jlvyEUFYpXSPk1HtWqGehxH0MTR21zU%2FntW9GuVrLgf%2BOxPO%2BVJscGmTkw24QJBDXe7p76resq807H8qbGCSeGtHDl8UfD2KZ7hZRByeAj3gMSX8M1j12nG1ckBrnlLaGqrzGa2K8V5h4veerwsMPHpYXTb%2B%2FeXu2mRivttjUb1PrqwwX23AjdMeRPc3D4rmBSiBfMYcSO2WNcxn6VR4sbQdCPFqiHhPPZOFBTQYgtP04Uglz0CKIQst6%2FHCFM1Vf9xreWuUGXvMdRxWIaCgAlB6jXhzna938WvVr6R5wL1zeNGLvfHcaBNI%2B%2FPXgqyl35DB7s9yK1HJIb4X7jQJZ6TmePhB85QCvuoIQDrEfP2Kb%2BzL4MtoztUlmDYu8JOLH%2B4rwNYwkL2hMbcUir4M5LkPRNctJA5d6XoZ%2FWLX5%2FfgMWbBgd6qO%2BMK1Tg3Rqw649Z92BDKJ%2BaM7jcHP9xA7n3JK8dkyWJsGfZduBN%2Fv7O9cDJCL6%2BHQDe6x3MVE8%2FIrBUUbown%2BQwFaRqVIxNqUlTGKsKcmluhGAGxD7A4S8MeDFDKSqAIBn%2FjZ%2FSJ0XsOmUo9ntNthmOr8Oo7dYAzisaeg5XyDqOpa7P2dZNuUoMTJOjg5ufOteqAq5HgvJ3VPyw0FoQ4Ve1Y1iQCi2jpkoyf5GqMRNe4XJndxXbOfc2ABf6CsWAA3LJzfbyClEZhCKWtovDeVdN8xa8x93MKDC4swGOrABMIag7bHRmk0YR3QrHBqOrwYZ2n7py6iPbYZ9%2BTicKKjXO%2BdTTOOdbo%2FCcQASZs7sI%2B2ZrjBdY4nd9waDJgK%2FVh0Epv5aENQf57rplZq%2BfUjlcVd1vZJ1%2BCEmgqxxcQ0eLwM7zf51deHj1eVktSNGVP%2FPJAAr5miE9vtz9jRiN%2BWwO0yrDOnM4uykApBX6SopTj%2FEA1iZ%2FXj9DRIce4XGkiDEO%2BqRmQs5iMCkfQFeeg0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7e138388c41f30a61203679e6fc2e0fe421346827d1803ddb7e8b651ae665dcf",
+      "file_size": 222137,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3012501,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/aqdn46es5lr66v07r4kt6nnuo2k5?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQMN3TFTB%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200618Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCJ1XoJ2rvDUT%2FvQwDNKTsq1Xz%2FdwtAeQzv02Xu%2Bvu5ywIhAMItGtSE3kESm5svXrkmpOUZIoQXb2dukK0z%2FECso8CPKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwff4mY8daR2nqlCgsqjwVLvgbC2HWlCoH81sI7Vvyk3yWvTwS4bv21vpbCrZjDd8TgvTNH4CR6kFYHKrg%2FJ2n01%2FjoLxtNauoZgbFsgGNbrxVjyFu5LyRSuR63Zm1kVQ055VtsctuDWr8MBCkY6wBKpFNjRtwOV647gs2HEcIQC4jlvyEUFYpXSPk1HtWqGehxH0MTR21zU%2FntW9GuVrLgf%2BOxPO%2BVJscGmTkw24QJBDXe7p76resq807H8qbGCSeGtHDl8UfD2KZ7hZRByeAj3gMSX8M1j12nG1ckBrnlLaGqrzGa2K8V5h4veerwsMPHpYXTb%2B%2FeXu2mRivttjUb1PrqwwX23AjdMeRPc3D4rmBSiBfMYcSO2WNcxn6VR4sbQdCPFqiHhPPZOFBTQYgtP04Uglz0CKIQst6%2FHCFM1Vf9xreWuUGXvMdRxWIaCgAlB6jXhzna938WvVr6R5wL1zeNGLvfHcaBNI%2B%2FPXgqyl35DB7s9yK1HJIb4X7jQJZ6TmePhB85QCvuoIQDrEfP2Kb%2BzL4MtoztUlmDYu8JOLH%2B4rwNYwkL2hMbcUir4M5LkPRNctJA5d6XoZ%2FWLX5%2FfgMWbBgd6qO%2BMK1Tg3Rqw649Z92BDKJ%2BaM7jcHP9xA7n3JK8dkyWJsGfZduBN%2Fv7O9cDJCL6%2BHQDe6x3MVE8%2FIrBUUbown%2BQwFaRqVIxNqUlTGKsKcmluhGAGxD7A4S8MeDFDKSqAIBn%2FjZ%2FSJ0XsOmUo9ntNthmOr8Oo7dYAzisaeg5XyDqOpa7P2dZNuUoMTJOjg5ufOteqAq5HgvJ3VPyw0FoQ4Ve1Y1iQCi2jpkoyf5GqMRNe4XJndxXbOfc2ABf6CsWAA3LJzfbyClEZhCKWtovDeVdN8xa8x93MKDC4swGOrABMIag7bHRmk0YR3QrHBqOrwYZ2n7py6iPbYZ9%2BTicKKjXO%2BdTTOOdbo%2FCcQASZs7sI%2B2ZrjBdY4nd9waDJgK%2FVh0Epv5aENQf57rplZq%2BfUjlcVd1vZJ1%2BCEmgqxxcQ0eLwM7zf51deHj1eVktSNGVP%2FPJAAr5miE9vtz9jRiN%2BWwO0yrDOnM4uykApBX6SopTj%2FEA1iZ%2FXj9DRIce4XGkiDEO%2BqRmQs5iMCkfQFeeg0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8c7d29fa9b72b984bc63be47c71e28bc922ad5e88b62e650e2286d568b9f3c51",
+      "file_size": 130829,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3012519,
+      "file_name": "dos.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/jrttafvn5m5dfbw8ijmjcnrqpzdn?response-content-disposition=attachment%3B%20filename%3D%22dos.py%22%3B%20filename%2A%3DUTF-8%27%27dos.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQMN3TFTB%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200618Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCJ1XoJ2rvDUT%2FvQwDNKTsq1Xz%2FdwtAeQzv02Xu%2Bvu5ywIhAMItGtSE3kESm5svXrkmpOUZIoQXb2dukK0z%2FECso8CPKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwff4mY8daR2nqlCgsqjwVLvgbC2HWlCoH81sI7Vvyk3yWvTwS4bv21vpbCrZjDd8TgvTNH4CR6kFYHKrg%2FJ2n01%2FjoLxtNauoZgbFsgGNbrxVjyFu5LyRSuR63Zm1kVQ055VtsctuDWr8MBCkY6wBKpFNjRtwOV647gs2HEcIQC4jlvyEUFYpXSPk1HtWqGehxH0MTR21zU%2FntW9GuVrLgf%2BOxPO%2BVJscGmTkw24QJBDXe7p76resq807H8qbGCSeGtHDl8UfD2KZ7hZRByeAj3gMSX8M1j12nG1ckBrnlLaGqrzGa2K8V5h4veerwsMPHpYXTb%2B%2FeXu2mRivttjUb1PrqwwX23AjdMeRPc3D4rmBSiBfMYcSO2WNcxn6VR4sbQdCPFqiHhPPZOFBTQYgtP04Uglz0CKIQst6%2FHCFM1Vf9xreWuUGXvMdRxWIaCgAlB6jXhzna938WvVr6R5wL1zeNGLvfHcaBNI%2B%2FPXgqyl35DB7s9yK1HJIb4X7jQJZ6TmePhB85QCvuoIQDrEfP2Kb%2BzL4MtoztUlmDYu8JOLH%2B4rwNYwkL2hMbcUir4M5LkPRNctJA5d6XoZ%2FWLX5%2FfgMWbBgd6qO%2BMK1Tg3Rqw649Z92BDKJ%2BaM7jcHP9xA7n3JK8dkyWJsGfZduBN%2Fv7O9cDJCL6%2BHQDe6x3MVE8%2FIrBUUbown%2BQwFaRqVIxNqUlTGKsKcmluhGAGxD7A4S8MeDFDKSqAIBn%2FjZ%2FSJ0XsOmUo9ntNthmOr8Oo7dYAzisaeg5XyDqOpa7P2dZNuUoMTJOjg5ufOteqAq5HgvJ3VPyw0FoQ4Ve1Y1iQCi2jpkoyf5GqMRNe4XJndxXbOfc2ABf6CsWAA3LJzfbyClEZhCKWtovDeVdN8xa8x93MKDC4swGOrABMIag7bHRmk0YR3QrHBqOrwYZ2n7py6iPbYZ9%2BTicKKjXO%2BdTTOOdbo%2FCcQASZs7sI%2B2ZrjBdY4nd9waDJgK%2FVh0Epv5aENQf57rplZq%2BfUjlcVd1vZJ1%2BCEmgqxxcQ0eLwM7zf51deHj1eVktSNGVP%2FPJAAr5miE9vtz9jRiN%2BWwO0yrDOnM4uykApBX6SopTj%2FEA1iZ%2FXj9DRIce4XGkiDEO%2BqRmQs5iMCkfQFeeg0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7585cc1240f4defe7379d424b813c59ba1edfbc3664343889e8f93eea9896724",
+      "file_size": 804,
+      "type": "text/x-python",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2025-05-23T14:25:17.009Z",
+  "allow_singular_disclosure_after": -23607661.376952235,
+  "singular_disclosure_allowed": true,
+  "vote_count": 48,
+  "voters": [
+    "aboalezz",
+    "almuntadhar0x01",
+    "mohaned0101",
+    "thalaivar304",
+    "2026",
+    "ayux",
+    "qelko",
+    "bytron0x",
+    "sottam",
+    "int0ha_",
+    "and 38 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

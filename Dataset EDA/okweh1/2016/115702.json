@@ -1,0 +1,127 @@
+{
+  "id": 115702,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTU3MDI=",
+  "url": "https://hackerone.com/reports/115702",
+  "title": "[tor] libevent dns OOB read",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2016-02-10T14:43:24.014Z",
+  "submitted_at": "2016-02-10T14:43:24.014Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "guido",
+    "url": "/guido",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/983/e55b0b2324777fb7efc2de4212fd8d337ca816bd_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1800,
+    "url": "https://hackerone.com/torproject",
+    "handle": "torproject",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tor",
+      "twitter_handle": "torproject",
+      "website": "https://www.torproject.org/",
+      "about": "Anonymity Online"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-10-19T10:15:46.793Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-10-19T10:15:46.733Z",
+  "team_member_agreed_on_going_public_at": "2017-10-19T09:36:32.722Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The DNS code of Libevent contains this rather obvious OOB read:\n\n```c\n3122 static char *\n3123 search_make_new(const struct search_state *const state, int n, const char *const base_name) {\n3124     const size_t base_len = strlen(base_name);\n3125     const char need_to_append_dot = base_name[base_len - 1] == '.' ? 0 : 1;\n```\n\nIf the length of ```base_name``` is 0, then line 3125 reads 1 byte before the buffer. This will trigger a crash on ASAN-protected builds.\n\nTo reproduce:\n\nBuild libevent with ASAN:\n```\n$ CFLAGS='-fomit-frame-pointer -fsanitize=address' ./configure && make -j4\n```\nPut the attached ```resolv.conf``` and ```poc.c``` in the source directory and then do:\n\n```\n$ gcc -fsanitize=address -fomit-frame-pointer poc.c .libs/libevent.a\n$ ./a.out\n=================================================================\n==22201== ERROR: AddressSanitizer: heap-buffer-overflow on address 0x60060000efdf at pc 0x4429da bp 0x7ffe1ed47300 sp 0x7ffe1ed472f8\nREAD of size 1 at 0x60060000efdf thread T0\n```\n\nThis happens because I create a zero-length string in ```poc.c```:\n```c\n    char* hostname = malloc(32);\n    memset(hostname, 0, 32);\n    //hostname[0] = 'x';\n```\n\nIf you uncomment the last line, it will not crash.\n\nGuido",
+  "weakness": {
+    "id": 2,
+    "name": "Memory Corruption - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 72902,
+      "file_name": "resolv.conf",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/072/902/baee457cdd269e35bc84db5711c42fc37a196dbe/resolv.conf?response-content-disposition=attachment%3B%20filename%3D%22resolv.conf%22%3B%20filename%2A%3DUTF-8%27%27resolv.conf&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031335Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=79f8625efa4ec31933ac736e5a3b23302601039dbec745f7274140ab43ea91c9",
+      "file_size": 32,
+      "type": "text/plain",
+      "moderated": null
+    },
+    {
+      "id": 72903,
+      "file_name": "poc.c",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/072/903/3fa201f32bd9240fd74e4bbe3c74ca5661dbd46f/poc.c?response-content-disposition=attachment%3B%20filename%3D%22poc.c%22%3B%20filename%2A%3DUTF-8%27%27poc.c&response-content-type=text%2Fx-c&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031335Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1c96cb5ae843b448c41082816b4685bfdb8765c8a83ef0a830aad12d4d18b430",
+      "file_size": 4217,
+      "type": "text/x-c",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-11-18T09:36:32.866Z",
+  "allow_singular_disclosure_after": -260645822.2375155,
+  "singular_disclosure_allowed": true,
+  "vote_count": 7,
+  "voters": [
+    "sp1d3rs",
+    "geeknik",
+    "eveeez",
+    "mr_r3boot",
+    "spetr0x",
+    "unixphil",
+    "b4155f7c29acd42c27d007a"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

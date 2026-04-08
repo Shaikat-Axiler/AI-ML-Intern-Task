@@ -1,0 +1,160 @@
+{
+  "id": 1486310,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNDg2MzEw",
+  "url": "https://hackerone.com/reports/1486310",
+  "title": "admin.8x8.vc: Member users with no permission can integrate email to connect calendar via GET /meet-external/spot-roomkeeper/v1/calendar/auth/init?..",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2022-02-20T06:51:48.884Z",
+  "submitted_at": "2022-02-20T06:51:49.026Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "emperor",
+    "url": "/emperor",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ni07o23q7345senc7og6vhuqpkab/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 49732,
+    "url": "https://hackerone.com/8x8-bounty",
+    "handle": "8x8-bounty",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/3y22a5r49ryw4d4454msmh3frrgn/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/3y22a5r49ryw4d4454msmh3frrgn/74790fe75ac5dbe8a5140a122388d59ebac913dcfa941f0b3a45e6cad161f9ea"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "8x8",
+      "twitter_handle": "8x8",
+      "website": "https://www.8x8.com",
+      "about": "Let's power your CX ambitions."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-02-15T06:35:41.593Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-02-08T20:24:44.426Z",
+  "team_member_agreed_on_going_public_at": "2023-02-15T06:35:41.455Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Dear Team,\n\nGreetings!!!\n\nI have observed an Improper access control Issue. Member users do not have permission to rooms area of the admin section. But member users can exploit this via GET /meet-external/spot-roomkeeper/v1/calendar/auth/init?successRedirectUrl=https%3A%2F%2Fadmin.8x8.vc%2F%23%2Frooms%2Fadd HTTP/2\n\nSteps to reproduce\n**Step1**: Member users do not have access to the room's area.\nUse {F1625870}\n\n**Step2**: Admin users can add their email to sync calendars from this area.\nUse {F1625869}\n\n**Step3**: From member user's JWT send a request to below endpoint\nUse ██████\n\n```\nGET /meet-external/spot-roomkeeper/v1/calendar/auth/init?successRedirectUrl=https%3A%2F%2Fadmin.8x8.vc%2F%23%2Frooms%2Fadd HTTP/2\nHost: admin.8x8.vc\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nReferer: https://admin.8x8.vc/\nContent-Type: application/json\nSec-Fetch-Dest: empty\nSec-Fetch-Mode: cors\nSec-Fetch-Site: same-origin\nTe: trailers\nConnection: close\nAuthorization: <Member user's JWT>\n```\n\n**Step4**: You will receive the Link as below from the above endpoint: \n```\n{\"url\":\"https://app.cronofy.com/oauth/authorize?response_type=code&client_id=M0wBDPDXk6EQLaGCqp-pTN_VGt7_AtM9&redirect_uri=https://api-vo.jitsi.net/rosy/sso/cronofy/callback&scope=read_only&delegated_scope=read_only&state=███████&avoid_linking=true\"}\n```\n\n**Step5**: Now use this link and complete the OAuth sign up. (There is no validation and the application will allow you to add your email)\nUse {F1625872}\n\n**Step6**: Member user successfully added his/her email into admin's room area\nUse ███\n\nBest regards,\nEmperor\n\n## Impact\n\n- Member users with no permission can integrate email to connect calendar",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1625869,
+      "file_name": "POC_2_Admin_users_can_add_thier_email_to_sync_calenders_from_this_area.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7ytkj3k800gfibuosbj75jk34epk?response-content-disposition=attachment%3B%20filename%3D%22POC_2_Admin_users_can_add_thier_email_to_sync_calenders_from_this_area.png%22%3B%20filename%2A%3DUTF-8%27%27POC_2_Admin_users_can_add_thier_email_to_sync_calenders_from_this_area.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213106Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0da0e5fb8d1406199eab27db798ec211a585b093b71c43f2fb19e20977005dc2",
+      "file_size": 86232,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1625870,
+      "file_name": "POC_1_Member_user_do_not_have_access_to_rooms_area.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/kjan3fx69aqbzprgtw53fdamxwi5?response-content-disposition=attachment%3B%20filename%3D%22POC_1_Member_user_do_not_have_access_to_rooms_area.png%22%3B%20filename%2A%3DUTF-8%27%27POC_1_Member_user_do_not_have_access_to_rooms_area.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213106Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=19adaf0d5060572afa2ed3524de0e046fecef860d1ac6ffca02354e588aa2c98",
+      "file_size": 41124,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1625872,
+      "file_name": "POC_4_From_here_member_use_can_link_his_gmail.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/p8xfg92m9rn8fx0tstadm36390sa?response-content-disposition=attachment%3B%20filename%3D%22POC_4_From_here_member_use_can_link_his_gmail.png%22%3B%20filename%2A%3DUTF-8%27%27POC_4_From_here_member_use_can_link_his_gmail.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213106Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b2b8a3c3e0dd281e23b6cd158c2e4793a7306f13b5b84897e7414312e62c30b6",
+      "file_size": 93439,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-03-10T20:24:44.516Z",
+  "allow_singular_disclosure_after": -93143181.58525005,
+  "singular_disclosure_allowed": true,
+  "vote_count": 48,
+  "voters": [
+    "defenderwww",
+    "pentestor",
+    "todayisnew-",
+    "zy9ard3",
+    "mr-k0anti",
+    "shreyaschavhan",
+    "emperor",
+    "0x0_asif",
+    "captn0sharky1",
+    "mohaned0101",
+    "and 38 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 8.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 50507,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.8x8.vc",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

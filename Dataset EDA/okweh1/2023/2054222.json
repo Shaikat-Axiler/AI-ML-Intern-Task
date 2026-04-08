@@ -1,0 +1,192 @@
+{
+  "id": 2054222,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMDU0MjIy",
+  "url": "https://hackerone.com/reports/2054222",
+  "title": "Usernames still visible on report export pdf despite \"I want to redact all usernames\" is selected",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2023-07-06T22:57:40.265Z",
+  "submitted_at": "2023-07-06T22:57:40.427Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "japz",
+    "url": "/japz",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": true,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2023-08-08T08:24:05.630Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-08-07T13:17:38.288Z",
+  "team_member_agreed_on_going_public_at": "2023-08-08T08:24:05.402Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:**\n\nHi Team,\n\nExport report via .pdf still disclosing the reporter username despite I exported it with __\"I want to redact all usernames\"__ being selected to redact all the usernames.\n\n{F2475645}\n\n### Steps To Reproduce\n\n1. Login and try to export any report using export as .pdf\n2. Select \"I want to redact all usernames\"\n3. Check the exported .pdf report is still disclosing the username of researcher\n\nhttps://hackerone.com/reports/<REPORT-ID>.pdf?redact_usernames=true&pdf_type=reporter\n\nPoC screenshot below:\n\n█████\n\nThe .pdf looks messy (maybe design issue) but if you will take a look at __Reported by:__ section at the report header, you will see: `<REDACTED> (<REDACTED>j<REDACTED>a<REDACTED>p<REDACTED>z<REDACTED>)` If you removed the `<REDACTED>` it will show the username `japz`.\n\nIf you removed all `<REDACTED>`, you will see something like the screenshot below:\n\n█████\n\n## Impact\n\nInformation Disclosure",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2475645,
+      "file_name": "poc0.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/lkdvnkst18fudipwmkoc7qd1yr7p?response-content-disposition=attachment%3B%20filename%3D%22poc0.PNG%22%3B%20filename%2A%3DUTF-8%27%27poc0.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ733M5QWI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211035Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD%2BWh%2BPq0wPmHUVBiVAaWKZVwYrTqLHYrfMF32wCmjB1gIgb3NXZQewlhy2UHr5YP6x%2BWd47%2Fbktczfj5Hn6dCaUKIqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPIBP%2FfPpevzZHFL5SqOBZyj3QiCfx4by1RXn%2FbSJ0uqarjHgAduBWk0uNVwVhQPpbEy%2BHoTjJ1rlh0JCr7bZo1AI9p2AekHBpO9EuRgSkm1wbV9STt8jM0jQioxkHj0cnu%2BX4rJ%2BtcyXRpqjl2rVqZYTLUgOEGqYuAvFtV5gknwjujRePsWvIc1SRKvPZD79DP1NnLl1xt%2BMqchWgCiHYAieEm3NXC3yM11VkgWBLYQwBkwpM6LFjms5jOCDDD8HNILWO5mp22Xg9nKhXbYjKe0msUMnr05A9PHc1ugMyJxuwGB0lYgqF3XA6FQRzkUTmcf%2FN91cJEIKjOVIx6%2BdYZonuW4OgorMQNXpbgOV5De1WHxLB91CwNr8hIEhDuMIBNfSGMFfQGo6C8QVX55SLCVvITyTO673hYxqpb9CpdqVgWbfTWn%2FmWfVfdHNnFys%2Bu4%2FDiUpqRARiglQmHWjyGIdcHUQ8Y395Q7aXIr96I9r21fobLslDQ4T09fL11Q7KtwwMhAyWzU2Ho1MVgIYPZBB%2Fm8oh2deNNYbhCIk6ZCr%2BWlOi67VDRxUSidTxZnWAQyFVYs289%2B1IQcDNv4H7j6CgMK53nxSV3oUD3TZfWJrPmhOuXs78CwDJ9S%2BsgQ1pHGzGok%2FGXxc2beSfHbMgA%2BaIqhQjeXY3O%2Bb6Sn81VTIKxRhDN49v0GacVgOIbqXJa32k6HBksoeAU242L1I%2Bp4%2Fh3mYDuMKxQ40ByxcxajLydWIxI0Ah%2BLyn7r3k4BcozqVx3wP5uR2Eb5wWf4zhaKQwZnB4v9WmH%2FcZMnIUYr7EvJ%2BSoWZ0cJ74HGIckt%2B1nVy%2FSMtOY%2Fo20IQKq3%2FL4fJp2lKMT8CmAgS%2FoMZaMjJL634klIIV2CYn8lfjCCxuLMBjqxARpDCWFwcvrjcYyWKprleZyRI7ouss9GnFJG6qLYniwke39a%2FAsOXoVDxWXcfReZAPBCrv%2FS3H2QWvm9WVLp81TVsk6ZpCqAn0V%2FGZNsNw2yCxr2BHqQguiHv6LnzZoWW%2F4tNDrwpybirY%2FLIoBY6jaZDMz%2BYCjQmzcX74gxpJ6Nbv9PDWbVC0%2FItkrczpWJizgIRPySdPliKpqJYWsBlD12NL2hVbQWR0xb95PhtT8%2B7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=31fa9bd78980d9b5bf92ea772af5646d060ece7aea6c71bbbcb418f9b79a2071",
+      "file_size": 16506,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-09-06T13:17:38.579Z",
+  "allow_singular_disclosure_after": -77615576.42271376,
+  "singular_disclosure_allowed": true,
+  "vote_count": 74,
+  "voters": [
+    "appsettings",
+    "loaymorad",
+    "ganeshbagaria",
+    "ola0",
+    "zy9ard3",
+    "js_noob",
+    "mattberg",
+    "shreyaschavhan",
+    "mrardiansah",
+    "shubham_srt",
+    "and 64 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.4,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 3,
+    "asset_type": "URL",
+    "asset_identifier": "hackerone.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 328894,
+      "category": "team",
+      "content": "During a period of roughly week we had deployed a feature that would let you redact usernames in the Export PDF function that did not account for a number of edge cases including nullability, short names, and a few other edge cases. The function did not perform what it was aiming to do, and was reverted thereafter, during that time the hacker identified one of such edge cases and filed the below report.",
+      "updated_at": "2023-08-04T15:56:55.507Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 2451846,
+        "username": "zerotea",
+        "name": "zerotea",
+        "bio": "Hacker, Board Games enthousiast, mostly human and definitely not a robot. Software Engineer at HackerOne. They/them",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2022-09-05T09:34:42.831Z",
+        "url": "https://hackerone.com/zerotea",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/2t6upvy3ze6xlg783vrfnphbur3r/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/2t6upvy3ze6xlg783vrfnphbur3r/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/2t6upvy3ze6xlg783vrfnphbur3r/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "id": 329180,
+      "category": "researcher",
+      "content": "Write up:  \n\nhttps://medium.com/@robindivino/redacted-usernames-disclosure-in-export-as-pdf-feature-d00ce3f3e2fc\n\nVideo PoC: https://youtu.be/Sd18mVai_TM",
+      "updated_at": "2024-01-02T09:21:04.517Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 78347,
+        "username": "japz",
+        "name": "",
+        "bio": "「hawk tuah」",
+        "cleared": false,
+        "verified": true,
+        "website": "https://blog.bugbountyhunter.xyz",
+        "location": "",
+        "created_at": "2016-05-18T03:01:22.121Z",
+        "url": "https://hackerone.com/japz",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    }
+  ]
+}

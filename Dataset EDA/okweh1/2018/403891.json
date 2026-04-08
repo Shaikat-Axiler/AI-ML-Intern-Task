@@ -1,0 +1,134 @@
+{
+  "id": 403891,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MDM4OTE=",
+  "url": "https://hackerone.com/reports/403891",
+  "title": "Tab nabbing via window.opener",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2018-09-01T17:45:21.296Z",
+  "submitted_at": "2018-09-01T17:45:21.296Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "logan47",
+    "url": "/logan47",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/296/886/4465e0f070d18191dbf8ef1f8ce14ec43d57f04d_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19468,
+    "url": "https://hackerone.com/weblate",
+    "handle": "weblate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Weblate",
+      "twitter_handle": "WeblateOrg",
+      "website": "https://weblate.org/",
+      "about": "Weblate is a libre software web-based continuous localization system"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-09-01T20:04:50.115Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-09-01T20:04:50.028Z",
+  "team_member_agreed_on_going_public_at": "2018-09-01T20:01:53.189Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Details:\nWhen you open a link in a new tab ( target=\"_blank\" ), the page that opens in a new tab can access the initial tab and change it's location using the window.opener property.\n\nAttack scenario:\nhere i have provided 2 videos, in video 1 i have my editorial link set. to show that tabnapping is possible.which you can see in the video 1 .\nin video 1 i have given my editorial in such a way that it will redirect me tothe malicious page which will redirect the original site to attackers site.[i am using localhost.]\n\nIn video 2nd i have shown that if a user is new and has not given his editorial link or he has not given the editorial link anyway, then in this case when he see any translation and click on the source link then he will be redirected to the attacker given link which inturn can be malicious . if it is then it will redirect the original tab to attacker site which can be used for phishing and also account takeove.\nsuch as attacker makes a copy of your login page and when user redirects to his site he can easily display in his fake page that you session has been timedout please login again .\n\nI hope you have  understanded  what i am trying to say.\n\n## Impact\n\nbecause the redirecting is made in the background, while the user is focused on another tab.\nthis Can be very dangerous if attacker is smart than he can trick the victim easily and can takeover his account easily through scam page and can also lead to several phishing attacks.\n\nWebsites that protect themselves against this kind of attack: google.com websites, twitter.com (they open links in new tabs, but the window.opener property is set to null)\n\nHope that all helps, let me know if you need more information\n\nFor more check:\nhttps://hackerone.com/reports/23386\nhttps://hackerone.com/reports/179568",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 341152,
+      "file_name": "weblate.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/341/152/e912ef76138572ec535861f215fd7bcd10c63011/weblate.mp4?response-content-disposition=attachment%3B%20filename%3D%22weblate.mp4%22%3B%20filename%2A%3DUTF-8%27%27weblate.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ732SKX7%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022246Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDdAhFIxco1FU1%2Bs9sy6ohYN9d3t%2FpnKZ1noRLEca%2F8jQIhAMNgvNKHwnoODdZGaxZUApNhOT6Zg5hWNLc1LFj0DfWpKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyb0NSpl5TtCknKGPkqjgULb6%2FMdF%2Bl5Cnrpy1nMbufjLrhSW5RshjFrV0xUVk40%2BLljY8W%2Fnop9qWxB9aiqndcIZk8Fl9h0%2FlLecuEoC8UgbXErY6QY2fz2f0iLmc7G0%2ByuB43jzD7r55RGPFYwwNToQ3cFkocFNgJevoyhvsXuffAaNrAiBlDWkxuttbtSpKXh10QJK2Lc%2FQdnYYH1ShYTZAs5S5NYxG%2FIcvx3iq3ksIQ3M%2FvSqP%2FZ50Q%2F3zjUfCJR3H%2FzaqSR%2FnBG9cF2RxqfqZeQ4xArBTQ1BckUlaf42S%2B3O6z%2B%2F2IR0G083dKc98CHb781J9FiJA2m6I1TTVFogC21IPkQ4M6sgDtYuuPJPxE2FB%2BVx92AJuGfMpYSiHrecvOLTDsAUxpbbTgqomii9spdF7b%2Bt0elzFUr7GPs%2BaL%2FjTpsY67RbslmbcN5nOm1nVjzELSbwvVz4sdRVdI%2FiVQdtqmCJqGGv6%2B4Hbqy9U6W%2Be%2BwW1tR4VvtXe4glDAag6guAOPYwsyl53t%2FehIPMx19rGB9wdj1S8KJchgT1fs%2BIeeHqfnpzkI7fQekkKlC%2Be0xi7ia7i3j332p3pbnG1i6Vu6TPt2QgNLOHyS8werT74NqzBuwxOK2JWE9WxMCXaM97sD1itq4YP7Uqdp7GkvINGEchOVgsFnlT%2FRUY8lv60vJ1UGKcGPdAJrS6XvWFKCHWO9wwliB3Mc3H9zu58c9803%2BiuGgmqxlt%2BOvxv1ajOlA%2FimPCcUDidIqVNjpJEde6xnuwE6qSjg7orysNfdt0Ts9Y7rFjG0%2BzGit4Lqanq6VYXC0zLroFF%2BAKZZaYYTX9Fac8oC4Dpa0YdTiVI%2BLLUrnvrMPRp5XGyUN4fl8n0ZwpfzHal51IYw%2BpLkzAY6sAHLiKe8KvK1bOTZprn2nYmd3Ez8cjijlfHlfzSAavoKV6JArztublpmIOlZzlFhFKxgKl89AOledzjRUlHMQITDAnyQb%2BIEOiLs6M%2F87lVwsINpSzDlsgL3s2kl7FWCekTjhez2x92VmwnLiVqwlFVO0kZhyhAOkqDcMZnqhNIldKN%2Bow6gy9CLoNpMvByuqy%2FsYHlnmcYT6cT9aew49xqnQQCs6RrCHpgvOJOOs9apiQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7239bca48ccae1dfba66130db2128f1afed3e82b5fe68ef4f8142ae58342cb6f",
+      "file_size": 5687307,
+      "type": "video/mp4",
+      "moderated": null
+    },
+    {
+      "id": 341153,
+      "file_name": "weblate2.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/341/153/0f9b4aea5760b779cad87a22260f4bcde57f15ec/weblate2.mp4?response-content-disposition=attachment%3B%20filename%3D%22weblate2.mp4%22%3B%20filename%2A%3DUTF-8%27%27weblate2.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ732SKX7%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022246Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDdAhFIxco1FU1%2Bs9sy6ohYN9d3t%2FpnKZ1noRLEca%2F8jQIhAMNgvNKHwnoODdZGaxZUApNhOT6Zg5hWNLc1LFj0DfWpKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyb0NSpl5TtCknKGPkqjgULb6%2FMdF%2Bl5Cnrpy1nMbufjLrhSW5RshjFrV0xUVk40%2BLljY8W%2Fnop9qWxB9aiqndcIZk8Fl9h0%2FlLecuEoC8UgbXErY6QY2fz2f0iLmc7G0%2ByuB43jzD7r55RGPFYwwNToQ3cFkocFNgJevoyhvsXuffAaNrAiBlDWkxuttbtSpKXh10QJK2Lc%2FQdnYYH1ShYTZAs5S5NYxG%2FIcvx3iq3ksIQ3M%2FvSqP%2FZ50Q%2F3zjUfCJR3H%2FzaqSR%2FnBG9cF2RxqfqZeQ4xArBTQ1BckUlaf42S%2B3O6z%2B%2F2IR0G083dKc98CHb781J9FiJA2m6I1TTVFogC21IPkQ4M6sgDtYuuPJPxE2FB%2BVx92AJuGfMpYSiHrecvOLTDsAUxpbbTgqomii9spdF7b%2Bt0elzFUr7GPs%2BaL%2FjTpsY67RbslmbcN5nOm1nVjzELSbwvVz4sdRVdI%2FiVQdtqmCJqGGv6%2B4Hbqy9U6W%2Be%2BwW1tR4VvtXe4glDAag6guAOPYwsyl53t%2FehIPMx19rGB9wdj1S8KJchgT1fs%2BIeeHqfnpzkI7fQekkKlC%2Be0xi7ia7i3j332p3pbnG1i6Vu6TPt2QgNLOHyS8werT74NqzBuwxOK2JWE9WxMCXaM97sD1itq4YP7Uqdp7GkvINGEchOVgsFnlT%2FRUY8lv60vJ1UGKcGPdAJrS6XvWFKCHWO9wwliB3Mc3H9zu58c9803%2BiuGgmqxlt%2BOvxv1ajOlA%2FimPCcUDidIqVNjpJEde6xnuwE6qSjg7orysNfdt0Ts9Y7rFjG0%2BzGit4Lqanq6VYXC0zLroFF%2BAKZZaYYTX9Fac8oC4Dpa0YdTiVI%2BLLUrnvrMPRp5XGyUN4fl8n0ZwpfzHal51IYw%2BpLkzAY6sAHLiKe8KvK1bOTZprn2nYmd3Ez8cjijlfHlfzSAavoKV6JArztublpmIOlZzlFhFKxgKl89AOledzjRUlHMQITDAnyQb%2BIEOiLs6M%2F87lVwsINpSzDlsgL3s2kl7FWCekTjhez2x92VmwnLiVqwlFVO0kZhyhAOkqDcMZnqhNIldKN%2Bow6gy9CLoNpMvByuqy%2FsYHlnmcYT6cT9aew49xqnQQCs6RrCHpgvOJOOs9apiQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fd9de17b7278194ac8fa1a34df9bdf2421fc4796020fdc6430506d77c9eb72fb",
+      "file_size": 2918684,
+      "type": "video/mp4",
+      "moderated": null
+    },
+    {
+      "id": 341154,
+      "file_name": "tabnapping.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/341/154/e4ec1db40045f1d55766873be0f7ff696fb87a91/tabnapping.html?response-content-disposition=attachment%3B%20filename%3D%22tabnapping.html%22%3B%20filename%2A%3DUTF-8%27%27tabnapping.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ732SKX7%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022246Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDdAhFIxco1FU1%2Bs9sy6ohYN9d3t%2FpnKZ1noRLEca%2F8jQIhAMNgvNKHwnoODdZGaxZUApNhOT6Zg5hWNLc1LFj0DfWpKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyb0NSpl5TtCknKGPkqjgULb6%2FMdF%2Bl5Cnrpy1nMbufjLrhSW5RshjFrV0xUVk40%2BLljY8W%2Fnop9qWxB9aiqndcIZk8Fl9h0%2FlLecuEoC8UgbXErY6QY2fz2f0iLmc7G0%2ByuB43jzD7r55RGPFYwwNToQ3cFkocFNgJevoyhvsXuffAaNrAiBlDWkxuttbtSpKXh10QJK2Lc%2FQdnYYH1ShYTZAs5S5NYxG%2FIcvx3iq3ksIQ3M%2FvSqP%2FZ50Q%2F3zjUfCJR3H%2FzaqSR%2FnBG9cF2RxqfqZeQ4xArBTQ1BckUlaf42S%2B3O6z%2B%2F2IR0G083dKc98CHb781J9FiJA2m6I1TTVFogC21IPkQ4M6sgDtYuuPJPxE2FB%2BVx92AJuGfMpYSiHrecvOLTDsAUxpbbTgqomii9spdF7b%2Bt0elzFUr7GPs%2BaL%2FjTpsY67RbslmbcN5nOm1nVjzELSbwvVz4sdRVdI%2FiVQdtqmCJqGGv6%2B4Hbqy9U6W%2Be%2BwW1tR4VvtXe4glDAag6guAOPYwsyl53t%2FehIPMx19rGB9wdj1S8KJchgT1fs%2BIeeHqfnpzkI7fQekkKlC%2Be0xi7ia7i3j332p3pbnG1i6Vu6TPt2QgNLOHyS8werT74NqzBuwxOK2JWE9WxMCXaM97sD1itq4YP7Uqdp7GkvINGEchOVgsFnlT%2FRUY8lv60vJ1UGKcGPdAJrS6XvWFKCHWO9wwliB3Mc3H9zu58c9803%2BiuGgmqxlt%2BOvxv1ajOlA%2FimPCcUDidIqVNjpJEde6xnuwE6qSjg7orysNfdt0Ts9Y7rFjG0%2BzGit4Lqanq6VYXC0zLroFF%2BAKZZaYYTX9Fac8oC4Dpa0YdTiVI%2BLLUrnvrMPRp5XGyUN4fl8n0ZwpfzHal51IYw%2BpLkzAY6sAHLiKe8KvK1bOTZprn2nYmd3Ez8cjijlfHlfzSAavoKV6JArztublpmIOlZzlFhFKxgKl89AOledzjRUlHMQITDAnyQb%2BIEOiLs6M%2F87lVwsINpSzDlsgL3s2kl7FWCekTjhez2x92VmwnLiVqwlFVO0kZhyhAOkqDcMZnqhNIldKN%2Bow6gy9CLoNpMvByuqy%2FsYHlnmcYT6cT9aew49xqnQQCs6RrCHpgvOJOOs9apiQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=943a2bead3abef35ebec9255442e73dca56513eb3d11e46bce193b35173954bf",
+      "file_size": 209,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-10-01T20:01:53.278Z",
+  "allow_singular_disclosure_after": -233216453.0678325,
+  "singular_disclosure_allowed": true,
+  "vote_count": 5,
+  "voters": [
+    "eveeez",
+    "cryptographer",
+    "shayanellahi",
+    "mrstix",
+    "code-shifter"
+  ],
+  "structured_scope": {
+    "databaseId": 171,
+    "asset_type": "URL",
+    "asset_identifier": "hosted.weblate.org",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

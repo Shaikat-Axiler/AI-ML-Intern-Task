@@ -1,0 +1,121 @@
+{
+  "id": 1572120,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNTcyMTIw",
+  "url": "https://hackerone.com/reports/1572120",
+  "title": "curl \"globbing\" can lead to denial of service attacks",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "low",
+  "readable_substate": "N/A",
+  "created_at": "2022-05-16T15:19:36.811Z",
+  "submitted_at": "2022-05-16T15:19:36.897Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "iylz",
+    "url": "/iylz",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-06-16T15:14:32.454Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-06-16T15:14:32.398Z",
+  "team_member_agreed_on_going_public_at": "2022-06-09T07:11:56.360Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n[add summary of the vulnerability]\n\nThe curl \"globbing\" allows too much scope, which can cause the server to be denied service or used to attack third-party websites. The globbing allow [1-9999999999999999999] to parse in the url. So when curl request for 'http://127.0.0.1/[1-9999999999999999999]', the can cause 300 requests in the server.\n\n## Steps To Reproduce:\n[add details for how we can reproduce the issue]\n\n  1. Listen 8000 port: python -m SimpleHTTPServer 8000\n  2.  command: nohup ./curl -vv 'http://127.0.0.1:8000/[1-9999999999999999999]/' &\n  3. Check the server resource process. There are a lot of network requests and CPU consumption. \n\n## Supporting Material/References:\n[list any additional material (e.g. screenshots, logs, etc.)]\n\n  * [attachment / reference]\n\n## Impact\n\nWith this function, the resources of the server running curl request can be excessively consumed or a large number of URL accesses to other websites can be initiated, resulting in denial of service.",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1731832,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ztwxbjryhxofjlc3fxrmyu0nzu79?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T220440Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=57f27f6885e3129eee36219a5b2cbb298a0e5d67583e83428fd974c425a7ac56",
+      "file_size": 97653,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "shivammusic"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

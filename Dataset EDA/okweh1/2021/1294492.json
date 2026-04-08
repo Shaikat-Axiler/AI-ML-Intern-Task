@@ -1,0 +1,127 @@
+{
+  "id": 1294492,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMjk0NDky",
+  "url": "https://hackerone.com/reports/1294492",
+  "title": "DNS Miconfiguration Leads to Subdomain Takeover  - max1.liveplan.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2021-08-07T11:45:21.778Z",
+  "submitted_at": "2021-08-07T11:45:21.845Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "melbadry9",
+    "url": "/melbadry9",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/347/379/509314872bfbaa1a79051729c1826de2ccc8677f_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 42327,
+    "url": "https://hackerone.com/palo_alto_software",
+    "handle": "palo_alto_software",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/327/6b83191758494b9c630b6ba94f088d0c78829602_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/042/327/6b83191758494b9c630b6ba94f088d0c78829602_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Palo Alto Software",
+      "twitter_handle": "",
+      "website": "https://paloalto.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-09-08T16:45:30.915Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-08-09T16:45:18.172Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\nThe issue happens due to using EC2 public DNS instead of using Elastic IPs as `CNAME` record. This report is simliar to report #1069795\n \n## Misconfiguration\n\n- DNS Records\n\n```json\n{\n  \"host\": \"max1.liveplan.com\",\n  \"resolver\": [\n    \"1.0.0.1:53\"\n  ],\n  \"a\": [\n    \"54.68.121.128\"\n  ],\n  \"cname\": [\n    \"ec2-54-68-121-128.us-west-2.compute.amazonaws.com\"\n  ],\n  \"status_code\": \"NOERROR\",\n  \"timestamp\": \"2021-08-07T13:41:48.3522806+02:00\"     \n}\n```\n\n- If the EC2 instance is killed or terminated and the DNS was not updated this will lead to creating a dangling DNS record for the subdomain.\n- The EC2 IP will be released to AWS IPs pool, This mean it's possible to assign the IP to new EC2 instance.\n\n## PoC\n\n- SSL Certificate Data pulled from `https://max1.liveplan.com` on date `7/8/2021 - 1:40PM`.\n- Data was pulled using [SSLEnum](https://github.com/melbadry9/SSLEnum)\n\n```json\n{\n  \"name\": \"max1.liveplan.com\",\n  \"org\": [],\n  \"cn\": [\n    \"*.test.tugo.com\"\n  ],\n  \"alt_doms\": [\n    \"*.test.tugo.com\",        \n    \"*.dev.tugo.com\",\n    \"*.uat.tugo.com\"\n  ],\n  \"dangling\": true\n}\n```\n\n- This does prove that `max1.liveplan.com` is currently taken over by  someone.\n\n{F1403387}\n \n## Fix\n- Use Elastic IPs instead of the public DNS of EC2 instance or clear DNS records for mentioned subdomain\n\n## Supporting Material/References:\n- https://blog.melbadry9.xyz/dangling-dns/aws/ddns-ec2-current-state\n\n## Impact\n\n- This could allow the takeover of the EC2 instance IP that will lead to subdomain takeover.",
+  "weakness": {
+    "id": 75,
+    "name": "Privilege Escalation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1403387,
+      "file_name": "Screenshot_1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/mc1uqvn61tquvc3pxdtu3g29ldn2?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_1.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T224727Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=533252a43988b514ea7cb477c4bbf7f06fb391d74884a7c0b08a94e3279b05d0",
+      "file_size": 64844,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-09-08T16:45:18.237Z",
+  "allow_singular_disclosure_after": -140508129.08319893,
+  "singular_disclosure_allowed": true,
+  "vote_count": 10,
+  "voters": [
+    "chux",
+    "run_win",
+    "akashhamal0x01",
+    "legendxtion",
+    "pucukubi",
+    "iankit",
+    "thelawgiver",
+    "thespian",
+    "vijaytithani",
+    "meispi"
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

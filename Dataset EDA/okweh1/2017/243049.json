@@ -1,0 +1,114 @@
+{
+  "id": 243049,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNDMwNDk=",
+  "url": "https://hackerone.com/reports/243049",
+  "title": "Call back number not verified",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2017-06-25T14:58:59.408Z",
+  "submitted_at": "2017-06-25T14:58:59.408Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "al7311",
+    "url": "/al7311",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/003/384/6345e75fc02d56dffaa276eb07549f90c27b954b_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1080,
+    "url": "https://hackerone.com/airbnb",
+    "handle": "airbnb",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/080/0db09b4e448421e22dda1d9785fb6621a93f06e8_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/080/0db09b4e448421e22dda1d9785fb6621a93f06e8_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Airbnb",
+      "twitter_handle": "",
+      "website": "https://www.airbnb.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-07-20T21:53:29.165Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-07-17T19:47:01.911Z",
+  "team_member_agreed_on_going_public_at": "2017-07-20T21:53:29.108Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The issue is with the \"Confirm via call functionality\" \n\nWhile adding mobile number,the application does not verify the number that is being called back. A malicious user can change the number to any premium rate numbers which charge particular amount from the caller.\n\nIt was further noticed that there was not limit to number of tries that can be made from the application. Even if the call is answered, same request can be used multiple times and the application still calls back.\n\nThe attached screenshot shows that the phone number value can be changed and premium rate numbers can be used. The number used while testing is a test call number for Eurocall24 (premium number provider).\n\nAn attacker can thereby steal money by manipulating the request to make call to premium numbers.\n\nAffected functionality:  /phone_numbers/create",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 197420,
+      "file_name": "calls.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/197/420/9ce3153e7822744208a2c926c9cf8268ef65ea56/calls.JPG?response-content-disposition=attachment%3B%20filename%3D%22calls.JPG%22%3B%20filename%2A%3DUTF-8%27%27calls.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV6PXMTWN%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033622Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDVIMuhSz8I3S3ul3z6KYSds%2B067Z1mC8CmdyTzKWYqNAIhAJp9tB%2BdkKPHuyAfFOIO2GvXB2eXyg1FkmJ%2F2%2Bkk98vwKrsFCKT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwodbM%2FFtkIrlOx2gUqjwWFfGPtP5vJ85khzbk3OOcEx033r1XZwvK3qrA40gzzK55nesvH8gqvvH4eCjuKIllLUwFgz7xf5YInVy7GHNZFMAkEqxLeII%2BfrSrP7F7K%2BU4mouMCXMjaSdymOm6Q3LiR7fBqY1%2BFExB4BZKjZT5Fmdhbn3BDbxwPChpgbr5z4UqqZk%2B3IBRK%2BhP7OuV170dmQYf5cK9Q059ELamGgT2BTQL7NwMqHYbtC1qRE4piwq9WmjGIi%2BafRfk0hzGSN%2BASGlphcQfe232OcwiHQWtTSTz5OPqeGJ4afxfF5%2F9b2yxCnQ%2FBQ0imIHKdxAfNM93ZGE4Os5SkPk7EwZ5UeHic2AwbP0m4D9eG7GVR45qeQ%2B0%2F%2FaSbTPjzpKTu8ZZtiUu06ANetZLNdOs0%2FcqCtAcg1mlGA4YuyJ8te6KI8fS%2F7PZE3MwJlJnQ%2B83DlTusxR7G6MpxLdbc2muHd1T5aEFWOu4ABx6vHbCj7bW7W3Q28V73K2MFtWndZ0duFV2ItFNALRrRd7o5kLEbMmOW2X%2BBXrx3sPDA%2BvzSCFDZHFGc7rc%2FKf38Opl9qyEyp2uk7xj2dBRWiXRCzzTWZzf9BZz0OLy5Y3qySierbh7fR34b1XBuoaeU%2FOUGsT%2F3C4GtjI82fQgtzclAfs%2F3RyT5%2BP5g7nMlLb0Kz1UBZjg0T%2FeqbP%2BwZMOO%2FP8CYr4LxeIria5W%2FZWbx76GGqv29CT2lxG3GD1a%2F5%2B5DBCGCHen4ooElDhCWK0BMOZb60tVuD3jQYqU0lzzh7DhRNr%2FAAP8a5CQHtvfaQF%2F0noD37RrXE4o1Rh5RjAqrks%2FTsNL6q7hLWX2Js4XLJ7aChuT%2FuW4RyTyapCRFI3Sdw1ukOlVRH0EMIbF5MwGOrABSB2U7Icm6gF5RjdMevQwPKfYSz0%2FjSlEasdjE9SYXt%2FZt9LTBHw%2FN0kTs2GeCqe2GoYuflZjbKaFuT8TTcUhvSvLRsou7DJ0L5ik76ujDxqqRIb0ns5HgpZOjVr4lVVrztQpNq6%2FrXwCDDnVHaE7LmtEDSSbVJZpG7CCf%2BT71ZPPj%2FeXjpwF8FR8W47d9SS6yxN%2FetFRRHn7kr8ONbvvttJk0xJcbkD6x0L3DeLus%2Fc%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5ef008356f7deedf4a03cf8ed18c7c3216a47215929469a1a363e650500401fe",
+      "file_size": 221665,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 4,
+  "voters": [
+    "tess",
+    "ronygigi",
+    "0x08",
+    "josruiz"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

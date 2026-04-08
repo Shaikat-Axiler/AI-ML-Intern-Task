@@ -1,0 +1,142 @@
+{
+  "id": 2190117,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMTkwMTE3",
+  "url": "https://hackerone.com/reports/2190117",
+  "title": "File listing through scripts folder",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2023-10-02T18:52:44.480Z",
+  "submitted_at": "2023-10-02T18:52:44.579Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "itssixtynein",
+    "url": "/itssixtynein",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 50979,
+    "url": "https://hackerone.com/tennessee-valley-authority",
+    "handle": "tennessee-valley-authority",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/oEWB6C6GfvVzDUgyTrpvhh9u/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/oEWB6C6GfvVzDUgyTrpvhh9u/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tennessee Valley Authority",
+      "twitter_handle": null,
+      "website": "http://tva.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2024-02-09T12:12:41.419Z",
+  "bug_reporter_agreed_on_going_public_at": "2024-02-09T00:56:38.132Z",
+  "team_member_agreed_on_going_public_at": "2024-02-09T12:12:41.150Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nIt's possible to list all hidden files that are located within the TVAVirtual.com Sharepoint folder structure.\n\n## Steps To Reproduce:\n\n1. Navigate to TvaVirtual.com\n2. Open the pages source code and notice that its build using sharepoint pages.\n3. Confirm that you see a listing for /SiteAssets/Scripts/js.cookie.min.js. Click on it to navigate to the page\n4. Once https://tvavirtual.com/SiteAssets/Scripts/js.cookie.min.js loads, then remove js.cookie.min.js from the url\n5. Confirm that TvaVirtual.com now shows the script folder listing on the page.\n6. Remove the extra folder from the url to list the root folder at https://tvavirtual.com/SiteAssets/Forms/AllItems.aspx?RootFolder=\n7. Navigate through the directory listing in an attempt to find sensitive files, enumerate publishing users and version history.\n\n## Supporting Material/References:\nI've attached jpgs showing what is available. You may see a login from bugs@tobiasdiehl.com where I was confirming cross tenant access to the files.\n\n## Impact\n\nAttackers can potentially enumerate sensitive information and files that would otherwise be protected",
+  "weakness": {
+    "id": 126,
+    "name": "File and Directory Information Exposure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2743455,
+      "file_name": "listing2.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/iv042ta4k89xaxh671qnmtq9wlpw?response-content-disposition=attachment%3B%20filename%3D%22listing2.JPG%22%3B%20filename%2A%3DUTF-8%27%27listing2.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T204923Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=00fc450ea9152bb59f1e280ff2bafca2668c999d1f0f4079183abacc002658e1",
+      "file_size": 62165,
+      "type": "image/jpeg",
+      "moderated": false
+    },
+    {
+      "id": 2743456,
+      "file_name": "listing1.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/vr26qgkl3kf5kjmrojqhyh3n3f4b?response-content-disposition=attachment%3B%20filename%3D%22listing1.JPG%22%3B%20filename%2A%3DUTF-8%27%27listing1.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T204923Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=04266679afae0c61c4c5ff31e9a9904e004252f8ba119b89fcd6c729180ff577",
+      "file_size": 34380,
+      "type": "image/jpeg",
+      "moderated": false
+    },
+    {
+      "id": 2743457,
+      "file_name": "url.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ya0osr9um6ak2703sbeelx3zs5x6?response-content-disposition=attachment%3B%20filename%3D%22url.JPG%22%3B%20filename%2A%3DUTF-8%27%27url.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T204923Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=59101f2ad0a65970d354b42ea71183afa222d41738623809ef034ca946e45f92",
+      "file_size": 485270,
+      "type": "image/jpeg",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 42,
+  "voters": [
+    "rzizah",
+    "prathap_ilango",
+    "exec_iq",
+    "zy9ard3",
+    "thruster",
+    "0x0d0",
+    "itssixtynein",
+    "shubham_srt",
+    "pacmanx",
+    "rivudon",
+    "and 32 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 517799,
+    "asset_type": "URL",
+    "asset_identifier": "http://tvavirtual.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "id": 223421,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMjM0MjE=",
+  "url": "https://hackerone.com/reports/223421",
+  "title": "Open port leads to information disclosure",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2017-04-24T12:25:25.022Z",
+  "submitted_at": "2017-04-24T12:25:25.022Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "str33",
+    "url": "/str33",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19468,
+    "url": "https://hackerone.com/weblate",
+    "handle": "weblate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Weblate",
+      "twitter_handle": "WeblateOrg",
+      "website": "https://weblate.org/",
+      "about": "Weblate is a libre software web-based continuous localization system"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-09-10T09:40:40.291Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-05-20T12:34:45.720Z",
+  "team_member_agreed_on_going_public_at": "2018-09-10T09:40:40.204Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Open port 10022 leads to disclosure of open-ssh version and current Debian version being used.\n\nPOC- \n1. I performed an nmap scan ( nmap -A -T4 -p- weblate.org)\n2. I saw the port 10022 was open and I did a telnet connect to the port.\n3. As soon as I did the telnet connect it returned me the openssh version and the debian version (check the .png file)\n4.I wasn't able to run any sort of commands as whatever I typed returned a protocol mismatch error.\n\n\nThis doesn't necessarily mean a security issue as long as everything is being patched regularly. \n",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 178822,
+      "file_name": "Capture.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/178/822/7e59c76a04c1a7ee8baa722e27789017475084e1/Capture.PNG?response-content-disposition=attachment%3B%20filename%3D%22Capture.PNG%22%3B%20filename%2A%3DUTF-8%27%27Capture.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022238Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=168cff97d04e1d4c9c4c088b15387691b8780699ef24b5e0a62a4615add6fd03",
+      "file_size": 24793,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 5,
+  "voters": [
+    "dhakal_bibek",
+    "sh3rif0x",
+    "cryptographer",
+    "ethicalpanther",
+    "prajwalmasulkar"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

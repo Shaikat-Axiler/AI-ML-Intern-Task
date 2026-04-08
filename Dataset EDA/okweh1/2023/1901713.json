@@ -1,0 +1,194 @@
+{
+  "id": 1901713,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xOTAxNzEz",
+  "url": "https://hackerone.com/reports/1901713",
+  "title": "IDOR in backup recovery functionality",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2023-03-12T01:02:24.229Z",
+  "submitted_at": "2023-03-12T01:02:24.410Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "theelgo64",
+    "url": "/theelgo64",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/t9lfyffhbunj7bwcd2ya719ix6at/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13428,
+    "url": "https://hackerone.com/acronis",
+    "handle": "acronis",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Acronis",
+      "twitter_handle": "Acronis",
+      "website": "https://www.acronis.com",
+      "about": "Complete integrated cybersecurity and data protection for MSPs and IT teams"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2024-11-13T13:51:35.445Z",
+  "bug_reporter_agreed_on_going_public_at": "2024-11-13T13:51:35.229Z",
+  "team_member_agreed_on_going_public_at": "2024-09-23T09:00:41.428Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\nHi team I hope you are well, there is an issue let me to takeover any backup via recover it to my machine.\n\n## Steps To Reproduce\n1. Login https://mc-beta-cloud.acronis.com\n2. Visit the DEVICES section [you must have 2 devices]\n3. Click on any device has a backup [device_1]\n4. Click on recovery > select machine > select the second machine [device_2]\n5. follow the steps to recover the backup to [device_2]\n6. In the burp search for this endpoint ```/bc/api/ams/recovery/plan_operations/run```\n7. Send the request again via ==X-Apigw-Session== session from another organization.\n\n\n## POC\n\n{F2222128}\n\n## Impact\n\n- Backup Takeover via recovery function.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2222128,
+      "file_name": "backupTakeover.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1u215znul8bnapkqo2s35opa07uy?response-content-disposition=attachment%3B%20filename%3D%22backupTakeover.mp4%22%3B%20filename%2A%3DUTF-8%27%27backupTakeover.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202105Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e986fdd7a58332c79210c0e84f348f168a052b26d32e171674049538f3058565",
+      "file_size": 23350335,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 54,
+  "voters": [
+    "aboalezz",
+    "neat_panda",
+    "orange303",
+    "eslam11x",
+    "kokurate",
+    "zy9ard3",
+    "nischalxd",
+    "kullai",
+    "anonymouus",
+    "keroayman2004",
+    "and 44 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.5,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 13849,
+    "asset_type": "URL",
+    "asset_identifier": "beta-cloud.acronis.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 533161,
+      "category": "team",
+      "content": "IDOR in backup recovery functionality allowed an authenticated attacker knowing user's machine UUID, backup ID and some other parameters to configure and run recovery plan. \n\nWe have seen no signs of the exploitation of this vulnerability.",
+      "updated_at": "2024-09-19T15:35:02.753Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 649245,
+        "username": "stushieva",
+        "name": "Sabina",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2019-06-17T15:01:27.503Z",
+        "url": "https://hackerone.com/stushieva",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/asyw8mgrl755hxgcgwfxqwfmj383/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/asyw8mgrl755hxgcgwfxqwfmj383/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/asyw8mgrl755hxgcgwfxqwfmj383/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    },
+    {
+      "id": 578214,
+      "category": "researcher",
+      "content": "Access Control Flaw Leading to Critical Data Deletion through Backup Overwrite Exploit\n{F3758159}",
+      "updated_at": "2024-11-13T13:49:40.551Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [
+        {
+          "id": 3758159,
+          "filename": "image.png",
+          "size": 18952,
+          "type": "image/png",
+          "url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/zu0ntf1qijdtuyrowf73cxqwxmkd?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202105Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fdc7b99548f87f61b99cf747200aab0bea09cd440d2e753b9ef7aa298ac35f14"
+        }
+      ],
+      "user": {
+        "id": 1425214,
+        "username": "theelgo64",
+        "name": "🦠💉🧬🧟",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2020-12-11T15:44:13.231Z",
+        "url": "https://hackerone.com/theelgo64",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/t9lfyffhbunj7bwcd2ya719ix6at/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/t9lfyffhbunj7bwcd2ya719ix6at/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/t9lfyffhbunj7bwcd2ya719ix6at/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    }
+  ]
+}

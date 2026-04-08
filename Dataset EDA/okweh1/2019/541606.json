@@ -1,0 +1,138 @@
+{
+  "id": 541606,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC81NDE2MDY=",
+  "url": "https://hackerone.com/reports/541606",
+  "title": "[Privilege Escalation] Shopify Admin -- Permission from Settings to Customer",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-04-17T22:43:29.590Z",
+  "submitted_at": "2019-04-17T22:43:29.590Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ngalog",
+    "url": "/ngalog",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/074/607/68068f139c99d98e3e8baf0a51f219c29ade1769_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-07-05T19:46:02.483Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-07-05T19:46:02.366Z",
+  "team_member_agreed_on_going_public_at": "2019-07-05T14:08:43.646Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nThis is my first report to shopify, hope this report is not too bad considering the fact I can't verify this finding since I don't have shopify plus access.\n\n##Summary \nThis [page](https://help.shopify.com/en/api/reference/plus/multipass)  talks about the multipass, and quoting from the multipass page FAQ\n\n###Security considerations\n> If your secret ever leaks.... You should do this as quickly as possible since everybody who knows the secret can potentially access every customer account!\n\nIt means anyone with this secret can get access to every customer in this shopify instance.\n\nAnd interestingly, the multipass secret is located in the Settings part of shopify, so it means if a shopify staff has no permission to view/edit customer's details but has the permission to view/edit the settings of the shopify account, then this secret would help him to gain access to customer's details for this shopify instance.\n\nBut this is all speculation since I don't  have a shopify plus account, so I can only assume this scenario was not considered while developing the Multipass feature. Hope I am correct, and if I am correct, then this would mean small privilege escalation from settings permission to customer permission for shopify staff.\n\n## Steps to reproduce\n1. As a shopify plus owner, visit `https://YOUR_SHOP.myshopify.com/admin/settings/account/new` to create a new account with only `Settings` permission {F471099}\n2. As the newly added staff member, visit the confirmation email's link and create a password and login to your store's url, then visit `https://h1-shopfiy-ron.myshopify.com/admin/settings/checkout`\n3. select Accounts are required or optional\n4. Enable Multipass \n5. Now you are reading the secret of the multipass -- meaning you can read customer's details using that\n\nStep 4 and 5 are not verified yet, if it works, it means this multipass feature helps a staff member to escalate access from `settings` to `customers`\n\n## Impact\n\nStep 4 and 5 are not verified yet, if it works, it means this multipass feature helps a staff member to escalate access from `settings` to `customers`",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 471099,
+      "file_name": "ppppppoc.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/471/099/39223f5b65afe1feb4cbaa9dd53cea1a0d7e3511/ppppppoc.PNG?response-content-disposition=attachment%3B%20filename%3D%22ppppppoc.PNG%22%3B%20filename%2A%3DUTF-8%27%27ppppppoc.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYGJ7UN3L%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014236Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHUalBkdVO9dlSfmp4i0Is95jlMP6GsvJ13TXuvyxXeaAiAiRngrjGPT%2Fe9gZ7WOsro9DxWuN9Vv4ft8ryTN5QFXNCq6BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM5AnpCASItXlV8cgIKo4FR27UKe6whVAY7hloNnNLonPHVFec%2BquKkSCqM9dNqjEOHCxX0pmzD5qo5sfh9p3sfLB%2BZ%2B2EMpG2Y8d0trJapAGZbOL1FarhKnRYfaU6YNKoGh0LQttdNDc1FJ8quZCIjw%2Bv3MdWSwsZUptYCUbrqs41GTsSt4Lf9qJeQA3nb3Cm83OTTUAHxXit5a9Q5z%2FLbgCe%2F2tOWkHXqtyFzMxaXoACIGyWGQjmK9sKO3CLWuTosI2y9Fx7ll05Y4rf4N2LJzToIqrvFaSjqbTlnpL%2Bn330925ihz64nJgeiQo72DhOvMhAwIJgDjChrww7vj3GAQILn2GiDTEfw2pZU%2F58Mth9%2B2jER5MZ2QUQ2dBzeBvJII3OmcMZDwh9juMZxArPYRYTydx1Jnt3aj9RYuR7sCndQts40A02dEA7t8ltXfApIQt6iFuiTNzO1WCpxPRErVtLNIafT7EfaStFY%2F3B8%2B3uDLCN7N5BLA1LhNfucaCrqILG7D4Ipk1M6cA7q9mYfEMB4oRfqmmXnyx4VqZ9Qv0Zwz2PKm7ISd3MWZiP7Gwp7LL5eaj%2FnbJLhRCAL15W60BU%2FVrtJ1tPRsoI92cNfbkVLeJ5mF5Z0P5D55mMY3mifXAQIw5b7%2FGj9qsNzG2A1%2FubTbaY6tC7I5db12wwSw%2FL1Ho40nOgKmgqxpnku9XuaSNOfP6tCpC1IQO6sc7jOZgvIObREm6yegTX7bOoPushCAAl58lG1P%2FjcUKcoMRvi%2FxLEGUxoeA0hFgIPu64SzLxgRt21KkKOEBpZ3cSuIVaeOOCoIsnDsA4CM2lwsHcP%2FR8Gfori3PGYr8k4qyQYmgcb620Z9J733cRH5dMCVcHjLmE9LdJmqhFemGNMJ3z48wGOrIBppWmyokx3uOs4RNp0dcgfbv8x7Mts%2FY%2FUiBQZPmosKXQOUTeC3NWFD6FNgCBrpV8emo6yf8fRroRxwEIIYeunY8gdNUruC%2B3T%2FJIv4j4bfU78jvp%2F71fCDZnZ5ohtjOTZLhg7uQ4NfpHMOivpWEeOZs1xhMj3dVONHPA1YpZRYd279GrCN5RpyHebXtv82MdsR4ppIDrMZYsChihXZAnPIYvaVou6f%2FYuST3wOh%2BS4EdWw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0553d74501617c2339d47a7e391510c5f39ad7821945701ad18ea33474d68bd8",
+      "file_size": 19314,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 33,
+  "voters": [
+    "webhak",
+    "drsniper",
+    "p1stachios",
+    "fqdn",
+    "mashoud1122",
+    "base_64",
+    "fisher",
+    "ali",
+    "bl4de",
+    "imranhudaa",
+    "and 23 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.4,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "high",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 413,
+    "asset_type": "URL",
+    "asset_identifier": "your-store.myshopify.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

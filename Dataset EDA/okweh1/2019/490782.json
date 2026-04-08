@@ -1,0 +1,157 @@
+{
+  "id": 490782,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80OTA3ODI=",
+  "url": "https://hackerone.com/reports/490782",
+  "title": "Mssing Authorization on Private Message replies (BuddyPress)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-02-03T20:07:05.875Z",
+  "submitted_at": "2019-02-03T20:07:05.875Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "klmunday",
+    "url": "/klmunday",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/480/267/c2322c402151db1b8a6b7474b47bfc4b1c415b4a_original.JPG/8774a5031fc14b74dc4404da039040c69df8ed41021007c0c2beb9de489fcf66"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 55,
+    "url": "https://hackerone.com/wordpress",
+    "handle": "wordpress",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WordPress",
+      "twitter_handle": "wordpress",
+      "website": "https://wordpress.org/",
+      "about": "Beautiful sites of any kind."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-03-08T22:27:35.566Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-03-08T20:30:58.946Z",
+  "team_member_agreed_on_going_public_at": "2019-03-08T22:27:35.480Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Description:\nUsers can reply to private message threads which they are not participants of by changing the `thread_id` parameter in the `messages_send_reply` ajax action. This affects both the Legacy and Nouveau Template packs.\n\n## Steps To Reproduce:\n1. Login to your account\n2. Send the following request (change `Host`/`Cookie`/`nonce`/`thread_id` as needed)\n\n>POST /wp-admin/admin-ajax.php HTTP/1.1\n>Host: 127.0.0.1\n>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0\n>Accept: */*\n>Accept-Language: en-GB,en;q=0.5\n>Accept-Encoding: gzip, deflate\n>Referer: http://127.0.0.1/members/test2/messages/view/4/\n>Content-Type: application/x-www-form-urlencoded; charset=UTF-8\n>X-Requested-With: XMLHttpRequest\n>Content-Length: 76\n>Connection: close\n>Cookie: >wordpress_ab0994624b8d5b17fddb1aec29329218=test2%7C1549395197%7ClRQfd96VkhuRpR4fpB3MhZOw2SGrl19nFG7wIClGYaf%7C64fbdf07238d2f448b8e53f6f1db7c64b014d7833386229505fefa70c9b2976e; wordpress_test_cookie=WP+Cookie+check; >wordpress_logged_in_ab0994624b8d5b17fddb1aec29329218=test2%7C1549395197%7ClRQfd96VkhuRpR4fpB3MhZOw2SGrl19nFG7wIClGYaf%7Ca309bfd19a1c2e4504e37959bd4ceac28944fce81857c2f7587022a4e6d2b7aa\n\n>action=messages_send_reply&cookie=&_wpnonce=d037f67211&content=Test+Message&thread_id=1\n\n## Notes:\nEven though an attacker can send a reply to a thread, they cannot view the thread afterwards. The reply they send does not appear in the attackers sentbox (see image below)\n{F417446}\nNor do any future replies appear in the attackers inbox, nor is the attacker able to star the reply. This means that there is no information exposure.\n\nWhen participants view the thread they will see the attackers reply, however the attacker does not appear in the participants list (see images below)\n\n__Inbox:__\n{F417451}\n__View:__\n{F417444}\n\n## Proof of Concept:\nI have developed a small Python (3.6+) script to inject a message into every private message thread. It achieves this by creating a new conversation between the attacker and himself to get the current private message max index and then iterates from 1 -> max index, posting a message into each thread.\n{F417456}\nIt will try to reply to threads that may have been deleted but since thread_id's are sequential, if every thread from 1 to the thread the attacker created is replied to then we can be sure that every thread that exists when the script is ran has been injected into.\n\n## Impact\n\nJust by itself this can only really lead to spam / phishing attacks. However, if the component is vulnerable to other flaws such as #487081 (not public) then it can widen an attack surface and becomes a more serious issue.",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 417444,
+      "file_name": "message-thread-injection-injected-thread.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/417/444/19050737a96462c399b0993825198b54dd270107/message-thread-injection-injected-thread.png?response-content-disposition=attachment%3B%20filename%3D%22message-thread-injection-injected-thread.png%22%3B%20filename%2A%3DUTF-8%27%27message-thread-injection-injected-thread.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015557Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3aeb6e75e959d3525a59e482ee92eeb0e8ad9aa897096b4bf5643144e6cdf9dc",
+      "file_size": 52226,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 417446,
+      "file_name": "message-thread-injection-not-in-sent.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/417/446/5d2ceeceb5df5ed397846ac26f354f2a3ad39362/message-thread-injection-not-in-sent.png?response-content-disposition=attachment%3B%20filename%3D%22message-thread-injection-not-in-sent.png%22%3B%20filename%2A%3DUTF-8%27%27message-thread-injection-not-in-sent.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015557Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=04ed2c5e133c8bf23affecdcbd498c2f85d5cecf0cf837612aeaf19f088e7e97",
+      "file_size": 27858,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 417451,
+      "file_name": "message-thread-injection-shows-in-inbox.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/417/451/259bd899e5d2816eb44108e5ea9a77619bd838af/message-thread-injection-shows-in-inbox.png?response-content-disposition=attachment%3B%20filename%3D%22message-thread-injection-shows-in-inbox.png%22%3B%20filename%2A%3DUTF-8%27%27message-thread-injection-shows-in-inbox.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015557Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=593b2da4520bb4eb97f67caf4c598ce9e033d896d57848ff604d983ee83df7f2",
+      "file_size": 90848,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 417456,
+      "file_name": "inject_messages.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/417/456/d0e36108a8d5c0fd4c96a313b531d9a180fdedc5/inject_messages.py?response-content-disposition=attachment%3B%20filename%3D%22inject_messages.py%22%3B%20filename%2A%3DUTF-8%27%27inject_messages.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015557Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1a5a9e3c7a85826228a6e16ff6e70478d6192c97300ecb7d7e54fbbf26de4f32",
+      "file_size": 2648,
+      "type": "text/x-python",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-04-07T20:30:59.010Z",
+  "allow_singular_disclosure_after": -216969898.89023894,
+  "singular_disclosure_allowed": true,
+  "vote_count": 66,
+  "voters": [
+    "ibfaruhn",
+    "ali",
+    "logicmap",
+    "mik317",
+    "n0bytes",
+    "savitar0x01",
+    "architect",
+    "pr0f0x01",
+    "khizer47",
+    "lordjerry0x01",
+    "and 56 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 2751,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "BuddyPress Core",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

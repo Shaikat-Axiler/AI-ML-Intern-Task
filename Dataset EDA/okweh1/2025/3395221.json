@@ -1,0 +1,146 @@
+{
+  "id": 3395221,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzk1MjIx",
+  "url": "https://hackerone.com/reports/3395221",
+  "title": "Error-Based & Time-Based SQL Injection in 'keyword' Parameter of admin-search.php Allowing Full Database Access in Revive Adserver v6.0.0",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2025-10-22T21:18:19.567Z",
+  "submitted_at": "2025-10-22T21:18:20.218Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kanon4",
+    "url": "/kanon4",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/j4km7sgcslz1w0rxro5bba8x4cs9/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2367,
+    "url": "https://hackerone.com/revive_adserver",
+    "handle": "revive_adserver",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/367/4f47a5b4a364515d4bbdc17550d67ea5415363cd_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/002/367/4f47a5b4a364515d4bbdc17550d67ea5415363cd_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Revive Adserver",
+      "twitter_handle": "",
+      "website": "https://www.revive-adserver.com",
+      "about": "Revive Adserver is a free open source ad serving system"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2025-52664"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2025-10-24T12:14:25.824Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2025-10-24T12:14:14.256Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "==Cricetinae==\n\n#Summary:\n\nA critical SQL Injection vulnerability has been identified in Revive Adserver's administrative search functionality, specifically in the `admin-search.php` file. The vulnerability exists in the handling of the keyword `GET` parameter, which is passed to multiple database queries without proper sanitization or parameterization.\n\n\nThe vulnerability stems from the use of the phpAds_registerGlobalUnslashed() function to register user input variables, including keyword, without proper escaping:\n\n```php\nphpAds_registerGlobalUnslashed('keyword', 'client', 'campaign', 'banner', 'zone', 'affiliate', 'compact');\n```\n\nSubsequently, this user-controlled input is passed directly to several database query functions:\n\n```php\n$rsClients = $dalClients->getClientByKeyword($keyword, $agencyId);\n$rsCampaigns = $dalCampaigns->getCampaignAndClientByKeyword($keyword, $agencyId);\n$rsBanners = $dalBanners->getBannerByKeyword($keyword, $agencyId);\n$rsAffiliates = $dalAffiliates->getAffiliateByKeyword($keyword, $agencyId);\n$rsZones = $dalZones->getZoneByKeyword($keyword, $agencyId);\n```\n\nWithout examining the implementation of these functions, it's evident they do not properly sanitize the `keyword` parameter before incorporating it into SQL queries, resulting in SQL Injection.\n\n**Technical Analysis**\n\nTesting with SQLMap confirmed two distinct SQL Injection vulnerabilities:\n\n1.Error-based injection using MySQL's EXTRACTVALUE function:\n\n```bash\nPayload: keyword=FUZZ') AND EXTRACTVALUE(8429,CONCAT(0x5c,0x716a7a6a71,(SELECT (ELT(8429=8429,1))),0x7178787871))-- Nqvq&compact=t\n```\n\n2. Time-based blind injection using MySQL's SLEEP function:\n\n```bash\nPayload: keyword=FUZZ') AND (SELECT 3790 FROM (SELECT(SLEEP(5)))yGYJ)-- YFDA&compact=t\n```\n\n#Steps To Reproduce:\n\n  1. open `burp suite` And open the built-in browser with it\n  1. Go to the following request: `http://localhost/www/admin/admin-search.php?keyword=FUZZ&compact=t`\n  1. Capture the request using Burp Suite\n  1. Save the request to a text file using `nano testsql.txt`\n  1. Run the following command:\n\n```bash\nsqlmap -r testsql.txt --dbs\n```\n\n  6. ==You will see the database being extracted==\n\n#Supporting Material/References:\n\n**PoC Video**\n\n{F4922045}\n\nhttps://portswigger.net/web-security/sql-injection\nhttps://owasp.org/www-community/attacks/SQL_Injection\nhttps://www.imperva.com/learn/application-security/sql-injection-sqli/\nhttps://www.cloudflare.com/learning/security/threats/sql-injection/\nhttps://www.acunetix.com/websitesecurity/sql-injection/\n\n## Impact\n\nThis vulnerability allows an authenticated attacker to:\n\n- Extract sensitive information from the database\n- Modify or delete database contents\n- Potentially execute privileged commands on the database server\n- Possibly escalate to a more severe attack vector through data exfiltration\n\nThe SQLMap test successfully identified the database name and confirmed the ability to execute arbitrary SQL queries through the vulnerable parameter.\nRoot Cause\n\nThe root cause is improper input validation and the absence of prepared statements or parameterized queries. The application directly incorporates user-controlled input into SQL queries without adequate sanitization or escaping mechanisms.\n\nThis is a fundamental code flaw in the Revive Adserver source code and not a result of misconfiguration.",
+  "weakness": {
+    "id": 67,
+    "name": "SQL Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 4922045,
+      "file_name": "SQL_Injection.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/0fnxdk4lo7fu1w3sn4pn62p5wz9r?response-content-disposition=attachment%3B%20filename%3D%22SQL_Injection.mp4%22%3B%20filename%2A%3DUTF-8%27%27SQL_Injection.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195305Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6d42184e79259e3acb2de77b47b0ad8d05df5a3b74d0c0c16d521748fd44f6d3",
+      "file_size": 33414171,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2025-11-23T12:14:14.494Z",
+  "allow_singular_disclosure_after": -7717130.980941734,
+  "singular_disclosure_allowed": true,
+  "vote_count": 89,
+  "voters": [
+    "m4khn0",
+    "hacker_441",
+    "0-chrollo-0",
+    "flysec",
+    "kanon4",
+    "almuntadhar0x01",
+    "m0hsn",
+    "yassinek3ch",
+    "yoyomiski",
+    "realvivek",
+    "and 79 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 8.8,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 154,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/revive-adserver/revive-adserver",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

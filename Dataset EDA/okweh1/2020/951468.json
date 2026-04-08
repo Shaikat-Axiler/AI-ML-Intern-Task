@@ -1,0 +1,144 @@
+{
+  "id": 951468,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NTE0Njg=",
+  "url": "https://hackerone.com/reports/951468",
+  "title": "[m-server] XSS reflected because path does not escapeHtml",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2020-08-05T08:11:07.446Z",
+  "submitted_at": "2020-08-05T08:11:07.493Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "0xd0ff9",
+    "url": "/0xd0ff9",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/m643g2dt4igbyilf9reor5gz4ull/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-09-28T02:26:55.585Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-09-28T02:26:55.497Z",
+  "team_member_agreed_on_going_public_at": "2020-09-26T19:08:14.807Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report XSS in m-server\nIt allows attacker can perform XSS in client side\n\n# Module\n\n**module name:** m-server\n**version:** 1.4.2\n**npm page:** `https://www.npmjs.com/package/m-server`\n\n## Module Description\nM-Server is a mini http static server that without any dependencies;\n\n\n## Module Stats\n[1] weekly downloads\n150\n\n# Vulnerability\nXSS reflected because path does not escapeHtml\n\n## Vulnerability Description\nin `m-server/lib/utils.js` line 59 and 64, html push does not escapeHtml for variable path.\n{F936938}\n\nBy change path of URL via traversal, attacker can control this variable `path`.\n{F936939}\n\n## Steps To Reproduce:\nOn server, run this:\n$ cd /home/vagrant/tmp/test\n$ m-server\nOn client, issue requests:\n```\nGET /../../../../home/vagrant/tmp/test/<svg/onload=alert(document.domain)>/../../../test/ HTTP/1.1\nHost: 192.168.57.105:3001\nUser-Agent: curl/7.54.0\nAccept: */*\nConnection: close\n```\nPOC:\n{F936947}\n\n## Patch\nline 59 should use \n```\nhtml.push('<li><a href=\"' + escapeHtml(path) + '/' + escapeHtml(val) + '\">' + escapeHtml(val) + '</a></li>');\n```\nline 64 should use \n```\nhtml.push('<li><a download href=\"' + escapeHtml(path) + '/' + escapeHtml(val) + '\">' + escapeHtml(val) + '</a></li>');\n```\nOr strip path traversal\n\n## Supporting Material/References:\n\n> State all technical information about the stack where the vulnerability was found\n\n- [OPERATING SYSTEM VERSION]\n- [NODEJS VERSION]\n- [NPM VERSION]\n- [BROWSERS VERSIONS, IF APPLICABLE] \n- [OTHER SOFTWARE USED TO EXPLOIT VULNERABILITY AND THEIR VERSIONS, IF APPLICABLE]\n\n# Wrap up\n\n> Select Y or N for the following statements:\n\n- I contacted the maintainer to let them know: [Y/N] N\n- I opened an issue in the related repository: [Y/N] N\n\n> Hunter's comments and funny memes goes here\n\n## Impact\n\nXSS",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 936938,
+      "file_name": "Screen_Shot_2020-08-05_at_2.57.56_PM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/pVbX6NgN9Cgkx7Wi3VabLRzu?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2020-08-05_at_2.57.56_PM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2020-08-05_at_2.57.56_PM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000237Z&X-Amz-Expires=605&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9d76dff1f4aa3d635ec4211a35188927c76942948fb509c9342d861da1594661",
+      "file_size": 842418,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 936939,
+      "file_name": "Screen_Shot_2020-08-05_at_2.59.59_PM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/mPgNJYA1Jf7fvmPfTAWvS2f3?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2020-08-05_at_2.59.59_PM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2020-08-05_at_2.59.59_PM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000237Z&X-Amz-Expires=605&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e8576fb20a88bd06d922a54c736dc722dd52642e7278ecf613c423b3650f90e5",
+      "file_size": 270821,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 936947,
+      "file_name": "Screen_Recording_2020-08-05_at_2.47.01_PM.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/75CMnxG83q3kaKZsN2H673iS?response-content-disposition=attachment%3B%20filename%3D%22Screen_Recording_2020-08-05_at_2.47.01_PM.mov%22%3B%20filename%2A%3DUTF-8%27%27Screen_Recording_2020-08-05_at_2.47.01_PM.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000237Z&X-Amz-Expires=605&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6c1d076315e34767f76c0a41be0ca03febc430218684dfd51ff18683a5fb2957",
+      "file_size": 39071509,
+      "type": "video/quicktime",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-10-26T19:08:14.908Z",
+  "allow_singular_disclosure_after": -167892862.09855154,
+  "singular_disclosure_allowed": true,
+  "vote_count": 12,
+  "voters": [
+    "thaivu",
+    "xnutronex",
+    "hensis",
+    "khizer47",
+    "dinesh_bhavar",
+    "lxtreme",
+    "th3n00bs3c",
+    "edg",
+    "ravikantcool2019",
+    "xss-hunter",
+    "and 2 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 8254,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "m-server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "id": 1820864,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xODIwODY0",
+  "url": "https://hackerone.com/reports/1820864",
+  "title": "No password length restriction in reset password endpoint",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2023-01-03T08:44:39.574Z",
+  "submitted_at": "2023-01-03T08:44:39.654Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "aditya404",
+    "url": "/aditya404",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6tactc6wkt20n94unurpv36zvrig/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-25816"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-02-09T13:57:52.319Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-01-10T13:57:46.146Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi, \n\n##Summary:\nThere is no password length restriction in reset password endpoint at https://efss.qloud.my/index.php/login when resetting for new password.\n\n\n##Steps To Reproduce:\n1. Visit https://nextcloud.com/sign-up/ and Sign up.\n\n2. Logout and reset your password.\n\n 3.Go to your email and click on reset password link.\n4.Enter 150 characters or more as a password and confirm the characters.\n5.You will successfully logged in.\n\n## Impact\n\nAttacker can do denial of service to your server since there is no restriction in the length of password.\nExample when he enter like 2500 character, your server will crash for some time \nBelow Image is the impact of entering 2500 characters.\n\n##Mitigation :\n\nRestrict user to use less than 40 character as a password, while the restriction should be both on back-end and front-end (with javascript ).\n\n##THANK YOU",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2100450,
+      "file_name": "Screenshot_2023-01-03_14_09_52.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/tkp5qgmi8163jvonjxaoyp2xv3dl?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2023-01-03_14_09_52.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2023-01-03_14_09_52.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVWIESNLA%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213112Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCICcH6o3d61XUmf9jSKpfX6PZItG2eFm%2FP%2BxT1VQPYYo9AiASEz7RsrnMxKm0HgVU6OcbQVwoZ5VIucq713xUw%2BVWuSq6BQia%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM2MDOAsJR%2F9Tkb%2FgKKo4FU%2BVsTrk%2BfN0uOy%2FX1iiO%2BJBkJMHqx3tRikzZYK8TIqH7zNDilihFH812Zoxxu7xDi3kuAXXeEXNKrVrrzQOfD8n4iieb5P%2FCUPvHj7uqcOyP8ENLoa9tFiWxGthTaiv5%2BRKxq75ASpI63iuDt6ElzHV3NbqbcfiaUDqFerMdgtthIBNKX31LpeV1%2FVR5fEpzwAXqe%2Bm5GjCjzc088SY6GZOTrGRHnWnTA8vWt7Q7oGs02U%2F2WGEcEW8cHELcyCsm3cCizrWPG8o8PS0RP5u17nvgFJjzyQuUX0jXi6RBuZYTgbBkzttXmCCEONciNZAygpwgEkgDnQu7Xd4bVpH5kBWRKJmLwYAEbXIAlYcQv69ShSC5UE%2B4tHab9Oe4zzBGSy7TQjTU%2BgwvxoZqnuqSD7hPdMj8W6TenSawZy9wAWLvk6ySphcQfNcdf2xYUCoEITqSBNY5lw5a9RjrWGRb9fyZ3L605CMPyA%2BycnGR1kHsSiTkPjrMzPmQPvVqwv9PFJT2h3SCwRSvSLxIqWvFfZM%2BgDXRTXNrpQikNAj4VW%2Bf2O5hswHCOIvmGVuE97ecG%2FAewEuZp7gXznLqOxKBJXxWKa74q8x65JFNkLe6nxs5x2%2FSXDtoIwvQrSZR3UFy2kXebfX0lQYZdoOq3zTwhFlUXoePG5cY4o9nuK1lFHPsPRU6NIIVrCVoWJLwtLb7vqNcHirkk1InR%2FVV%2FtdCU4mJU2lNgYk0%2B1uihxwHzAGDovFCSnSHa3DSlG4YmfN63iNyDpaITIp35%2FHGWHzxFkdIbd749wzL3mURIpiVCAb8NoUcRtTTuigYtKSpX%2Fn9uZQb2spD4BIzZbCmKYMeDxOMnSaaE0YoSF%2BFKRm1MNKv4swGOrIBxhWnQX%2BCj9MWTIXfb6jWkhldDqWrnsnVck%2BYfYLwX2F3Zr57zpzdMkadoCT9%2FejJAWqhahY2kKWBrV88iX8Sfd0pLM%2BDiP6Po3kxhTyosySUWA%2FC95hZiMexMH9aNrKsYDK%2BjI4Hg2E9mBsR4aRxkgUVpnWQfYuYJJm7a4eexkZhUzmHiN84SQ7J5eHoPuNNpURJt2%2FeyzWruDq1SgZiWXQeTtexN9FgolVFC8g6g%2BZP%2Fg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2e61289b9a2b73360a1cc366fa2770b4f257d87a4a27b6053b352b4bbdabbb5b",
+      "file_size": 450265,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-02-09T13:57:46.206Z",
+  "allow_singular_disclosure_after": -95672005.91000196,
+  "singular_disclosure_allowed": true,
+  "vote_count": 12,
+  "voters": [
+    "nicochess",
+    "shreyaschavhan",
+    "shubham_srt",
+    "2026",
+    "pr0f0x01",
+    "5eyavan",
+    "shivammusic",
+    "sandip05",
+    "kryox64",
+    "unknown1122w",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.5,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 13,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "nextcloud/server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 257554,
+      "category": "team",
+      "content": "Security advisory at https://github.com/nextcloud/security-advisories/security/advisories/GHSA-53q2-cm29-7j83",
+      "updated_at": "2023-02-22T15:31:05.332Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 89223,
+        "username": "nickvergessen",
+        "name": "Joas Schilling",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "Germany",
+        "created_at": "2016-07-01T08:17:59.061Z",
+        "url": "https://hackerone.com/nickvergessen",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

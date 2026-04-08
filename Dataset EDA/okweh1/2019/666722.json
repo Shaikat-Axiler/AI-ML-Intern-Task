@@ -1,0 +1,133 @@
+{
+  "id": 666722,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82NjY3MjI=",
+  "url": "https://hackerone.com/reports/666722",
+  "title": "Email enumeration at SignUp page",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-08-03T10:13:32.763Z",
+  "submitted_at": "2019-08-03T10:13:32.763Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sheerwood",
+    "url": "/sheerwood",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/27tatm8ww6jt0qgj3rznp6m2e0h8/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21045,
+    "url": "https://hackerone.com/omise",
+    "handle": "omise",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nm9gwmg377pece9jzkjw5k1o7tm7/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/nm9gwmg377pece9jzkjw5k1o7tm7/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Omise",
+      "twitter_handle": "omise",
+      "website": "https://www.omise.co",
+      "about": "Next generation of payment Platform"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-09-04T07:42:59.298Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-08-05T07:42:55.714Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi.\n\nThere's bad security practise at https://trade.go.exchange/en/auth/sign-up against User enumeration.\n\n#### Description:\n\nAt the signup page here https://trade.go.exchange/en/auth/sign-up , when you enter an existing user's mail , a msg box says \"Email is invalid.\"\n\nF546294\n\nThe problem is that any used email gets the same error message. while when you enter any other e-mail regardless whether it is fake or not & valid or no it get accepted. which means any Email (could be fake) is valid except registred emails in the database.\nso an attacker can compare both responses (success & failure) and enumerate users' emails in large scale.\n\n#### Mitigation:\nA better security practise is by simply saying that you sent a link to the e-mail no matter if they have an account already or no. If they have already registred and another process is done, the Email message must say that \"someone tried to signup with that Email adress, if that's you please log in.\"\n\n## Impact\n\n- Leaking users' emails. / Information Disclosure.",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 546294,
+      "file_name": "exist.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/546/294/f9ce5c8f0fedd83f5ae8115ba6c685cb0e711185/exist.JPG?response-content-disposition=attachment%3B%20filename%3D%22exist.JPG%22%3B%20filename%2A%3DUTF-8%27%27exist.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWREVEZO5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013441Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDiMObL34v9fAaIKhp3rzo3omHuT0K86TgqTgNFfLUGgAiAJEf9SNIAhEAuyTbnWVKCjPqMzdyrRWoyviuOCMqqXEyq7BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMWqzZag2zLDgWkoSQKo8FhBlzba%2FseBcANfhlpzQgtuzgbVVWK26CuREUrk2kYFSFCd1eP8c2rXv5XAYUm%2FUPBkYoLyUTQzxEaNGrIN0yU7b6gXslpSNmm7gZUbLhARwV9o7ks8V8CM5VE13Zj4ST%2FX7HgIg4YnvZ3%2F%2FbXbHuJQ412BDXQY6QSMqFN3UqP4jxk%2BNaKcTH1B2APravH0Ni7YjcK2kkQ%2FEYwuQaZt6JLmzuZuJNrNzGM3Y1uV3eEmojWMPdIVMKjYzFmVFuc1P90ggtODTnQkZjgjF7Y7meh9ufKLPpUhZZ6hOnq9EWOMPZCOw5RZ6XcxjtbwRVO2K8yd2uRmaPhQSU72TWHnBdvpTG%2Fd2oW5FHCJmhIqAdfmLEvyTsQU4IA4PDNR0SKEU5YIFoLrznoY4JQixV82nmZqczPERK2vxP0qftgXBSzsiormAlzswDeqNn3jq0R4w0m6m9TrpMZ0kUwckbddqAaWoMy7gjxb%2B%2Fq7YX7tk3cbnS8wttaXWIK4%2B9XgUAb0CJvOPCMfnka45tuBQNoHcj9N73A0MNhwaqe9m2Tp6yvL4s4z3g8UWJCoOE5LhIlIcr3b1MI3eML9cSt8KG%2B0GVbUvwlFxXeBO6%2BQ2LPS85hM0cORrCzwYMG4u8Xu0fWbkeZJbmxgL42l%2Fro%2FQi9rt%2B76isJKHx%2FmAkJ6s87wcjqlkjzNVyxkw2PDWk1rymGqjofsWEHPbcunnM6OzhhPQdrDE5lRN93m34fKj6SwiiX5PfO6wNxmpjT8fhhHJdDG1TKFygS5YKO0YTqXUNUdwxLcM7v8tgK%2FyIrFg68GQIZ%2FmLRcAPZqKEjrQAEVcWiJMl7mN3kgkYRbOeartlWbzopVe5kuBotUIrcUcn3x%2Fo%2FzDl6%2BPMBjqyAUoTsKQ408LGNOgulHnL1wyPEzTWxl3XQytE3mwP0gTOAj1Umt8FEERRChmvCVHE7A8rOCnz7tDx0skWUTnfyJKz7MRNHrfovtAFKd5ZmpBXPYKFkt0mipBM%2BKLD31DqupT%2FoPUdON%2BbdEUakrvTqfZd%2BYgByEEht9RW8XCzSS9DpUb4%2F%2F9wdBGeu6xhDJOSV%2BZllN9Ew6Ux%2BY9e%2F3xguKJVh6KMLH6F%2BdqpEDGByRPcC6g%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ae25375bd15cb428671bcf68a7d26ad5c76cd7ba143281948af85e1cbf19a3e0",
+      "file_size": 13109,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-09-04T07:42:55.800Z",
+  "allow_singular_disclosure_after": -204054705.5509843,
+  "singular_disclosure_allowed": true,
+  "vote_count": 61,
+  "voters": [
+    "qbit_",
+    "daehee",
+    "pprab",
+    "ali",
+    "sigsegv_banana",
+    "sameerphad72",
+    "nischalxd",
+    "dhakal_ananda",
+    "eneri",
+    "pr0f0x01",
+    "and 51 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 16436,
+    "asset_type": "URL",
+    "asset_identifier": "go.exchange",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

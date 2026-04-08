@@ -1,0 +1,152 @@
+{
+  "id": 2256167,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMjU2MTY3",
+  "url": "https://hackerone.com/reports/2256167",
+  "title": "Path traversal through path stored in Uint8Array in Node.js 20",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2023-11-17T17:45:17.242Z",
+  "submitted_at": "2023-11-17T17:45:17.441Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "tniessen",
+    "url": "/tniessen",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T205042Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=79dfda3c13bfc65e13456f02233b157473686305b7b3cf2582d6c0c91a9af95f",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T205042Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1c41d5b9fab746385e8be39b29a1564f9cd81c316ea083c9c39b0cd599c12a7d"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-39332"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2024-01-20T16:26:31.233Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2023-12-21T16:26:20.693Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Various `node:fs` functions allow specifying paths as either strings or `Uint8Array` objects. In Node.js environments, the `Buffer` class extends the `Uint8Array` class. Node.js prevents path traversal through strings (see CVE-2023-30584) and `Buffer` objects (see CVE-2023-32004), but not through non-`Buffer` `Uint8Array` objects.\n\nThis is distinct from CVE-2023-32004 ([report 2038134](https://hackerone.com/reports/2038134)), which only referred to `Buffer` objects. However, the vulnerability follows the same pattern using `Uint8Array` instead of `Buffer`.\n\n## Steps To Reproduce:\n\nThe following Node.js command prints the contents of `/etc/passwd` despite having been granted access to `/tmp` only. This relies on the fact that `TextDecoder` produces `Uint8Array` objects that are not `Buffer` objects.\n\n```\n$ node --experimental-permission \\\n        --allow-fs-read=/tmp/ \\\n        -p 'fs.readFileSync(new TextEncoder().encode(\"/tmp/../etc/passwd\"))'\n<Buffer 72 6f 6f 74 3a 78 3a 30 3a 30 3a 3a 2f 72 6f 6f 74 3a 2f 62 69 6e 2f 62 61 73 68 0a 6e 6f 62 6f 64 79 3a 78 3a 36 35 35 33 34 3a 36 35 35 33 34 3a 4e ... 2103 more bytes>\n```\n\n## Supporting Material/References:\n\n* CVE-2023-30584 ([report 1952978](https://hackerone.com/reports/1952978))\n* Commit [205f1e6](https://github.com/nodejs/node/commit/205f1e643e25648173239b2de885fec430268492) prevents CVE-2023-30584 but ignores non-string inputs.\n* CVE-2023-32004 ([report 2038134](https://hackerone.com/reports/2038134))\n* Commit [1f64147](https://github.com/nodejs/node/commit/1f64147eb607f82060e08884f993597774c69280) prevents CVE-2023-32004 but ignores non-`Buffer` objects.\n\n## Patch\n\nI provided a patch, which was merged into Node.js 20 as [commit fa5dae1944](https://github.com/nodejs/node/commit/fa5dae1944).\n\n## Impact\n\nEquivalent to CVE-2023-30584 ([report 1952978](https://hackerone.com/reports/1952978)) and CVE-2023-32004 ([report 2038134](https://hackerone.com/reports/2038134)).",
+  "bounty_amount": "3495.0",
+  "formatted_bounty": "$3,495",
+  "weakness": {
+    "id": 19,
+    "name": "Path Traversal"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2024-01-20T16:26:20.800Z",
+  "allow_singular_disclosure_after": -65852661.78539104,
+  "singular_disclosure_allowed": true,
+  "vote_count": 44,
+  "voters": [
+    "immahdisv",
+    "tniessen",
+    "8910jq",
+    "onerror",
+    "exec_iq",
+    "zy9ard3",
+    "cave14",
+    "neilx",
+    "trib0rg",
+    "hackduty",
+    "and 34 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 83651,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/nodejs/node",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 386983,
+      "category": "team",
+      "content": "Path traversal through path stored in Uint8Array (High) - (CVE-2023-39332)\n\nFull Security Advisory: https://nodejs.org/en/blog/vulnerability/october-2023-security-releases",
+      "updated_at": "2023-12-21T16:25:02.124Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 904892,
+        "username": "kunderkoffler",
+        "name": "Kayla Underkoffler",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2020-01-13T19:26:22.339Z",
+        "url": "https://hackerone.com/kunderkoffler",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

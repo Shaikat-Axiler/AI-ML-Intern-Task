@@ -1,0 +1,119 @@
+{
+  "id": 152717,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNTI3MTc=",
+  "url": "https://hackerone.com/reports/152717",
+  "title": "Race Condition in Definition Votes",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2016-07-21T01:01:36.034Z",
+  "submitted_at": "2016-07-21T01:01:36.034Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cablej",
+    "url": "/cablej",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/859/7fdafea90092a305ae2cb6cec7d43461783abf0c_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 207,
+    "url": "https://hackerone.com/urbandictionary",
+    "handle": "urbandictionary",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/1ZmKRpkDkGAWc3mPyktXfrP4/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/1ZmKRpkDkGAWc3mPyktXfrP4/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Urban Dictionary",
+      "twitter_handle": "urbandictionary",
+      "website": "https://www.urbandictionary.com",
+      "about": "The online dictionary with definitions you write."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-10-29T08:05:34.461Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-09-29T08:05:31.741Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "There exists a race condition vulnerability in definition votes, allowing any user to artificially manipulate the number of up/down votes for a definition by making asynchronous requests to vote. A malicious user can use this method to reach any number of up or down votes for a definition.\n\nSee the attached screenshot for an example.\n\nPOC:\n\n1. Visit any definition.\n2. Intercept a vote of the definition, such as with Chrome Developer tools or BurpSuite.\n3. Make the opposite vote, so you are able to vote again.\n4. Copy the vote request as a curl command, and in the command line execute the command in the format (command) & (command).\n4. Revisit the vote. There will now be 2 votes cast, and a negative number of the opposite votes. This can be repeated by removing your vote and executing the request again.\n\nPlease let me know if you have any questions,\n\nJack",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 106267,
+      "file_name": "ub.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/106/267/0c9c2c0f79ea6369a01a4127a5978d973fcfc155/ub.png?response-content-disposition=attachment%3B%20filename%3D%22ub.png%22%3B%20filename%2A%3DUTF-8%27%27ub.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ732SKX7%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030933Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDdAhFIxco1FU1%2Bs9sy6ohYN9d3t%2FpnKZ1noRLEca%2F8jQIhAMNgvNKHwnoODdZGaxZUApNhOT6Zg5hWNLc1LFj0DfWpKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyb0NSpl5TtCknKGPkqjgULb6%2FMdF%2Bl5Cnrpy1nMbufjLrhSW5RshjFrV0xUVk40%2BLljY8W%2Fnop9qWxB9aiqndcIZk8Fl9h0%2FlLecuEoC8UgbXErY6QY2fz2f0iLmc7G0%2ByuB43jzD7r55RGPFYwwNToQ3cFkocFNgJevoyhvsXuffAaNrAiBlDWkxuttbtSpKXh10QJK2Lc%2FQdnYYH1ShYTZAs5S5NYxG%2FIcvx3iq3ksIQ3M%2FvSqP%2FZ50Q%2F3zjUfCJR3H%2FzaqSR%2FnBG9cF2RxqfqZeQ4xArBTQ1BckUlaf42S%2B3O6z%2B%2F2IR0G083dKc98CHb781J9FiJA2m6I1TTVFogC21IPkQ4M6sgDtYuuPJPxE2FB%2BVx92AJuGfMpYSiHrecvOLTDsAUxpbbTgqomii9spdF7b%2Bt0elzFUr7GPs%2BaL%2FjTpsY67RbslmbcN5nOm1nVjzELSbwvVz4sdRVdI%2FiVQdtqmCJqGGv6%2B4Hbqy9U6W%2Be%2BwW1tR4VvtXe4glDAag6guAOPYwsyl53t%2FehIPMx19rGB9wdj1S8KJchgT1fs%2BIeeHqfnpzkI7fQekkKlC%2Be0xi7ia7i3j332p3pbnG1i6Vu6TPt2QgNLOHyS8werT74NqzBuwxOK2JWE9WxMCXaM97sD1itq4YP7Uqdp7GkvINGEchOVgsFnlT%2FRUY8lv60vJ1UGKcGPdAJrS6XvWFKCHWO9wwliB3Mc3H9zu58c9803%2BiuGgmqxlt%2BOvxv1ajOlA%2FimPCcUDidIqVNjpJEde6xnuwE6qSjg7orysNfdt0Ts9Y7rFjG0%2BzGit4Lqanq6VYXC0zLroFF%2BAKZZaYYTX9Fac8oC4Dpa0YdTiVI%2BLLUrnvrMPRp5XGyUN4fl8n0ZwpfzHal51IYw%2BpLkzAY6sAHLiKe8KvK1bOTZprn2nYmd3Ez8cjijlfHlfzSAavoKV6JArztublpmIOlZzlFhFKxgKl89AOledzjRUlHMQITDAnyQb%2BIEOiLs6M%2F87lVwsINpSzDlsgL3s2kl7FWCekTjhez2x92VmwnLiVqwlFVO0kZhyhAOkqDcMZnqhNIldKN%2Bow6gy9CLoNpMvByuqy%2FsYHlnmcYT6cT9aew49xqnQQCs6RrCHpgvOJOOs9apiQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4d976f406c0729be34514a1c823aa4059d3a2b66af0ec4cfb3ad32427b2f00c8",
+      "file_size": 10332,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-10-29T08:05:31.770Z",
+  "allow_singular_disclosure_after": -262379041.24024922,
+  "singular_disclosure_allowed": true,
+  "vote_count": 15,
+  "voters": [
+    "maxpowersi",
+    "spam404",
+    "shubham_srt",
+    "2026",
+    "eveeez",
+    "rchase",
+    "mr_r3boot",
+    "flex0geek",
+    "japz",
+    "spetr0x",
+    "and 5 more..."
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

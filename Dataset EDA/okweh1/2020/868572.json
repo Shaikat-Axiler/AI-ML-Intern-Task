@@ -1,0 +1,144 @@
+{
+  "id": 868572,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84Njg1NzI=",
+  "url": "https://hackerone.com/reports/868572",
+  "title": "CSRF on https://apps.topcoder.com/wiki/users/editmyprofilepicture.action",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-05-07T22:57:10.893Z",
+  "submitted_at": "2020-05-07T22:57:10.893Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "meryem0x",
+    "url": "/meryem0x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/q8pmp3uer62m3i1t769rk6x9trwe/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 43330,
+    "url": "https://hackerone.com/lab45",
+    "handle": "lab45",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/uss17aubpsiag1df5tlp5mriefid/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/uss17aubpsiag1df5tlp5mriefid/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Lab45",
+      "twitter_handle": "",
+      "website": "http://wipro.com/lab45",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-12-14T16:00:02.165Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-05-19T11:13:18.125Z",
+  "team_member_agreed_on_going_public_at": "2020-12-14T16:00:01.912Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHi :) There is a CSRF on uploading user profile photo and saving it.\n\n## Steps To Reproduce:\nThere is no CSRF token or anything like that on https://apps.topcoder.com/wiki/users/editmyprofilepicture.action . I added the poc html files below. Attacker can upload a new profile photo and update victim's profil photo.\n\nNote: This only works to signed-in users. Because unauthorized users cannot upload attachments. There is a mistake on https://apps.topcoder.com/wiki/login.action now. If you encounter an error, you can login on main site (https://accounts.topcoder.com/member) then try.\n\n## Impact\n\nAn attacker can force other users to change their profile pictures without their knowledge.",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 819923,
+      "file_name": "csrf_upload.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/fdV6VRaZQovJHQoLv97mstnw?response-content-disposition=attachment%3B%20filename%3D%22csrf_upload.html%22%3B%20filename%2A%3DUTF-8%27%27csrf_upload.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234511Z&X-Amz-Expires=2203&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=19841e3fafb3645162f763ea7348f134e0f73ca766b41eff43e75403a3494f94",
+      "file_size": 1989,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 819924,
+      "file_name": "csrf_save.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/q3fyDMB38GmuWB7q5xbcJGst?response-content-disposition=attachment%3B%20filename%3D%22csrf_save.html%22%3B%20filename%2A%3DUTF-8%27%27csrf_save.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234511Z&X-Amz-Expires=2203&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7e6dcf210fbaa45e73bca300700fd0c3dcf318ecc929aa52a91d69eba104847f",
+      "file_size": 1622,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 5,
+  "voters": [
+    "taha",
+    "xsky",
+    "metwallysec",
+    "alsinwar",
+    "z3rod3x"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 37578,
+    "asset_type": "URL",
+    "asset_identifier": "apps.topcoder.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

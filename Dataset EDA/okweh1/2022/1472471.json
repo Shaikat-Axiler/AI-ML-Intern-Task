@@ -1,0 +1,152 @@
+{
+  "id": 1472471,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNDcyNDcx",
+  "url": "https://hackerone.com/reports/1472471",
+  "title": "Xss triggered in Your-store.myshopify.com/admin/apps/shopify-email/editor/****",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2022-02-06T09:48:54.622Z",
+  "submitted_at": "2022-02-06T09:48:54.694Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "danishalkatiri",
+    "url": "/danishalkatiri",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-04-25T11:01:01.398Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-04-25T11:01:01.337Z",
+  "team_member_agreed_on_going_public_at": "2022-04-21T18:55:22.153Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi team,\nI have found `Store` Xss in shopify-email\n\n#Reproduction Instructions /\n1.Configure `shopify-email` for Shopify stores at https://apps.shopify.com/shopify-email\n2.Goto `Your-store.myshopify.com/admin/apps/shopify-email/template-branding` \n3.Change F1607675 with \"><img src=xx onerror=alert(document.domain)> click `Save`.\n4.Now Select any F1607682.\n#██████████\n\n#Proof of Concept\n███\n████\n\n## Impact\n\nStored XSS triggered.",
+  "bounty_amount": "2900.0",
+  "formatted_bounty": "$2,900",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1607675,
+      "file_name": "Store_name.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/a7t6fc5dnmzpgrj6sn9a4w9uhe46?response-content-disposition=attachment%3B%20filename%3D%22Store_name.PNG%22%3B%20filename%2A%3DUTF-8%27%27Store_name.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221459Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1f2ac820bcf10af79b9eb8cc414734b652697ca42b4d24d7ba83f3a0c0cc164e",
+      "file_size": 85324,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1607682,
+      "file_name": "pre-built_template.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/k9zribb9pny3xu25gy15s5murbhn?response-content-disposition=attachment%3B%20filename%3D%22pre-built_template.PNG%22%3B%20filename%2A%3DUTF-8%27%27pre-built_template.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221459Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3f7d9e38d240a059eb386be99a19b617c64712666d1f728a50c357ebb91fa0f4",
+      "file_size": 70428,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 63,
+  "voters": [
+    "bisesh",
+    "n1m0",
+    "tolga",
+    "mrmax4o4",
+    "zy9ard3",
+    "mattberg",
+    "run_win",
+    "imranhudaa",
+    "attackerbhai2003",
+    "h4x0r_dz",
+    "and 53 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.6,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 37198,
+    "asset_type": "OTHER",
+    "asset_identifier": "Shopify Developed Apps",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

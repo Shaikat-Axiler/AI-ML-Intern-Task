@@ -1,0 +1,136 @@
+{
+  "id": 362702,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNjI3MDI=",
+  "url": "https://hackerone.com/reports/362702",
+  "title": "XSS in express-useragent through HTTP User-Agent",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2018-06-06T11:28:49.469Z",
+  "submitted_at": "2018-06-06T11:28:49.469Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "b9b86c2fc8409c628fb3de6",
+    "url": "/b9b86c2fc8409c628fb3de6",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2018-9863"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-07-06T13:34:36.850Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-07-06T13:34:36.730Z",
+  "team_member_agreed_on_going_public_at": "2018-07-06T10:37:28.062Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello, \n\nI would like to report an XSS in express-useragent  module  due  a lack of validating User-Agent header. Please note I already created an [Github issue](https://github.com/biggora/express-useragent/issues/98) and asked for CVE ( [CVE-2018-9863](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9863)). I did not know about Node.js third-party modules on hackerone.\n\n## Description\nexpress-useragent is simple NodeJS/ExpressJS middleware exposing User-Agent details to your application and views. Basically it parses User-Agent and return it in structured JSON format.\n\n## The issue\nwhile parsing User-Agent there are no escaping or sanitization mechanism. User-Agent header is controlled by the user. An attacker can craft a malicious script and inject it through the HTTP header.\n\n## Steps to reproduce\n* git clone https://github.com/biggora/express-useragent \n* cd express-useragent\n* ```node test/http.js```  (an HTTP server should listen on 3000 tcp)\n* ```curl \"http://localhost:3000\" -H 'User-Agent: <script>alert(\"XSS\")</script>' > poc.html```\n* open poc.html with your favorite web browser\n* you should see an alertbox popup \n\n### Proof of concept (screenshots)\n{F305913}\n{F305914}\n\n### Proof of concept with a fix (video) {F305912}\n\n## Mitigation\nCorrectly escape and sanitize user input ( HTTP User-Agent ). Please note I proposed a fix in the video\n\n## Impact\n\nAn attacker could execute javascript code that could lead to XSS.",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 305912,
+      "file_name": "express_useragent_xss.mkv",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/305/912/8c4e45709d9acdfbb5f4a707c76fc698192695a3/express_useragent_xss.mkv?response-content-disposition=attachment%3B%20filename%3D%22express_useragent_xss.mkv%22%3B%20filename%2A%3DUTF-8%27%27express_useragent_xss.mkv&response-content-type=video%2Fx-matroska&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWREVEZO5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022926Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDiMObL34v9fAaIKhp3rzo3omHuT0K86TgqTgNFfLUGgAiAJEf9SNIAhEAuyTbnWVKCjPqMzdyrRWoyviuOCMqqXEyq7BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMWqzZag2zLDgWkoSQKo8FhBlzba%2FseBcANfhlpzQgtuzgbVVWK26CuREUrk2kYFSFCd1eP8c2rXv5XAYUm%2FUPBkYoLyUTQzxEaNGrIN0yU7b6gXslpSNmm7gZUbLhARwV9o7ks8V8CM5VE13Zj4ST%2FX7HgIg4YnvZ3%2F%2FbXbHuJQ412BDXQY6QSMqFN3UqP4jxk%2BNaKcTH1B2APravH0Ni7YjcK2kkQ%2FEYwuQaZt6JLmzuZuJNrNzGM3Y1uV3eEmojWMPdIVMKjYzFmVFuc1P90ggtODTnQkZjgjF7Y7meh9ufKLPpUhZZ6hOnq9EWOMPZCOw5RZ6XcxjtbwRVO2K8yd2uRmaPhQSU72TWHnBdvpTG%2Fd2oW5FHCJmhIqAdfmLEvyTsQU4IA4PDNR0SKEU5YIFoLrznoY4JQixV82nmZqczPERK2vxP0qftgXBSzsiormAlzswDeqNn3jq0R4w0m6m9TrpMZ0kUwckbddqAaWoMy7gjxb%2B%2Fq7YX7tk3cbnS8wttaXWIK4%2B9XgUAb0CJvOPCMfnka45tuBQNoHcj9N73A0MNhwaqe9m2Tp6yvL4s4z3g8UWJCoOE5LhIlIcr3b1MI3eML9cSt8KG%2B0GVbUvwlFxXeBO6%2BQ2LPS85hM0cORrCzwYMG4u8Xu0fWbkeZJbmxgL42l%2Fro%2FQi9rt%2B76isJKHx%2FmAkJ6s87wcjqlkjzNVyxkw2PDWk1rymGqjofsWEHPbcunnM6OzhhPQdrDE5lRN93m34fKj6SwiiX5PfO6wNxmpjT8fhhHJdDG1TKFygS5YKO0YTqXUNUdwxLcM7v8tgK%2FyIrFg68GQIZ%2FmLRcAPZqKEjrQAEVcWiJMl7mN3kgkYRbOeartlWbzopVe5kuBotUIrcUcn3x%2Fo%2FzDl6%2BPMBjqyAUoTsKQ408LGNOgulHnL1wyPEzTWxl3XQytE3mwP0gTOAj1Umt8FEERRChmvCVHE7A8rOCnz7tDx0skWUTnfyJKz7MRNHrfovtAFKd5ZmpBXPYKFkt0mipBM%2BKLD31DqupT%2FoPUdON%2BbdEUakrvTqfZd%2BYgByEEht9RW8XCzSS9DpUb4%2F%2F9wdBGeu6xhDJOSV%2BZllN9Ew6Ux%2BY9e%2F3xguKJVh6KMLH6F%2BdqpEDGByRPcC6g%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=64eb5ad3c9c597f7b59f2f1ad3bcb3465f9d69ba08dd0f33c73061f137fab4e6",
+      "file_size": 10922503,
+      "type": "video/x-matroska",
+      "moderated": null
+    },
+    {
+      "id": 305913,
+      "file_name": "Screenshot_from_2018-04-09_18-50-35_(1).png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/305/913/2cf634e9d3228e78c63df9b9457467db928168b8/Screenshot_from_2018-04-09_18-50-35_%281%29.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2018-04-09_18-50-35_%25281%2529.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2018-04-09_18-50-35_%25281%2529.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWREVEZO5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022926Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDiMObL34v9fAaIKhp3rzo3omHuT0K86TgqTgNFfLUGgAiAJEf9SNIAhEAuyTbnWVKCjPqMzdyrRWoyviuOCMqqXEyq7BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMWqzZag2zLDgWkoSQKo8FhBlzba%2FseBcANfhlpzQgtuzgbVVWK26CuREUrk2kYFSFCd1eP8c2rXv5XAYUm%2FUPBkYoLyUTQzxEaNGrIN0yU7b6gXslpSNmm7gZUbLhARwV9o7ks8V8CM5VE13Zj4ST%2FX7HgIg4YnvZ3%2F%2FbXbHuJQ412BDXQY6QSMqFN3UqP4jxk%2BNaKcTH1B2APravH0Ni7YjcK2kkQ%2FEYwuQaZt6JLmzuZuJNrNzGM3Y1uV3eEmojWMPdIVMKjYzFmVFuc1P90ggtODTnQkZjgjF7Y7meh9ufKLPpUhZZ6hOnq9EWOMPZCOw5RZ6XcxjtbwRVO2K8yd2uRmaPhQSU72TWHnBdvpTG%2Fd2oW5FHCJmhIqAdfmLEvyTsQU4IA4PDNR0SKEU5YIFoLrznoY4JQixV82nmZqczPERK2vxP0qftgXBSzsiormAlzswDeqNn3jq0R4w0m6m9TrpMZ0kUwckbddqAaWoMy7gjxb%2B%2Fq7YX7tk3cbnS8wttaXWIK4%2B9XgUAb0CJvOPCMfnka45tuBQNoHcj9N73A0MNhwaqe9m2Tp6yvL4s4z3g8UWJCoOE5LhIlIcr3b1MI3eML9cSt8KG%2B0GVbUvwlFxXeBO6%2BQ2LPS85hM0cORrCzwYMG4u8Xu0fWbkeZJbmxgL42l%2Fro%2FQi9rt%2B76isJKHx%2FmAkJ6s87wcjqlkjzNVyxkw2PDWk1rymGqjofsWEHPbcunnM6OzhhPQdrDE5lRN93m34fKj6SwiiX5PfO6wNxmpjT8fhhHJdDG1TKFygS5YKO0YTqXUNUdwxLcM7v8tgK%2FyIrFg68GQIZ%2FmLRcAPZqKEjrQAEVcWiJMl7mN3kgkYRbOeartlWbzopVe5kuBotUIrcUcn3x%2Fo%2FzDl6%2BPMBjqyAUoTsKQ408LGNOgulHnL1wyPEzTWxl3XQytE3mwP0gTOAj1Umt8FEERRChmvCVHE7A8rOCnz7tDx0skWUTnfyJKz7MRNHrfovtAFKd5ZmpBXPYKFkt0mipBM%2BKLD31DqupT%2FoPUdON%2BbdEUakrvTqfZd%2BYgByEEht9RW8XCzSS9DpUb4%2F%2F9wdBGeu6xhDJOSV%2BZllN9Ew6Ux%2BY9e%2F3xguKJVh6KMLH6F%2BdqpEDGByRPcC6g%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e3c2cf3954e9ed3ad0f86e4252fff6ec06a5963ef8860add56b3d092ffcd0056",
+      "file_size": 16277,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 305914,
+      "file_name": "Screenshot_from_2018-04-09_18-51-21_(1).png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/305/914/8773f06a8e47477582c406f804456e7c06e028cd/Screenshot_from_2018-04-09_18-51-21_%281%29.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2018-04-09_18-51-21_%25281%2529.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2018-04-09_18-51-21_%25281%2529.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWREVEZO5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022926Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDiMObL34v9fAaIKhp3rzo3omHuT0K86TgqTgNFfLUGgAiAJEf9SNIAhEAuyTbnWVKCjPqMzdyrRWoyviuOCMqqXEyq7BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMWqzZag2zLDgWkoSQKo8FhBlzba%2FseBcANfhlpzQgtuzgbVVWK26CuREUrk2kYFSFCd1eP8c2rXv5XAYUm%2FUPBkYoLyUTQzxEaNGrIN0yU7b6gXslpSNmm7gZUbLhARwV9o7ks8V8CM5VE13Zj4ST%2FX7HgIg4YnvZ3%2F%2FbXbHuJQ412BDXQY6QSMqFN3UqP4jxk%2BNaKcTH1B2APravH0Ni7YjcK2kkQ%2FEYwuQaZt6JLmzuZuJNrNzGM3Y1uV3eEmojWMPdIVMKjYzFmVFuc1P90ggtODTnQkZjgjF7Y7meh9ufKLPpUhZZ6hOnq9EWOMPZCOw5RZ6XcxjtbwRVO2K8yd2uRmaPhQSU72TWHnBdvpTG%2Fd2oW5FHCJmhIqAdfmLEvyTsQU4IA4PDNR0SKEU5YIFoLrznoY4JQixV82nmZqczPERK2vxP0qftgXBSzsiormAlzswDeqNn3jq0R4w0m6m9TrpMZ0kUwckbddqAaWoMy7gjxb%2B%2Fq7YX7tk3cbnS8wttaXWIK4%2B9XgUAb0CJvOPCMfnka45tuBQNoHcj9N73A0MNhwaqe9m2Tp6yvL4s4z3g8UWJCoOE5LhIlIcr3b1MI3eML9cSt8KG%2B0GVbUvwlFxXeBO6%2BQ2LPS85hM0cORrCzwYMG4u8Xu0fWbkeZJbmxgL42l%2Fro%2FQi9rt%2B76isJKHx%2FmAkJ6s87wcjqlkjzNVyxkw2PDWk1rymGqjofsWEHPbcunnM6OzhhPQdrDE5lRN93m34fKj6SwiiX5PfO6wNxmpjT8fhhHJdDG1TKFygS5YKO0YTqXUNUdwxLcM7v8tgK%2FyIrFg68GQIZ%2FmLRcAPZqKEjrQAEVcWiJMl7mN3kgkYRbOeartlWbzopVe5kuBotUIrcUcn3x%2Fo%2FzDl6%2BPMBjqyAUoTsKQ408LGNOgulHnL1wyPEzTWxl3XQytE3mwP0gTOAj1Umt8FEERRChmvCVHE7A8rOCnz7tDx0skWUTnfyJKz7MRNHrfovtAFKd5ZmpBXPYKFkt0mipBM%2BKLD31DqupT%2FoPUdON%2BbdEUakrvTqfZd%2BYgByEEht9RW8XCzSS9DpUb4%2F%2F9wdBGeu6xhDJOSV%2BZllN9Ew6Ux%2BY9e%2F3xguKJVh6KMLH6F%2BdqpEDGByRPcC6g%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a6a33046fe7fd34d569ce5177cfe94f2ebc6f3c8dbbd0afdcaa3c9175e551d3b",
+      "file_size": 49524,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 3,
+  "voters": [
+    "b9b86c2fc8409c628fb3de6",
+    "ozymanberg",
+    "0xcyber-pirate"
+  ],
+  "structured_scope": {
+    "databaseId": 11571,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "express-useragent",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

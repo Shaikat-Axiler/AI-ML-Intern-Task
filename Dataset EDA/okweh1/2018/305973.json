@@ -1,0 +1,121 @@
+{
+  "id": 305973,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMDU5NzM=",
+  "url": "https://hackerone.com/reports/305973",
+  "title": "Inappropriately parsing HTTP response leads to PHP segment fault!",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-01-17T17:29:19.969Z",
+  "submitted_at": "2018-01-17T17:29:19.969Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "orange",
+    "url": "/orange",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/051/3495315121602d0de9c4f6728fef03bc3b41d3fe_original.jpeg/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T011602Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=def47e764088b9c497ccd9a67296efaee0c6a04683f2694b566a9079211826fb",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T011602Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6c7ef11a2d75845aa4fdcac3342731dc81b2b3e2dab3dd3afe64e78dc388afaa"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-11-12T09:18:47.648Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-10-13T09:18:44.299Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Description\n-----\nA NULL Pointer Deference in parsing HTTP header. It is very easy to trigger this segment fault and may be vulnerable in some scenarios.\n\n\n　\n## Original bug report\n-----\n- https://bugs.php.net/bug.php?id=75535\n\n　\n## Note\n-----\n- None\n\n　\nThanks :)\n\n## Impact\n\nSegment fault",
+  "bounty_amount": "500.0",
+  "formatted_bounty": "$500",
+  "weakness": {
+    "id": 51,
+    "name": "NULL Pointer Dereference"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2019-11-12T09:18:44.405Z",
+  "allow_singular_disclosure_after": -198086238.15886748,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "matrixsoftsec",
+    "orange",
+    "geeknik",
+    "eveeez",
+    "cr4xerbik4sh",
+    "zackyrest06"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 84120,
+    "asset_type": "OTHER",
+    "asset_identifier": "PHP",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

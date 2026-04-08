@@ -1,0 +1,140 @@
+{
+  "id": 808755,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84MDg3NTU=",
+  "url": "https://hackerone.com/reports/808755",
+  "title": "Mismatch between frontend and backend validation via `ban_researcher` leads to H1 support and hackers email spam",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-03-02T14:41:30.367Z",
+  "submitted_at": "2020-03-02T14:41:30.367Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "haxta4ok00",
+    "url": "/haxta4ok00",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/o042lvw70gzlwr2g2fp2rzzek78y/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-05-15T17:10:04.821Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-05-15T17:10:04.769Z",
+  "team_member_agreed_on_going_public_at": "2020-05-15T17:00:05.957Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nWe found a mismatch between the frontend and backend validation when using the ban researcher feature, available for program customer.\n\n**Description:**\nWhen a program customer issues a ban, an automatic email will be send both to the banned user and H1 support. The problem is that fronted will not allow us to make the request again as the button will be inactive. However the backend allows us to repeat the request many times. Thus, we can send a lot of messages to the banned user and to the H1 platform (moderators), although this should only be allowed once . This report is similar #156948 and #159512 where @andrewone says : `it does demonstrate a disconnect between our frontend and backend validation, which should not happen in the first place.`\n\n## Steps To Reproduce:\n\n1) As the user we want to ban, submit a test report\n2) As a manager of the program, go to the report and click `report abuse` => click `ban reporter`\n3) Intercept the request\n\nhttps://hackerone.com/reports/808343/ban_researcher\n\nPOST:\nX-CSRF-Token: you_token_:)`\n\nmessage_to_hackerone=test\"><h1>asd&message_to_researcher=test\"><h1>asd\n\n3.1) After `ban report` , We will see an inactive button\n{F734385}\n\n4) Re-issue the request multiple times\n5) As the banned user, check your inbox - you should have received multiple emails, as the support did.\n\nThanks, @haxta4ok00\n\n## Impact\n\nSpam banned users and H1",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 734385,
+      "file_name": "disabled_button.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/k6PNRFb6Vjww3ywkyHBt5NYy?response-content-disposition=attachment%3B%20filename%3D%22disabled_button.png%22%3B%20filename%2A%3DUTF-8%27%27disabled_button.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZUHQDDBU%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003318Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDq9%2B4RAGto8X9IFtGN%2FUICC%2Fo63ftLJNQCsYnDIVEFMgIhAIcdMmUcGL5uSa96zhv2F9zEifJta95dNpaVfxlVMvMEKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy1k%2Felb61VxVZPsL0qjgVnIOqoDZ%2B3Wl3QbE56JwHpdWMct1MaC9JR7O2LSRZgcltWTboD2wpZ4ERdGo3ukus%2Bstq0jQEo%2FlWOXrgJh%2B5w9Mijp8fZC04NZ7qzTNDU7%2BvHI1bJM7aENXsYP%2BZ08waL4oonS12NPeTFvYtK%2FNxpzevYOubcQpHisn5rHp0tdmafeOHCDW2knAlpqITFwqwc3Vvn41LJPjOs6%2BU%2BgCj8wvimfQYLv7AY%2B5QF2xQ%2BQQXOw0Yz9NpvQrqUBkueOCIHCenqOicTyybCb3rNwcEr6UYVnk4CiRl4LhbFinNEpQS3SHWPII1CG0cfueRJXfkmsBOJhsvDI1jsmGlCjcsu7NhxzXedbMu%2F0KRfUrlckjbIVNJmNqgu67VzouSU0%2Fg%2FH5f5xUQt4S4qGN8hf1J3PSmfFvtQaHtv2bCBU%2B5JyzlEDh41P7xrQkRHdRM%2Bbg6kN4VW0dqzVfSuPMt2lbTPY8I%2Bv%2BZomIPEwYNheqTlPln04Fjf8%2BBcTRRLPGE83zugKB4DuOQYu%2Fp2vkg8cb6dRxb1trYaDfV6DUxOBlqzd4ezRlMMDdUPhtBgxOXvf%2FAsHBT1oCoB1fQIqCSCaUbf20n0Xyvj4SsJOWDEk0%2Btt%2B1LA5%2FRuXEvhCtGeTYfbFAIn5xWS1AvYnzOautiQtDlgNCqDzLsR9WzpV1Ugle%2BI8zUYWDQw1Upv1B0yz7MH6ymCQ2I7StKJyUKCfxKliiFWWQshikPtcLWbXReLNy0sjyc0DNZdQb%2B9ixotEitn8pHvcX7XYV%2Ba%2FBsFZ7jmLH0ZMkh2dxo8NL%2FfhIX8f%2BKGTxD6FHi8KiCYqRAjYx1GugkoviNp%2FdMqYeZ6tpJCFSlVoqvOa6QyrEwqjI1mzEws%2B7jzAY6sAEE4SF3zqH7Co%2FE7EJDoly44npupwttbyIlMdu%2FRWwUNnfToUvSUaO2%2FR%2FV4pCKHr1J8brlthLGSCG3qS0i3efVihCMGK5hjr2OTCAukDeKcmusitc1RagUh3tz%2BqPVx7ufFNpZIav9YGIiiKW96aqw%2BsX2COI4Lq7a092H3rXOKxFX%2BON1xi%2F0PVoZJXif7F25BJ7OtjNKkKL0eu8B%2F7wB%2BfIQRAM2pCb0nO4dRtV4mg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=dce73989df987be78bb00a65f6068a05e3314e56f6bf9384e488607395ec77ba",
+      "file_size": 25028,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-06-14T17:00:06.119Z",
+  "allow_singular_disclosure_after": -179479992.73721606,
+  "singular_disclosure_allowed": true,
+  "vote_count": 7,
+  "voters": [
+    "hunter",
+    "sameerphad72",
+    "bitsscrambler",
+    "mohaned0101",
+    "thalaivar304",
+    "xsstestov",
+    "since2003"
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.5,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 3,
+    "asset_type": "URL",
+    "asset_identifier": "hackerone.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

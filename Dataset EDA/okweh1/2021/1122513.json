@@ -1,0 +1,131 @@
+{
+  "id": 1122513,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTIyNTEz",
+  "url": "https://hackerone.com/reports/1122513",
+  "title": "Stored Cross-site Scripting on devicelock.com/forum/",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-03-10T18:04:32.499Z",
+  "submitted_at": "2021-03-10T18:04:32.523Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "h4x0r_dz",
+    "url": "/h4x0r_dz",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/bat3qom9hjs5ejngwi4im9n4n8zd/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13428,
+    "url": "https://hackerone.com/acronis",
+    "handle": "acronis",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Acronis",
+      "twitter_handle": "Acronis",
+      "website": "https://www.acronis.com",
+      "about": "Complete integrated cybersecurity and data protection for MSPs and IT teams"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-02-08T10:49:21.823Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-01-15T15:05:48.092Z",
+  "team_member_agreed_on_going_public_at": "2022-02-08T10:49:21.651Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\n\nHello, @acronis Team I hope you all doing well.\n\nI just found A Stored Cross-site Scripting on devicelock.com/forum/ by changing the ***City*** value on https://www.devicelock.com/bitrix/admin/user_edit.php? to HTML/javascript code and lead to Stored Cross-site Scripting.\n\n\n  1. go to https://www.devicelock.com/forum/view_profile.php?register=yes  and create a new account \n  1. go to https://www.devicelock.com/bitrix/admin/user_edit.php? and click on **Personal information** and in `City` input put and xss payload like: `<img src=x onerror=alert(document.cookie)>` and click on apply.\n  1. Go to https://www.devicelock.com/forum/view_profile.php?UID=<your_user_id> and change `<your_user_id>` to your id \n\n## POC\nhttps://www.devicelock.com/forum/view_profile.php?UID=28349\n\n{F1225664}\n\n## Impact\n\nStored XSS.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1225664,
+      "file_name": "2021-03-10_18-58-16.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/hj2wsmtdixqxj4vev9we300j7rb8?response-content-disposition=attachment%3B%20filename%3D%222021-03-10_18-58-16.mp4%22%3B%20filename%2A%3DUTF-8%27%272021-03-10_18-58-16.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T222442Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=dd284e0dbee2600b9ae198cf79490929594caa280db660f517eb917fa9c9660d",
+      "file_size": 5713614,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 65,
+  "voters": [
+    "napkin",
+    "x7q",
+    "mr-medi",
+    "ertugrul",
+    "alp",
+    "marvelmaniac",
+    "theelgo64",
+    "fqdn",
+    "zy9ard3",
+    "ali_shehab",
+    "and 55 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 63087,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.devicelock.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

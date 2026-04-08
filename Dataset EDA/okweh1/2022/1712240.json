@@ -1,0 +1,141 @@
+{
+  "id": 1712240,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNzEyMjQw",
+  "url": "https://hackerone.com/reports/1712240",
+  "title": "Server-side request forgery  (ssrf)",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "medium",
+  "readable_substate": "N/A",
+  "created_at": "2022-09-26T10:01:39.038Z",
+  "submitted_at": "2022-09-26T10:01:39.113Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "raja404",
+    "url": "/raja404",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2buok4l3fompndsboo7gr5tfk8v0/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 545,
+    "url": "https://hackerone.com/yelp",
+    "handle": "yelp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Yelp",
+      "twitter_handle": "",
+      "website": "https://www.yelp.com",
+      "about": "Connecting people to great local businesses in communities around the world."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-09-28T07:54:46.127Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-09-28T07:54:46.088Z",
+  "team_member_agreed_on_going_public_at": "2022-09-27T23:58:05.755Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "*.yelp-support.com\n\n## Summary:\n\nServer-side request forgery  \n  \n## Platform(s) Affected:\n\nwww.yelp-support.com\n\n## Steps To Reproduce:\n \n1. If you visit this site, attackers could try to steal information like your passwords, emails, or credit card details.\n\n2. your  server has redirect to malicious website  \n\n3. i am Referer: https://evil.com/    and  your don't  check  server properly the write website \n\n#Steps\n\n 1 .  i am open  assetfinder  to subdomain enumeration on this domain : yelp-support.com\n\n2. i am open in this subdomain in Burp suite :  www.yelp-support.com\n \n3. my Browser Request: \n\nGET /static/111213/js/perf/stub.js HTTP/1.1\nHost: www.yelp-support.com\nCookie: CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1\nSec-Ch-Ua: \"Chromium\";v=\"105\", \"Not)A;Brand\";v=\"8\"\nSec-Ch-Ua-Mobile: ?0\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.102 Safari/537.36\nSec-Ch-Ua-Platform: \"Linux\"\nAccept: */*\nSec-Fetch-Site: same-origin\nSec-Fetch-Mode: no-cors\nSec-Fetch-Dest: script\n#Referer: https://evil.com/                           --------- i am  change this link ------ \nAccept-Encoding: gzip, deflate\nAccept-Language: en-GB,en-US;q=0.9,en;q=0.8\nConnection: close\n\n4. and  your server Response:\n\n\nHTTP/1.1 200 OK\nDate: Mon, 26 Sep 2022 08:14:39 GMT\nContent-Type: application/x-javascript\nConnection: close\nStrict-Transport-Security: max-age=63072000; includeSubDomains\nCache-Control: public,max-age=10368000\nExpires: Tue, 24 Jan 2023 08:14:39 GMT\nLast-Modified: Thu, 18 Dec 2014 19:28:42 GMT\nVary: Accept-Encoding\nServer: sfdcedge\nX-SFDC-Request-Id: 78779c5a3d8ac507638c3b6c783c3ce8\nContent-Length: 1385\n\nthis[\"Perf\"]&&void 0!==this[\"Perf\"].enabled||(function(window){'use strict';var a={DEBUG:{name:\"DEBUG\",value:1},INTERNAL:{name:\"INTERNAL\",value:2},PRODUCTION:{name:\"PRODUCTION\",value:3},DISABLED:{name:\"DISABLED\",value:4}};\nwindow.PerfConstants={PAGE_START_MARK:\"PageStart\",PERF_PAYLOAD_PARAM:\"bulkPerf\",MARK_NAME:\"mark\",MEASURE_NAME:\"measure\",MARK_START_TIME:\"st\",MARK_LAST_TIME:\"lt\",PAGE_NAME:\"pn\",ELAPSED_TIME:\"et\",REFERENCE_TIME:\"rt\",Perf_LOAD_DONE:\"loadDone\",STATS:{NAME:\"stat\",SERVER_ELAPSED:\"internal_serverelapsed\",DB_TOTAL_TIME:\"internal_serverdbtotaltime\",DB_CALLS:\"internal_serverdbcalls\",DB_FETCHES:\"internal_serverdbfetches\"}};window.PerfLogLevel=a;var b=window.Perf={currentLogLevel:a.DISABLED,mark:function(){return b},endMark:function(){return b},updateMarkName:function(){return b},measureToJson:function(){return\"\"},toJson:function(){return\"\"},setTimer:function(){return b},setServerTime:function(){return b},toPostVar:function(){return\"\"},getMeasures:function(){return[]},getBeaconData:function(){return null},setBeaconData:function(){},clearBeaconData:function(){},removeStats:function(){},stat:function(){return b},getStat:function(){return-1},\nonLoad:function(){},startTransaction:function(){return b},endTransaction:function(){return b},updateTransaction:function(){return b},isOnLoadFired:function(){return!1},util:{setCookie:function(){}},enabled:!1};})(this);\n\n \n5. successfully redirect to your server \n\n\n\n## Supporting Material/References:  \n\n1. assetfinder\n\n2. Burp suite\n\n## Impact\n\n1. If you visit this site, attackers could try to steal information like your passwords, emails, or credit card details.\n\n2.  your  server has redirect to malicious website  \n\n3. i am continue to visit this so your server will crash  \n\n4. your website access to malicious website",
+  "weakness": {
+    "id": 68,
+    "name": "Server-Side Request Forgery (SSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1954770,
+      "file_name": "Screenshot_from_2022-09-26_01-06-51.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/6r698tc5et9dgcebtjre0ykokt7d?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2022-09-26_01-06-51.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2022-09-26_01-06-51.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T214958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=802272049e3e5532652a732f0bca1f2f047f801fe87cbd3c56dc5c925f494141",
+      "file_size": 145012,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1954771,
+      "file_name": "Screenshot_from_2022-09-26_01-47-11.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/svjvj6d4ylyipmbtm6lb8qj8i12v?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2022-09-26_01-47-11.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2022-09-26_01-47-11.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T214958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ec50ae1400f0cbf974ee240535b53773b557cae4d28e0826450918c6bb99f88a",
+      "file_size": 166998,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1954772,
+      "file_name": "Screenshot_from_2022-09-26_01-54-34.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/gw6egdxcvqt5iyew2b4a8nhr3ybt?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2022-09-26_01-54-34.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2022-09-26_01-54-34.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T214958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9b1ada7410fd9566bc1f7983a8a34c3f85df91cc28bf2cb4c138346b1b943086",
+      "file_size": 139114,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 5,
+  "voters": [
+    "k0ns0l",
+    "mr_negative",
+    "shivammusic",
+    "destinedtohack",
+    "qweasdzxcvbn"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 43922,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.yelp-support.com",
+    "max_severity": "high"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

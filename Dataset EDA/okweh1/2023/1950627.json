@@ -1,0 +1,134 @@
+{
+  "id": 1950627,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xOTUwNjI3",
+  "url": "https://hackerone.com/reports/1950627",
+  "title": "CVE-2023-28321: IDN wildcard match",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2023-04-17T16:54:15.242Z",
+  "submitted_at": "2023-04-17T16:54:15.429Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kurohiro",
+    "url": "/kurohiro",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-28321"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2023-05-18T09:04:02.082Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-05-18T09:04:01.989Z",
+  "team_member_agreed_on_going_public_at": "2023-05-17T09:52:12.605Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\ncurl /libcurl uses wildcards for validation during TLS communication, even if the hostname is an IDN.\nEven if wildcards are present in the CN/SAN of the certificate, they must not be used to match if the hostname is an IDN.\nThis is described in [RFC-6125, section 6.4.3.][RFC]\n[RFC]: https://datatracker.ietf.org/doc/html/rfc6125#section-6.4.3\nYou probably know that.\nHowever, there was a problem with the implementation.\n`lib/vtls/hostcheck.c` in the function  'hostmatch' on lines 100-106.\n\n```\n  /* We require at least 2 dots in the pattern to avoid too wide wildcard\n     match. */\n  pattern_label_end = memchr(pattern, '.', patternlen);\n  if(!pattern_label_end ||\n     (memrchr(pattern, '.', patternlen) == pattern_label_end) ||\n     strncasecompare(pattern, \"xn--\", 4))\n    return pmatch(hostname, hostlen, pattern, patternlen);\n```\nI think `strncasecompare(pattern, \"xn--\", 4))` is `strncasecompare(hostname, \"xn--\", 4))`.\n`pattern` is a value that contains wildcards because it is CN/SAN.\nIn other words, it will not match \"xn--\" because it will be a string containing wildcards.\n\n## Steps To Reproduce:\n  1. Create a wildcard certificate.As an example, attach a certificate and private key with CN value of `x*.example.local`. {F2298301} {F2298300}\n  2. `openssl s_server -accept 443 -cert server.crt -key server.key -www`\n  3. Modify hosts so that the name resolution result of `xn--l8j.example.local‘ is the IP of your machine in order to perform the test in the local environment.\n4. `curl https://%E3%81%82.example.local  --cacert server.crt`\n\nWhen the above is executed, the communication succeeds even though it should result in a validation error.\n\n## Impact\n\nImproper Validation of Certificate with Host Mismatch.",
+  "weakness": {
+    "id": 28,
+    "name": "Improper Certificate Validation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2298300,
+      "file_name": "server.key",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/iwoiekqj89qs92xc72dpq1lf7gqb?response-content-disposition=attachment%3B%20filename%3D%22server.key%22%3B%20filename%2A%3DUTF-8%27%27server.key&response-content-type=application%2Fx-x509-key%3Bformat%3Dpem&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQX7T3DB4I%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211901Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDBX6iSzaFyfvzFBbW%2BGR%2FbsiUdRGS2ZFlDPnz%2FzdvBIAIhAMkk2NKpZXyT4sf%2BkzyB8mv5zVRy51CGaZ5rhrUtG9F8KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyleY3yfrYFv8CwslgqjgUcarpVSwKq6L3q1FQNWjWPoFOsd7DtpB8P75iLY9Ndz%2Bl0TJTy%2FPtXppzIFKgsB74HwuG9V8I%2BB0ql%2FT5Efif2TP0lL%2BLSwYPu1iH%2BCMBYitS6FbPeeZCHxXGIP7qLklsYEbNrP5TnBfjNyAvUCFo0rvsQlbRTV5imgTy2RC59HsPadkYS0m9qbT4BpGP%2FfSpMXvkd5Ypmfwq8LSUlDL%2BvHlKRQi%2B3XkUd80q6eG1Af1col5%2FV9df6v2I%2Be%2FaRVV8lYx1iI%2BdwJSupnd4AzAJXbxPMGIG%2BIUTmXmkeQLrOC95V0Jh17sy1Kk4%2FJjMdIXb7MZAn9TlhlsL1Izy7VwPpzLStTNSY4UQ1d3DqQNhiIu%2FXeqcgqJntEKp6Ed1%2F1rB4XGEldWdhdOsY9w1A7SaKcSIkksewNNiHMAfflenIJ39Wi%2BXyWpXO2UGmuRy3zjkp28DjKgl%2FUJBKFhKClqOGS1CrfrBsEdfYqV1dNCpEJ%2FxZjVeVsyMYHgfgzoo3hp4E%2BVgGKKFtg0uzwLGP23fMfpgj%2BYxbUZNM1VEMUOfkIwRD536Jz8an62zAD%2FZeGs2JQ86aBg5OwVKPRflKyBGi8d%2FRn9X1M92uKzzF4%2BYRRiitumnMFmAf9MSGk%2BkVcMhX5PxqIx5S6y6M%2Fg2DZgzQKKwaYmWOerc%2FYDWYeqPYQbXySJaAQjMGg3i5bM3ZK4YGfCDVzxiplySsUPHUcppahytQkWyqvV%2FZO09z%2F3aeNTdalp3DuiMbKfKSQADpAyZg7vY9Swy4k3%2BQKi9TeefvHroZxAZTYWSepxrv7PlZ3rffrme3kRmPL4%2Bxcrb3kJqaMTXVLASYvekxhl3LXIpjwzDYDpdFDI2TNXDSz3YwmbvizAY6sAEeq828T%2FEuqwfGilgVyCOWvJhvVOuJFIHgfI24UuSLmWGnMTFxzS1lJcV9Izp6xVpq%2Bs%2BX2ycNlSdtweuqmey65nNkAS9bb53v9dmn8SxxZCCEA8kph2cwqDWhQYhaJRLS4pVOaDV%2FnQCJ8gj2RqAGWwdbXLvPic8fEIc%2FdXNISWWBwrYvtuYd06H%2BpeOWRCikAOWNtGROiXSsGD4WgmSskq9closLgvwiQLQ72HCISg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=937b11e890b860a489a66990316820ca8c695fc7c5e6bd539d2499ba5aad2f8c",
+      "file_size": 1704,
+      "type": "application/x-x509-key;format=pem",
+      "moderated": null
+    },
+    {
+      "id": 2298301,
+      "file_name": "server.crt",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bc64sltv6h3b4p29wjo79li3hs89?response-content-disposition=attachment%3B%20filename%3D%22server.crt%22%3B%20filename%2A%3DUTF-8%27%27server.crt&response-content-type=application%2Fx-x509-ca-cert&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQX7T3DB4I%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211901Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDBX6iSzaFyfvzFBbW%2BGR%2FbsiUdRGS2ZFlDPnz%2FzdvBIAIhAMkk2NKpZXyT4sf%2BkzyB8mv5zVRy51CGaZ5rhrUtG9F8KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyleY3yfrYFv8CwslgqjgUcarpVSwKq6L3q1FQNWjWPoFOsd7DtpB8P75iLY9Ndz%2Bl0TJTy%2FPtXppzIFKgsB74HwuG9V8I%2BB0ql%2FT5Efif2TP0lL%2BLSwYPu1iH%2BCMBYitS6FbPeeZCHxXGIP7qLklsYEbNrP5TnBfjNyAvUCFo0rvsQlbRTV5imgTy2RC59HsPadkYS0m9qbT4BpGP%2FfSpMXvkd5Ypmfwq8LSUlDL%2BvHlKRQi%2B3XkUd80q6eG1Af1col5%2FV9df6v2I%2Be%2FaRVV8lYx1iI%2BdwJSupnd4AzAJXbxPMGIG%2BIUTmXmkeQLrOC95V0Jh17sy1Kk4%2FJjMdIXb7MZAn9TlhlsL1Izy7VwPpzLStTNSY4UQ1d3DqQNhiIu%2FXeqcgqJntEKp6Ed1%2F1rB4XGEldWdhdOsY9w1A7SaKcSIkksewNNiHMAfflenIJ39Wi%2BXyWpXO2UGmuRy3zjkp28DjKgl%2FUJBKFhKClqOGS1CrfrBsEdfYqV1dNCpEJ%2FxZjVeVsyMYHgfgzoo3hp4E%2BVgGKKFtg0uzwLGP23fMfpgj%2BYxbUZNM1VEMUOfkIwRD536Jz8an62zAD%2FZeGs2JQ86aBg5OwVKPRflKyBGi8d%2FRn9X1M92uKzzF4%2BYRRiitumnMFmAf9MSGk%2BkVcMhX5PxqIx5S6y6M%2Fg2DZgzQKKwaYmWOerc%2FYDWYeqPYQbXySJaAQjMGg3i5bM3ZK4YGfCDVzxiplySsUPHUcppahytQkWyqvV%2FZO09z%2F3aeNTdalp3DuiMbKfKSQADpAyZg7vY9Swy4k3%2BQKi9TeefvHroZxAZTYWSepxrv7PlZ3rffrme3kRmPL4%2Bxcrb3kJqaMTXVLASYvekxhl3LXIpjwzDYDpdFDI2TNXDSz3YwmbvizAY6sAEeq828T%2FEuqwfGilgVyCOWvJhvVOuJFIHgfI24UuSLmWGnMTFxzS1lJcV9Izp6xVpq%2Bs%2BX2ycNlSdtweuqmey65nNkAS9bb53v9dmn8SxxZCCEA8kph2cwqDWhQYhaJRLS4pVOaDV%2FnQCJ8gj2RqAGWwdbXLvPic8fEIc%2FdXNISWWBwrYvtuYd06H%2BpeOWRCikAOWNtGROiXSsGD4WgmSskq9closLgvwiQLQ72HCISg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f59f37e2ee38f4637138e1447d36ea763fb8adf47136e3e24a51406e92cbdfd3",
+      "file_size": 1196,
+      "type": "application/x-x509-ca-cert",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-06-16T09:52:12.675Z",
+  "allow_singular_disclosure_after": -84713208.74282435,
+  "singular_disclosure_allowed": true,
+  "vote_count": 2,
+  "voters": [
+    "zy9ard3",
+    "shivammusic"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

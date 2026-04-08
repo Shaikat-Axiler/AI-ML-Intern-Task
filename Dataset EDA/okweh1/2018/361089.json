@@ -1,0 +1,124 @@
+{
+  "id": 361089,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNjEwODk=",
+  "url": "https://hackerone.com/reports/361089",
+  "title": "twitter api access token leaked on github ",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "none",
+  "readable_substate": "N/A",
+  "created_at": "2018-06-02T13:37:08.127Z",
+  "submitted_at": "2018-06-02T13:37:08.127Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sonahri501",
+    "url": "/sonahri501",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/215/593/05f31a79ef2474513b173a984f6d221ec16861a8_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 28411,
+    "url": "https://hackerone.com/liberapay",
+    "handle": "liberapay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Liberapay",
+      "twitter_handle": "",
+      "website": "https://liberapay.com",
+      "about": "An open source platform designed to facilitate recurrent donations."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-06-02T14:06:24.030Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-06-02T13:53:06.153Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "sensitive token were leaked on GitHub page of liberapay . also mixpanel token was leaked\nTWITTER_CONSUMER_KEY=QBB9vEhxO4DFiieRF68zTA\n TWITTER_CONSUMER_SECRET=mUymh1hVMiQdMQbduQFYRi79EYYVeOZGrhj27H59H78\n+TWITTER_ACCESS_KEY=34175404-G6W8Hh19GWuUhIMEXK0LyZsy7N9aCMcy1bYJ9rI\n+TWITTER_ACCESS_SECRET=K6wxV1OCsihZAkEPkWtoLYDiRJnWajBBWn4UgliTRQ\n TWITTER_CALLBACK=http://127.0.0.1:8537/on/twitter/associate\n MIXPANEL_TOKEN=cb9dec68ac0ee57071f0be39f164a417\n\n## Impact\n\na attacker with your credentials can have severe impact",
+  "weakness": {
+    "id": 33,
+    "name": "Cleartext Storage of Sensitive Information"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 304375,
+      "file_name": "libtoke.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/304/375/00ec085a582a4d67126ab2d1275904723740d5ef/libtoke.png?response-content-disposition=attachment%3B%20filename%3D%22libtoke.png%22%3B%20filename%2A%3DUTF-8%27%27libtoke.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7KZMNWF3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023544Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIBpctk5vIcz8fqSxmSbvaEaA1vPXGZAzy8p2lTcuSOqcAiEA8XDMNvLIH8IFW8sJzuwl%2Fofjl3QmgKtFRp1BIZMlQZAquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDCLD1FNfAq4lNpj37iqPBa0M7iq3oIheySEZNnmgACvAWV%2BkbXHCsteA4rscn1beTFz8534XLB5ilpc%2Fnb2Xpze8GBNJanaSc9cKiHGAFyDZ0OTmKOpVNzyomRG0id4bgUU1pBse6JfR%2FR9T2APt%2Fl0WOKa5AXonxVTB%2B%2FJz73R%2FFrd%2F8UOXlHqkfWd2vvO4BBH1Dw2p0jabiXTpLfaM54se%2FuPl4Kx%2F6XZabduPzoDY6azarYmHqYMroGTWKRYMzGt7HY3wYyVQvxOShtv4DL1vJdsOpBck2W5jYLnh3%2FzYmjvulpVouKFkyLDTf2H6bzaEXG0mRDVSUNSZu3bsddxvLzUCYEUVi1pU63sadXWdyeUaSEte4kGuwBeF%2Fj2SwNmHUk0YBjztG673X%2BPSx7AUOxC2zxqiWn9Fpwpk3Sn6UI5GuKkMvDhUg7bVT8Tykrd4zJTMepJOXucr0Ap%2F4f17KA8KEY6aUjzwNIn6S4vTgrTRt956sxSBAXEF1x7Lc5PuSU68b2ogIpDAapXbTIMNE7k4RaVH4b8rmKB8CKnGQRDksAAL71R8MZvpLGu9Mq2mbYmRA45gS8iA2ONZ10pAykkIGt%2BQ23rfUucGlP5jC53R5LU3k0QqUDLSca5btK1RVLH3AZXyvvUu8hB4Necr4XRKe9TJg78oxt%2B1Q1cMSvSEJNcyJc58qsNuFdRZ4gnbnthWNb%2BLBTouqApwUrrQxXZ0T5eM8sFf%2FWsbAfcyHCU2ApLZp5k2rioOWP7hKIHZOyUwtK3cra1m5Ke7vQF3yRJzqEt6MFe2%2Fz35TwM37cZSvlEm7DFVb4dxZz72iFsxiwo%2BKKssN1gsahlA6yUZGllZLDbfkcLPyfzAeD2afFrRDW4WvPoaYOBUkrUw9uvjzAY6sQGzXLxWXzhgzd%2B5dLZO6RbnHP%2B6iFTlCTdtc4JwCY0jfTZglLiZSz99SQo%2BzQE%2F3D20j22aHOE8PBgYRMimZvwuQB5bpBVz0yj1MOfAStV4Cn3p8PXaEUhYRcfZvUp5lzGizE04VAR33TkhfeRgK4urnVz1lqRZzrLRWQ4H4lsswg5E5engZqMjZUtTsPg103tBhqe5JPopQlW5sppUFToVRJ3%2B%2Fk%2F2bjl5LiRDHNL0J8I%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f3c250d0264ef97bee6ef3e68ae382de1d71ef7a7eca06c5ca884feb6f089a52",
+      "file_size": 147007,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 4,
+  "voters": [
+    "jmo740",
+    "mouhannadlrx0",
+    "rashedul_css",
+    "0x08"
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 8927,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/liberapay/liberapay.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

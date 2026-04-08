@@ -1,0 +1,144 @@
+{
+  "id": 271176,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNzExNzY=",
+  "url": "https://hackerone.com/reports/271176",
+  "title": "Bypassing one-time checkout router page (revealing payment information)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2017-09-23T14:41:40.255Z",
+  "submitted_at": "2017-09-23T14:41:40.255Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "tolo7010",
+    "url": "/tolo7010",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/137/533/339f440fdc61b6dfeb663c8216d249618b8fd451_original.gif/20fc426031f09e5347054871ae4e3af2478fd2b3d5e8a321468ecf6f2da5ac20"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 16334,
+    "url": "https://hackerone.com/lyst",
+    "handle": "lyst",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/016/334/0915cf74d60a19ff359a42f4dfa3f9878957e589_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/016/334/0915cf74d60a19ff359a42f4dfa3f9878957e589_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Lyst",
+      "twitter_handle": "makinglyst",
+      "website": "https://www.lyst.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-05-10T01:04:39.702Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-04-10T01:04:21.025Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Description:\n========\nWhen user submits for a checkout, the checkout router page /checkout-router/[ID]/ is accessible only once, which can be bypassed by crafting the checkout [ID] in cookie basket_key send to the page /new/checkout/order/. combining with brute-force attack, if the ID is valid a result page shown from any user that made the payment. this disclosure contains items ordered, prices, customer name, billing address, email address, phone number... This attack require no authentications, and no rate-limit in brute-forcing checkout [ID]\n\nStep to reproduce:\n============\n1. Go to https://www.lyst.com/cart/\n2. Assuming your shopping bag is not empty, click \"checkout securely\" or https://www.lyst.com/cart/verify/set-password/\n3. Confirming account by entering email & password.\n4. Upon click \"checkout\", use burp to intercept the request.\n\nYou will get a redirection link to the checkout router, the form of the url is:\nhttps://checkout.lyst.com/checkout-router/[ID]/\n\nwhere [ID] is the 19 digit number identification - the link redirects again to https://checkout.lyst.com/new/checkout/order/ which you will provide billing information.\n\nNow the point is the link https://checkout.lyst.com/checkout-router/[ID]/ is accessible only once, you will get \"This page doesn't exist\" message if you try to request the link. To bypass this, we can craft cookie value key basket_key=[ID] in request to the endpoint /new/checkout/order/.\n\nIn this report I use base key 7092456849791607456 which I created from my own check out (filled with billing address).\n\nI use chrome extension EditThisCookie in the attached image, here are the same result from burp (also image attached):\n\nGET /new/checkout/order/ HTTP/1.1\nHost: checkout.lyst.com\nUser-Agent: \nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nAccept-Language: en-US,en;q=0.5\nCookie: basket_key=7092456849791607456\nConnection: close\nUpgrade-Insecure-Requests: 1\n\nImages Attached:\n===========\n1.jpg: access the regular endpoint second time resulting in error\n2.jpg: bypassing via cookie injection in another endpoint\n3.jpg: tested in burp suite\n\n\n",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 223393,
+      "file_name": "1.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/223/393/ae070f7ed362745e4588bc3857adb8e780058e4a/1.jpg?response-content-disposition=attachment%3B%20filename%3D%221.jpg%22%3B%20filename%2A%3DUTF-8%27%271.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023839Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8a1fc87e8e43711271c37022937d44216415097bb12406d7d74c52c573d3b32d",
+      "file_size": 41392,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 223394,
+      "file_name": "2.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/223/394/86ae8aae153e9baadf8b581eb6fa589131792066/2.jpg?response-content-disposition=attachment%3B%20filename%3D%222.jpg%22%3B%20filename%2A%3DUTF-8%27%272.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023839Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6e52b726de405274e22e650fa15eec48807a1c522973f48c4d823f038c14ec2a",
+      "file_size": 124630,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 223395,
+      "file_name": "3.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/223/395/846dd6a74cecf03091e1b9a2418394e89fa903e8/3.jpg?response-content-disposition=attachment%3B%20filename%3D%223.jpg%22%3B%20filename%2A%3DUTF-8%27%273.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023839Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=08988a7bd18e4f56c4f0cafcb7d3ea67b050b5b18fbab35dcb230318fe72ecd8",
+      "file_size": 85598,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-05-10T01:04:21.143Z",
+  "allow_singular_disclosure_after": -245727258.1073683,
+  "singular_disclosure_allowed": true,
+  "vote_count": 12,
+  "voters": [
+    "sourc7",
+    "tolo7010",
+    "shubham_srt",
+    "savitar0x01",
+    "2026",
+    "apapedulimu",
+    "eveeez",
+    "khizer47",
+    "japz",
+    "cryptographer",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

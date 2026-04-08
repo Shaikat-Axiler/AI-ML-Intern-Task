@@ -1,0 +1,125 @@
+{
+  "id": 207431,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMDc0MzE=",
+  "url": "https://hackerone.com/reports/207431",
+  "title": "One of yelp.com url is redirecting to domain which is not yet purchased",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2017-02-19T03:01:25.479Z",
+  "submitted_at": "2017-02-19T03:01:25.479Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "us111",
+    "url": "/us111",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 545,
+    "url": "https://hackerone.com/yelp",
+    "handle": "yelp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Yelp",
+      "twitter_handle": "",
+      "website": "https://www.yelp.com",
+      "about": "Connecting people to great local businesses in communities around the world."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-11-09T20:00:28.164Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-02-22T07:04:21.704Z",
+  "team_member_agreed_on_going_public_at": "2017-11-09T20:00:28.031Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "One of yelp.com url is redirecting to domain which is not yet purchased, so anyone would buy that domain and host any stuff which yelp.com does not support.\n\nA malicious user can take advantage of this and send the link to users, and people will it is secured domain as link originates from yelp.com which runs on https.\n\nReal Proof:\nhttps://www.yelp.com/biz_redir?url=http%3A%2F%2Fwww.taj-tandoorrestaurant.com%2F&src_bizid=ZOdW1uEoRbaA0JFU4alHIg&cachebuster=1455812254&s=05ce6972e019a426a5447be0258b8f6aa981ff1b340d76f61daaa763f4752691\n\nI also found the behavior of above url weird.\n\nI would like you to follow below steps\n\n1.Copy above url and paste it in firefox browser\n2.Refer screenshot 1 (it will show you are getting redirected to www.taj-tandoorrestaurant.com but once the page loads it shows www1.taj-tandoorrestaurant.com (refer screenshot 2).\n3.Again paste the same url in same browser 2nd time it opens some other domains like \nhttp://go.offersprizes.win/?utm_term=6387662821350405046&clickverify=1&utm_content=fdc2c69a9cafac9c919596a191959ca583bbcdb9cbbfbc8c818586b1808283b5a7b8bbb98ebebd8db0b3b1b6b6b6b6b0aaa2aca8adae9cac92939091a79794a7deebdaddeeefec99909685e1e6d63d#\nwww.indiannews.com-secure.org\n\nPlease look into this thanks.",
+  "weakness": {
+    "id": 53,
+    "name": "Open Redirect"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 161968,
+      "file_name": "screenshot_1.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/161/968/de9cad1c14ab8d5fd309bf4809477dd2664e7e4a/screenshot_1.jpg?response-content-disposition=attachment%3B%20filename%3D%22screenshot_1.jpg%22%3B%20filename%2A%3DUTF-8%27%27screenshot_1.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3CTO5VQ6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030538Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDolm68pgEDt9rFMqD6zhi2IlHJKPEqJIRN3iMHlPmBgwIgYzlUM%2BQ8YOzm8VC1P4vzUjessL4QMtRNSqf3u%2Ff6vOQquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPKmv3lYNac2q1GjvSqPBS%2BVo3yoAwAQ8RXJf3ji8ocQQQAFq8iqOYGWcLgDVrN4x1WuX3yTK2MgPpl2nbtHO6XiPuNwF1LixUyWg%2BCZrZ%2FR0U7ov32F8nNzqOIhQX7%2BB%2FtqgNhbV93C4crR5z0RHGslMHs60ZNgAQa1mTEGXIaek4dOIsYhUUcjfGe1mSYdX9H7YCGDMNRH6bTVpakBY41HCGl9kLIJICWfBbsAjrCiQyKA57hWYJe1s8wgKtlAjCIQYrRBn%2B55G%2BwOgfvkCOJaWAgl28sJlrmRvn4VzfqryoKofSHHSM8MPaNQVlJyp2GCCLW718BjcdDnqvJCvN7JTgqZ%2Fvb8Hq%2B7dg0xzM3Ib1P68kHv3j7L4G97UzXoqyPdKiK%2FKFa4gEyEW%2FrKFfpv%2BYKGyzbnF5IEEGm08Pjf0wv%2FbLtA0Q0wVlX5vwYKldElmP8sgeX2HGhkc3dynBBIs9TefT2d8auyLmSy5PjmuxG2kwnW9UpJGp0pfXxb1wo9w1f8Gn9YFJE3rEZqYTa0Oi9GDgZR7vYivNmlRaHqWLSuDHeUz9nvYw9EYaitTYjNXm2GL%2B3spAp6EFXBMOc%2FKPGwDxtMeUZu1hxSJL52Kd90Ifp4l90%2FWyKQ%2B5og5h0DW%2Fd%2FJzLH1U1seXjwqViGkJgPsUaBtzDgB1meDsTJU4sLRNIsuVgP%2B16Be6%2FjrxGZFSd053uVuHZGyeXzhasCh1APCIFOvBbxW%2BzYUsHf%2FhNMsTG%2BZVgSeJMyeLDWJ8rnJEohllJRM1RDwBHvoGm0J3pZLbpjbpZFuWcEY1VGiw2ODxutNfNkgmrGpQ6xWhO8738dz7FRFWD%2FneGHk9CPlHvJorzEFkXILtjpHLfsLEZIH0iZ8L4pzIAqAP0w7aTkzAY6sQFwPA3N%2FMyNXfwqaP6KRSFrLqGMmSsXmPxq3cIhMKf8qA6vd%2FWv966XIfjTZo%2FYh3lTUSmu7us6TYdbhr%2Flr%2BNa%2FB61%2BEgNnztQFXiWQhCBt6Ue03ZohGNuMm95O4C7fSnoAxJbV1LtYOrCvSNNwWdtH8JXcZKBSO9P%2FEogLArqaluw%2FP6Y1Lwr7sl9ENmZOUK1N7e68%2BvknB5Fa6FMM2Z66b6VXbaconsgB5I811ChX8Q%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ad685a6e0a2cf4f4217199e8cb6e72bc19e2ed46dec274245e8869e7aebcf582",
+      "file_size": 93170,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 161969,
+      "file_name": "screenshot_2.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/161/969/e11795576c4ac5056b0a84f09f8d36b9984657e7/screenshot_2.jpg?response-content-disposition=attachment%3B%20filename%3D%22screenshot_2.jpg%22%3B%20filename%2A%3DUTF-8%27%27screenshot_2.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3CTO5VQ6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030538Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDolm68pgEDt9rFMqD6zhi2IlHJKPEqJIRN3iMHlPmBgwIgYzlUM%2BQ8YOzm8VC1P4vzUjessL4QMtRNSqf3u%2Ff6vOQquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPKmv3lYNac2q1GjvSqPBS%2BVo3yoAwAQ8RXJf3ji8ocQQQAFq8iqOYGWcLgDVrN4x1WuX3yTK2MgPpl2nbtHO6XiPuNwF1LixUyWg%2BCZrZ%2FR0U7ov32F8nNzqOIhQX7%2BB%2FtqgNhbV93C4crR5z0RHGslMHs60ZNgAQa1mTEGXIaek4dOIsYhUUcjfGe1mSYdX9H7YCGDMNRH6bTVpakBY41HCGl9kLIJICWfBbsAjrCiQyKA57hWYJe1s8wgKtlAjCIQYrRBn%2B55G%2BwOgfvkCOJaWAgl28sJlrmRvn4VzfqryoKofSHHSM8MPaNQVlJyp2GCCLW718BjcdDnqvJCvN7JTgqZ%2Fvb8Hq%2B7dg0xzM3Ib1P68kHv3j7L4G97UzXoqyPdKiK%2FKFa4gEyEW%2FrKFfpv%2BYKGyzbnF5IEEGm08Pjf0wv%2FbLtA0Q0wVlX5vwYKldElmP8sgeX2HGhkc3dynBBIs9TefT2d8auyLmSy5PjmuxG2kwnW9UpJGp0pfXxb1wo9w1f8Gn9YFJE3rEZqYTa0Oi9GDgZR7vYivNmlRaHqWLSuDHeUz9nvYw9EYaitTYjNXm2GL%2B3spAp6EFXBMOc%2FKPGwDxtMeUZu1hxSJL52Kd90Ifp4l90%2FWyKQ%2B5og5h0DW%2Fd%2FJzLH1U1seXjwqViGkJgPsUaBtzDgB1meDsTJU4sLRNIsuVgP%2B16Be6%2FjrxGZFSd053uVuHZGyeXzhasCh1APCIFOvBbxW%2BzYUsHf%2FhNMsTG%2BZVgSeJMyeLDWJ8rnJEohllJRM1RDwBHvoGm0J3pZLbpjbpZFuWcEY1VGiw2ODxutNfNkgmrGpQ6xWhO8738dz7FRFWD%2FneGHk9CPlHvJorzEFkXILtjpHLfsLEZIH0iZ8L4pzIAqAP0w7aTkzAY6sQFwPA3N%2FMyNXfwqaP6KRSFrLqGMmSsXmPxq3cIhMKf8qA6vd%2FWv966XIfjTZo%2FYh3lTUSmu7us6TYdbhr%2Flr%2BNa%2FB61%2BEgNnztQFXiWQhCBt6Ue03ZohGNuMm95O4C7fSnoAxJbV1LtYOrCvSNNwWdtH8JXcZKBSO9P%2FEogLArqaluw%2FP6Y1Lwr7sl9ENmZOUK1N7e68%2BvknB5Fa6FMM2Z66b6VXbaconsgB5I811ChX8Q%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0fb3b759132392d84d1e5d8197ff53295b4dab6fb8e91d70281c6bf396161f2f",
+      "file_size": 144403,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 161970,
+      "file_name": "screenshot_3.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/161/970/cdbdefbc824d066ab3ee5961d0cbdbef03f4ad5a/screenshot_3.JPG?response-content-disposition=attachment%3B%20filename%3D%22screenshot_3.JPG%22%3B%20filename%2A%3DUTF-8%27%27screenshot_3.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3CTO5VQ6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030538Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDolm68pgEDt9rFMqD6zhi2IlHJKPEqJIRN3iMHlPmBgwIgYzlUM%2BQ8YOzm8VC1P4vzUjessL4QMtRNSqf3u%2Ff6vOQquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPKmv3lYNac2q1GjvSqPBS%2BVo3yoAwAQ8RXJf3ji8ocQQQAFq8iqOYGWcLgDVrN4x1WuX3yTK2MgPpl2nbtHO6XiPuNwF1LixUyWg%2BCZrZ%2FR0U7ov32F8nNzqOIhQX7%2BB%2FtqgNhbV93C4crR5z0RHGslMHs60ZNgAQa1mTEGXIaek4dOIsYhUUcjfGe1mSYdX9H7YCGDMNRH6bTVpakBY41HCGl9kLIJICWfBbsAjrCiQyKA57hWYJe1s8wgKtlAjCIQYrRBn%2B55G%2BwOgfvkCOJaWAgl28sJlrmRvn4VzfqryoKofSHHSM8MPaNQVlJyp2GCCLW718BjcdDnqvJCvN7JTgqZ%2Fvb8Hq%2B7dg0xzM3Ib1P68kHv3j7L4G97UzXoqyPdKiK%2FKFa4gEyEW%2FrKFfpv%2BYKGyzbnF5IEEGm08Pjf0wv%2FbLtA0Q0wVlX5vwYKldElmP8sgeX2HGhkc3dynBBIs9TefT2d8auyLmSy5PjmuxG2kwnW9UpJGp0pfXxb1wo9w1f8Gn9YFJE3rEZqYTa0Oi9GDgZR7vYivNmlRaHqWLSuDHeUz9nvYw9EYaitTYjNXm2GL%2B3spAp6EFXBMOc%2FKPGwDxtMeUZu1hxSJL52Kd90Ifp4l90%2FWyKQ%2B5og5h0DW%2Fd%2FJzLH1U1seXjwqViGkJgPsUaBtzDgB1meDsTJU4sLRNIsuVgP%2B16Be6%2FjrxGZFSd053uVuHZGyeXzhasCh1APCIFOvBbxW%2BzYUsHf%2FhNMsTG%2BZVgSeJMyeLDWJ8rnJEohllJRM1RDwBHvoGm0J3pZLbpjbpZFuWcEY1VGiw2ODxutNfNkgmrGpQ6xWhO8738dz7FRFWD%2FneGHk9CPlHvJorzEFkXILtjpHLfsLEZIH0iZ8L4pzIAqAP0w7aTkzAY6sQFwPA3N%2FMyNXfwqaP6KRSFrLqGMmSsXmPxq3cIhMKf8qA6vd%2FWv966XIfjTZo%2FYh3lTUSmu7us6TYdbhr%2Flr%2BNa%2FB61%2BEgNnztQFXiWQhCBt6Ue03ZohGNuMm95O4C7fSnoAxJbV1LtYOrCvSNNwWdtH8JXcZKBSO9P%2FEogLArqaluw%2FP6Y1Lwr7sl9ENmZOUK1N7e68%2BvknB5Fa6FMM2Z66b6VXbaconsgB5I811ChX8Q%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=230c9cd4a8681b1aa8e4461369c065bdd3f51ffa5561418e5681cad53c3673f9",
+      "file_size": 82361,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 0,
+  "voters": [],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

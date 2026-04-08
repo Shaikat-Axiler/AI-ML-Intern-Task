@@ -1,0 +1,133 @@
+{
+  "id": 411690,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MTE2OTA=",
+  "url": "https://hackerone.com/reports/411690",
+  "title": "Stored xss in address field in billing activity at https://shop.aaf.com/Order/step1/index.cfm",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2018-09-20T09:00:49.170Z",
+  "submitted_at": "2018-09-20T09:00:49.170Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "gujjuboy10x00",
+    "url": "/gujjuboy10x00",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 32492,
+    "url": "https://hackerone.com/aaf",
+    "handle": "aaf",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/032/492/79d3b21fb0de42ef95084ef26ed76a48a6ee8e58_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/032/492/79d3b21fb0de42ef95084ef26ed76a48a6ee8e58_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Alliance of American Football ",
+      "twitter_handle": "theaaf",
+      "website": "http://aaf.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-05-25T09:08:06.032Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-04-25T09:08:04.459Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Dear Team,\n\n**Summary:** [add summary of the vulnerability]\nAfter looking into https://shop.aaf.com/Order/step1/index.cfm i get to know that there is address field is vulnerable to stored xss which can lead to steal any user's cookie and can lead to complete account takeover\n\n**Description:** [add more details about this vulnerability]\n\n## Steps To Reproduce:\n\n  1. go to https://shop.aaf.com and click on any products , tshirt\n  2. add that in cart and click on proceed\n  3. enter xss payload (a\"><svg/onload=prompt(1)> ) in every address field and click on OK proceed\n  4. xss will popup \n\n## Supporting Material/References:\n\nXSS OWASP\n\nThanks,\nVishal\n\n## Impact\n\nStored xss in address field in billing activity at https://shop.aaf.com/Order/step1/index.cfm",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 348653,
+      "file_name": "xss_aaf.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/348/653/ba0b434479529b91156dc83b6e70ce7cee35af32/xss_aaf.PNG?response-content-disposition=attachment%3B%20filename%3D%22xss_aaf.PNG%22%3B%20filename%2A%3DUTF-8%27%27xss_aaf.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYGJ7UN3L%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014753Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHUalBkdVO9dlSfmp4i0Is95jlMP6GsvJ13TXuvyxXeaAiAiRngrjGPT%2Fe9gZ7WOsro9DxWuN9Vv4ft8ryTN5QFXNCq6BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM5AnpCASItXlV8cgIKo4FR27UKe6whVAY7hloNnNLonPHVFec%2BquKkSCqM9dNqjEOHCxX0pmzD5qo5sfh9p3sfLB%2BZ%2B2EMpG2Y8d0trJapAGZbOL1FarhKnRYfaU6YNKoGh0LQttdNDc1FJ8quZCIjw%2Bv3MdWSwsZUptYCUbrqs41GTsSt4Lf9qJeQA3nb3Cm83OTTUAHxXit5a9Q5z%2FLbgCe%2F2tOWkHXqtyFzMxaXoACIGyWGQjmK9sKO3CLWuTosI2y9Fx7ll05Y4rf4N2LJzToIqrvFaSjqbTlnpL%2Bn330925ihz64nJgeiQo72DhOvMhAwIJgDjChrww7vj3GAQILn2GiDTEfw2pZU%2F58Mth9%2B2jER5MZ2QUQ2dBzeBvJII3OmcMZDwh9juMZxArPYRYTydx1Jnt3aj9RYuR7sCndQts40A02dEA7t8ltXfApIQt6iFuiTNzO1WCpxPRErVtLNIafT7EfaStFY%2F3B8%2B3uDLCN7N5BLA1LhNfucaCrqILG7D4Ipk1M6cA7q9mYfEMB4oRfqmmXnyx4VqZ9Qv0Zwz2PKm7ISd3MWZiP7Gwp7LL5eaj%2FnbJLhRCAL15W60BU%2FVrtJ1tPRsoI92cNfbkVLeJ5mF5Z0P5D55mMY3mifXAQIw5b7%2FGj9qsNzG2A1%2FubTbaY6tC7I5db12wwSw%2FL1Ho40nOgKmgqxpnku9XuaSNOfP6tCpC1IQO6sc7jOZgvIObREm6yegTX7bOoPushCAAl58lG1P%2FjcUKcoMRvi%2FxLEGUxoeA0hFgIPu64SzLxgRt21KkKOEBpZ3cSuIVaeOOCoIsnDsA4CM2lwsHcP%2FR8Gfori3PGYr8k4qyQYmgcb620Z9J733cRH5dMCVcHjLmE9LdJmqhFemGNMJ3z48wGOrIBppWmyokx3uOs4RNp0dcgfbv8x7Mts%2FY%2FUiBQZPmosKXQOUTeC3NWFD6FNgCBrpV8emo6yf8fRroRxwEIIYeunY8gdNUruC%2B3T%2FJIv4j4bfU78jvp%2F71fCDZnZ5ohtjOTZLhg7uQ4NfpHMOivpWEeOZs1xhMj3dVONHPA1YpZRYd279GrCN5RpyHebXtv82MdsR4ppIDrMZYsChihXZAnPIYvaVou6f%2FYuST3wOh%2BS4EdWw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b7ef2a58046884a31f0bb6dc214e9967ba77125b794d96c7ddfdc8865e7eb0ed",
+      "file_size": 53254,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-05-25T09:08:04.553Z",
+  "allow_singular_disclosure_after": -212863189.2607436,
+  "singular_disclosure_allowed": true,
+  "vote_count": 242,
+  "voters": [
+    "k0z3r0",
+    "j_m",
+    "smither",
+    "stargravy",
+    "subsubaru",
+    "misosoup",
+    "orange303",
+    "debsec",
+    "base_64",
+    "neelponkia123",
+    "and 232 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 14671,
+    "asset_type": "URL",
+    "asset_identifier": "shop.aaf.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

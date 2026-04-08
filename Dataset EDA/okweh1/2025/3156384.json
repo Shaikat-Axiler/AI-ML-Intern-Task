@@ -1,0 +1,145 @@
+{
+  "id": 3156384,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMTU2Mzg0",
+  "url": "https://hackerone.com/reports/3156384",
+  "title": "Heap buffer overflow vulnerability in conncache.c: incorrect use of pointer arrays resulting in out-of-bounds memory writes.",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "medium",
+  "readable_substate": "N/A",
+  "created_at": "2025-05-21T03:55:12.753Z",
+  "submitted_at": "2025-05-21T03:55:13.316Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "freak_coding",
+    "url": "/freak_coding",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-07-01T14:08:26.434Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2025-06-28T12:21:22.408Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "In the conncache.c file, the cpool_bundle structure incorrectly uses a pointer array (char *dest[1]) instead of a flexible array (char dest[]) to store string data, leading to a heap buffer overflow when calling memcpy in the cpool_bundle_create function.\n\n## Impact\n\n# # Summary:\nThe vulnerability is a heap buffer overflow caused by the cpool_bundle struct in the conncache.c file that incorrectly uses the pointer array char *dest[1] instead of the flexible array char dest[]. In the cpool_bundle_create function, when calling memcpy(bundle->dest, dest, bundle->dest_len), if the target string length exceeds the pointer size (8 bytes on a 64-bit system), it causes writes to go out of bounds and corrupt heap memory.\n\nAn attacker can trigger this vulnerability by providing a hostname/destination address of a specific length, resulting in memory corruption, which could trigger a program crash or remote code execution. This vulnerability affects all curl applications that use the connection caching feature, especially when dealing with long hostnames.\n\nThe fix should change the struct definition to use the correct flexible array: char dest[] or char dest[1], and ensure that memory allocation correctly takes string length into account.",
+  "weakness": {
+    "id": 5,
+    "name": "Heap Overflow"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 4369622,
+      "file_name": "test_conncache_overflow.c",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/fj05mkqb5gstksvf2q03proepwx5?response-content-disposition=attachment%3B%20filename%3D%22test_conncache_overflow.c%22%3B%20filename%2A%3DUTF-8%27%27test_conncache_overflow.c&response-content-type=text%2Fx-csrc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200325Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e3ced909d7f92fb32eea496e83ad10bf042eece1d9df30a3df1393094e14fb06",
+      "file_size": 11415,
+      "type": "text/x-csrc",
+      "moderated": null
+    },
+    {
+      "id": 4369641,
+      "file_name": "recording-1747799575976.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/fmt77hh34es8eqeuuln7nudhgo3t?response-content-disposition=attachment%3B%20filename%3D%22recording-1747799575976.webm%22%3B%20filename%2A%3DUTF-8%27%27recording-1747799575976.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200325Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ccaeec92c85742373bc16dd551858b120aa9c72730967eac0a3f4728a6f4a266",
+      "file_size": 1198059,
+      "type": "video/webm",
+      "moderated": null
+    },
+    {
+      "id": 4369642,
+      "file_name": "test_conncache_log",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/54zrpn9vayga4zufo8zm7nsuk83g?response-content-disposition=attachment%3B%20filename%3D%22test_conncache_log%22%3B%20filename%2A%3DUTF-8%27%27test_conncache_log&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200325Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1535a9ec0db08c7ddbdcba6ce13ee882f4401c715c9a014f6d7ffc2f1426e8a4",
+      "file_size": 16798,
+      "type": "application/octet-stream",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 9,
+  "voters": [
+    "thalaivar304",
+    "2026",
+    "us3rn4me1955",
+    "ryel",
+    "5picy",
+    "dansoappiah",
+    "bilalhacker302",
+    "omarjamailsa",
+    "awso0h1ll4"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "id": 293105,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yOTMxMDU=",
+  "url": "https://hackerone.com/reports/293105",
+  "title": "XSS в личных сообщениях",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2017-11-26T23:51:05.422Z",
+  "submitted_at": "2017-11-26T23:51:05.422Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "circuit",
+    "url": "/circuit",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/049/373/9546ab66ad2f00ec9496a084aae519e512aa11bb_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1782,
+    "url": "https://hackerone.com/ok",
+    "handle": "ok",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/782/0e7098faf92785cddc86bcf693dbb068dad14311_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/782/0e7098faf92785cddc86bcf693dbb068dad14311_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "ok.ru",
+      "twitter_handle": "",
+      "website": "http://ok.ru",
+      "about": "Odnoklassniki social network"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-01-13T11:59:20.335Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-12-14T11:59:03.864Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Доброго времени суток. Я нашел XSS в личных сообщениях. \n\nПоле, где юзер набирает сообщения не фильтруется. Туда можно встроить скрипт, используя багу, которую я описывал раньше. Пишем сообщение и у друга срабатывает XSS.\n\nВы исправили возможность пилить ники, содержащие специальные символы через мобильную версию, но у меня осталось парочка. Прошу заметить, что у других людей и злоумышленников также могли остаться такие ники.\n\nПример аккаунта вам для тестов:\n79601920522\n90177715q\n\nПрошу не блокировать. Данные аккаунты сейчас на вес - золото.\n\n{F242442}\n\nЕще скрин:\n\n{F242440}\n\n██████████\n\nСпасибо.\n\n## Impact\n\nЗлоумышленник может заюзать XSS.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 242440,
+      "file_name": "xss2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/242/440/c5fcf7f350589a758b4e3de8d5775557dcf56a4d/xss2.png?response-content-disposition=attachment%3B%20filename%3D%22xss2.png%22%3B%20filename%2A%3DUTF-8%27%27xss2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQW3246LIE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025613Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDXEO1m0%2FtyUXL8Lpt3kAavzF7XlIgljXmHmCIZAdBPvAiEAiGNQE9MfrOu8GG8Ln2Mq7I0kXvDHt%2F2pgV8g%2BPt3R9EquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDLig3bMV5WIe%2FcSPRSqPBdksTZjgTF59W2N6Lqm3pKfMFkzcPyixalMf77ITyPklHu4BTdjwUX21CmfUaIbqV2wLhmVcVjfxw6vPhrbCywH331hIMwMt8P5FQy7ZMP2gLmQlVzRXWaHCDKPqt5v69p%2BUbgm2UMzoxfwnlHxD7Y2eCPQf%2Fzyz7TSQnvF3jBewXbmFeifRX60pbL0MkzQ5Xv2uQXudCY9bC3EQxoUQrt6AYleFfeqQSe7Xwuarl1pUb11R0qVg%2BzSPYu1%2FULBIrUlhbhY%2BuulCP1A0cmYTceBSJo4GVkx5uYtfw40IhP2GXixfwiDjRuD0iyhpZ79lmYJUnjPhSSXcSIKD%2Bk%2Bn5KcHdwtyKkBnrTOY2EXtE00xr5jTSrk3Ll8TsMJOdKiDVzb8X1fWbSdTVdHwfkLdG7130V5XJuXqcSsJ5IAg7hKbnGRcvz7Ub6YrbfQlt5nVnHhjCqb3E%2BFO16mCMRkqZXxiUSbpzb8k2iv44T9Nn02LI7Ah%2FTiM68I3AzX381tVj9gabobQP5YeDY6XDvRgOJVrDVcLUPCxL1wjOGZ%2Bi%2Fe9umINkOAF1o89k%2BUeYXJN8hD%2BFBcX6OW3QkSIsfugIgSdpJQkOIqZI9hwiqX%2BNV%2Bpa20frmnLNJ7TZAJhntNmaEoq9LycZ8zLweuFI5IDsyNdDYyDIKtCbCAW9lCgLO2aCuxVi64sl9sHb0t9HddwwUDQFYD1b5jsdLJTtKsRQXOqw663luXTET2MQEJC4oT%2B3o%2BfwIwIVWRzGoXHR04%2BVyyGxacyVJXc%2FERGhIYc9ftzeTo6umRtrGFaqAhXeMsoNmaJgR17MflCfnaCRLskX98d%2BYBjNaPEiP%2FOp1WjszhIG2xTQlz3INYU5W7T%2B3owu5jkzAY6sQFypA6jFM3YHpXMwins8CYxqiYjwvLE2Gh1zDMk%2FDwpJP6AZRJ6e3XXYHgXI7TIlatJXfL2HEeLIZ3nqpOkSsZyvN%2FNrpi4L2ybxsMfZ70aFgONHuH66glphZ9y0RDt6MvmoMYcJ2HgFHQtRaSRfo9npn%2BJyuLBDq1NDEOTKF0YfkgXZpnQ8j3v6nncfYyDhFXBFKFrSUJ1m1U08LPkv62FShee7kbUol3MwhY4iePNoy8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7ac615ad7a9320c57c8f641e124ca69131be9a51c919bdc68635f1712398f5d6",
+      "file_size": 78280,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 242442,
+      "file_name": "xss1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/242/442/2889f00057e4dd10c4afb96354ae8dd83c4e4e48/xss1.png?response-content-disposition=attachment%3B%20filename%3D%22xss1.png%22%3B%20filename%2A%3DUTF-8%27%27xss1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQW3246LIE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025613Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDXEO1m0%2FtyUXL8Lpt3kAavzF7XlIgljXmHmCIZAdBPvAiEAiGNQE9MfrOu8GG8Ln2Mq7I0kXvDHt%2F2pgV8g%2BPt3R9EquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDLig3bMV5WIe%2FcSPRSqPBdksTZjgTF59W2N6Lqm3pKfMFkzcPyixalMf77ITyPklHu4BTdjwUX21CmfUaIbqV2wLhmVcVjfxw6vPhrbCywH331hIMwMt8P5FQy7ZMP2gLmQlVzRXWaHCDKPqt5v69p%2BUbgm2UMzoxfwnlHxD7Y2eCPQf%2Fzyz7TSQnvF3jBewXbmFeifRX60pbL0MkzQ5Xv2uQXudCY9bC3EQxoUQrt6AYleFfeqQSe7Xwuarl1pUb11R0qVg%2BzSPYu1%2FULBIrUlhbhY%2BuulCP1A0cmYTceBSJo4GVkx5uYtfw40IhP2GXixfwiDjRuD0iyhpZ79lmYJUnjPhSSXcSIKD%2Bk%2Bn5KcHdwtyKkBnrTOY2EXtE00xr5jTSrk3Ll8TsMJOdKiDVzb8X1fWbSdTVdHwfkLdG7130V5XJuXqcSsJ5IAg7hKbnGRcvz7Ub6YrbfQlt5nVnHhjCqb3E%2BFO16mCMRkqZXxiUSbpzb8k2iv44T9Nn02LI7Ah%2FTiM68I3AzX381tVj9gabobQP5YeDY6XDvRgOJVrDVcLUPCxL1wjOGZ%2Bi%2Fe9umINkOAF1o89k%2BUeYXJN8hD%2BFBcX6OW3QkSIsfugIgSdpJQkOIqZI9hwiqX%2BNV%2Bpa20frmnLNJ7TZAJhntNmaEoq9LycZ8zLweuFI5IDsyNdDYyDIKtCbCAW9lCgLO2aCuxVi64sl9sHb0t9HddwwUDQFYD1b5jsdLJTtKsRQXOqw663luXTET2MQEJC4oT%2B3o%2BfwIwIVWRzGoXHR04%2BVyyGxacyVJXc%2FERGhIYc9ftzeTo6umRtrGFaqAhXeMsoNmaJgR17MflCfnaCRLskX98d%2BYBjNaPEiP%2FOp1WjszhIG2xTQlz3INYU5W7T%2B3owu5jkzAY6sQFypA6jFM3YHpXMwins8CYxqiYjwvLE2Gh1zDMk%2FDwpJP6AZRJ6e3XXYHgXI7TIlatJXfL2HEeLIZ3nqpOkSsZyvN%2FNrpi4L2ybxsMfZ70aFgONHuH66glphZ9y0RDt6MvmoMYcJ2HgFHQtRaSRfo9npn%2BJyuLBDq1NDEOTKF0YfkgXZpnQ8j3v6nncfYyDhFXBFKFrSUJ1m1U08LPkv62FShee7kbUol3MwhY4iePNoy8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=84aec445f699da8a5ffbe04213ead08dd550b3e9d91778139a5b8b6bbfafba49",
+      "file_size": 122049,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-01-13T11:59:03.942Z",
+  "allow_singular_disclosure_after": -255797829.7009979,
+  "singular_disclosure_allowed": true,
+  "vote_count": 40,
+  "voters": [
+    "jensec",
+    "sql",
+    "muon4",
+    "bagipro",
+    "danila",
+    "cheatboss",
+    "sh1yo",
+    "skavans",
+    "fa1rlight",
+    "michan",
+    "and 30 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

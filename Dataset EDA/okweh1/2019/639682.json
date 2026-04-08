@@ -1,0 +1,114 @@
+{
+  "id": 639682,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82Mzk2ODI=",
+  "url": "https://hackerone.com/reports/639682",
+  "title": "Khan Academy ClickJacking to Steal Users's Credintials",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2019-07-10T17:57:58.666Z",
+  "submitted_at": "2019-07-10T17:57:58.666Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "hack_im",
+    "url": "/hack_im",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/yhai0u7yvtl95f4otrrvkgttnzd2/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 134,
+    "url": "https://hackerone.com/khanacademy",
+    "handle": "khanacademy",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Khan Academy",
+      "twitter_handle": "",
+      "website": "https://www.khanacademy.org/",
+      "about": "Start learning now. Completely free, forever."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-03-31T22:26:23.642Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-03-01T22:26:19.590Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "#DESCRIPTION\n\n1. It ask to login to https://alerta.khanacademy.org  with google account.\n2. It doesn't give access to any normal user.\n3. That's why after trying to login with GOOGLE account it shows a error message prompt with user's sensitive information including [email, code/access token and client id etc.]\n4. Let's steal it via Click Jacking!\n\nNote: If victim is already logged into his google account, attacker can easily steal victim's credintials including [email, code/access token and client id etc.]\n\n#Usually we always logged into our google account, so it's quite easy to steal victim's credintials.\n\n#Step to Re-Produce:\n\nStep 1. Let's make [ Script+PoC ] via BurpSuite! {F526049}\n\nStep 2. Login to your google account.\n\nStep 3. Exploition!\n\nWatch my proof of concept video carefully!\n\n████\n\nCheers!\n\n## Impact\n\nAttacker can easily steal victim's credintials including [email, code/access token and client id etc.]",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 526049,
+      "file_name": "clickjacked.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/526/049/ac54be434277bbd030814a82f1d5853e89b7f45a/clickjacked.html?response-content-disposition=attachment%3B%20filename%3D%22clickjacked.html%22%3B%20filename%2A%3DUTF-8%27%27clickjacked.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T231938Z&X-Amz-Expires=3118&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e4276491b92626994720112f749ec30f649a3f62798686560839a9f725f2b15b",
+      "file_size": 7367,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-03-31T22:26:19.647Z",
+  "allow_singular_disclosure_after": -154399999.31733224,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "battle_angel",
+    "nafisaqil",
+    "mo_amine",
+    "ajakko",
+    "ekgaribadmi",
+    "adass"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

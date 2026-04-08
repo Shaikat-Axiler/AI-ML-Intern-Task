@@ -1,0 +1,139 @@
+{
+  "id": 997198,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85OTcxOTg=",
+  "url": "https://hackerone.com/reports/997198",
+  "title": "Content Spoofing/Text Injection in https://support.cs.money and JS file not minified and uglyfied which makes it clearly readable ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-10-03T16:41:07.818Z",
+  "submitted_at": "2020-10-03T16:41:07.880Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rootishere",
+    "url": "/rootishere",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/VTxWKAVN6L9mq5poL12WYbMz/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 48311,
+    "url": "https://hackerone.com/cs_money",
+    "handle": "cs_money",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6zBhWTJ4KuDdcSg86WvWXrFV/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/6zBhWTJ4KuDdcSg86WvWXrFV/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "CS Money",
+      "twitter_handle": "csmoneytrade",
+      "website": "https://cs.money",
+      "about": "CS2 trading platform that helps people to trade, buy, sell and search for the best skins and deals they could possibly find."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-11-12T13:18:11.591Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-11-05T11:21:21.665Z",
+  "team_member_agreed_on_going_public_at": "2020-11-12T13:18:11.498Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Issue 1:\nGreetings,\n\nHello Team,\nI have found a Content Spoofing/Text Injection on this domain https://support.cs.money\nUsing the below link the attacker can trick any genuine user to go to the attacker's phishing site.\n\nThe attacker could craft the URL by providing discounts which will tempt the user to visit the attacker URL mentioned, as the site displaying the message still belongs to https://support.cs.money\n\n## Steps To Reproduce\n\nPOC URL\n[support cs money url](https://support.cs.money//.cs.money(!has-moved-to-[www.support.cs.money.in]).Please-visit__[www.cs.money.in]___present__resource)\n\n## Issue 2 - worker.js file is user-readable \nhttps://cs.money/js/worker.js?language=en&v=1331&csrf_token=[removed]\nThe worker.js contains a lot of business logic which is deployed in production whiteout being minified or uglified. This might lead an attacker to craft attacks in future as it uses \n1. location.href`\n2. eval\n  in the below code snipped \n```\ncase 'method':\n            try {\n                postMessage({\n                    cbid: data.cbid,\n                    result: eval(`(${data.method})`)()\n                });\n            } catch (err) {\n                console.warn(err);\n            }\n            break;\n```\n\nPoC Screenshots attached.\n\nLet me know if you need more information.\n\nCheers!\n\n## Impact\n\nCrafted phishing attacks on cs.money",
+  "weakness": {
+    "id": 132,
+    "name": "User Interface (UI) Misrepresentation of Critical Information"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1013106,
+      "file_name": "Phising_attack.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/VCfqur6bbN6yWEpkKHHiTjKP?response-content-disposition=attachment%3B%20filename%3D%22Phising_attack.png%22%3B%20filename%2A%3DUTF-8%27%27Phising_attack.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2PPGKUPX%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235255Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIHLuGZcGnvXm50doyTuEQuvS1KWRRUfILYloWKG8z17vAiEAwm%2Bd%2FxZTyBqubxpcWNduXjpRzTBGwxeJx5m2gRIp68gqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMY5aCx5ornu4LbxLCqOBVugZlS%2FEFRS%2BuSQXC3TgOXSENRjnk71%2Blmi9lJgLusZZGORWPIvlPzguFDwHQ2kYL3jVTv2eaLyPLfbT6FyCuzWX1mk8nfbnKmI3miMT%2Fj%2FYCXRGbHw6XBtusXtshD1KKas8JMagvOSSWWh7nkef848tJcOJ4rZOZ7xDLA3NrjtovzyKF1K%2FLaR836OhWWL87ihiwq9TobPJ712btcIJa0SrABTNiaZiDUXnMWM5ky%2BMaXpGd6fxEn%2B5pPzZXSv1zzRBraB741nYdQ%2FLd4Gh0yNEB7rSpm%2FyHveCjemnZePmzM01ubdFJXi%2FcXdC1v54IH4OFM6pQy8u8GY0B3hZn%2Fl%2BsPIyHwiK90eUwXbGLdMCJJTcfYSRTHQdA5X24fTxo%2FA2zPxC%2BgaSLeMDKKfQr4ZPUH1EISCQPOuMIaHuVSVLexGm%2BM2XE9oDlcHbutNyBjoVcI9hLuM%2BiBbfRfUj9%2B26mTMcSyCMVLACsGcWZZ3IcbfFiY62p5kXzO5fmFmYNIgMC4%2FCfL70NuVrxVRXudv%2FEgWNxT80eo%2B743s2%2BXrM1VOQaCWL2tdfkdNNxHsl1PN%2FyQdscAvebdaNhEaM5GkSGmsonaNzCREhPXPprjeVN15UjdcOeJnUiHnEUPUpUHWyzi%2BvvEIrV87Zf%2F1qaW0X2cU%2Facke0S5lj4SVBPqAvmvLt9sWRK3YkgjRyamPDcv1Dz2iS1xdoL4dN%2F%2BNYUg7Ix18hjlXFjX%2Br%2B3x5paRV1cmM0tcWaWoak%2FNGv%2BqSAlrvOL1RTQUl9z2fTterFQ9VxMIvpg4t31QvM9HKgGwWh7Hw8%2FBTZ0ub9qQd4XdO530Y9DsPwhbpLzR%2Bus1TgvXsdDdWGPw4q3Je3aETDE2ePMBjqxAb41hWlhrlcpst4sWkcp0JVkfT%2BfxIOEUrHnTALlgOzJ5EZbjOr09ySRm0N8wKh2YRdbIFI9V6jeboUsTWi01HkD3pQXaAbVTM58p9Cp%2BJl58CyMhEN2oOuNo9gg8ncCmCF%2F7GvdRF0iOh0R2y8sSmYZpfYQNR2Xs8WDimn8EtjHqC5OWrZxQHrGx3c9APT57ePzkFPj%2FgjQD%2B28fZz6NEEvl%2Fd02O%2FfxVBJwl5QkYv8zQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=43d97e928572b24862bbaa6ca10e1cc90c6ef11855f2644d0758e09b19145eda",
+      "file_size": 38971,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1013107,
+      "file_name": "plain_text_workerjs_file.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ikGswFZFo5yH8qiA48MLdQBQ?response-content-disposition=attachment%3B%20filename%3D%22plain_text_workerjs_file.png%22%3B%20filename%2A%3DUTF-8%27%27plain_text_workerjs_file.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2PPGKUPX%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235255Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIHLuGZcGnvXm50doyTuEQuvS1KWRRUfILYloWKG8z17vAiEAwm%2Bd%2FxZTyBqubxpcWNduXjpRzTBGwxeJx5m2gRIp68gqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMY5aCx5ornu4LbxLCqOBVugZlS%2FEFRS%2BuSQXC3TgOXSENRjnk71%2Blmi9lJgLusZZGORWPIvlPzguFDwHQ2kYL3jVTv2eaLyPLfbT6FyCuzWX1mk8nfbnKmI3miMT%2Fj%2FYCXRGbHw6XBtusXtshD1KKas8JMagvOSSWWh7nkef848tJcOJ4rZOZ7xDLA3NrjtovzyKF1K%2FLaR836OhWWL87ihiwq9TobPJ712btcIJa0SrABTNiaZiDUXnMWM5ky%2BMaXpGd6fxEn%2B5pPzZXSv1zzRBraB741nYdQ%2FLd4Gh0yNEB7rSpm%2FyHveCjemnZePmzM01ubdFJXi%2FcXdC1v54IH4OFM6pQy8u8GY0B3hZn%2Fl%2BsPIyHwiK90eUwXbGLdMCJJTcfYSRTHQdA5X24fTxo%2FA2zPxC%2BgaSLeMDKKfQr4ZPUH1EISCQPOuMIaHuVSVLexGm%2BM2XE9oDlcHbutNyBjoVcI9hLuM%2BiBbfRfUj9%2B26mTMcSyCMVLACsGcWZZ3IcbfFiY62p5kXzO5fmFmYNIgMC4%2FCfL70NuVrxVRXudv%2FEgWNxT80eo%2B743s2%2BXrM1VOQaCWL2tdfkdNNxHsl1PN%2FyQdscAvebdaNhEaM5GkSGmsonaNzCREhPXPprjeVN15UjdcOeJnUiHnEUPUpUHWyzi%2BvvEIrV87Zf%2F1qaW0X2cU%2Facke0S5lj4SVBPqAvmvLt9sWRK3YkgjRyamPDcv1Dz2iS1xdoL4dN%2F%2BNYUg7Ix18hjlXFjX%2Br%2B3x5paRV1cmM0tcWaWoak%2FNGv%2BqSAlrvOL1RTQUl9z2fTterFQ9VxMIvpg4t31QvM9HKgGwWh7Hw8%2FBTZ0ub9qQd4XdO530Y9DsPwhbpLzR%2Bus1TgvXsdDdWGPw4q3Je3aETDE2ePMBjqxAb41hWlhrlcpst4sWkcp0JVkfT%2BfxIOEUrHnTALlgOzJ5EZbjOr09ySRm0N8wKh2YRdbIFI9V6jeboUsTWi01HkD3pQXaAbVTM58p9Cp%2BJl58CyMhEN2oOuNo9gg8ncCmCF%2F7GvdRF0iOh0R2y8sSmYZpfYQNR2Xs8WDimn8EtjHqC5OWrZxQHrGx3c9APT57ePzkFPj%2FgjQD%2B28fZz6NEEvl%2Fd02O%2FfxVBJwl5QkYv8zQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ae12c562e0c68ffff1aa3aaa2cf756f45ed055186e088b276fe1d40cf8891253",
+      "file_size": 454172,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 28,
+  "voters": [
+    "xploiterr",
+    "badcracker",
+    "shubham_srt",
+    "ibrahimsyam1",
+    "mr_vrush",
+    "savxiety",
+    "onorbayar",
+    "blackd3v",
+    "khanbhai66666666",
+    "abmkrishna92",
+    "and 18 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 45903,
+    "asset_type": "URL",
+    "asset_identifier": "support.cs.money",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

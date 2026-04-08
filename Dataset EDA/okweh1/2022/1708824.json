@@ -1,0 +1,142 @@
+{
+  "id": 1708824,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNzA4ODI0",
+  "url": "https://hackerone.com/reports/1708824",
+  "title": "No rate limit on subscribe form ",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2022-09-22T13:10:36.967Z",
+  "submitted_at": "2022-09-22T13:10:37.052Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "happykira0x1",
+    "url": "/happykira0x1",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/vw0n3bdyw0jk95qh3an6u7231bbw/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 545,
+    "url": "https://hackerone.com/yelp",
+    "handle": "yelp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Yelp",
+      "twitter_handle": "",
+      "website": "https://www.yelp.com",
+      "about": "Connecting people to great local businesses in communities around the world."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-10-05T20:55:39.542Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-10-05T20:55:39.458Z",
+  "team_member_agreed_on_going_public_at": "2022-10-05T18:58:53.466Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHi team, I found that you missing a rate limit protection for subscribe form \n\n## Platform(s) Affected:\nhttps://business.yelp.com/?source=consumer_site_header&utm_content=header&utm_medium=www&utm_source=cons_home\n\n## Steps To Reproduce:\n\n\n  1. go to https://business.yelp.com/?source=consumer_site_header&utm_content=header&utm_medium=www&utm_source=cons_home\n  1. find a form with just email input (emailsub.png)\n  1. fill it with email click on submit then intercept the request \n  1.  send to burp intruder  go to  -> positions\n  1. clear `§`\n  1. add `§` in email like `youremail§1§@gmail.com`\n  1. go to -> payloads,  add numbers type paylaod like ( from : 2 , to : 100, step: 1)\n  1. start attack you will see all response with 200 ok and contain msg `Thanks for subscribing!` so no rate limit implemented\n\n##Fix:\nadd a recaptcha or 429 error (many requests)\n## Supporting Material/References:\nsee screenshots\n\n## Impact\n\nNo rate limit in form.",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1946522,
+      "file_name": "Capture_d__cran_(31).png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1kxidnixxihcl5xdt1u7655m25ha?response-content-disposition=attachment%3B%20filename%3D%22Capture_d__cran_%252831%2529.png%22%3B%20filename%2A%3DUTF-8%27%27Capture_d__cran_%252831%2529.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVWIESNLA%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T214835Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCICcH6o3d61XUmf9jSKpfX6PZItG2eFm%2FP%2BxT1VQPYYo9AiASEz7RsrnMxKm0HgVU6OcbQVwoZ5VIucq713xUw%2BVWuSq6BQia%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM2MDOAsJR%2F9Tkb%2FgKKo4FU%2BVsTrk%2BfN0uOy%2FX1iiO%2BJBkJMHqx3tRikzZYK8TIqH7zNDilihFH812Zoxxu7xDi3kuAXXeEXNKrVrrzQOfD8n4iieb5P%2FCUPvHj7uqcOyP8ENLoa9tFiWxGthTaiv5%2BRKxq75ASpI63iuDt6ElzHV3NbqbcfiaUDqFerMdgtthIBNKX31LpeV1%2FVR5fEpzwAXqe%2Bm5GjCjzc088SY6GZOTrGRHnWnTA8vWt7Q7oGs02U%2F2WGEcEW8cHELcyCsm3cCizrWPG8o8PS0RP5u17nvgFJjzyQuUX0jXi6RBuZYTgbBkzttXmCCEONciNZAygpwgEkgDnQu7Xd4bVpH5kBWRKJmLwYAEbXIAlYcQv69ShSC5UE%2B4tHab9Oe4zzBGSy7TQjTU%2BgwvxoZqnuqSD7hPdMj8W6TenSawZy9wAWLvk6ySphcQfNcdf2xYUCoEITqSBNY5lw5a9RjrWGRb9fyZ3L605CMPyA%2BycnGR1kHsSiTkPjrMzPmQPvVqwv9PFJT2h3SCwRSvSLxIqWvFfZM%2BgDXRTXNrpQikNAj4VW%2Bf2O5hswHCOIvmGVuE97ecG%2FAewEuZp7gXznLqOxKBJXxWKa74q8x65JFNkLe6nxs5x2%2FSXDtoIwvQrSZR3UFy2kXebfX0lQYZdoOq3zTwhFlUXoePG5cY4o9nuK1lFHPsPRU6NIIVrCVoWJLwtLb7vqNcHirkk1InR%2FVV%2FtdCU4mJU2lNgYk0%2B1uihxwHzAGDovFCSnSHa3DSlG4YmfN63iNyDpaITIp35%2FHGWHzxFkdIbd749wzL3mURIpiVCAb8NoUcRtTTuigYtKSpX%2Fn9uZQb2spD4BIzZbCmKYMeDxOMnSaaE0YoSF%2BFKRm1MNKv4swGOrIBxhWnQX%2BCj9MWTIXfb6jWkhldDqWrnsnVck%2BYfYLwX2F3Zr57zpzdMkadoCT9%2FejJAWqhahY2kKWBrV88iX8Sfd0pLM%2BDiP6Po3kxhTyosySUWA%2FC95hZiMexMH9aNrKsYDK%2BjI4Hg2E9mBsR4aRxkgUVpnWQfYuYJJm7a4eexkZhUzmHiN84SQ7J5eHoPuNNpURJt2%2FeyzWruDq1SgZiWXQeTtexN9FgolVFC8g6g%2BZP%2Fg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6b0c2e4c1ccc8c24ebdf45598208d7d4747ae150f3c13617929e6e36e3a6a94a",
+      "file_size": 122885,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 12,
+  "voters": [
+    "thalaivar304",
+    "khizer47",
+    "happykira0x1",
+    "mchklt",
+    "shivammusic",
+    "saidkira",
+    "gison8",
+    "mohithreddy",
+    "alien935",
+    "dipannama91",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.1,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 43913,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.yelp.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

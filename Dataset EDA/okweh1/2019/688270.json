@@ -1,0 +1,168 @@
+{
+  "id": 688270,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82ODgyNzA=",
+  "url": "https://hackerone.com/reports/688270",
+  "title": "OS Command Injection in Nexus Repository Manager 2.x(bypass CVE-2019-5475)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2019-09-05T03:25:50.622Z",
+  "submitted_at": "2019-09-05T03:25:50.622Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "badcode_",
+    "url": "/badcode_",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35524,
+    "url": "https://hackerone.com/central-security-project",
+    "handle": "central-security-project",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/524/60c5e9c4b0090fc9ce80fa9d9ca3aecd88d01b00_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/524/60c5e9c4b0090fc9ce80fa9d9ca3aecd88d01b00_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Central Security Project",
+      "twitter_handle": "",
+      "website": "https://www.sonatype.com/central-security-project",
+      "about": "Ensuring Safer Open Source Across Ecosystems"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2019-15588",
+    "CVE-2019-5475"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-10-29T11:03:48.386Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-10-28T18:58:11.671Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## OS Command Injection in Nexus Repository Manager 2.x(bypass CVE-2019-5475)\n\n# Maven artifact\n\n**groupId:** org.sonatype.nexus.plugins\n**artifactId:** nexus-yum-repository-plugin\n**version:** 2.14.14-01\n\n# Vulnerability\n\n## Vulnerability Description\n\nThe Nexus Yum Repository Plugin is vulnerable to Remote Code Execution. All instances using CommandLineExecutor.java with user-supplied data is vulnerable, such as the Yum Configuration Capability.\n\n## Additional Details\n\nTake a look at the patch for CVE-2019-5475\n\n https://github.com/sonatype/nexus-public/commit/7b9939e71693422d3e09adc3744fa2e9b3a62a63#diff-4ab0523de106ac7a38808f0231fc8a23R84\n\n![](1.png)\n\nThe `getCleanCommand` method is not completely filtered and can still be bypassed.\n\n\n\n## Steps To Reproduce:\n\n1. Navigate to \"Capabilities\" in Nexus Repository Manager.\n\n2. Edit or create a new Yum: Configuration capability\n\n3. Set path of \"createrepo\" or \"mergerepo\" to an OS command (e.g. `/bin/bash -c curl${IFS}http://192.168.88.1:8000/ || /createrepo`)\n\n   \n\n![](2.png)\n\n\n\n## Supporting Material/References:\n\n- Ubuntu\n- Sonatype Nexus Repository Manager 2.14.14-01\n- Java 8\n\n# Wrap up\n\n- I contacted the maintainer to let them know: N\n- I opened an issue in the related repository: N\n\n## Impact\n\nAn authenticated user with sufficient privileges in a Nexus Repository Manager installation can exploit this to execute code on the underlying operating system.\n\n## Impact\n\nAn authenticated user with sufficient privileges in a Nexus Repository Manager installation can exploit this to execute code on the underlying operating system.",
+  "weakness": {
+    "id": 58,
+    "name": "Command Injection - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 575210,
+      "file_name": "2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bW8po4yW1wjuWWpRa9jXb7Dv?response-content-disposition=attachment%3B%20filename%3D%222.png%22%3B%20filename%2A%3DUTF-8%27%272.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZZFH4ZWJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T012001Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCebYGLtP1fg6avPiofj0%2FGR4pPM8U0s0q6Zx59sZ0%2FrwIhAKFwzK%2FoQhuaTO54dwwxFCpnL12iyYwAgkqJIZhZwV4XKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy12XWw%2Bc3n4FZYNQwqjwU3wqdrcPph%2BGHkfUoQQ6h9Pz8bTyWmLWYeJnUGWlITbRDRMhSBL6xzoSQD%2Fvki95jS5hopBlvzxJSU5fJrjRzmo%2BUZOY2R%2BZLpIjo5FxV6BCsIucmewquGDjfOKqBtX9kHzs7ApCquRb2c4fTaL8GifKLYAERo2V1sdOGBze%2FpSRxv%2BIe9lum47VccCDF8Ntrh5i5heUlyuRNqIx1Q78aTcb2p%2Bnz%2FraFXMi3C9TtgDJDkPcd4hOOlJRDxxac1VsJFmADepTLAFjmd%2Bd%2BjFYtDkJX65ObUFRz5DP0F9bhOZC%2FELUOx6dJDwxkKVSDAGzP8PX8LYr%2B7kT6PvDtma%2F5sY7T479Nz47koh3N0%2FZcs%2FWTxM7ut%2FrJbb3UKvio98H%2BX8stvrGfT%2Bg2wyUwtZhPmFSEMWlOpt2675FBDqHuocoZgrh7XvL2Qw932K5Ht0mP1tBDchT9bQmNFIsse8aJOu4B7jy59u3I4pV61i%2F6dolvsniFub5T8D4fFLRbalr1%2BXNClpKcWTEqOteAxajKTbeDh3ppQQ3ege5fVFbit4Csyq67ecUZpyivVkBIxqj9UKCWonXMerBkpNMmYgwngHLGwig4eT1%2FSL%2BDRP9lHF9CsJF%2F1LiF926krZbTb6a6LbsjuE5GvaCJ9dGNNPkds2tnvwfquOd7swbcCxpeOB9x8xWrDfMk%2FcoYuDv%2FXvRBiJwO0Xe7UO6m4TionCU7CWLxpb2v2DgNU7bZoQcariFwBhxLxul9z7DnICzz9xQ4iZmpiwCGRGUl52bYp%2FvKDO1lKcub2QBIv9zRCDdv9FjVmwlzOC84SSc2Vk4Z1G6r9o6xjbRgzGYBC3dENvtbfzhVHUoouobUOAW875%2FzfMNLh48wGOrABrizQ6%2F%2BQwOq6j85ZckmE6FKQKsPZmC%2F0Bi%2Beq1b8q5ek4EIaUKTjmKY7BerobUgxWTwEVvzBPNOWTfN1ekdDSrBFlYWrPyMajB3z3vJ51UDooJNUY1dS4PLjV%2FkIyRdeagGo5rREx%2BlHLNPyocsCu6Dkl%2FuSMgXDnH2aQ8JHQWJi0KDfT6gnb5S6XTD5gEBzZFgwuhV0%2BlLbzkc4FlJHlMv72BFOlgam%2B3uVOW24Kew%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=12bc8fd57c604dd9eac8c30c7a190082c674356bf1d5c4e28f7438151662667b",
+      "file_size": 113328,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 575211,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/S5S3CctLKLo5x3TokbPbWz3F?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZZFH4ZWJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T012001Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCebYGLtP1fg6avPiofj0%2FGR4pPM8U0s0q6Zx59sZ0%2FrwIhAKFwzK%2FoQhuaTO54dwwxFCpnL12iyYwAgkqJIZhZwV4XKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy12XWw%2Bc3n4FZYNQwqjwU3wqdrcPph%2BGHkfUoQQ6h9Pz8bTyWmLWYeJnUGWlITbRDRMhSBL6xzoSQD%2Fvki95jS5hopBlvzxJSU5fJrjRzmo%2BUZOY2R%2BZLpIjo5FxV6BCsIucmewquGDjfOKqBtX9kHzs7ApCquRb2c4fTaL8GifKLYAERo2V1sdOGBze%2FpSRxv%2BIe9lum47VccCDF8Ntrh5i5heUlyuRNqIx1Q78aTcb2p%2Bnz%2FraFXMi3C9TtgDJDkPcd4hOOlJRDxxac1VsJFmADepTLAFjmd%2Bd%2BjFYtDkJX65ObUFRz5DP0F9bhOZC%2FELUOx6dJDwxkKVSDAGzP8PX8LYr%2B7kT6PvDtma%2F5sY7T479Nz47koh3N0%2FZcs%2FWTxM7ut%2FrJbb3UKvio98H%2BX8stvrGfT%2Bg2wyUwtZhPmFSEMWlOpt2675FBDqHuocoZgrh7XvL2Qw932K5Ht0mP1tBDchT9bQmNFIsse8aJOu4B7jy59u3I4pV61i%2F6dolvsniFub5T8D4fFLRbalr1%2BXNClpKcWTEqOteAxajKTbeDh3ppQQ3ege5fVFbit4Csyq67ecUZpyivVkBIxqj9UKCWonXMerBkpNMmYgwngHLGwig4eT1%2FSL%2BDRP9lHF9CsJF%2F1LiF926krZbTb6a6LbsjuE5GvaCJ9dGNNPkds2tnvwfquOd7swbcCxpeOB9x8xWrDfMk%2FcoYuDv%2FXvRBiJwO0Xe7UO6m4TionCU7CWLxpb2v2DgNU7bZoQcariFwBhxLxul9z7DnICzz9xQ4iZmpiwCGRGUl52bYp%2FvKDO1lKcub2QBIv9zRCDdv9FjVmwlzOC84SSc2Vk4Z1G6r9o6xjbRgzGYBC3dENvtbfzhVHUoouobUOAW875%2FzfMNLh48wGOrABrizQ6%2F%2BQwOq6j85ZckmE6FKQKsPZmC%2F0Bi%2Beq1b8q5ek4EIaUKTjmKY7BerobUgxWTwEVvzBPNOWTfN1ekdDSrBFlYWrPyMajB3z3vJ51UDooJNUY1dS4PLjV%2FkIyRdeagGo5rREx%2BlHLNPyocsCu6Dkl%2FuSMgXDnH2aQ8JHQWJi0KDfT6gnb5S6XTD5gEBzZFgwuhV0%2BlLbzkc4FlJHlMv72BFOlgam%2B3uVOW24Kew%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8a77146ccc0d852d5f16c1a3239d87fe2a7bedc33dc060f61d4e3554221b8a1c",
+      "file_size": 67810,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-11-27T18:58:11.771Z",
+  "allow_singular_disclosure_after": -196755709.87049088,
+  "singular_disclosure_allowed": true,
+  "vote_count": 34,
+  "voters": [
+    "base_64",
+    "sameerphad72",
+    "michiel",
+    "dmc3",
+    "spam404",
+    "mik317",
+    "giany",
+    "qtros",
+    "0xm1racle",
+    "abdul_samad_as",
+    "and 24 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 17122,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "Java Component in search.maven.org",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 18672,
+      "category": "team",
+      "content": "https://support.sonatype.com/hc/en-us/articles/360033490774-CVE-2019-5475-Nexus-Repository-Manager-2-OS-Command-Injection-2019-08-09",
+      "updated_at": "2019-10-28T14:50:39.597Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 429706,
+        "username": "acazzolla",
+        "name": "Adam Cazzolla",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2018-12-07T21:38:26.465Z",
+        "url": "https://hackerone.com/acazzolla",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

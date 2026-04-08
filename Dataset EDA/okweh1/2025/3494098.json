@@ -1,0 +1,126 @@
+{
+  "id": 3494098,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNDk0MDk4",
+  "url": "https://hackerone.com/reports/3494098",
+  "title": "inconsistently Rejection Logic in file:// URLs with Authority",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "low",
+  "readable_substate": "N/A",
+  "created_at": "2026-01-08T08:38:03.229Z",
+  "submitted_at": "2026-01-08T08:38:03.793Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "unknowperson0212",
+    "url": "/unknowperson0212",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2026-01-08T09:00:38.331Z",
+  "bug_reporter_agreed_on_going_public_at": "2026-01-08T09:00:38.077Z",
+  "team_member_agreed_on_going_public_at": "2026-01-08T08:56:10.908Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "curl's `file://`  protocol handler inconsistently applies path sanitization. in reject `file://../` as Bad File:// URL\" but allows the same traversal when an authority/host (e.g.,`localhost`) is present (`file://localhost/../`). this inconsistency misleads developers who rely on the `bad file:// URL` error for sandbox enforcement.\n\n##Root Cause:\nThe `Bad File:// URL` check only triggers for \"relative\" URLs (no Host). Adding a valid/invalid host bypasses this safety check, allowing path traversal to proceed.\n\n##Step to Reproduce:\n\n1. `echo \"SECRET\" > /tmp/secret.txt`\n2. `curl file:///tmp/secret.txt` -> Works (Expected).\n3. `curl file://../../../../tmp/secret.txt` -> Blocked (\"Bad file://URL\").\n4. `curl file://localhost/../../../tmp/secret.txt` -> Works (Bypass The Check in #3)\n{F5200477}\n\nWhile `file://` is not designed as a security sandbox, the existence of the specific `Bad file:// URL` rejection creates a **False security guarantee**. Developers implicitly trust this error to block traversal. Bypassing this specific control breaks that trust, leading to insecure sandboxing logic in dependent application.\n\n## Impact\n\nBypass off application-level sandboxing that depends on URL parsing validation",
+  "weakness": {
+    "id": 19,
+    "name": "Path Traversal"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 5200477,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/iv4vr1jsy1wfir1at4t1mnny6m79?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T194347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8ce1c21f3c4033a5fbc6c4a168b05413925cf8dbeffb8114ea885a483dabc736",
+      "file_size": 88726,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 6,
+  "voters": [
+    "2026",
+    "suul",
+    "gaurav_7777",
+    "anon7119",
+    "0x_luk3",
+    "unknowperson0212"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

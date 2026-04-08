@@ -1,0 +1,117 @@
+{
+  "id": 926222,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85MjYyMjI=",
+  "url": "https://hackerone.com/reports/926222",
+  "title": "Vulnerability in Private Data Endorsement Policy Management in Hyperledger Fabric 2.0",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2020-07-17T15:52:12.334Z",
+  "submitted_at": "2020-07-17T15:52:12.334Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "swang1994",
+    "url": "/swang1994",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22522,
+    "url": "https://hackerone.com/hyperledger",
+    "handle": "hyperledger",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4unr4nty3m2omunib0bwxy2s189l/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/4unr4nty3m2omunib0bwxy2s189l/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Linux Foundation Decentralized Trust",
+      "twitter_handle": "lfdecentralized",
+      "website": "https://www.lfdecentralizedtrust.org/",
+      "about": "An industry-wide open source initiative to advance blockchain technology, governed by The Linux Foundation."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": true,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-03-30T20:30:22.088Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2021-03-30T18:20:04.965Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "To whom it may concern,\n\nWe are a research group conducting research on the Hyperledger Fabric. We find a design flaw about the endorsement policy of Private Data related transactions in Hyperledger Fabric 2.0. When private data adopts a default chaincode-level MAJORITY endorsement policy, the design flaw allows arbitrary change of private data by a malicious private data owner with endorsements from unauthorized organizations that do not own the private data. \n\nPlease refer to  the attached for the attack details.\n\nPlease let me know if you have any questions or concerns. If you think it is necessary, we can give you a briefing on the issues. Look forward to your reply!\n\nBest Regards,\n\nShan Wang, Southeast University\nYue Zhang, Jinan University\nXinwen Fu, University of Massachusetts, Lowell\n\n## Impact\n\nThe lack of proper management of endorsement policy is the root cause of our attack. Our attacks may bring security concerns to the private data collection. For example, in a scenario where the private data is a kind of digital asset (i.e., in the case of technology transfer, patents can be configured as private data and maintained by all inventors together), requiring majority endorsements to be transferred. A malicious data owner may perform the assets transferring on its own without other data owners’ agreement.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 911255,
+      "file_name": "security_report_to_Hyperledger_Fabric.pdf",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/MN5YDhCmnPPaEWy4cksGsyPK?response-content-disposition=attachment%3B%20filename%3D%22security_report_to_Hyperledger_Fabric.pdf%22%3B%20filename%2A%3DUTF-8%27%27security_report_to_Hyperledger_Fabric.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQMN3TFTB%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T231942Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCJ1XoJ2rvDUT%2FvQwDNKTsq1Xz%2FdwtAeQzv02Xu%2Bvu5ywIhAMItGtSE3kESm5svXrkmpOUZIoQXb2dukK0z%2FECso8CPKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwff4mY8daR2nqlCgsqjwVLvgbC2HWlCoH81sI7Vvyk3yWvTwS4bv21vpbCrZjDd8TgvTNH4CR6kFYHKrg%2FJ2n01%2FjoLxtNauoZgbFsgGNbrxVjyFu5LyRSuR63Zm1kVQ055VtsctuDWr8MBCkY6wBKpFNjRtwOV647gs2HEcIQC4jlvyEUFYpXSPk1HtWqGehxH0MTR21zU%2FntW9GuVrLgf%2BOxPO%2BVJscGmTkw24QJBDXe7p76resq807H8qbGCSeGtHDl8UfD2KZ7hZRByeAj3gMSX8M1j12nG1ckBrnlLaGqrzGa2K8V5h4veerwsMPHpYXTb%2B%2FeXu2mRivttjUb1PrqwwX23AjdMeRPc3D4rmBSiBfMYcSO2WNcxn6VR4sbQdCPFqiHhPPZOFBTQYgtP04Uglz0CKIQst6%2FHCFM1Vf9xreWuUGXvMdRxWIaCgAlB6jXhzna938WvVr6R5wL1zeNGLvfHcaBNI%2B%2FPXgqyl35DB7s9yK1HJIb4X7jQJZ6TmePhB85QCvuoIQDrEfP2Kb%2BzL4MtoztUlmDYu8JOLH%2B4rwNYwkL2hMbcUir4M5LkPRNctJA5d6XoZ%2FWLX5%2FfgMWbBgd6qO%2BMK1Tg3Rqw649Z92BDKJ%2BaM7jcHP9xA7n3JK8dkyWJsGfZduBN%2Fv7O9cDJCL6%2BHQDe6x3MVE8%2FIrBUUbown%2BQwFaRqVIxNqUlTGKsKcmluhGAGxD7A4S8MeDFDKSqAIBn%2FjZ%2FSJ0XsOmUo9ntNthmOr8Oo7dYAzisaeg5XyDqOpa7P2dZNuUoMTJOjg5ufOteqAq5HgvJ3VPyw0FoQ4Ve1Y1iQCi2jpkoyf5GqMRNe4XJndxXbOfc2ABf6CsWAA3LJzfbyClEZhCKWtovDeVdN8xa8x93MKDC4swGOrABMIag7bHRmk0YR3QrHBqOrwYZ2n7py6iPbYZ9%2BTicKKjXO%2BdTTOOdbo%2FCcQASZs7sI%2B2ZrjBdY4nd9waDJgK%2FVh0Epv5aENQf57rplZq%2BfUjlcVd1vZJ1%2BCEmgqxxcQ0eLwM7zf51deHj1eVktSNGVP%2FPJAAr5miE9vtz9jRiN%2BWwO0yrDOnM4uykApBX6SopTj%2FEA1iZ%2FXj9DRIce4XGkiDEO%2BqRmQs5iMCkfQFeeg0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=834151a6bccd6f459fa62a57e6241a6aaae4e1bdd05b013fbf0cb591e6f78619",
+      "file_size": 151391,
+      "type": "application/pdf",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 6,
+  "voters": [
+    "khizer47",
+    "bhaskar_ram",
+    "zongruxie",
+    "kc147",
+    "ekgaribadmi",
+    "adass"
+  ],
+  "structured_scope": {
+    "databaseId": 3019,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/hyperledger/fabric-samples",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

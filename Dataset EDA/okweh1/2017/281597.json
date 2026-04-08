@@ -1,0 +1,134 @@
+{
+  "id": 281597,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODE1OTc=",
+  "url": "https://hackerone.com/reports/281597",
+  "title": "Preferred language option fingerprinting issue in Tor Browser",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2017-10-22T02:53:01.305Z",
+  "submitted_at": "2017-10-22T02:53:01.305Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "newfunction",
+    "url": "/newfunction",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2miia86h6gou58lati8p3usdvhan/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1800,
+    "url": "https://hackerone.com/torproject",
+    "handle": "torproject",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tor",
+      "twitter_handle": "torproject",
+      "website": "https://www.torproject.org/",
+      "about": "Anonymity Online"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-10-24T06:57:45.395Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-10-24T06:21:05.469Z",
+  "team_member_agreed_on_going_public_at": "2017-10-24T06:57:45.316Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I'm not so sure if this is an in-scope issue or by-design. But based on my understanding of [1], I feel that Tor doesn't want to make user configuration details of Tor Browser detectable by websites. But in about:preferences#content, there's a \"Languages\" section that allows users to \"choose your preferred language for displaying pages\". When users add a language here, there's no warning to tell them that this info will be sent to the websites. The language list will be available to websites in the \"Accept-Language\" HTTP request header, and in JavaScript API \"navigator.languages\".\n\nTo fix this issue, I think there're three options: 1) remove this option from the settings; 2) let users configure a list of domains for which the language list is sent; other sites get the default value; 3) add a warning in the setting page: \"the info of your added languages is sent to all sites, which may be used to fingerprint you\" or something like this.\n\n[1] https://www.torproject.org/projects/torbrowser/design/#fingerprinting-linkability, Sources of Fingerprinting Issues",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 231531,
+      "file_name": "Accept-Language_discloses_language_list.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/231/531/d28098dd26c5e6e4485fb2fefa91d7f1b23787cb/Accept-Language_discloses_language_list.png?response-content-disposition=attachment%3B%20filename%3D%22Accept-Language_discloses_language_list.png%22%3B%20filename%2A%3DUTF-8%27%27Accept-Language_discloses_language_list.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031101Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=209d16e263ceee28ef6f0690c0e0925fc116db7dad116e259c80a6898ff83b5e",
+      "file_size": 33082,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 231532,
+      "file_name": "language_setting.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/231/532/3f86a552cc2075a23bc37dfa455b488af8644877/language_setting.png?response-content-disposition=attachment%3B%20filename%3D%22language_setting.png%22%3B%20filename%2A%3DUTF-8%27%27language_setting.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031101Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f9e388f5bd0794eaa8d01f44989bf7b1fa8612fc8dc8727e6f0fc5244092c7f5",
+      "file_size": 45185,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 231533,
+      "file_name": "navigator.languages_return_language_list.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/231/533/46a64b45c48f151ac0210ba50496734bd583b658/navigator.languages_return_language_list.png?response-content-disposition=attachment%3B%20filename%3D%22navigator.languages_return_language_list.png%22%3B%20filename%2A%3DUTF-8%27%27navigator.languages_return_language_list.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031101Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e0caee98013bcd356f0cf0142b747bcf3587e541383b96e4e0802b91df6e1ea0",
+      "file_size": 9465,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 3,
+  "voters": [
+    "newfunction",
+    "hongen",
+    "yanis60"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

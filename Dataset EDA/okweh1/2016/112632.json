@@ -1,0 +1,118 @@
+{
+  "id": 112632,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTI2MzI=",
+  "url": "https://hackerone.com/reports/112632",
+  "title": "[tor] libevent dns remote stack overread vulnerability",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2016-01-25T02:27:56.487Z",
+  "submitted_at": "2016-01-25T02:27:56.487Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "guido",
+    "url": "/guido",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/983/e55b0b2324777fb7efc2de4212fd8d337ca816bd_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1800,
+    "url": "https://hackerone.com/torproject",
+    "handle": "torproject",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tor",
+      "twitter_handle": "torproject",
+      "website": "https://www.torproject.org/",
+      "about": "Anonymity Online"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-10-19T10:16:26.792Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-10-19T10:16:26.676Z",
+  "team_member_agreed_on_going_public_at": "2017-10-19T09:34:08.728Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello,\n\nthe name_parse function in libevent's DNS code is vulnerable to a buffer overread.\n```c\n 935 static int\n 936 name_parse(u8 *packet, int length, int *idx, char *name_out, int name_out_len) {\n 937     int name_end = -1;\n 938     int j = *idx;\n 939     int ptr_count = 0;\n 940 #define GET32(x) do { if (j + 4 > length) goto err; memcpy(&_t32, packet + j, 4); j += 4; x = ntohl(_t32); } while      (0)\n 941 #define GET16(x) do { if (j + 2 > length) goto err; memcpy(&_t, packet + j, 2); j += 2; x = ntohs(_t); } while (0)\n 942 #define GET8(x) do { if (j >= length) goto err; x = packet[j++]; } while (0)\n 943 \n 944     char *cp = name_out;\n 945     const char *const end = name_out + name_out_len;\n 946 \n 947     /* Normally, names are a series of length prefixed strings terminated */\n 948     /* with a length of 0 (the lengths are u8's < 63). */\n 949     /* However, the length can start with a pair of 1 bits and that */\n 950     /* means that the next 14 bits are a pointer within the current */\n 951     /* packet. */\n 952 \n 953     for (;;) {\n 954         u8 label_len;\n 955         if (j >= length) return -1;\n 956         GET8(label_len);\n 957         if (!label_len) break;\n 958         if (label_len & 0xc0) {\n 959             u8 ptr_low;\n 960             GET8(ptr_low);\n 961             if (name_end < 0) name_end = j;\n 962             j = (((int)label_len & 0x3f) << 8) + ptr_low;\n 963             /* Make sure that the target offset is in-bounds. */\n 964             if (j < 0 || j >= length) return -1;\n 965             /* If we've jumped more times than there are characters in the\n 966              * message, we must have a loop. */\n 967             if (++ptr_count > length) return -1;\n 968             continue;\n 969         }\n 970         if (label_len > 63) return -1;\n 971         if (cp != name_out) {\n 972             if (cp + 1 >= end) return -1;\n 973             *cp++ = '.';\n 974         }\n 975         if (cp + label_len >= end) return -1;\n 976         memcpy(cp, packet + j, label_len);\n 977         cp += label_len;\n 978         j += label_len;\n 979     }\n 980     if (cp >= end) return -1;\n 981     *cp = '\\0';                                                                                                   \n 982     if (name_end < 0)\n 983         *idx = j;\n 984     else\n 985         *idx = name_end;\n 986     return 0;\n 987  err:\n 988     return -1;\n 989 }\n```\n\nPrior to the memcpy on line 976 it is not asserted that the range (```packet + j```) - (```packet + j + label_len```) does not exceed the length of the ```packet``` buffer (as stored in variable ```length```). My proof of concept exploits the possibility to keep jumping around in the buffer (lines 959 - 968), until the buffer index (```j```) is at the very end --- then, an overread of 63 bytes will occur. No overwrite takes place.\n\nAs you know, an overread *may* result in a crash, depending on a variety of factors.\n\nI believe the code in Tor is vulnerable and I will update this report with PoC against Tor itself as soon as I've constructed one.\n\nNobody has been notified of this bug except you. I will not contact the libevent developers about this issue unless you explicitly request so. It's up to you to notify them yourself.\n\nTo test against the latest version of libevent (libevent-2.0.22-stable.tar.gz):\n\n```sh\nCFLAGS=\"-fomit-frame-pointer -fsanitize=address\" ./configure\nmake -j4\ncd samples\n./dns-example -servertest\n```\n\nin a different terminal run\n```sh\npython libevent-poc.py\n```\n\nOutput of ```dns-example``` should be:\n```\nEVUTIL_AI_CANONNAME in example = 2\n=================================================================\n==27496== ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffcf5a7355c at pc 0x7f6096a6b652 bp 0x7ffcf5a72bb0 sp 0x7ffcf5a72ba8\nREAD of size 1 at 0x7ffcf5a7355c thread T0\n\n...\n...\n```\n\nGuido",
+  "weakness": {
+    "id": 2,
+    "name": "Memory Corruption - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 70753,
+      "file_name": "libevent-poc.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/070/753/f0e7d2a8a55f947329f3935b2547a64de96e082c/libevent-poc.py?response-content-disposition=attachment%3B%20filename%3D%22libevent-poc.py%22%3B%20filename%2A%3DUTF-8%27%27libevent-poc.py&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSBE3AKLT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031213Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGyieowL3ju9Q62exG%2BDTuChyVOc1Mg7%2BYJ9S8MYBpcKAiEA5C3kcaFuCmE%2F4OWx1FicS2m1oYeV2FUwJGNh7f7fPekqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDM3i42xq9%2Fv%2BDD7cCSqOBROdN90KKmq4dqM%2FQ1dbRpgTPSUXomx1swOP2q%2F0KMYHPJ02HBNGs4IvVDBRQk3YMZAy20pCcvff62KM9I%2BkVOpgk5DmSUK2NlOx%2Bu8uiFhvrdoku%2FRDrv6x7b0pq3RX%2BhnUtdfaInGqndlzP6kNRDWq0e4nSumeN9PCFslWQ2Gj8O0E4tDQAKVILesgZiS%2BDaEbHEX%2FnwqmE%2F3RSxh7qZt3dG%2B5Sf5U844qTzpJ2kNI4pQPRAbqPw23MkQBgKhqjNJ9IZQmD1C67skq5HJuPxeEZijHqWSALcC19ZpXWLX1ZHpXFPJfYS4pzhIS1EsUuwto6q0vJxxcDCQzLNRcRfzOHRxSJZaTPS9nN7Njx4bdtQsl1kgL9hPMs3cNJWUHhTqqLoLGi6ei0lctLur0xfzI1ExXYy1OhASR16Lkjne0PkavaqRtTCepwANIMu69ou%2BsuAbDfMrAzS1lGulslOJVUwSICLpi3Ok4CJdlEMMTAZHMA0h0wAWwF7h18u%2F9cLC2sNd8ltip4HfphzHyZD2EsXENSvWeZTAzZyYmKaG8lA2QjgDqWys6gu6QPdlu279ynr5F4B8bF1l%2FkYE1PxZT%2BPTPYRVddjAyMc%2BBpYoquMLVIOjnb72seidOB8bdiMu%2BbdRo1TbRuoPjLUhbYLZvP%2Beg%2BgKcNb4AVlT20PNahH%2BntY1h7QFUorkMUXGqfZDEesX9Eq8Cbi9zm8GdnmhcdK9sgshAugFKOF9Fj984TDn3exa%2FL9%2BAvT8xT4FnIvL5hIRfrzp6BLa9JhE96ZYkGQ7CelGJeRtIjv9TJpCT0%2FkHsj5pBLLOiVHhgDLYAx1J0mXvibP%2BnuH92QhtodPbB%2BX7ulBLzHaC1o9dEzDO5%2BPMBjqxAXQ6THfET1Jf1RRl%2Fh6TXO1%2F03cJJVqg7RWnDkklmj8YAhc9wYE28jwLo3%2FPVxuO%2BIw%2By2Djj7nQtlat2KNVBQJmPdYcK5mHmW3n2bnO0C8eGiA66LPlbeXgbY24S5z7qcsHmEeJvPbuj%2FO3%2Fpam52Wch3o9NQevxQXmsL9upnFphnbfZ%2BpLklPHg94JBDWRbPl6CHUXsCFkc6Dd3EUjFAoOT9BmgSKEMV1sAadePOBN6w%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=74f0f1576e9fe38f05a436178a7c5b99eff316bf7eaa1d90f5a5f342f75590c2",
+      "file_size": 9526,
+      "type": "text/plain",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-11-18T09:34:08.767Z",
+  "allow_singular_disclosure_after": -260645885.18967837,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "geeknik",
+    "eveeez",
+    "mr_r3boot",
+    "japz",
+    "spetr0x",
+    "b4155f7c29acd42c27d007a"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

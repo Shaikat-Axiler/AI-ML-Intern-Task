@@ -1,0 +1,127 @@
+{
+  "id": 116512,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTY1MTI=",
+  "url": "https://hackerone.com/reports/116512",
+  "title": "Markdown parsing issue enables insertion of malicious tags",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2016-02-15T08:08:07.472Z",
+  "submitted_at": "2016-02-15T08:08:07.472Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ru94mb",
+    "url": "/ru94mb",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/KoV6xpuAmE7m34HY1huchq2f/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1868,
+    "url": "https://hackerone.com/gratipay",
+    "handle": "gratipay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/868/a75c6649c5b4671b3cf44160af884a7da9fd0b67_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/868/a75c6649c5b4671b3cf44160af884a7da9fd0b67_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Gratipay",
+      "twitter_handle": "Gratipay",
+      "website": "https://gratipay.com/",
+      "about": "Gratitude? Gratipay! The easiest way for your company to pay for open source."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-08-21T13:28:46.303Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2016-02-15T16:30:55.679Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Markdown tags and event handlers can be used to load malicious URLs in user's profile statement.\n\nHere is the payload that when entered in user's profile statement leads to the following HTML:\n\nPayload: _www.attacker.com/malicious.exe_\n\nResulting HTML:  \"html\": \"<p><em><a href=\\\"http://www.attacker.com/malicious.exe\\\">www.attacker.com/malicious.exe</a></em></p>\\n\"\n\nSee the following screenshots for more details:\n\n\"Profile.jpg\"\n\"request.jpg\"\n\"response.jpg\"\n\nUser can be redirected to malicious URLs and malware can be hosted on gratipay.com using this vulnerability.\n\nFix:\n\nDisable the functionality for these markdown tags.\n",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 73541,
+      "file_name": "Response.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/073/541/612ca1fb9ea213f848793cb0627a46390177e2c2/Response.JPG?response-content-disposition=attachment%3B%20filename%3D%22Response.JPG%22%3B%20filename%2A%3DUTF-8%27%27Response.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQS64WP5ZB%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032817Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAxEIDxvWJyyNfIHeDTUUH%2FIn8UN2dz4EPGd8Ht9uVO%2BAiEAkBbh0P7xL9XnRofRuxNyAmso1G9vA70Wk5FENEaRolIqugUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPTQRk9Tg5OQ6LGUTyqOBZHEX1KxhsPRwDkx4jDRQ1MBnsg9KjB8ppwtdWEePIpGYjVfDrXRQKhtjeJQyEHCGgf70ZjK8sgXf%2F37v3lLsPxjQHe%2BF4HE0zH7UI4gxIqy0JNU4KyRD%2Bk0do5nykKmZUsYBE91RUuCLV1qf3g0cCSzII2jDr3EzEp2UP5S%2FbCrBsZT0YGSLz20EzVHKP6S0ux8DehgQCdrxzZMS9FAzcRk60vv14Fz4oznJLM1raJ8uDfZOOfjA3VtJmiDEwSoPaRrNdYX9QGihA%2BoVtLr%2BzrcHFzt4d6H3Q70Pj4UAvMDixRGwVkk8hODs%2Bw92Z13R%2B%2FvSR1qXK3PtSWsecEQ8tQpyFgeDrbsGEBShWQo66PElo1jBbXIVLUyr56Sa2zoH0z12%2BO%2FBn7pqhr%2BNg%2BAyJwCNkW%2BNCtz3Q%2FMuwoXroQ%2Fkm%2FKdlRyL%2Fw3nNKJwK9nIXZVCLmS%2B4qzWO%2FXjdjhl4FD%2BrwHXmW7FsMHjS2krpt3S68xmU01DAuul8Hxs3l3wnIo7YoF9N1v23DoUM%2BuXI44NnRJiCqm4cubSYXyzfcy2dEQjPSALeJlklMWlqg%2F5laYU%2B9TdjAOuqm23DhLObDbYNbPgjdH209nVDI%2BE1SBLz5Y8VNEAgU0L3ZxIsQt3ivsmjSwCgEndA3MRZZFOOGJMq80jUNzp3n8dTaasEutP9SpAnpcGPZl3VQ6fibehrtUov3IAFNDTQ6pYRnORBoLMyS%2FL0yISX2qasSx7G5ayl8e8tyjIY0pMl0JJJlvpZdlmKrAA1wd32zekZjXHXdOJrgZ37wAKUc0vhWsfAUBbMZSzsjOdPM%2FcdBnKPKE%2BpNaM82KJSXiRLb7NXVwOxWBJNDcoz4QcULIz9PyTDDXqeTMBjqxAZ5VR698k4G1exWyLYPlnhz2z7jPunTnKS4Z3a1vkNaw0cOXa8XPfvEtgkUIXeO%2FXBWIp%2B59naMGaAbpEQf%2BrAIYTKmuVtSv5DIgeqhAskvZzAYaWlLKcTjFS%2FSrhzkxyBVOwv7Q5BeOwqnEf28ft6YDYn9OFsJ4gVoGtA3l5YN8h2JaON%2FCOB16pxLZ8ETrt1n7nbYZvjaFosnoBchQdZtwrsJHQyn5bowFC65tYCFW8A%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8606597aa079a51ba196543bbed5e3a1ec764f3b26103e9a39b2b9485bcdc1ea",
+      "file_size": 74318,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 73542,
+      "file_name": "Request.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/073/542/3a60916bc70bf4ccb38d91ef996ed962b10a237d/Request.JPG?response-content-disposition=attachment%3B%20filename%3D%22Request.JPG%22%3B%20filename%2A%3DUTF-8%27%27Request.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQS64WP5ZB%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032817Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAxEIDxvWJyyNfIHeDTUUH%2FIn8UN2dz4EPGd8Ht9uVO%2BAiEAkBbh0P7xL9XnRofRuxNyAmso1G9vA70Wk5FENEaRolIqugUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPTQRk9Tg5OQ6LGUTyqOBZHEX1KxhsPRwDkx4jDRQ1MBnsg9KjB8ppwtdWEePIpGYjVfDrXRQKhtjeJQyEHCGgf70ZjK8sgXf%2F37v3lLsPxjQHe%2BF4HE0zH7UI4gxIqy0JNU4KyRD%2Bk0do5nykKmZUsYBE91RUuCLV1qf3g0cCSzII2jDr3EzEp2UP5S%2FbCrBsZT0YGSLz20EzVHKP6S0ux8DehgQCdrxzZMS9FAzcRk60vv14Fz4oznJLM1raJ8uDfZOOfjA3VtJmiDEwSoPaRrNdYX9QGihA%2BoVtLr%2BzrcHFzt4d6H3Q70Pj4UAvMDixRGwVkk8hODs%2Bw92Z13R%2B%2FvSR1qXK3PtSWsecEQ8tQpyFgeDrbsGEBShWQo66PElo1jBbXIVLUyr56Sa2zoH0z12%2BO%2FBn7pqhr%2BNg%2BAyJwCNkW%2BNCtz3Q%2FMuwoXroQ%2Fkm%2FKdlRyL%2Fw3nNKJwK9nIXZVCLmS%2B4qzWO%2FXjdjhl4FD%2BrwHXmW7FsMHjS2krpt3S68xmU01DAuul8Hxs3l3wnIo7YoF9N1v23DoUM%2BuXI44NnRJiCqm4cubSYXyzfcy2dEQjPSALeJlklMWlqg%2F5laYU%2B9TdjAOuqm23DhLObDbYNbPgjdH209nVDI%2BE1SBLz5Y8VNEAgU0L3ZxIsQt3ivsmjSwCgEndA3MRZZFOOGJMq80jUNzp3n8dTaasEutP9SpAnpcGPZl3VQ6fibehrtUov3IAFNDTQ6pYRnORBoLMyS%2FL0yISX2qasSx7G5ayl8e8tyjIY0pMl0JJJlvpZdlmKrAA1wd32zekZjXHXdOJrgZ37wAKUc0vhWsfAUBbMZSzsjOdPM%2FcdBnKPKE%2BpNaM82KJSXiRLb7NXVwOxWBJNDcoz4QcULIz9PyTDDXqeTMBjqxAZ5VR698k4G1exWyLYPlnhz2z7jPunTnKS4Z3a1vkNaw0cOXa8XPfvEtgkUIXeO%2FXBWIp%2B59naMGaAbpEQf%2BrAIYTKmuVtSv5DIgeqhAskvZzAYaWlLKcTjFS%2FSrhzkxyBVOwv7Q5BeOwqnEf28ft6YDYn9OFsJ4gVoGtA3l5YN8h2JaON%2FCOB16pxLZ8ETrt1n7nbYZvjaFosnoBchQdZtwrsJHQyn5bowFC65tYCFW8A%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=90d87617d0727e992569dc0ebcb592fbb91cce672beb99f732df821d57f029ee",
+      "file_size": 91323,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 73543,
+      "file_name": "profile.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/073/543/6615e0b3db9034a3d7e4aa9cb1a4dc0bd3be39f9/profile.JPG?response-content-disposition=attachment%3B%20filename%3D%22profile.JPG%22%3B%20filename%2A%3DUTF-8%27%27profile.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQS64WP5ZB%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032817Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAxEIDxvWJyyNfIHeDTUUH%2FIn8UN2dz4EPGd8Ht9uVO%2BAiEAkBbh0P7xL9XnRofRuxNyAmso1G9vA70Wk5FENEaRolIqugUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPTQRk9Tg5OQ6LGUTyqOBZHEX1KxhsPRwDkx4jDRQ1MBnsg9KjB8ppwtdWEePIpGYjVfDrXRQKhtjeJQyEHCGgf70ZjK8sgXf%2F37v3lLsPxjQHe%2BF4HE0zH7UI4gxIqy0JNU4KyRD%2Bk0do5nykKmZUsYBE91RUuCLV1qf3g0cCSzII2jDr3EzEp2UP5S%2FbCrBsZT0YGSLz20EzVHKP6S0ux8DehgQCdrxzZMS9FAzcRk60vv14Fz4oznJLM1raJ8uDfZOOfjA3VtJmiDEwSoPaRrNdYX9QGihA%2BoVtLr%2BzrcHFzt4d6H3Q70Pj4UAvMDixRGwVkk8hODs%2Bw92Z13R%2B%2FvSR1qXK3PtSWsecEQ8tQpyFgeDrbsGEBShWQo66PElo1jBbXIVLUyr56Sa2zoH0z12%2BO%2FBn7pqhr%2BNg%2BAyJwCNkW%2BNCtz3Q%2FMuwoXroQ%2Fkm%2FKdlRyL%2Fw3nNKJwK9nIXZVCLmS%2B4qzWO%2FXjdjhl4FD%2BrwHXmW7FsMHjS2krpt3S68xmU01DAuul8Hxs3l3wnIo7YoF9N1v23DoUM%2BuXI44NnRJiCqm4cubSYXyzfcy2dEQjPSALeJlklMWlqg%2F5laYU%2B9TdjAOuqm23DhLObDbYNbPgjdH209nVDI%2BE1SBLz5Y8VNEAgU0L3ZxIsQt3ivsmjSwCgEndA3MRZZFOOGJMq80jUNzp3n8dTaasEutP9SpAnpcGPZl3VQ6fibehrtUov3IAFNDTQ6pYRnORBoLMyS%2FL0yISX2qasSx7G5ayl8e8tyjIY0pMl0JJJlvpZdlmKrAA1wd32zekZjXHXdOJrgZ37wAKUc0vhWsfAUBbMZSzsjOdPM%2FcdBnKPKE%2BpNaM82KJSXiRLb7NXVwOxWBJNDcoz4QcULIz9PyTDDXqeTMBjqxAZ5VR698k4G1exWyLYPlnhz2z7jPunTnKS4Z3a1vkNaw0cOXa8XPfvEtgkUIXeO%2FXBWIp%2B59naMGaAbpEQf%2BrAIYTKmuVtSv5DIgeqhAskvZzAYaWlLKcTjFS%2FSrhzkxyBVOwv7Q5BeOwqnEf28ft6YDYn9OFsJ4gVoGtA3l5YN8h2JaON%2FCOB16pxLZ8ETrt1n7nbYZvjaFosnoBchQdZtwrsJHQyn5bowFC65tYCFW8A%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b695c033133de2d465fde6ac8ba3cd1b95fcb5ad8fbe4a1fb8b44b1268697986",
+      "file_size": 98164,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2016-03-16T16:30:55.893Z",
+  "allow_singular_disclosure_after": -313498641.46758854,
+  "singular_disclosure_allowed": true,
+  "vote_count": 0,
+  "voters": [],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

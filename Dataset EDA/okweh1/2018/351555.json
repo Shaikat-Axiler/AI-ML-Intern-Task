@@ -1,0 +1,137 @@
+{
+  "id": 351555,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNTE1NTU=",
+  "url": "https://hackerone.com/reports/351555",
+  "title": "Disclosure of all uploads to Cloudinary via hardcoded api secret in Android app",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-05-14T18:04:19.725Z",
+  "submitted_at": "2018-05-14T18:04:19.725Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bagipro",
+    "url": "/bagipro",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/052/239/e2ad9e8b8b6b259834c21e7aefd2f3d04ccd3d23_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 3094,
+    "url": "https://hackerone.com/reverb",
+    "handle": "reverb",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/003/094/b7238acaca15ddb329cf25e69c687352247aece5_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/003/094/b7238acaca15ddb329cf25e69c687352247aece5_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Reverb.com",
+      "twitter_handle": "reverb",
+      "website": "https://sandbox.reverb.com",
+      "about": "The best place for musicians to buy and sell the gear they use to create the music they love."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-09-08T14:51:22.220Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-08-09T14:51:13.346Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi, in file ``` com/reverb/app/CloudinaryFacade.java ``` you have hardcoded the following config:\n```java\nprivate static final java.lang.String CONFIG = \"cloudinary://434762629765715:█████@reverb\";\n```\nwhere ``` 434762629765715:████████ ``` is basic auth details.\n\nIt shouldn't be disclosed to third parties as official docs say (https://github.com/cloudinary/cloudinary_android):\n> Note: You should only include the ``` cloud_name ``` in the value, the api secret and key should be left out of the application.\n\nI was able to access your account data\n{F297519}\n{F297520}\n\nThose keys give me ability to not only access the files, but also replace and delete them, change different their settings. Also this url https://api.cloudinary.com/v1_1/reverb/usage discloses statistics regarding stored files\n```json\n\"requests\":1894689201,\n\"resources\":36029794,\n\"derived_resources\":256178843\n```\n\n## Impact\n\nDisclosure of all uploads to Cloudinary via hardcoded api secret in Android app",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 297519,
+      "file_name": "2018-05-14_20-48-00.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/297/519/402cf31f06deda094324e0d6680f7249b1109b9a/2018-05-14_20-48-00.jpg?response-content-disposition=attachment%3B%20filename%3D%222018-05-14_20-48-00.jpg%22%3B%20filename%2A%3DUTF-8%27%272018-05-14_20-48-00.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022241Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=652b70b23a846bb80840bf4250f01257c459010da74284c08706602acd4f5e83",
+      "file_size": 56375,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 297520,
+      "file_name": "2018-05-14_20-48-42.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/297/520/168207e132e237df10f5762b9fe940a969489608/2018-05-14_20-48-42.jpg?response-content-disposition=attachment%3B%20filename%3D%222018-05-14_20-48-42.jpg%22%3B%20filename%2A%3DUTF-8%27%272018-05-14_20-48-42.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022241Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fd503647ff0b39cd7aadc671410adeba9c7f00527473070a64b9210ee75dab27",
+      "file_size": 1281053,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-09-08T14:51:13.545Z",
+  "allow_singular_disclosure_after": -235222287.5613421,
+  "singular_disclosure_allowed": true,
+  "vote_count": 92,
+  "voters": [
+    "lr04d",
+    "libcontainer",
+    "omarelfarsaoui",
+    "pprab",
+    "sp1d3rs",
+    "thaivu",
+    "p1stachios",
+    "sheikhrishad0",
+    "muon4",
+    "kapytein",
+    "and 82 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 6416,
+    "asset_type": "URL",
+    "asset_identifier": "sandbox.reverb.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

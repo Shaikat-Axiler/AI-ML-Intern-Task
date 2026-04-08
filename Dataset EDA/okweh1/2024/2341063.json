@@ -1,0 +1,146 @@
+{
+  "id": 2341063,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMzQxMDYz",
+  "url": "https://hackerone.com/reports/2341063",
+  "title": "CVE-2024-0853: OCSP verification bypass with TLS session reuse",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2024-01-31T13:23:36.183Z",
+  "submitted_at": "2024-01-31T13:23:36.330Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kurohiro",
+    "url": "/kurohiro",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T204403Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a270591242293dbd97ddd10d45b2dcb981d2f8dcf0999d66c03636ce31020373",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T204403Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=783980f4a56adc734620a3aed3cfaafceb6c631342cdac6c476dc228a210d7cd"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2024-0853"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2024-03-27T17:36:56.236Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2024-02-26T17:36:49.872Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Original Report:https://hackerone.com/reports/2298922\n\n## Impact\n\nCWE-299: Improper Check for Certificate Revocation",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2024-03-27T17:36:50.028Z",
+  "allow_singular_disclosure_after": -60059233.047968805,
+  "singular_disclosure_allowed": true,
+  "vote_count": 24,
+  "voters": [
+    "exec_iq",
+    "zy9ard3",
+    "pr0f0x01",
+    "cyborg_m",
+    "kuroooo",
+    "kichukishor",
+    "max0a",
+    "swarnimbandekar",
+    "hariharasuthan1624",
+    "sushant102",
+    "and 14 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 80985,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 407605,
+      "category": "team",
+      "content": "CVE-2024-0853 - OCSP verification bypass with TLS session reuse\n\nVULNERABILITY\ncurl inadvertently kept the SSL session ID for connections in its cache even when the verify status (OCSP stapling) test failed. A subsequent transfer to the same hostname could then succeed if the session ID cache was still fresh, which then skipped the verify status check.\n\nINFO\nThis issue is limited to curl built to use OpenSSL and when using TLS 1.2 only and not TLS 1.3.\n\nThe Common Vulnerabilities and Exposures (CVE) project has assigned the name CVE-2024-0853 to this issue.\n\nCWE-299: Improper Check for Certificate Revocation\nSeverity: Low\n\nAFFECTED VERSIONS\nAffected versions: curl 8.5.0 to and including 8.5.0\nNot affected versions: curl < 8.5.0 and >= 8.6.0\nIntroduced-in: https: //github.com/curl/curl/commit/395365ad2d9a6c3f1a35d\nlibcurl is used by many applications, but not always advertised as such!\n\nThis flaw is also accessible using the curl command line tool.\n\nSOLUTION\nIf verify status fails, make sure the session id is not cached.\nFixed-in: https: //github.com/curl/curl/commit/c28e9478cb2548848ec\n\nCREDITS\nReported-by: Hiroki Kurosawa\nPatched-by: Daniel Stenberg\n\nFull Security Advisory: https://curl.se/docs/CVE-2024-0853.html",
+      "updated_at": "2024-02-26T17:35:10.834Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 904892,
+        "username": "kunderkoffler",
+        "name": "Kayla Underkoffler",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2020-01-13T19:26:22.339Z",
+        "url": "https://hackerone.com/kunderkoffler",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

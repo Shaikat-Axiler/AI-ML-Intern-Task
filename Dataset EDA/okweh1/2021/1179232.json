@@ -1,0 +1,133 @@
+{
+  "id": 1179232,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTc5MjMy",
+  "url": "https://hackerone.com/reports/1179232",
+  "title": "Able to blocking users with 2fa from login into their accounts by just knowing the SteamID",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-04-29T02:30:16.882Z",
+  "submitted_at": "2021-04-29T02:30:17.028Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "benjamin-mauss",
+    "url": "/benjamin-mauss",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/1eq5yyac9912hdghuvjuk35l72o0/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 48311,
+    "url": "https://hackerone.com/cs_money",
+    "handle": "cs_money",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6zBhWTJ4KuDdcSg86WvWXrFV/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/6zBhWTJ4KuDdcSg86WvWXrFV/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "CS Money",
+      "twitter_handle": "csmoneytrade",
+      "website": "https://cs.money",
+      "about": "CS2 trading platform that helps people to trade, buy, sell and search for the best skins and deals they could possibly find."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2023-12-14T18:55:58.977Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-12-14T12:12:52.725Z",
+  "team_member_agreed_on_going_public_at": "2023-12-14T18:55:58.829Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi, team!\n\n## Summary:\nBy changing the steamID cookie on confirm 2fa code request, I am able to block the login of an account with 2fa for 5 minutes (300 seconds).\nSo I am able to block users with 2fa from login into their accounts by just knowing the SteamID.\n\n## Steps To Reproduce:\n\n  1. Login into your account with 2fa. \n1. Get the request to confirm the 2fa code.\n\n{F1282394}\n\n\n```http\nPOST /login/confirm HTTP/1.1\nHost: cs.money\nContent-Length: 28\nConnection: close\nCookie: steamid=<victim_steam_id>;\n\n{\"token\":\"foo\",\"code\":\"foo\"}\n```\n\n2. Change the cookie steamid to the victim one.\n3. Repeat the request 4 times (4 wrong codes).\n\n-------\n\n█████\n\n## Impact\n\nI hacker could block everyone with 2fa from login into cs.money.",
+  "bounty_amount": "300.0",
+  "formatted_bounty": "$300",
+  "weakness": {
+    "id": 97,
+    "name": "Reliance on Cookies without Validation and Integrity Checking in a Security Decision"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1282394,
+      "file_name": "Screenshot_71.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ndwnrtzl9zm0i4jizlymgln7frwq?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_71.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_71.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T205440Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e7842b55fc132e30b93e54b1618d1f187aadcab4497109c52b1a641009b850e1",
+      "file_size": 23883,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 65,
+  "voters": [
+    "onlytesting",
+    "orange303",
+    "pinkmeimei",
+    "8910jq",
+    "ganeshbagaria",
+    "alp",
+    "zy9ard3",
+    "shreyaschavhan",
+    "shriyanss",
+    "nischalxd",
+    "and 55 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 45901,
+    "asset_type": "URL",
+    "asset_identifier": "cs.money",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

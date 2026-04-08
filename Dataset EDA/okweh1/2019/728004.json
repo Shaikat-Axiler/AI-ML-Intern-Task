@@ -1,0 +1,136 @@
+{
+  "id": 728004,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MjgwMDQ=",
+  "url": "https://hackerone.com/reports/728004",
+  "title": "Clickjacking in the admin page",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-11-02T20:29:49.480Z",
+  "submitted_at": "2019-11-02T20:29:49.480Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ant_pyne",
+    "url": "/ant_pyne",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/geDQ2VPMg1r6HdpJ7jNuR6Lp/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19858,
+    "url": "https://hackerone.com/rocket_chat",
+    "handle": "rocket_chat",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Rocket.Chat",
+      "twitter_handle": "RocketChat",
+      "website": "https://rocket.chat",
+      "about": "Rocket.Chat is a company built on open source values and a love for efficiency. The company is driven by our amazing community of contributors."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-01-02T16:18:51.083Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-12-24T16:22:47.873Z",
+  "team_member_agreed_on_going_public_at": "2020-01-02T16:18:50.984Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** \n\nHello Rocket.Chat,\n\nThere is a clickjacking vulnerability in a very critical page which is the admin info page. For my installation, the URL https://penetrationtester.rocket.chat/admin/users was used for creating the PoC.\n\n**Description:** \n\nClickjacking (User Interface redress attack, UI redress attack, UI redressing) is a malicious technique of tricking a Web user into clicking on something different from what the user perceives they are clicking on, thus potentially revealing confidential information or taking control of their computer while clicking on seemingly innocuous web pages.\n\nThe server didn't return an X-Frame-Options header which means that this website could be at risk of a clickjacking attack. The X-Frame-Options HTTP response header can be used to indicate whether or not a browser should be allowed to render a page in a <frame> or <iframe>. Sites can use this to avoid clickjacking attacks, by ensuring that their content is not embedded into other sites.\n\nThe admin info page of all rocket.chat installations would be vulnerable.\n\n## Steps To Reproduce (from initial installation to vulnerability):\n\n1. Open the attached `Clickjacking.html` on a browser and if you are logged in from an admin account, you will see that the page is loaded.\n\nRequirement for attack - Knowledge of the admin email and rocket.chat installation link.\n\n**Reason for marking this as medium** - Even though Clickjacking is always considered a low hanging fruit, the impact this can have is humongous.\n\n**Recommendation** - X-Frame options header.\n\n## Impact\n\nIf the UI overlay can be performed correctly by the attacker, this can lead to account takeover, manipulation of admin account, making any user admin or deleting and/or adding any user.",
+  "weakness": {
+    "id": 74,
+    "name": "UI Redressing (Clickjacking)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 624159,
+      "file_name": "Clickjacking.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/CaA85j4Po5Eb5pETiAVRoYVp?response-content-disposition=attachment%3B%20filename%3D%22Clickjacking.html%22%3B%20filename%2A%3DUTF-8%27%27Clickjacking.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVZHTAXRE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDJxiubb%2BgURL7jlNdvemV%2B6CFDzYI9jXoy9HzmkCgz%2BwIgOyh3igCvODksdDXM8Z%2B%2BUhsfZhYi4%2FfqvReQ%2Fm8ev8cqugUIoP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDHy9Nof524xy%2FTFvSqOBQ2nN8nvQXgjINTbRNKXChZCmg7rl%2FyNjrokPIn1hZnpdmh3dd06MxM9Cd2Tw6qWhsq9ZDpX8aAMfKmoXRejzWAjVUDKQY9Op6gAVtAxNPiyuYlJYmSetGMqMBQoQza2%2BnNRJQrMozdkKH6XiZtDfYoeXSWSTGbpA1YEp7hw8%2F2OKJHqvlzjj1p4sjYmss52ntzPxyVLbrPTleVt%2FLjZa07AOVLMG%2FSyQMSqzvjKdawCqOdsmqcnnSJM4uKdxQCkTtQ9vQ0bdpIgpOtxi3FTvdR8YZrgvcZfAzjuDLJzaQovLNErjHN6n2ZHzHEq%2FCy59m9whJgQPfMxaK1ljzdBe6sH67UzHxL23C7pVgSubPxX7D57BGJl4FOwkfrxnBlzPse4XsobssG6nGjvF2KdNcn75vkGtVd0dELf1GqKWtr5aEnwd4UHs9PRY9aNU3vTr2XqNCXbQbeHAUbPm7EvH%2FAFLlnZGLLI2Tut9EnEm2QZ8ZxDZrtfx79YjeIrLjRAw01mUk5NN1wMrqy3%2BCxrjn8Uq%2FAqk0e8STUSgQvH0J0EevjsAmRd82mnijy3kAhtoH%2BS6BhNMZigGOQjVxlYC020bc2ySNCUBQRRXcRX4UhW1uI2qQvi3sgitz2LuS6MZGUMs316vvnZUySeSUcOYe5wl%2F1OKU25jfZK8tZcCSji%2FypW3oXandjI%2FJwerYlCM%2FgLe%2B8u8YuieGIMP5L%2FAtkwkRVOu7yp5Zoq9gH2lPGLGr%2BB1fqbcn98kA6J0T8FoR0TuDR9sVmkSYUU%2BjCsRJGtJCvCFVfza6%2Fp%2BF25dqFQKIuurxGuRO%2Fv0GmAUUJUqs1iaezMYlYy9Xw%2BMKfVOCG5R7LFMbqtID2CC0yYXDDW1uPMBjqxAQAcosIvmNCRAPDS8wkZszxRDtvNVqFDxbqZDj3ixpe1zMUCIwmH8Dp9s%2FyeUyUltHDo3zV9WqRd6G3S4a9MMNsNpaLcwLaAg7ppzIln%2FEsrOwrcsY9286kduCNSH%2F9ZxUIp3V70VHYVi9CFscJFq54yM%2FTY%2FZN6%2FzkGnYgLTaAoFtcxmAVDnl7zARt3tdWOxj0gF%2BFh1%2BNrtMvDKdao27MzcKHCPsio9NPXLHWO7Yi3QQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c3416d6d002266394f33050faa3edc32c90f09dfca11489920a5c91b10c7bf32",
+      "file_size": 385,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 624160,
+      "file_name": "admin_clickjacking.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bUWySj4uKLST4Zy4zSq7Cmt4?response-content-disposition=attachment%3B%20filename%3D%22admin_clickjacking.png%22%3B%20filename%2A%3DUTF-8%27%27admin_clickjacking.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVZHTAXRE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDJxiubb%2BgURL7jlNdvemV%2B6CFDzYI9jXoy9HzmkCgz%2BwIgOyh3igCvODksdDXM8Z%2B%2BUhsfZhYi4%2FfqvReQ%2Fm8ev8cqugUIoP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDHy9Nof524xy%2FTFvSqOBQ2nN8nvQXgjINTbRNKXChZCmg7rl%2FyNjrokPIn1hZnpdmh3dd06MxM9Cd2Tw6qWhsq9ZDpX8aAMfKmoXRejzWAjVUDKQY9Op6gAVtAxNPiyuYlJYmSetGMqMBQoQza2%2BnNRJQrMozdkKH6XiZtDfYoeXSWSTGbpA1YEp7hw8%2F2OKJHqvlzjj1p4sjYmss52ntzPxyVLbrPTleVt%2FLjZa07AOVLMG%2FSyQMSqzvjKdawCqOdsmqcnnSJM4uKdxQCkTtQ9vQ0bdpIgpOtxi3FTvdR8YZrgvcZfAzjuDLJzaQovLNErjHN6n2ZHzHEq%2FCy59m9whJgQPfMxaK1ljzdBe6sH67UzHxL23C7pVgSubPxX7D57BGJl4FOwkfrxnBlzPse4XsobssG6nGjvF2KdNcn75vkGtVd0dELf1GqKWtr5aEnwd4UHs9PRY9aNU3vTr2XqNCXbQbeHAUbPm7EvH%2FAFLlnZGLLI2Tut9EnEm2QZ8ZxDZrtfx79YjeIrLjRAw01mUk5NN1wMrqy3%2BCxrjn8Uq%2FAqk0e8STUSgQvH0J0EevjsAmRd82mnijy3kAhtoH%2BS6BhNMZigGOQjVxlYC020bc2ySNCUBQRRXcRX4UhW1uI2qQvi3sgitz2LuS6MZGUMs316vvnZUySeSUcOYe5wl%2F1OKU25jfZK8tZcCSji%2FypW3oXandjI%2FJwerYlCM%2FgLe%2B8u8YuieGIMP5L%2FAtkwkRVOu7yp5Zoq9gH2lPGLGr%2BB1fqbcn98kA6J0T8FoR0TuDR9sVmkSYUU%2BjCsRJGtJCvCFVfza6%2Fp%2BF25dqFQKIuurxGuRO%2Fv0GmAUUJUqs1iaezMYlYy9Xw%2BMKfVOCG5R7LFMbqtID2CC0yYXDDW1uPMBjqxAQAcosIvmNCRAPDS8wkZszxRDtvNVqFDxbqZDj3ixpe1zMUCIwmH8Dp9s%2FyeUyUltHDo3zV9WqRd6G3S4a9MMNsNpaLcwLaAg7ppzIln%2FEsrOwrcsY9286kduCNSH%2F9ZxUIp3V70VHYVi9CFscJFq54yM%2FTY%2FZN6%2FzkGnYgLTaAoFtcxmAVDnl7zARt3tdWOxj0gF%2BFh1%2BNrtMvDKdao27MzcKHCPsio9NPXLHWO7Yi3QQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3464cd97db9863469ee8f9f66f709ab5a77880e0534702a40b6e0914abaf2b5e",
+      "file_size": 119630,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-01-23T16:22:47.921Z",
+  "allow_singular_disclosure_after": -191839030.51082176,
+  "singular_disclosure_allowed": true,
+  "vote_count": 20,
+  "voters": [
+    "checkm50",
+    "dhakal_ananda",
+    "mik317",
+    "navprak",
+    "mr-inspector",
+    "cryptographer",
+    "ant_pyne",
+    "gaganbagh",
+    "s-keyz",
+    "blacc_hat",
+    "and 10 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

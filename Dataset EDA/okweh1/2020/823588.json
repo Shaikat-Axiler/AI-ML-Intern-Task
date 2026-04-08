@@ -1,0 +1,161 @@
+{
+  "id": 823588,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84MjM1ODg=",
+  "url": "https://hackerone.com/reports/823588",
+  "title": "Unrestricted File Upload on https://my.stripo.email and https://stripo.email",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-03-18T15:55:46.305Z",
+  "submitted_at": "2020-03-18T15:55:46.305Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "doctor_spooky",
+    "url": "/doctor_spooky",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 42368,
+    "url": "https://hackerone.com/stripo",
+    "handle": "stripo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Stripo Inc",
+      "twitter_handle": "",
+      "website": "https://stripo.email",
+      "about": "Stripo is a lightweight and intuitive email template editor that lets users build professional looking and highly responsive email templates."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-04-13T11:51:34.547Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-04-13T09:41:06.879Z",
+  "team_member_agreed_on_going_public_at": "2020-04-13T11:51:34.441Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Stripo Inc, I found 2 Unrestricted File Upload Vulnerabilities on your website.\n\nFirst Vulnerability:\n>Step to Reproduce \n1. Create an account in \"https://my.stripo.email\"\n2. Simply Download a php shell from internet and open with text editor.  ex: r57 shell  \n3. Then save it as JPEG file. \n4. Go back to your stripo account and click on your profile icon on the top right corner of the website and go to show profile.\n(Try saving it as default .php document it does not let you to upload the php malicious shell )\n5. Upload your shell saved as JPEG as profile picture.\n6. After that this message will pop up on the screen \"User icon has been saved\".\n\nSecond Vulnerability:\n>Step to Reproduce \n1. Go to the URL \"https://stripo.email/template-order/\"\n2. Scroll down to \"Click or Drop file here\"\n3. Try Uploading .php shell downloaded earlier. (It does not allow you to upload php malicious shells)\n4. Now Upload the Shell that saved as JPEG.\n5. You will allow to upload Malicious shells saved as JPEG (image)\n\nPlease look at the Attached images.\n\n## Impact\n\nThe consequences of unrestricted file upload can vary, including complete system takeover, an overloaded file system or database, forwarding attacks to back-end systems, and simple defacement.Here is the list of attacks that the attacker might do:\n--Compromise the web server by uploading and executing a web-shell which can run commands, browse system files, browse local resources, attack \n   other servers, and exploit the local vulnerabilities, and so forth.\n--Put a phishing page into the website.\n--Put a permanent XSS into the website.\n--Bypass cross-origin resource sharing (CORS) policy and exfiltrate potentially sensitive data.\n--Upload a file using malicious path or name which overwrites critical file or personal data that other users access. For example; the attacker might --- \n--replace the .htaccess file to allow him/her to execute specific scripts.\n\nTake a look at the \"https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload\"  for full documentation.",
+  "weakness": {
+    "id": 148,
+    "name": "Unrestricted Upload of File with Dangerous Type"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 752183,
+      "file_name": "Shell.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/t4QAc32UAC7FqyHTNeXwZNQf?response-content-disposition=attachment%3B%20filename%3D%22Shell.JPG%22%3B%20filename%2A%3DUTF-8%27%27Shell.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004001Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b771509ff72e86fabec270c228891b7d8b24c16d4111cc3e7ca579e6bd5f5f30",
+      "file_size": 137559,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 752184,
+      "file_name": "Error_Comes_When_Uploading_.php_document.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/VKy5o1WQVUxK2LMeNPUG2XdN?response-content-disposition=attachment%3B%20filename%3D%22Error_Comes_When_Uploading_.php_document.JPG%22%3B%20filename%2A%3DUTF-8%27%27Error_Comes_When_Uploading_.php_document.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004001Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c80caa99939010a13dc28b16dcb84d2bdd36d38ffec868fa1cb2b1cc5171bca9",
+      "file_size": 52338,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 752185,
+      "file_name": "Shell_Saved_As_JPEG.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/CD5BtPKwKUvBd8L1R9zryBGi?response-content-disposition=attachment%3B%20filename%3D%22Shell_Saved_As_JPEG.JPG%22%3B%20filename%2A%3DUTF-8%27%27Shell_Saved_As_JPEG.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004001Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=586b2ab9858ee2f1f4745d98a58f0193b9a6d62eeb3a8d9ca53f2d0280301e1a",
+      "file_size": 50893,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 752186,
+      "file_name": "Shell_Uploaded_As_JPEG_File.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/snjatQL7Zi7oUgTxrtn8QDFF?response-content-disposition=attachment%3B%20filename%3D%22Shell_Uploaded_As_JPEG_File.JPG%22%3B%20filename%2A%3DUTF-8%27%27Shell_Uploaded_As_JPEG_File.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004001Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2f220ad81e732afda87bae06bba49fc95239affd514815d37c803828b636acda",
+      "file_size": 57461,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 752196,
+      "file_name": "Shell_Uploaded_As_JPEG_File_2nd_attack.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/16YmXYcnCHGkjjKJnt3vww1r?response-content-disposition=attachment%3B%20filename%3D%22Shell_Uploaded_As_JPEG_File_2nd_attack.JPG%22%3B%20filename%2A%3DUTF-8%27%27Shell_Uploaded_As_JPEG_File_2nd_attack.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004001Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5825277c23c173c551054798ae26b49296a0911de0bf81c7a53a604abd0cc0a9",
+      "file_size": 27196,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 9,
+  "voters": [
+    "g3ksec",
+    "he4am",
+    "rook1337",
+    "ali",
+    "lontano",
+    "doctor_spooky",
+    "codinguy",
+    "0xskid",
+    "jayexhx01"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 38702,
+    "asset_type": "URL",
+    "asset_identifier": "my.stripo.email",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

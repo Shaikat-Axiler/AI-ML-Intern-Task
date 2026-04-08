@@ -1,0 +1,144 @@
+{
+  "id": 382321,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zODIzMjE=",
+  "url": "https://hackerone.com/reports/382321",
+  "title": "POST XSS  in https://www.khanacademy.org.tr/ via page_search_query parameter",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-07-17T03:35:10.867Z",
+  "submitted_at": "2018-07-17T03:35:10.867Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "miguel_santareno",
+    "url": "/miguel_santareno",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nvp69q5z9p33d5m3t28kpjq9t3t5/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 134,
+    "url": "https://hackerone.com/khanacademy",
+    "handle": "khanacademy",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Khan Academy",
+      "twitter_handle": "",
+      "website": "https://www.khanacademy.org/",
+      "about": "Start learning now. Completely free, forever."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-09-18T23:00:49.394Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-08-19T23:00:42.796Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hey there, while testing your program I came across a XSS vulnerability in the search area of your website.\nThe vector uses HTTP POST request and the parameter is \"page_search_query\"\" on www.khanacademy.org.tr/arama.asp\n\nIn the next topics I will demonstrate how you can reproduce the vulnerability found on your website:\n\n1º Go to your website and in the search box insert the following payload:\n\"\"--!><Svg/OnLoad=(confirm)(/xss/)>\nxss.jpg\n\n\n2º Output of the payload:\nxss2.jpg\n\n3º Vulnerable code with the payload:\n\n`<form class=\"large-search-form\" action=\"arama.asp\" method=\"post\">\n<input id=\"large-search-input\" name=\"page_search_query\" class=\"placeholder simple-input search-input blur-on-esc large-search-bar ui-corner-all\" autocomplete=\"off\" value=\"\"\"--!><Svg/OnLoad=(confirm)(/xss/)>\" style=\"margin-top:0px !important\">\n<i class=\"icon-search\"></i>`\n\nxss3.jpg\n\nExploitability:\nAttacker sends text-based attack scripts that exploit the interpreter in the browser. Almost any source of data can be an attack vector, including internal sources such as data from the database.\n\nPlease let me know if you need further explanation or details.​\nBest Regards, Miguel Santareno\n\n## Impact\n\nAttackers can execute scripts in a victim’s browser to hijack user sessions, deface web sites, insert hostile content, redirect users, hijack the user’s browser using malware, etc.",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 321352,
+      "file_name": "xss2.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/321/352/d467c0dd69e99215da14fd21e97116623805c175/xss2.PNG?response-content-disposition=attachment%3B%20filename%3D%22xss2.PNG%22%3B%20filename%2A%3DUTF-8%27%27xss2.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=832ca7dbcee77c0c1607f67d120ccfadf29c311bbc055e843d3d46da409e3d61",
+      "file_size": 50433,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 321353,
+      "file_name": "xss.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/321/353/6291a55dfef1ccebb02fefe9c5b7e0db08fdada5/xss.PNG?response-content-disposition=attachment%3B%20filename%3D%22xss.PNG%22%3B%20filename%2A%3DUTF-8%27%27xss.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6e3ad254f7aa6bbf5eda296575f87403918fa19e40722cb0dc348ca771cf9cb5",
+      "file_size": 243485,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 321354,
+      "file_name": "xss3.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/321/354/ef39219038800a217a7116ee9b675ac90c341630/xss3.PNG?response-content-disposition=attachment%3B%20filename%3D%22xss3.PNG%22%3B%20filename%2A%3DUTF-8%27%27xss3.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4f711c5c7ce033a12eec39afd73f295d8298583bf49de3bb630f6d5386149088",
+      "file_size": 38390,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-09-18T23:00:42.896Z",
+  "allow_singular_disclosure_after": -234328838.3169533,
+  "singular_disclosure_allowed": true,
+  "vote_count": 15,
+  "voters": [
+    "ali",
+    "miguel_santareno",
+    "apapedulimu",
+    "eveeez",
+    "khizer47",
+    "rusmana0x16",
+    "japz",
+    "cryptographer",
+    "djebel",
+    "irtgaming7",
+    "and 5 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

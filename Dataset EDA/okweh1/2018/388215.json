@@ -1,0 +1,121 @@
+{
+  "id": 388215,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zODgyMTU=",
+  "url": "https://hackerone.com/reports/388215",
+  "title": "Internal loop going to infinite for cb.setTimeout(func, msecs) for broadcast app.",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "none",
+  "readable_substate": "Informative",
+  "created_at": "2018-07-29T10:19:58.129Z",
+  "submitted_at": "2018-07-29T10:19:58.129Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "hackaccinocraft",
+    "url": "/hackaccinocraft",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/pxaxzczbc9brcz876myfptcvmgps/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 30475,
+    "url": "https://hackerone.com/chaturbate",
+    "handle": "chaturbate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Chaturbate",
+      "twitter_handle": "chaturbate",
+      "website": "https://chaturbate.com",
+      "about": "The largest online adult cam site"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-10-01T23:06:24.890Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-10-01T23:05:02.179Z",
+  "team_member_agreed_on_going_public_at": "2018-10-01T23:06:24.817Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi There, \n\nI am not sure about that this is vulnerability for @chaturbate or not but in my seeing i thought it can be vulnerable and attacker can use this vulnerability for exploitation on @chaturbate website with normal user so finally i decide to report. \n\nAs i was just playing with ```Broadcast app``` and i found some of the script which provide from @chaturbate it's totally wrong because by modifying script malicious user can make nonsense on website with normal user. \n\n#Step of POC\n>Step 1 : Go to https://chaturbate.com/apps/upload_app/?slot=0\n>Step 2 : Make app and give all details as it is what they asked but in ```JavaScript code``` insert below code and lunch app. \n```\nfunction callme() {\n    cb.chatNotice(\"hello world\");\n    cb.setTimeout(callme, 10)\n}\ncb.setTimeout(callme, 10)\n```\nNow particular this code make infinite call in website and loop will also going to round infinite time which make lots of buffer on website + also make irritation to normal user who visit live broad cast. \n\n#POC video \n{F325793} \n\n#Prevention\nIf you allow to make auto call for loop code then please make validation on creating app like put minimum value which you put in token code like if we are making any app for token then website always give notification like put 1 token at list. \n\nPlease let me know if you want more information then, \n\nCheers, \nNinjan\n\n## Impact\n\n>1) Attacker make infinite buffer on website. \n>2) Irritate normal users by broadcasting their self and running those kind of app.",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 325793,
+      "file_name": "Video_20180729_201125.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/325/793/500070b94234831090c9ff40b2da1859a0d6a1ef/Video_20180729_201125.mp4?response-content-disposition=attachment%3B%20filename%3D%22Video_20180729_201125.mp4%22%3B%20filename%2A%3DUTF-8%27%27Video_20180729_201125.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021722Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c8b82d6378c342f0c5960e1f3f2f6576accb4c6c8720fc34f81fc4fb20f02196",
+      "file_size": 20938981,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "ali"
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 11722,
+    "asset_type": "URL",
+    "asset_identifier": "chaturbate.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "id": 230232,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMzAyMzI=",
+  "url": "https://hackerone.com/reports/230232",
+  "title": "Stored self-XSS in mercantile.wordpress.org checkout",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2017-05-20T13:40:03.593Z",
+  "submitted_at": "2017-05-20T13:40:03.593Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "eidelweiss",
+    "url": "/eidelweiss",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/043/045/a03bc1f5a9e614fb1a5a53156b5903fead7e43a3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 55,
+    "url": "https://hackerone.com/wordpress",
+    "handle": "wordpress",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WordPress",
+      "twitter_handle": "wordpress",
+      "website": "https://wordpress.org/",
+      "about": "Beautiful sites of any kind."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-07-14T06:49:11.979Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2017-06-14T06:49:05.611Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello Team,\n\n**Summary**\nafter i read this #221893 report, i try to find more security issue there, and i was surprise i found an RCE Via Template Injection. Since on that report i see `ng-bindable` word, its possible the site also effect by RCE.\n\n**Step To Reproduce**\n\n1. open https://mercantile.wordpress.org and sign up for account.\n2. after finish sign up navigate to `https://mercantile.wordpress.org/my-account/edit-account/` to field your first and last name\n3. now navigate again to `https://mercantile.wordpress.org/my-account/edit-address/`\n4. field all form for Billing Address with `{{1+1}}` except the `zip code` and field all form with `{{1==1}}` for the Shipping Address. and press save.\n\n{F186514}   \n\n5. now try to make an order by select any product till process or step to `https://mercantile.wordpress.org/checkout/`\n6. there you will see, the code `{{1+1}}` that we have field in the form for address bellow is execute as `2` automaticly there. and the `{{1==1}}` in shipping address will be execute as `true` .\n\n{F186513}\n\nThis is a vulnerability about Flask Template Engine(Jinja2) Injection or Angular JS Template Injection , more detail can be seen in these blogs for your Reference:\n\n1. https://nvisium.com/blog/2016/03/09/exploring-ssti-in-flask-jinja2/\n2. https://nvisium.com/blog/2016/03/11/exploring-ssti-in-flask-jinja2-part-ii/\n3. http://blog.portswigger.net/2016/01/xss-without-html-client-side-template.html\n\nBest Regards,\n",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 186513,
+      "file_name": "merchantile_saved_address_changes_when_check_out.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/186/513/40d93c51caad29ec62be2d5ee1b421412948ca0d/merchantile_saved_address_changes_when_check_out.jpg?response-content-disposition=attachment%3B%20filename%3D%22merchantile_saved_address_changes_when_check_out.jpg%22%3B%20filename%2A%3DUTF-8%27%27merchantile_saved_address_changes_when_check_out.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033620Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8ec9a04edcd4f95adcc41854ee486f57c6458139b50f1dcf869f355de795ff92",
+      "file_size": 81732,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 186514,
+      "file_name": "merchantile_saved_address.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/186/514/2a826b94e9179c74c4415379d7121c068f2522c4/merchantile_saved_address.jpg?response-content-disposition=attachment%3B%20filename%3D%22merchantile_saved_address.jpg%22%3B%20filename%2A%3DUTF-8%27%27merchantile_saved_address.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033620Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=98f15b5eaad7fd948b5bbe2d1fa426b47ee5c5d5d53ab24f3f37b68626f9d50c",
+      "file_size": 84410,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-07-14T06:49:05.673Z",
+  "allow_singular_disclosure_after": -271630034.9954343,
+  "singular_disclosure_allowed": true,
+  "vote_count": 15,
+  "voters": [
+    "bl4de",
+    "jon_bottarini",
+    "r3y",
+    "eveeez",
+    "h33tjev",
+    "mr_r3boot",
+    "japz",
+    "zerotoone",
+    "silv3rpoision",
+    "codertom",
+    "and 5 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 4472,
+      "category": "researcher",
+      "content": "thanks to WordPress team and sir Iandunn, really  fast on response and take action.\nkudos to Portswigger Web Security regarding the payload\nalso thanks to codertom for his report at https://hackerone.com/reports/221893, and here #222224 You made me think that more could be done.\n\nI owe you a beer :)",
+      "updated_at": "2017-07-15T03:33:37.696Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 43045,
+        "username": "eidelweiss",
+        "name": "Randy Arios",
+        "bio": "\"sometimes logic technique can be more dangerous then using scanning tools\"",
+        "cleared": false,
+        "verified": true,
+        "website": null,
+        "location": "ID",
+        "created_at": "2015-11-04T10:03:36.550Z",
+        "url": "https://hackerone.com/eidelweiss",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/043/045/a03bc1f5a9e614fb1a5a53156b5903fead7e43a3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/043/045/a03bc1f5a9e614fb1a5a53156b5903fead7e43a3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/043/045/a03bc1f5a9e614fb1a5a53156b5903fead7e43a3_original.jpg/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": 902739,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85MDI3Mzk=",
+  "url": "https://hackerone.com/reports/902739",
+  "title": "bunyan - RCE via insecure command formatting",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2020-06-19T10:29:37.243Z",
+  "submitted_at": "2020-06-19T10:29:37.243Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ahihi",
+    "url": "/ahihi",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/106/056/b44f0450b0a2fca355ff6f460bd05357f4b9912b_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-06-27T01:53:03.703Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-06-27T01:53:03.645Z",
+  "team_member_agreed_on_going_public_at": "2020-06-24T13:23:25.641Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report RCE in bunyan\nIt allows arbitrary commands remotely inside the victim's PC\n\n# Module\n\n**module name:** bunyan\n**version:** 1.8.12\n**npm page:** `https://www.npmjs.com/package/bunyan`\n\n## Module Description\n\n> Bunyan is a simple and fast JSON logging library for node.js services:\n\n## Module Stats\n\n[920,196] weekly downloads\n\n# Vulnerability\n\n## Vulnerability Description\n\n> The issue occurs because a user input is formatted inside a command that will be executed without any check. https://github.com/trentm/node-bunyan/blob/master/bin/bunyan#L1224\n\n## Steps To Reproduce:\n\n> Run the following command\nnpm install bunyan\n./node_modules/bunyan/bin/bunyan -p \"S'11;touch hacked ;'\"\n> Recheck the files: now hacked has been created\n## Patch\n\n> Check input before command\n\n## Supporting Material/References:\n\n> State all technical information about the stack where the vulnerability was found\n\n- [OPERATING SYSTEM VERSION]: Ubuntu 18.04\n- [NODEJS VERSION]: v8.10.0\n- [NPM VERSION]: 3.5.2\n\n# Wrap up\n\n> Select Y or N for the following statements:\n\n- I contacted the maintainer to let them know: [Y/N] N \n- I opened an issue in the related repository: [Y/N] N\n\n## Impact\n\nRCE on bunyan.",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 874190,
+      "file_name": "Screen_Shot_2020-06-19_at_16.24.05.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/f3UNFPMsqCvPAqpMDRJQMJ26?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2020-06-19_at_16.24.05.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2020-06-19_at_16.24.05.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7deadad3bb0c3d347f84507b40a12e5193ba9869d471b6fe17f55032d3877a60",
+      "file_size": 118604,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-07-24T13:23:25.735Z",
+  "allow_singular_disclosure_after": -176036275.6212438,
+  "singular_disclosure_allowed": true,
+  "vote_count": 17,
+  "voters": [
+    "a_d_a_m",
+    "ahihi",
+    "ali",
+    "brahim_boufakri01",
+    "ducnt_",
+    "b69fb2ebda43240ece9dbeb",
+    "theliberalhippie_",
+    "tywkeene",
+    "ravindra999hacker",
+    "artimisk",
+    "and 7 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 2986,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "Other module",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "id": 1003468,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDAzNDY4",
+  "url": "https://hackerone.com/reports/1003468",
+  "title": "Send Empty CSRF leads to log out user on [https://hosted.weblate.org/accounts/profile]",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-10-09T13:35:36.712Z",
+  "submitted_at": "2020-10-09T13:35:36.772Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "homai",
+    "url": "/homai",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/9l0jsejqqr9oom5kb9qzwnu6t7wu/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19468,
+    "url": "https://hackerone.com/weblate",
+    "handle": "weblate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Weblate",
+      "twitter_handle": "WeblateOrg",
+      "website": "https://weblate.org/",
+      "about": "Weblate is a libre software web-based continuous localization system"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-10-12T11:30:29.239Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-10-12T11:30:29.192Z",
+  "team_member_agreed_on_going_public_at": "2020-10-12T11:24:18.146Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi \nThere is a CSRF bug on your [Website](https://hosted.weblate.org/) leads to logout user from the dashboard.\nIf the user click on the attached file (CSRF.html) redirect to another page and see the following error and the user log out immediately:\n\n{F1029146}\n\n## Steps to reproduce:\n1- Login to your account via [Login page](https://hosted.weblate.org/accounts/login/)\n2- Click on CSRF.html that attached. \nAfter that, you will redirect to a new page an see the error, the user after clicking on this file log out from account.\n\nYou can see in the CSRF file there isn't any token, but if you place a vaid CSRF token from the source page, this attack will be successful too.\n\n{F1029164}\n\nIf you have any questions, please let me know.\n\nBest.\n\n## Impact\n\nAn attacker can send the CSRF file to the victim or host it on a website. Whenever the user login in to your website click on file or link will be logged out.",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1029146,
+      "file_name": "weblate_CSRF.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/LcX2pM8hQLJMwZ7HKfoVqME1?response-content-disposition=attachment%3B%20filename%3D%22weblate_CSRF.png%22%3B%20filename%2A%3DUTF-8%27%27weblate_CSRF.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235957Z&X-Amz-Expires=699&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e2e655e8908e15d3be66787932fb55a117e1d2a7a83aedd610966ee96b779e96",
+      "file_size": 44778,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1029149,
+      "file_name": "CSRF.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/wHQCoRx3erLLHwKreZpYADP1?response-content-disposition=attachment%3B%20filename%3D%22CSRF.html%22%3B%20filename%2A%3DUTF-8%27%27CSRF.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235957Z&X-Amz-Expires=699&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ebce8f666f02a5759df897042e996dadc94b0f8ca697cd8986d7340b8b6d4850",
+      "file_size": 355,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 1029164,
+      "file_name": "source.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/HM2jurhTzaiPrWkrPskMBi6P?response-content-disposition=attachment%3B%20filename%3D%22source.png%22%3B%20filename%2A%3DUTF-8%27%27source.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235957Z&X-Amz-Expires=699&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b70fe5f3b62bc1c781e7c212fb6aef0f1a347419253881c5a98a003238bb7c7d",
+      "file_size": 82715,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-11-11T11:24:18.264Z",
+  "allow_singular_disclosure_after": -166538138.82867095,
+  "singular_disclosure_allowed": true,
+  "vote_count": 5,
+  "voters": [
+    "vishalchauhan2212",
+    "bb00x",
+    "exception",
+    "metwallysec",
+    "stkovrflw"
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.1,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 171,
+    "asset_type": "URL",
+    "asset_identifier": "hosted.weblate.org",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

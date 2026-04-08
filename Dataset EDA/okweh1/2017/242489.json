@@ -1,0 +1,113 @@
+{
+  "id": 242489,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNDI0ODk=",
+  "url": "https://hackerone.com/reports/242489",
+  "title": "Possibility of DOS Through logging System",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2017-06-23T01:02:34.052Z",
+  "submitted_at": "2017-06-23T01:02:34.052Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "imran-parray",
+    "url": "/imran-parray",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 3152,
+    "url": "https://hackerone.com/quora",
+    "handle": "quora",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/003/152/57b2b1ab624538b6b1a515c5b03f929ef41e0dfd_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/003/152/57b2b1ab624538b6b1a515c5b03f929ef41e0dfd_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Quora",
+      "twitter_handle": "quora",
+      "website": "http://www.quora.com",
+      "about": "A place to share knowledge and better understand the world."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-08-16T22:07:42.178Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-08-08T17:08:44.097Z",
+  "team_member_agreed_on_going_public_at": "2017-08-16T22:07:42.140Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The Quora is using HTTP post method to send logs to the Quora Server and save the logs on the server \nWhich is not Validating the size of the log data and directly storing a large amount of data on the server.\ni mean when the logs are sended to the server a bad guy can use the same HTTP POST method and same Parameter to send a large amount of data to your server because there is no Mechanism to Test incoming logs size and attacker can  fill a large amount of space  on the server.\n\nHow To Reproduce:\n\nNormal HTTP Request:\n\nPOST https://log.quora.com/ajax/batched_log_POST HTTP/1.1\nConnection: keep-alive\nContent-Length: 1328\nAccept: application/json, text/javascript, */*; q=0.01\nOrigin: https://www.quora.com\nUser-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\nReferer: https://www.quora.com/\nAccept-Language: en-gb\nCookie: m-b=\"HmerlxRPKlY2P8ZetSoJRA\\075\\075\"; m-s=\"fApMTrywJ0FDK7OlbICFPg\\075\\075\"; m-css_v=d4987ef9da8d042b; m-login=1; m-early_v=ad51054ba26a785a; m-tz=-330; m-wf-loaded=q-icons-q_serif; _ga=GA1.2.1732973717.1498176387; _gid=GA1.2.1110816896.1498176387\nHost: log.quora.com\n\njson=%7B%22args%22%3A%5B%5D%2C%22kwargs%22%3A%7B%22messages%22%3A%5B%7B%22category%22%3A%22action_data%22%2C%22data%22%3A%7B%22data%22%3A%7B%22url%22%3A%22%2Fwebnode2%2Fserver_call_POST%3F_v%3DT8XhSYsCyYcwrs%26_m%3Dget_next_page%22%2C%22vcon%22%3A%5B%22T8XhSYsCyYcwrs%22%5D%2C%22method%22%3A%22get_next_page%22%2C%22args%22%3Anull%2C%22kwargs%22%3Anull%2C%22startTime%22%3A1498176435253%2C%22id%22%3A%22er24r3s3oi%22%2C%22controller%22%3A%22webnode2%22%2C%22action%22%3A%22server_call_POST%22%2C%22standard%22%3A%7B%7D%2C%22serverTime%22%3A2552628%2C%22endTime%22%3A1498176439423%7D%7D%2C%22time%22%3A1498176439423000%7D%2C%7B%22category%22%3A%22perf%2Fpost_e2e%22%2C%22data%22%3A%7B%22vcon%22%3A%5B%22T8XhSYsCyYcwrs%22%5D%2C%22method%22%3A%22get_next_page%22%2C%22type%22%3A%22web%22%2C%22duration%22%3A4436%7D%2C%22time%22%3A1498176439690000%7D%2C%7B%22category%22%3A%22perf%2Fpost_e2e%22%2C%22data%22%3A%7B%22vcon%22%3A%5B%22T8XhSYsCyYcwrs%22%5D%2C%22method%22%3A%22get_next_page%22%2C%22type%22%3A%22user_perceived%22%2C%22duration%22%3A4436%7D%2C%22time%22%3A1498176439690000%7D%5D%2C%22nid%22%3A0%7D%7D&revision=7a0b4942858186e883835568054f3089311f25c1&formkey=c990bafe6dcaaf22d5939994fc0a2bca&postkey=42e50148a09db5abeef10502c90ea3ce&window_id=dep3101-4180021445674349298&referring_controller=index&referring_action=index\n\n-->End of The Request<--\n\nthe Parameter json= carries a data which is url encoded\n\nAttacker can encode His Payload of large size [say 2.0 MB ] and paste in the HTTP Request and send to the server and server is Successfully Accepting the Request and Saveing his large amount of data [2.0 mb] on your server.\nThis time the hacker can send this http request 1000000 times to fill up whole memory on the server and cause the server to crash or slow down.\n\n\nPOC\n\nin Video i have showed a little Description how Hackers can Perform a Delicious Attack using quora Log System !\n",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 196474,
+      "file_name": "POC.avi",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/196/474/3ff9e71d8e3511bd260aaae5c2922b6b996eb976/POC.avi?response-content-disposition=attachment%3B%20filename%3D%22POC.avi%22%3B%20filename%2A%3DUTF-8%27%27POC.avi&response-content-type=video%2Fx-msvideo&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032940Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=48c57b0767c330b05fc5d8393e42bb533254d95f775d81e74f352647d1fc6c3a",
+      "file_size": 43201992,
+      "type": "video/x-msvideo",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 2,
+  "voters": [
+    "thalaivar304",
+    "2026"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": 337680,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzc2ODA=",
+  "url": "https://hackerone.com/reports/337680",
+  "title": "burp does not validate the common name of the presented collaborator server certificate",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-04-14T09:38:54.788Z",
+  "submitted_at": "2018-04-14T09:38:54.788Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "morisson",
+    "url": "/morisson",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/263/947/11f9308e56cced4347da4cc2ed55cfeb168ee318_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15252,
+    "url": "https://hackerone.com/portswigger",
+    "handle": "portswigger",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "PortSwigger Web Security",
+      "twitter_handle": "Burp_Suite",
+      "website": "https://portswigger.net",
+      "about": "Burp Suite is the leading software for web security testing"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-06-13T16:14:32.117Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-06-13T16:05:45.849Z",
+  "team_member_agreed_on_going_public_at": "2018-06-13T16:14:31.963Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Burp is not validating correctly if the presented certificate in collaborator server. It warns if it is a self signed one, but if it is a legitimate one (any valid CA), it appears not to be checking the CN.\n\n\nThis is an issue for the polling service, since it allows for the connection to be intercepted and burp will happily send through the polling request.\n\nFor PoC, just use a valid certificate for a completely different domain than the one used on the burp collaborator server, and connect to it. All checks will be ok, and when polling the server (using the scanner for instance), there's no warning or failure, and burp connects.\nI haven't extensively tested all possible options, but using a valid wildcard certificate from a totally different domain works.\n\n(note: there's also the functional bug of burp stating the connections are ok, but the target being tested will then fail to connect to any TLS service on the collaborator)\n\n## Impact\n\nIf the attacker is able to perform a MITM on the tester (either adjacent to him, or to the collaborator server, or somewhere along the path), he will be able to intercept the HTTPS polling connection to the collaborator server, and potentially obtain the records.",
+  "weakness": {
+    "id": 30,
+    "name": "Man-in-the-Middle"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 285736,
+      "file_name": "collab_config.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/285/736/a99b2236ba3654732a4f8ac8e94c93565191e911/collab_config.png?response-content-disposition=attachment%3B%20filename%3D%22collab_config.png%22%3B%20filename%2A%3DUTF-8%27%27collab_config.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYFUHNFWN%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023202Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAvxXR48YsiOpxX9c6oYkPXaKeWWrtCH8oEJSkeZWyJ%2BAiEA4QSSd8Ybzelyz6W6a8EYGO23Noex97NxVbNU9IVTUGYquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAkn2WzkM5Id%2FdfA9yqPBfr0o6ehJ%2FZExkO9Gv7ZNwULX0caJtHCYHsPM1YzlmMe3z5gmN3kziI8Q%2BqzvsJLBiMyHAlEmL541yGnzmWsjNwy2I5%2Fmjw8HjgdlwPpL2SebD2SWWaYZYwMmulXoZrY8GY%2B96zxvByFGrYn8u0OlcnLcWD8DSj6FVEjrspnpjfAmNf9H2DnzXKRRqA2Y3XiC4Nvikq2sEFnIy4Oox6bYZKHfzNgDM2Qf6Ef6BYWuT66kxBbFCpix14DHHLOZwuKocVXNliDPEeq8qVV79Yousx0R4S7WkkiTG%2FtXGzmJhbMKqLQi3WPNv0CoRyfjATt%2FMI3BZMK8BAxj2%2FAo%2BSOFS9dMUnxHMcR4vVNZmc%2BZmGAJjVnNGAh5dAVSrHaRcoMBylfnsIqDTPEOuEICpAyXfPRFUcMKTe%2F3tAHLg6pSE%2FGDORbMYDcj9lX5Lcueif%2FgMD5xvd0N0laSVZ6oOs5a%2F4Zr5bALSFRP1kfNXq75f6pgs6Vw98KpGpibyOttqlCnpWqYZXu3C2hV4ylVCFt7tpgCxLnHXt4rCfSHLCWeDc2roNcep%2BtRbu58vtoZui70hOyNtyqkUff%2Bv8hzskrXW6sd2%2BmliQ8KHgMyIbmUqY9TZBYa%2FGDtC8P9s92RpJuHjWJad89ZEqbfMSnV6TdDvNblASZcl6zgHX44KGEh2%2BmHshyuyk8rJl4%2B3a%2FIWBAa3N%2B4Ji%2FVeoAhJsRPDUc%2F%2FMBSyGlR9SQi9SYxmgswkfu03b17Van%2Bbxf22bIgPJxTpwnJsRmq509dXEqtu33UM92t0dxJ2wh2sC6mG5wVbkb%2FvrH3OpKQFMmjStH3KWbQVxTsEGy3K9scWcLt4cG5mcSWyTNGNzXz%2FP1awswwjcwhqTkzAY6sQFSBoAeRutQmnpLdqfyWeGls4%2Fo658O9NPQsjVYtieCzj0YsK74nSDbtfNnnevs4r1AJjbshnuRlB%2Bpa9ZpNb8M%2F143h0IZtK5ZWcpxQAQkm5gwnkS7lhQinr4pmMamB7n%2BeibWwVlF2DNOnypLtM05obhN5VA8vdMxFHxrNL%2BPJLajEILf9ErWYE2mtFAadoSRcWMvRuLBw5YZsV0pJEZpZLhuIB2LQyaS1RCBiu%2BWFvQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1e4827ea25b2353d242e682330d8b2fa393889de1a65372a6f60b5cf45c4b9ec",
+      "file_size": 26990,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 285737,
+      "file_name": "wrong_domain_certificate_ok.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/285/737/ba36b134e535743807e797fd0a5b1a6509b1b981/wrong_domain_certificate_ok.png?response-content-disposition=attachment%3B%20filename%3D%22wrong_domain_certificate_ok.png%22%3B%20filename%2A%3DUTF-8%27%27wrong_domain_certificate_ok.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYFUHNFWN%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023202Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAvxXR48YsiOpxX9c6oYkPXaKeWWrtCH8oEJSkeZWyJ%2BAiEA4QSSd8Ybzelyz6W6a8EYGO23Noex97NxVbNU9IVTUGYquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAkn2WzkM5Id%2FdfA9yqPBfr0o6ehJ%2FZExkO9Gv7ZNwULX0caJtHCYHsPM1YzlmMe3z5gmN3kziI8Q%2BqzvsJLBiMyHAlEmL541yGnzmWsjNwy2I5%2Fmjw8HjgdlwPpL2SebD2SWWaYZYwMmulXoZrY8GY%2B96zxvByFGrYn8u0OlcnLcWD8DSj6FVEjrspnpjfAmNf9H2DnzXKRRqA2Y3XiC4Nvikq2sEFnIy4Oox6bYZKHfzNgDM2Qf6Ef6BYWuT66kxBbFCpix14DHHLOZwuKocVXNliDPEeq8qVV79Yousx0R4S7WkkiTG%2FtXGzmJhbMKqLQi3WPNv0CoRyfjATt%2FMI3BZMK8BAxj2%2FAo%2BSOFS9dMUnxHMcR4vVNZmc%2BZmGAJjVnNGAh5dAVSrHaRcoMBylfnsIqDTPEOuEICpAyXfPRFUcMKTe%2F3tAHLg6pSE%2FGDORbMYDcj9lX5Lcueif%2FgMD5xvd0N0laSVZ6oOs5a%2F4Zr5bALSFRP1kfNXq75f6pgs6Vw98KpGpibyOttqlCnpWqYZXu3C2hV4ylVCFt7tpgCxLnHXt4rCfSHLCWeDc2roNcep%2BtRbu58vtoZui70hOyNtyqkUff%2Bv8hzskrXW6sd2%2BmliQ8KHgMyIbmUqY9TZBYa%2FGDtC8P9s92RpJuHjWJad89ZEqbfMSnV6TdDvNblASZcl6zgHX44KGEh2%2BmHshyuyk8rJl4%2B3a%2FIWBAa3N%2B4Ji%2FVeoAhJsRPDUc%2F%2FMBSyGlR9SQi9SYxmgswkfu03b17Van%2Bbxf22bIgPJxTpwnJsRmq509dXEqtu33UM92t0dxJ2wh2sC6mG5wVbkb%2FvrH3OpKQFMmjStH3KWbQVxTsEGy3K9scWcLt4cG5mcSWyTNGNzXz%2FP1awswwjcwhqTkzAY6sQFSBoAeRutQmnpLdqfyWeGls4%2Fo658O9NPQsjVYtieCzj0YsK74nSDbtfNnnevs4r1AJjbshnuRlB%2Bpa9ZpNb8M%2F143h0IZtK5ZWcpxQAQkm5gwnkS7lhQinr4pmMamB7n%2BeibWwVlF2DNOnypLtM05obhN5VA8vdMxFHxrNL%2BPJLajEILf9ErWYE2mtFAadoSRcWMvRuLBw5YZsV0pJEZpZLhuIB2LQyaS1RCBiu%2BWFvQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bcfeedf90b589bc5bc11d19c04862a836616734ee70270f1b3541cb6339d71c4",
+      "file_size": 60551,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 285738,
+      "file_name": "tls_error.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/285/738/e71bfb941ca6eb8cb4938336ee7e9a8c51f19c4f/tls_error.png?response-content-disposition=attachment%3B%20filename%3D%22tls_error.png%22%3B%20filename%2A%3DUTF-8%27%27tls_error.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYFUHNFWN%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023202Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAvxXR48YsiOpxX9c6oYkPXaKeWWrtCH8oEJSkeZWyJ%2BAiEA4QSSd8Ybzelyz6W6a8EYGO23Noex97NxVbNU9IVTUGYquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAkn2WzkM5Id%2FdfA9yqPBfr0o6ehJ%2FZExkO9Gv7ZNwULX0caJtHCYHsPM1YzlmMe3z5gmN3kziI8Q%2BqzvsJLBiMyHAlEmL541yGnzmWsjNwy2I5%2Fmjw8HjgdlwPpL2SebD2SWWaYZYwMmulXoZrY8GY%2B96zxvByFGrYn8u0OlcnLcWD8DSj6FVEjrspnpjfAmNf9H2DnzXKRRqA2Y3XiC4Nvikq2sEFnIy4Oox6bYZKHfzNgDM2Qf6Ef6BYWuT66kxBbFCpix14DHHLOZwuKocVXNliDPEeq8qVV79Yousx0R4S7WkkiTG%2FtXGzmJhbMKqLQi3WPNv0CoRyfjATt%2FMI3BZMK8BAxj2%2FAo%2BSOFS9dMUnxHMcR4vVNZmc%2BZmGAJjVnNGAh5dAVSrHaRcoMBylfnsIqDTPEOuEICpAyXfPRFUcMKTe%2F3tAHLg6pSE%2FGDORbMYDcj9lX5Lcueif%2FgMD5xvd0N0laSVZ6oOs5a%2F4Zr5bALSFRP1kfNXq75f6pgs6Vw98KpGpibyOttqlCnpWqYZXu3C2hV4ylVCFt7tpgCxLnHXt4rCfSHLCWeDc2roNcep%2BtRbu58vtoZui70hOyNtyqkUff%2Bv8hzskrXW6sd2%2BmliQ8KHgMyIbmUqY9TZBYa%2FGDtC8P9s92RpJuHjWJad89ZEqbfMSnV6TdDvNblASZcl6zgHX44KGEh2%2BmHshyuyk8rJl4%2B3a%2FIWBAa3N%2B4Ji%2FVeoAhJsRPDUc%2F%2FMBSyGlR9SQi9SYxmgswkfu03b17Van%2Bbxf22bIgPJxTpwnJsRmq509dXEqtu33UM92t0dxJ2wh2sC6mG5wVbkb%2FvrH3OpKQFMmjStH3KWbQVxTsEGy3K9scWcLt4cG5mcSWyTNGNzXz%2FP1awswwjcwhqTkzAY6sQFSBoAeRutQmnpLdqfyWeGls4%2Fo658O9NPQsjVYtieCzj0YsK74nSDbtfNnnevs4r1AJjbshnuRlB%2Bpa9ZpNb8M%2F143h0IZtK5ZWcpxQAQkm5gwnkS7lhQinr4pmMamB7n%2BeibWwVlF2DNOnypLtM05obhN5VA8vdMxFHxrNL%2BPJLajEILf9ErWYE2mtFAadoSRcWMvRuLBw5YZsV0pJEZpZLhuIB2LQyaS1RCBiu%2BWFvQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=31333c9028f30da8cbb040d42b5c390adb9ffabccd9d1b76b02e2568525a81fd",
+      "file_size": 35976,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 285741,
+      "file_name": "not_this_domain.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/285/741/c5c38a5bd49e99a6ab04ef68e412b090601d2e82/not_this_domain.png?response-content-disposition=attachment%3B%20filename%3D%22not_this_domain.png%22%3B%20filename%2A%3DUTF-8%27%27not_this_domain.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYFUHNFWN%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023202Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAvxXR48YsiOpxX9c6oYkPXaKeWWrtCH8oEJSkeZWyJ%2BAiEA4QSSd8Ybzelyz6W6a8EYGO23Noex97NxVbNU9IVTUGYquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAkn2WzkM5Id%2FdfA9yqPBfr0o6ehJ%2FZExkO9Gv7ZNwULX0caJtHCYHsPM1YzlmMe3z5gmN3kziI8Q%2BqzvsJLBiMyHAlEmL541yGnzmWsjNwy2I5%2Fmjw8HjgdlwPpL2SebD2SWWaYZYwMmulXoZrY8GY%2B96zxvByFGrYn8u0OlcnLcWD8DSj6FVEjrspnpjfAmNf9H2DnzXKRRqA2Y3XiC4Nvikq2sEFnIy4Oox6bYZKHfzNgDM2Qf6Ef6BYWuT66kxBbFCpix14DHHLOZwuKocVXNliDPEeq8qVV79Yousx0R4S7WkkiTG%2FtXGzmJhbMKqLQi3WPNv0CoRyfjATt%2FMI3BZMK8BAxj2%2FAo%2BSOFS9dMUnxHMcR4vVNZmc%2BZmGAJjVnNGAh5dAVSrHaRcoMBylfnsIqDTPEOuEICpAyXfPRFUcMKTe%2F3tAHLg6pSE%2FGDORbMYDcj9lX5Lcueif%2FgMD5xvd0N0laSVZ6oOs5a%2F4Zr5bALSFRP1kfNXq75f6pgs6Vw98KpGpibyOttqlCnpWqYZXu3C2hV4ylVCFt7tpgCxLnHXt4rCfSHLCWeDc2roNcep%2BtRbu58vtoZui70hOyNtyqkUff%2Bv8hzskrXW6sd2%2BmliQ8KHgMyIbmUqY9TZBYa%2FGDtC8P9s92RpJuHjWJad89ZEqbfMSnV6TdDvNblASZcl6zgHX44KGEh2%2BmHshyuyk8rJl4%2B3a%2FIWBAa3N%2B4Ji%2FVeoAhJsRPDUc%2F%2FMBSyGlR9SQi9SYxmgswkfu03b17Van%2Bbxf22bIgPJxTpwnJsRmq509dXEqtu33UM92t0dxJ2wh2sC6mG5wVbkb%2FvrH3OpKQFMmjStH3KWbQVxTsEGy3K9scWcLt4cG5mcSWyTNGNzXz%2FP1awswwjcwhqTkzAY6sQFSBoAeRutQmnpLdqfyWeGls4%2Fo658O9NPQsjVYtieCzj0YsK74nSDbtfNnnevs4r1AJjbshnuRlB%2Bpa9ZpNb8M%2F143h0IZtK5ZWcpxQAQkm5gwnkS7lhQinr4pmMamB7n%2BeibWwVlF2DNOnypLtM05obhN5VA8vdMxFHxrNL%2BPJLajEILf9ErWYE2mtFAadoSRcWMvRuLBw5YZsV0pJEZpZLhuIB2LQyaS1RCBiu%2BWFvQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b3d308dbe616c5155c13f8598502866a0daba0957df29499f0b9a725a39a9d4b",
+      "file_size": 67914,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-07-13T16:05:45.960Z",
+  "allow_singular_disclosure_after": -240143176.6444885,
+  "singular_disclosure_allowed": true,
+  "vote_count": 39,
+  "voters": [
+    "jokebookservice1",
+    "thepath",
+    "ramsexy",
+    "yumi",
+    "ali",
+    "sameerphad72",
+    "miguel_santareno",
+    "spam404",
+    "fpatrik",
+    "thalaivar304",
+    "and 29 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 169,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "Burp Suite Pro/Community",
+    "max_severity": "high"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

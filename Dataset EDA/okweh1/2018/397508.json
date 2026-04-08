@@ -1,0 +1,144 @@
+{
+  "id": 397508,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zOTc1MDg=",
+  "url": "https://hackerone.com/reports/397508",
+  "title": "Web cache deception attack - expose token information",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-08-21T02:07:00.233Z",
+  "submitted_at": "2018-08-21T02:07:00.233Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "memon",
+    "url": "/memon",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/Y1tMZTKPhnkZawfz4PTFAFHc/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 30475,
+    "url": "https://hackerone.com/chaturbate",
+    "handle": "chaturbate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Chaturbate",
+      "twitter_handle": "chaturbate",
+      "website": "https://chaturbate.com",
+      "about": "The largest online adult cam site"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-09-20T02:14:53.128Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-09-20T02:14:53.006Z",
+  "team_member_agreed_on_going_public_at": "2018-09-19T22:31:51.030Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello,\n\nI have found new Vulnerability in your website which called Web cache deception attack.\nIt's found first time in Paypal.\n\n###Web Cache Deception Attack\nWebsites often tend to use web cache functionality to store files that are often retrieved, to reduce latency from the web server.\n\n####Let's see an example of web cache.\nWebsite http://www.example.com is configured to go through a reverse proxy. A dynamic page that is stored on the server and returns personal content of users, such as http://www.example.com/home.php, will have to create it dynamically per user, since the data is different for each user. This kind of data, or at least its personalized parts, isn't cached. What's more reasonable and common to cache are static, public files: style sheets (css), scripts (js), text files (txt), images (png, bmp, gif), etc. This makes sense because these files usually don't contain any sensitive information. In addition, as can be found in various best practices articles about web cache configuration, it's recommended to cache all static files that are meant to be public, and disregard their HTTP caching headers.\nWhat happens when accessing a URL like http://www.example.com/home.php/non-existent.css\nA GET request to that URL will be produced by the browser. The interesting thing is the server's reaction – how does it interpret the request URL? Depending on its technology and configuration (the URL structure might need to be built slightly different for different servers), the server returns the content of http://www.example.com/home.php. And yes, the URL remains http://www.example.com/home.php/non-existent.css. The HTTP headers will be the same as for accessing http://www.example.com/home.php directly: same caching headers and same content type (text/html, in this case).\n\n### Steps To Reproduce:\n1. Login to your account.\n2. Go to `https://chaturbate.com/my_collection/`.\n3. Then after go to `https://chaturbate.com/my_collection/min.js`.\n4. Open private mode (Incognito window) or Any other browser  and paste `https://chaturbate.com/my_collection/min.js` url in address bar. Now you can see then without authanticated i can all the detaills of user account.\n\n#####Attached video PoC for more information.\n\nI hope you understand.\n\nRegards,\nMemon\n\n## Impact\n\nAn attacker who lures a logged-on user to access `https://chaturbate.com/my_collection/min.js` will caue this page – containing the user's personal content and Token information – to be cached and thus publicly-accessible. It could get even worse, if the body of the response contains (for some reason) the session identifier, security answers or CSRF tokens. All the attacker has to do now is to access this page on his own and expose this data.",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 335905,
+      "file_name": "web_cache.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/335/905/2f31fb0c5ad31ca47cc2f6902e205318bb9037d3/web_cache.mov?response-content-disposition=attachment%3B%20filename%3D%22web_cache.mov%22%3B%20filename%2A%3DUTF-8%27%27web_cache.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6DREO5IG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022104Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCnneVoiheeVrYn06TOHU%2Fq2zgqOC8Sv%2BOKH%2FGAnshAIQIgAPAHqJZ7DjWF3X9HWktBOirApuw%2F19BKR3KmNLS6VgQquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDBv%2BAORdmAf2qKtPgiqPBfdxFGQ4gh1bXu4t%2FwfazyZQBKebhdXFQjgNUe34tkbZp7l9aQIkk3VWFtfMyOlRK2oNwIrTg9J4Z%2BCt2N%2FvW0teeJli8qV0vL6ESaeQMlEGRk1WRO0VGr4Qm%2FLIaunnloSdG0lfCIhk1k0TaZAgkrXk9lZIExdoyaTVXMccsNbbWrtbxm8nygt7Gymot6aPm7Y4LoseFs5bzUHNGKkrQLW4PUETKdmhesy3fpKLnEbU4U%2BgvSpSDobTHI7i8q1O2Agsz%2FQ6CzzYW6L9L1JbCdpCABsdDQd5APZOGHGpYriaixGnInxfumF9pCNaq9CxkaK4dAN%2FsJCokmAOWSB8h0%2BDYSOT7UCnNrKNxSKlG0w6R28IL5gidAHNZp2PmCFAVmzz1uzVOX6ilobwTRoe4NgOYyCsIzvjJE6TIy724dBjGtCaxvrKSAFpcy4GYYglas2WUiGxouwm1p8qW6PUsylmixJ8fLdP9TYwGxbk529SnVz90zxdh694yXCbYZhzG8tl%2B3qD5e0%2B2UYl6vm43xclP7rNmGqm%2BTH0V0RjNpGK5Qb7eVpfncFdPI83k64pSZWRNB9JLvv9sUaGw2Hv9ppOCssA%2BpCaKzRhUBDm%2FSkAzi2K%2FHL9MEq7jYRSxbcD5IhaG0ICp3BV19tEyRYYNHGzyswUoKyl51kpKJSMrVOST4BiewjCEotNnSjWEdg7Jv3sBXGJNri2ypIv5%2BNx9SMbAYK6yewK4Iupt9AI%2B0qPD%2F6SyipUvMfjzZBP9haDbfjuJS5inj%2BDmRhXklnVfK4bqUdGo7LNs0k5cY9FrKlqh0H%2Fzt40AITSqW8SzQBHiVrWjEl38BWJe0ajrdqANQsvlH%2FiUIZ3KqzN0T7c9AowmOrjzAY6sQFduaBRItRS0p2ShadMPmvPjxVngd9AVFQNmslDCMNOSMGb%2F%2FR8SbjqnRtL7mkf7pTvwBcswAZUK2xu5IrpfCfZ98fxSJsaMWF8KqiFpmqDbuosWTTB38Rs0Hb4a2pKa1DMZUirIO5mzo6oTNIZvKbSdHMm2d0a0WPQhgZJlkfEB3AOZhnIzzJo%2FT3gKOZNgIc2I%2Bd6muGNebdM6Ly%2BhUnTqk9p9aKzPS6CclS6Ada8bxc%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=faa1ca943671854c540370a46e4c2088bb00c708de5a9e5be8d343211f955288",
+      "file_size": 11618486,
+      "type": "video/quicktime",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-10-19T22:31:51.129Z",
+  "allow_singular_disclosure_after": -231652153.3936313,
+  "singular_disclosure_allowed": true,
+  "vote_count": 27,
+  "voters": [
+    "tinmo",
+    "0-chrollo-0",
+    "he4am",
+    "ali",
+    "nischalxd",
+    "mohaned0101",
+    "jmo740",
+    "asad0x01_",
+    "papjm",
+    "th3rmy",
+    "and 17 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.5,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 11722,
+    "asset_type": "URL",
+    "asset_identifier": "chaturbate.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

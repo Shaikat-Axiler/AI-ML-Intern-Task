@@ -1,0 +1,144 @@
+{
+  "id": 970878,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NzA4Nzg=",
+  "url": "https://hackerone.com/reports/970878",
+  "title": "Reflected XSS via \"Error\" parameter on https://admin.acronis.com/admin/su/",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-08-30T18:53:27.080Z",
+  "submitted_at": "2020-08-30T18:53:27.256Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "samincube",
+    "url": "/samincube",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/zetaml0d3ney1b4t2m4ea07n678e/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13428,
+    "url": "https://hackerone.com/acronis",
+    "handle": "acronis",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Acronis",
+      "twitter_handle": "Acronis",
+      "website": "https://www.acronis.com",
+      "about": "Complete integrated cybersecurity and data protection for MSPs and IT teams"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-07-19T17:59:25.019Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-07-19T17:59:24.826Z",
+  "team_member_agreed_on_going_public_at": "2021-06-16T18:24:27.904Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\n\nHello,\n\nThere is possible to inject arbitrary HTML constructions on the page /admin/su/. The problem is in the insufficient escaping of special characters (like <>) for the **Error** parameter. If this parameter contains a specially crafted vector, the application will return the page that will reflect this vector directly into the HTML response without proper encoding.\n\nThis XSS vector will work in most modern browsers.\n\n## Steps To Reproduce\n\n1. Open the next URL in the browser: https://admin.acronis.com/admin/su/?Error=%3cscript%3ealert(document.domain)%3c%2fscript%3e\n\n{F969715}\n\nThe XSS will be executed automatically when the page will be loaded.\n\n## Impact\n\nA cross-site scripting attack against the application's clients can be used to obtain user authentication information (like cookies), phishing or malware spreading. In this case, an authorized user can be the primary target of this attack, so cookie and credentials stealing are possible ways to exploit this vulnerability.\n\n## Recommendations\n\nIt's recommended to provide the processing of web application user input by replacing potentially insecure characters that could be used to format HTML pages to their equivalents that are not HTML format characters. This should be done for any data obtained from external sources and displayed in a browser (including HTTP headers, like Referer).\n\n## Impact\n\nA cross-site scripting attack against the application's clients can be used to obtain user authentication information (like cookies), phishing or malware spreading. In this case, an authorized user can be the primary target of this attack, so cookie and credentials stealing are possible ways to exploit this vulnerability.",
+  "bounty_amount": "50.0",
+  "formatted_bounty": "$50",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 969715,
+      "file_name": "Screenshot_2020-08-30_at_20.49.05.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/pzFKL6nTzDArz3w4UYEPgnL2?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2020-08-30_at_20.49.05.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2020-08-30_at_20.49.05.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225804Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4ab4e6d4704253d33c0807e458136c1329f8b84b8e5813d63e759de88a916325",
+      "file_size": 95815,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 39,
+  "voters": [
+    "mr-medi",
+    "theranger",
+    "rootz491",
+    "ertugrul",
+    "osman1337",
+    "fqdn",
+    "run_win",
+    "tess",
+    "akashhamal0x01",
+    "undert4k3r",
+    "and 29 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.0,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 50773,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.acronis.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

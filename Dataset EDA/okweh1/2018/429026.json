@@ -1,0 +1,152 @@
+{
+  "id": 429026,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MjkwMjY=",
+  "url": "https://hackerone.com/reports/429026",
+  "title": "Race condition in performing retest allows duplicated payments",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-10-26T01:04:15.852Z",
+  "submitted_at": "2018-10-26T01:04:15.852Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cablej",
+    "url": "/cablej",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/859/7fdafea90092a305ae2cb6cec7d43461783abf0c_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-12-27T12:12:56.622Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-12-23T18:29:30.402Z",
+  "team_member_agreed_on_going_public_at": "2018-12-27T12:12:56.510Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\n\nThere exists a race condition in performing retests. By executing multiple requests to confirm a retest at the same time, a malicious user is paid multiple times for the retest. This allows for stealing money from HackerOne, which could go unnoticed by both HackerOne and the attacker (me).\n\n## Steps to Reproduce\n\n1. Receive a retest request email from HackerOne.\n2. Intercept the request to retest the email. Right click the request in Burp Suite and select `Copy as curl command`.\n3. Execute the request on the command line in the form `(request) & (request) & ...`. In testing, I executed the command 5 times.\n4. Scroll to the bottom of https://hackerone.com/settings/bounties. The payment will appear under the `Retest payments` sections and may be repeated.\n5. Wait a few weeks. If successful, a callback from HackerOne will be received (in this case from @michiel):\n\n    {F366191}\n\n6. Check your bank account statements. Observe that a $500 payment was sent from HackerOne 2 weeks ago, demonstrating that the race condition was successful:\n\n{F366192}\n\n## Impact\n\nThis allows an attacker to exploit the retesting feature to steal many times more money. Given that this went unnoticed by both the attacker and HackerOne for over 2 weeks, this has the potential to be exploited multiple times to steal money from HackerOne.",
+  "weakness": {
+    "id": 140,
+    "name": "Concurrent Execution using Shared Resource with Improper Synchronization ('Race Condition')"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 366191,
+      "file_name": "Screen_Shot_2018-10-25_at_5.58.17_PM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/366/191/e7d456b788f266d83f68300fba4850d31dcccff0/Screen_Shot_2018-10-25_at_5.58.17_PM.png?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2018-10-25_at_5.58.17_PM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2018-10-25_at_5.58.17_PM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020523Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f05a08097ac5f2abb7be72d4f385f566cfd86f7e978d95fecfcf4dde8978692c",
+      "file_size": 46205,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 366192,
+      "file_name": "IMG_3755.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/366/192/e0b02e734c28e466701a2ba6dd235f5b43a8a2c7/IMG_3755.png?response-content-disposition=attachment%3B%20filename%3D%22IMG_3755.png%22%3B%20filename%2A%3DUTF-8%27%27IMG_3755.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020523Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=523775017784d0363cdbeec3636016ebf1294157329bde7ed38a7759ae1f97a9",
+      "file_size": 52202,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-01-22T18:29:30.497Z",
+  "allow_singular_disclosure_after": -223457752.50967756,
+  "singular_disclosure_allowed": true,
+  "vote_count": 234,
+  "voters": [
+    "smither",
+    "tiagoscharfy",
+    "hltakydn",
+    "loaymorad",
+    "orange303",
+    "0-chrollo-0",
+    "hicham_rs",
+    "tinmo",
+    "he4am",
+    "arneswinnen",
+    "and 224 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.2,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 3,
+    "asset_type": "URL",
+    "asset_identifier": "hackerone.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "id": 1092859,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDkyODU5",
+  "url": "https://hackerone.com/reports/1092859",
+  "title": "KOPS documentation references domains which were not registered",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2021-02-02T13:35:54.112Z",
+  "submitted_at": "2021-02-02T13:35:54.173Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sml555",
+    "url": "/sml555",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/dVtWoYxGZ17HaL3SQcnpGwTC/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 39386,
+    "url": "https://hackerone.com/kubernetes",
+    "handle": "kubernetes",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kubernetes",
+      "twitter_handle": "kubernetesio",
+      "website": "https://kubernetes.io/",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-04-02T06:42:57.997Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-04-02T06:42:57.885Z",
+  "team_member_agreed_on_going_public_at": "2021-04-01T17:54:34.834Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nWhile researching the kubernetes documentation, I found that the KOPS project's Route53 configuration references dangling DNS servers. I was able to register 3 / 4 of these domain names. I was also able to verify that some companies have been using this configuration, making them vulnerable to this specific attack. \n\nIn our attack scenario, we are able to serve whatever DNS records we desire, for any domain connected to the NS record. As this is a DNS takeover, any type of DNS record could be added. This makes this far broader reaching than your typical subdomain takeover.\n\nAlong with hosting arbitrary content and services, this also allows me to create accounts where specific domain email verification is required such as Google services or Slack. Perhaps most notably, I could create a an email address such as 'postmaster@domain.com' which could be used to issue SSL certificates as outlined in the following article: https://support.dnsimple.com/articles/ssl-certificates-email-validation/. This can potentially allow the joining of internal services (such as slack, Jira, Confluence or Zendesk) or allow me to setup catch all e-mail addresses to collect any inbound e-mail for addresses that previously existed on this domain. These kinds of takeovers can have far reaching consequences for an organisation, and should be treated with a high threat model.\n\nIn addition to these risks, were PayPal subscriptions or other such payment providers previously connected to this subdomain and discovered by a malicious actor, then they would be able to re-claim these subscriptions and bill any customers who still had them active. It is worth noting that in testing I have verified that PayPal does not automatically cancel user subscriptions once a domain has gone stale, and that would be a realistic attack vector here if PayPal payments (via the subscription model) were taken using this subdomain at any point.\n\n## Steps To Reproduce:\n1. View lines 129 - 135 of https://github.com/kubernetes/kops/blob/master/docs/getting_started/aws.md\n\n## Supporting Material/References:\nProof of domain ownership:\n{F1180954}\n\n## Impact\n\nIn our attack scenario, we are able to serve whatever DNS records we desire, for any domain connected to the NS record. As this is a DNS takeover, any type of DNS record could be added. This makes this far broader reaching than your typical subdomain takeover.\n\nAlong with hosting arbitrary content and services, this also allows me to create accounts where specific domain email verification is required such as Google services or Slack. Perhaps most notably, I could create a an email address such as 'postmaster@domain.com' which could be used to issue SSL certificates as outlined in the following article: https://support.dnsimple.com/articles/ssl-certificates-email-validation/. This can potentially allow the joining of internal services (such as slack, Jira, Confluence or Zendesk) or allow me to setup catch all e-mail addresses to collect any inbound e-mail for addresses that previously existed on this domain. These kinds of takeovers can have far reaching consequences for an organisation, and should be treated with a high threat model.\n\nIn addition to these risks, were PayPal subscriptions or other such payment providers previously connected to this subdomain and discovered by a malicious actor, then they would be able to re-claim these subscriptions and bill any customers who still had them active. It is worth noting that in testing I have verified that PayPal does not automatically cancel user subscriptions once a domain has gone stale, and that would be a realistic attack vector here if PayPal payments (via the subscription model) were taken using this subdomain at any point.",
+  "weakness": {
+    "id": 75,
+    "name": "Privilege Escalation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1180954,
+      "file_name": "Screen_Shot_2021-02-03_at_12.33.52_am.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ahm2sdm97svuypnz9o1sqi6hgroz?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2021-02-03_at_12.33.52_am.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2021-02-03_at_12.33.52_am.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T231924Z&X-Amz-Expires=2845&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d794776fc0bb60e7d13286f837ae1d580590be000bea6592bad87457f9b82fb0",
+      "file_size": 18606,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-05-01T17:54:34.929Z",
+  "allow_singular_disclosure_after": -151737889.28386787,
+  "singular_disclosure_allowed": true,
+  "vote_count": 5,
+  "voters": [
+    "sml555",
+    "khizer47",
+    "cryptographer",
+    "nzion",
+    "ekgaribadmi"
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.1,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 32525,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/kubernetes/kops",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

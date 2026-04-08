@@ -1,0 +1,131 @@
+{
+  "id": 2230842,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMjMwODQy",
+  "url": "https://hackerone.com/reports/2230842",
+  "title": "Title: Deceptive Manipulation of HTTP to HTTPS with VPN in Burp Suite",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2023-10-29T02:55:41.864Z",
+  "submitted_at": "2023-10-29T02:55:41.989Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rexifylo",
+    "url": "/rexifylo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hv6mu9p3kgft0q2jzdaab4odvqop/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15252,
+    "url": "https://hackerone.com/portswigger",
+    "handle": "portswigger",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "PortSwigger Web Security",
+      "twitter_handle": "Burp_Suite",
+      "website": "https://portswigger.net",
+      "about": "Burp Suite is the leading software for web security testing"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2023-10-31T09:10:56.646Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-10-30T16:19:30.199Z",
+  "team_member_agreed_on_going_public_at": "2023-10-31T09:10:56.578Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Description:\nI identified a deceptive behavior in the Burp Suite application, combined with the use of a VPN, that can potentially mislead attackers into thinking a website has downgraded from HTTPS to HTTP when it is still using HTTPS. This action may not pose a significant threat, but it can lead to attacker misdirection. The scenario can be categorized under CWE-319: Cleartext Transmission of Sensitive Information.\n\nSteps to Reproduce:\n\n    Set up the target website and ensure that it uses HTTPS for secure communication.\n\n    Open the Burp Suite application and configure it to intercept and manipulate traffic between the client and server.\n\n    Initiate a session with the target website through Burp Suite's proxy.\n\n    In Burp Suite, manipulate the response to make the attacker believe the website has downgraded to HTTP (e.g., modify response headers).\n\n    Use a VPN for added anonymity during this process.\n\n    Observe the attacker's response and their behavior, as they might adapt their attack techniques thinking the connection is unencrypted.\n\n## Impact\n\nDeception: The attacker is misled into thinking the connection is unencrypted (HTTP), which might lead them to adjust their attack techniques. This can provide a slight advantage to the defenders.\n\n    Wasted Resources: The attacker may allocate unnecessary resources to exploit an apparently vulnerable HTTP connection, which can be seen as a waste of their time and efforts.\n\n    False Sense of Security: On the flip side, if the attacker believes the website has downgraded to HTTP, they might not take encryption and security precautions as seriously, potentially leading to data breaches if they act recklessly.\n\nAnd Reputational damage due to when the attacker finds out it is really HTTPS not HTTP they might find a different application besides burp suite",
+  "weakness": {
+    "id": 34,
+    "name": "Cleartext Transmission of Sensitive Information"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2812743,
+      "file_name": "2023-10-28_22-52-35.mkv",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/0uw23yf6vo7ff5gmuwlqsnww9tbf?response-content-disposition=attachment%3B%20filename%3D%222023-10-28_22-52-35.mkv%22%3B%20filename%2A%3DUTF-8%27%272023-10-28_22-52-35.mkv&response-content-type=video%2Fx-matroska&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6RGCJK62%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T205852Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDbdQ2rRb%2F%2Fc9ewyQpX22GF1Go%2FOM%2FMyqiFkm0p9eh3LQIgNsy%2BL4zLN5COCdSLInEOsFHG0JNWnmL0bDcn5zO5wZkqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDBID0DdepC%2F1VmNuSqOBUVZQsG8fVaP42YjKhvhfhxm6mHh4EdJdZ0pRSKiOQ%2FwybfbhcDsRqXKADKgMk96u2kU%2FuycwH%2B6SlSg7wAr8ap5tVDBXAdqT9dKy3K6Yg7y1WHCK3SrrFC0mOTXvb7i23z5TXCdr8ATC6L8BFq7Ofku69TqSEXdqFZhRLAbwCOyFKSgT1Biv08C72FrOjgRvirm7%2FG0VKFHHfsGD4CuHrmgTezzXc13Ud6Nf14Nds1XCwwuWihFAKnfr56CNe6OMiGEEj29ZrfOXrsGAf4EFj%2BDSX8eRoSCfDtfrNkY47%2B0DOiZ0J37QjqP5B0uqP%2FxKllrjPTdR0WYwis361Z22sAHIZ9AmwjIYuXbYaZfaJyI2b5W85HxTUkKTfIHDXiVVcpByC569yZJZ3wDNka9P2PH7rfK4EZ3zku8JUcd3kdhVyjhACGdp6WgIWR0a9GVJK4QPX5waAm%2F4G254BIGSZx58khDdfvWJuzZd47lde40%2B5wNtA0WW4WShMN3Ye%2B98wrMECIkbB897m%2BPYdrXUkwzkuYXhUVFSNQwN0SnswWoqGqp%2BT%2BhAwOfjnZuYZfXXsbhX2QNWmfDQOodlMGNs1h7B9SP3VbJw1dCGvnCRQ%2BTNjfrxQA3GpOSeU2R1y2XiL%2FNFypuQG6NCX1L7ExAIUr8%2FtkuLa5mFn5D4xqDUJb7rMtDS41Cu1%2BtcZHSC16hdv3HDTKSmD5RMxNgCWCVJs4kND4K9qVlzEYpsQ2FjjDGjNhG7eLPdi3cn7KUdtjNKdJ63xHh0VCNbz41VZjxgTirzZJ5HZZr2PVjmVNojXqZ5MYavW3nOAjlLhx%2Buv3hkMNYqDFs9NzN3rzAfTNsxPP5FIhmKDtfFNkCYje6gTD7xeLMBjqxAWpPFBwPXbTeXXVr1acQm05%2FSVW%2Brpna%2BNyOH8YXetP4P2qRjtUvsOHrKEbfwmKpJqLwjqNu01CsSbAJQITXEHUyredL%2B6lzpa0Zg1YertOOM7VOxWFxKamzNLtSvWxYPVD53VQebOy3DR16w4T8sQ9K4%2F4Kfxc%2FdjRi32%2FaI4JH5yC900mDbtpUCPvA63bSwcDjeWJ0%2BDtYNudv9cFSMRoiyYmC5uxD5sULB%2FZc6%2BE3lw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fd21a8dd0baabcbf15f9e90c0a2ee01cbe513a7ec37320b23c06ae1788307886",
+      "file_size": 4808066,
+      "type": "video/x-matroska",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 71,
+  "voters": [
+    "ambrane",
+    "bugsv2",
+    "pwrspl0it",
+    "shubham_srt",
+    "thalaivar304",
+    "jmo740",
+    "shellbreaker",
+    "2026",
+    "emptymahbob",
+    "0xshii",
+    "and 61 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 169,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "Burp Suite Pro/Community",
+    "max_severity": "high"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

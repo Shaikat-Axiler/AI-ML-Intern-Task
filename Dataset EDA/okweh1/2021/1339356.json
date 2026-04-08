@@ -1,0 +1,142 @@
+{
+  "id": 1339356,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMzM5MzU2",
+  "url": "https://hackerone.com/reports/1339356",
+  "title": "Xss At Shopify Email App",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2021-09-14T13:04:39.991Z",
+  "submitted_at": "2021-09-14T13:04:40.174Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "shaktiranjan867",
+    "url": "/shaktiranjan867",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/5uuhrkioel2zfs204w1e7ve19tvg/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-12-24T09:33:27.714Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-12-24T09:33:27.716Z",
+  "team_member_agreed_on_going_public_at": "2021-10-21T18:23:10.530Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello Team,\ni have found a Xss on the Shopify email app, but it's a bit wired, it's not executing directly but when i am coping the code it is getting executed.\n\nstep-1:  Navigate to https://s1-aug.myshopify.com/admin/apps/shopify-email/editor/3694417\nstep-2:  Add the xss pay load anywhere  like subject, preview text or in the selection body section. \"/><img src=x onerror=alert(document.domain)>\nstep-3: copy the written code\n\nXss will be fired.\n\n## Impact\n\nCode injection leads to xss",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1447782,
+      "file_name": "recording-1631624647311.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/y6r5zomvtzoht0eh6k3dwcz9kv60?response-content-disposition=attachment%3B%20filename%3D%22recording-1631624647311.webm%22%3B%20filename%2A%3DUTF-8%27%27recording-1631624647311.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2DPWHUMQ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T223005Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDmIaIsMM6HL9BLeYuyebz%2BGbkUe0CxlMbxB8BvYJQy%2BgIgacpYmirv8vQBVJ1NcDAWoBlZ%2BUm5xJReJOQ%2BYZ9ShU4qugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDOI999s2owDoYQpY2SqOBVwv95qm8Q91%2FO%2B7l4It%2BcaCtErB%2FN26iJW%2FLl70uV%2FDmjJY%2BrjqGFQChTU4Q9YC56TjQPtOZudxQEXNrHb%2BmuEtMroijD6BVEq%2FbqF2YtQglJfgdU51jPWb9O0oDOx4GDA%2FR0cUrEHvKkUE8Jhc8NrUfw3BL2vH%2F6Vqq6e0FXprOEbzQbnHHrYIwWOfSsSntFLfczcl%2BchAHxC26%2B34lTYI7wB4I1vK8jxg0tsEHLJ5PBEgqD49vCxPgBcSXqGNumcxCxzCoscJG%2F78u15kgVhIq0UCrgoOF5oz1HOQRzOzQqiTPVQpq5GcBrFdNV3JRKpm79dWOMouv%2FeCcvabeDabC8%2BTPS4rnnPnFeUsOWJTm%2FDLgJFfJ8rfGCw4OgPEDGkBisjTz9q40PtaBxJ5Dv44%2Bx4Y47lQ0Wbt96IcZChBs9lnr4FCL4wSWx0Cak%2BEkL2rSNq0igzYaef07khrHdXBdXmCRroKwTQyfjtQ0wkm49U9HAjCVMOOMIvKQI2FMmOokIINzZy7Dy%2BuskKeFkVijJt7lkHzKuZKJYfKvZH4xaix2Drq%2BTfwUFLR9MRsE9PCJPwgDm9E01CcJohKngFmgbSaRSVuwlMOHCmeqKH0yqoi70rFFaYEFwHdGr4uX5bQwiB0KDBgpkYfue5xftTltwfAdNtaYl9x1zcOR9tJD7I0hasiPFb8Cd12jI9J6rakPgKqu8%2BHrpXVUDvjvrzhWhyR%2F%2FysXaAyZgTu%2BDHXBvkDtmmC8DNdkFgLYshVD8aeizYxeHHDhfifEFszx47gqxqPWUSCUwTaqr4uOTZ8%2Bin%2B4rGCXjqgKmXZBmntfZxG3YQK5J%2FMrszJFV2Wate8W%2Bti1YNEKD3yvX8ukTCZyeLMBjqxAXEc93gZiC4QX52tG1Oi7h1TOmJgbsKeTLOPiyEisLRIIIodgIYSDaVgyIgB9yl3pcv45o%2FHBm8%2BZpSZJ5dmLQL9Qc3vcMa9fW0z1R65vMEcKXqCkqepOtnlp14DCE3LCC1d1%2FKOhmOi%2BFFluQYe82FL1HnjD2uZ2%2FXBhwPnvzqvDvLf9POBO1i3x%2FxhMbCzbfd2QKE0D2M0GHOQDvUnE%2Bd8ggqmp6j4OaFmlo2akT6xrA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ef1010495f6335a816db42babb9b17e547ca0b0bcba871f5a335c672cd92e279",
+      "file_size": 2282365,
+      "type": "video/webm",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 33,
+  "voters": [
+    "drsniper",
+    "osman1337",
+    "shreyaschavhan",
+    "tess",
+    "thalaivar304",
+    "akashhamal0x01",
+    "kaagg",
+    "h4x0r_dz",
+    "ibring",
+    "momya",
+    "and 23 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.0,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 37198,
+    "asset_type": "OTHER",
+    "asset_identifier": "Shopify Developed Apps",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

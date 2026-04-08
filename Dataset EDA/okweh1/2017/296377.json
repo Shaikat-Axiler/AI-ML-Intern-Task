@@ -1,0 +1,145 @@
+{
+  "id": 296377,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yOTYzNzc=",
+  "url": "https://hackerone.com/reports/296377",
+  "title": "[redis-commander] Reflected SWF XSS via vulnerable \"clipboard.swf\" component",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2017-12-08T20:43:21.737Z",
+  "submitted_at": "2017-12-08T20:43:21.737Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "ysx",
+    "url": "/ysx",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-01-23T09:52:52.622Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-01-23T09:24:28.825Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nAn injection in the `highlighterId` parameter of the `clipboard.swf` component can be used to reflect JavaScript in the context of hosts running Redis Commander.\n\n## Module specification\n* **Name**: [redis-commander](https://www.npmjs.com/package/redis-commander)\n* **Version**: 0.4.5 (latest release build)\n\n## Verified conditions\n* **Test server:** Ubuntu 16.04 LTS\n* **Browser version:** Firefox 57.0 (64-bit)\n* **Flash version:** 27.0.0.187\n\n## Proof of concept\n\nPlease globally install the `redis-commander` package and run `redis-commander -p 80` to start serving the Commander interface.\n\nTo reproduce this vulnerability, please access the below URL in a browser with Adobe Flash enabled and **click on the content** which appears.\n\n```\nhttp://instance/jstree/_docs/syntax/clipboard.swf?highlighterId=\\%22))}%20catch(e)%20{alert(document.domain);}//\n```\n\n{F245319}\n\nThanks,\n\nYasin\n\n## Impact\n\nAn adversary can leverage this vulnerability in a crafted request that, if issued by another Redis Commander user, will cause arbitrary JavaScript code to execute within the target's browser in the context of their session.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 245319,
+      "file_name": "redis_swf_xss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/245/319/de23b113cf17ca82551bc94d0253038bcc00bc4f/redis_swf_xss.png?response-content-disposition=attachment%3B%20filename%3D%22redis_swf_xss.png%22%3B%20filename%2A%3DUTF-8%27%27redis_swf_xss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025549Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b3ab5087b64c720dd746540a163d2b7c547f4d7a45c657f4d1eed5df757bb1a7",
+      "file_size": 138870,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-02-22T09:24:28.904Z",
+  "allow_singular_disclosure_after": -252351080.93696427,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "bl4de",
+    "eveeez",
+    "japz",
+    "mayank8422"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 6404,
+      "category": "researcher",
+      "content": "An injection in the `highlighterId` parameter of the `clipboard.swf` component can be leveraged in a reflected XSS on hosts serving Redis Commander.",
+      "updated_at": "2018-01-23T09:16:59.094Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 47082,
+        "username": "ysx",
+        "name": "",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "",
+        "location": "",
+        "created_at": "2015-12-20T12:11:13.354Z",
+        "url": "https://hackerone.com/ysx",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    }
+  ]
+}

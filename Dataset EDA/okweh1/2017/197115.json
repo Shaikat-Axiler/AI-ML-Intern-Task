@@ -1,0 +1,122 @@
+{
+  "id": 197115,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xOTcxMTU=",
+  "url": "https://hackerone.com/reports/197115",
+  "title": "Clickjacking @ Main Domain[www.yelp.com]",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2017-01-10T05:27:45.082Z",
+  "submitted_at": "2017-01-10T05:27:45.082Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "h4ck3r0ne",
+    "url": "/h4ck3r0ne",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 545,
+    "url": "https://hackerone.com/yelp",
+    "handle": "yelp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/545/de556165eaf2da7600f9ce75d1179281ee2d538f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Yelp",
+      "twitter_handle": "",
+      "website": "https://www.yelp.com",
+      "about": "Connecting people to great local businesses in communities around the world."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-11-09T20:07:07.317Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-01-19T15:08:11.945Z",
+  "team_member_agreed_on_going_public_at": "2017-11-09T20:07:07.194Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello Yelp Security Team, \n\nI Just want to submit a report Clickjacking on your Main Domain,\nI Know that this is a Low Risk But may i know if your aware of it. \n\nPoC:\nSee Atachments.\n\nImpact:\n\nFor example, imagine an attacker who builds a web site that has a button on it that says \"click here for a free iPod\". However, on top of that web page, the attacker has loaded an iframe with your mail account, and lined up exactly the \"delete all messages\" button directly on top of the \"free iPod\" button. The victim tries to click on the \"free iPod\" button but instead actually clicked on the invisible \"delete all messages\" button. In essence, the attacker has \"hijacked\" the user's click, hence the name \"Clickjacking\".\n\nOne of the most notorious examples of Clickjacking was an attack against the Adobe Flash plugin settings page. By loading this page into an invisible iframe, an attacker could trick a user into altering the security settings of Flash, giving permission for any Flash animation to utilize the computer's microphone and camera.\n\nClickjacking also made the news in the form of a Twitter worm. This clickjacking attack convinced users to click on a button which caused them to re-tweet the location of the malicious page, and propagated massively.\n\nThere have also been clickjacking attacks abusing Facebook's \"Like\" functionality. Attackers can trick logged-in Facebook users to arbitrarily like fan pages, links, groups, etc.\n\nRequest: if you think the reported issues have acceptable risk and you are not going to make changes then kindly request to mark as Informative or let me close it.",
+  "weakness": {
+    "id": 74,
+    "name": "UI Redressing (Clickjacking)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 151080,
+      "file_name": "yelp_clickjacking.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/151/080/c8cb3b9ef79a38937f65d61d7f81f7829d20e430/yelp_clickjacking.png?response-content-disposition=attachment%3B%20filename%3D%22yelp_clickjacking.png%22%3B%20filename%2A%3DUTF-8%27%27yelp_clickjacking.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030537Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=463da6ca7e37945ca40751e6c6f684a2e358514b08b0b8c33ea85b0322a61e97",
+      "file_size": 178762,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 151082,
+      "file_name": "clickjack.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/151/082/f9980af56122d21d1b4f08c8fa45161a4b372a3e/clickjack.html?response-content-disposition=attachment%3B%20filename%3D%22clickjack.html%22%3B%20filename%2A%3DUTF-8%27%27clickjack.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030537Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bc0e5d2a83e3ad89c8dc45a3f32ec749a0a4068c5f90d93085fb84e85298f3af",
+      "file_size": 243,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 0,
+  "voters": [],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

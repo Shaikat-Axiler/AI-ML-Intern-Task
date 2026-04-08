@@ -1,0 +1,181 @@
+{
+  "id": 1872682,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xODcyNjgy",
+  "url": "https://hackerone.com/reports/1872682",
+  "title": "Privilege Esacalation at Apache Airflow 2.5.1 ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2023-02-13T15:36:00.736Z",
+  "submitted_at": "2023-05-08T14:00:50.860Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ksw9722",
+    "url": "/ksw9722",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211738Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3cf8d2675b86e2e68f68f7991a24513bd2141915b36bf9b330b245818c8d9940",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211738Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5c17ec2f66d99d97545cb033d0b710a775fb24006e76c866234654c7b6776700"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-25754"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-05-18T15:47:24.381Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-05-18T15:47:24.294Z",
+  "team_member_agreed_on_going_public_at": "2023-05-17T15:36:29.304Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello. I found security issue about airflow's log file. \n\nAirflow 2.5.1 sets log files to vulnerable privileges.  (chmod 666)\n\nAny Linux user on the host on which the airflow operates can read and tamper with the airflow's logs.\n\nTaking advantage of this, an attacker in local host can retrieve sensitive information from a Linux host that can only access airflow accounts.  ** (This is privilege escaltion from any linux account to airflow's linux account) **\n(ex : ssh private key)\n\n** The attack conditions are as follows. **\n1. An attacker can log in to a host running airflow with a specific Linux account.\n(Or the penetration test was successfully successful.)\n\n2. An attacker can log in to the airflow web server and can read the dag log.\n\n** The attack procedure is as follows.  **\n\n1. After deleting a specific dag log using any account, the attacker regenerates the log file using the ssh private key of the account that runs the airflow as a symbolic link.\n{F2171182}\n\n2. The attacker logs in to the airflow webserver and reads the log.\n{F2171186}\n\n\n3. The airflow logs expose SSH PRIVATE KEY.\n\n{F2171190}\n\n\n\n## Patch History \n- https://github.com/apache/airflow/pull/29506\n- This vulnerability has been allocated CVE-2023-25754 by Apache Security Team.\n\n## Impact\n\nLocal linux user can access any file like ssh private key which owned by account which operate airflow.",
+  "bounty_amount": "2400.0",
+  "formatted_bounty": "$2,400",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2109381,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/kmmls6xey4uaygcnmq5gzgrre5et?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211739Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f247dc92f057e090a8d936bd6efcf1c1cfb4b649d1b489830a4077f1f9e579be",
+      "file_size": 41714,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 2171182,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/v5ra5ckjkuegugzaljgbu39ucqtg?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211739Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=43ec6b2a0a34875baa455584757ea005ebe3a43544a656bb647fcb9c65110e23",
+      "file_size": 49062,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 2171186,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/lfu19baj99pemx26iax1apafju7l?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211739Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=63a54e56f3f6c2313a4f8b122c76e4e0a91b4bdb2e07a336143ff93df660afc0",
+      "file_size": 39743,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 2171190,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/0jechq2q8sjkm9uouvlqtnwpdxb8?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211739Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f3beea23cc5bfd5bb73835d2c57240ab1dcd9d11df9264755086e0c79ea3cb1b",
+      "file_size": 34929,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-06-16T15:36:29.537Z",
+  "allow_singular_disclosure_after": -84692469.46933927,
+  "singular_disclosure_allowed": true,
+  "vote_count": 19,
+  "voters": [
+    "n1m0",
+    "exec_iq",
+    "zy9ard3",
+    "prateek_thakare",
+    "shivammusic",
+    "hptcybersecuritycenter",
+    "w4rcrypt",
+    "alsufyani1",
+    "rohitnigam1337",
+    "r4jj",
+    "and 9 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 86381,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/apache/airflow",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 294915,
+      "category": "team",
+      "content": "CVE-2023-25754: Apache Airflow: Privilege escalation using airflow logs\nSeverity: moderate\n\nAffected versions:\n- Apache Airflow before 2.6.0\n\nDescription:\nPrivilege Context Switching Error vulnerability in Apache Software Foundation Apache Airflow.This issue affects Apache Airflow: before 2.6.0.\n\nCredit:\nksw9722 (finder)\n\nFull Security Advisory: https://lists.apache.org/thread/3y83gr0qb8t49ppfk4fb2yk7md8ltq4v",
+      "updated_at": "2023-05-17T15:32:01.235Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 904892,
+        "username": "kunderkoffler",
+        "name": "Kayla Underkoffler",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2020-01-13T19:26:22.339Z",
+        "url": "https://hackerone.com/kunderkoffler",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

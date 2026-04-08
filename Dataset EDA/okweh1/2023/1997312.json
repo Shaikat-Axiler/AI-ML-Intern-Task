@@ -1,0 +1,141 @@
+{
+  "id": 1997312,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xOTk3MzEy",
+  "url": "https://hackerone.com/reports/1997312",
+  "title": "CVE-2023-28319: UAF in SSH sha256 fingerprint check",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2023-05-23T08:38:55.273Z",
+  "submitted_at": "2023-05-23T08:38:55.463Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "wct",
+    "url": "/wct",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211336Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ec0208757021093ef69886f78d9a054dd75ffe704790c2739c5031f4f58377f2",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211336Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cfa91272174438f5e253b525c5433dd56ae9162f817af61bee42cb04c9bfe8ee"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-28319"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-06-25T18:16:40.272Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2023-05-26T18:16:37.570Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "libcurl offers a feature to verify an SSH server's public key using a SHA 256\nhash. When this check fails, libcurl would free the memory for the fingerprint\nbefore it returns an error message containing the (now freed) hash.\n\nAffected versions: curl 7.81.0 to and including 8.0.1\nNot affected versions: curl < 7.81.0 and curl >= 8.1.0\n\nThe original submission can be found here: https://hackerone.com/reports/1913733\n\n## Impact\n\nThis flaw risks inserting sensitive heap-based data into the error message\nthat might be shown to users or otherwise get leaked and revealed.",
+  "weakness": {
+    "id": 50,
+    "name": "Use After Free"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2023-06-25T18:16:37.665Z",
+  "allow_singular_disclosure_after": -83905019.03858332,
+  "singular_disclosure_allowed": true,
+  "vote_count": 2,
+  "voters": [
+    "zy9ard3",
+    "nightcap79"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 80985,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 299609,
+      "category": "team",
+      "content": "CVE-2023-28319 - UAF in SSH sha256 fingerprint check\n\nVULNERABILITY\nlibcurl offers a feature to verify an SSH server's public key using a SHA 256 hash. When this check fails, libcurl would free the memory for the fingerprint before it returns an error message containing the (now freed) hash.\n\nThis flaw risks inserting sensitive heap-based data into the error message that might be shown to users or otherwise get leaked and revealed.\n\nSOLUTION\nFixed-in: https://github.com/curl/curl/commit/8e21b1a05f3c0ee098dbcb6c\n\nTIMELINE\nThis issue was reported to the curl project on March 21 2023. We contacted distros @ openwall on May 9, 2023.\n\ncurl 8.1.0 was released on May 17 2023, coordinated with the publication of this advisory.\n\nCREDITS\nReported-by: Wei Chong Tan\nPatched-by: Daniel Stenberg\nThanks a lot!\n\nLink to full Security Advisory: https://curl.se/docs/CVE-2023-28319.html",
+      "updated_at": "2023-05-26T18:15:19.276Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 904892,
+        "username": "kunderkoffler",
+        "name": "Kayla Underkoffler",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2020-01-13T19:26:22.339Z",
+        "url": "https://hackerone.com/kunderkoffler",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

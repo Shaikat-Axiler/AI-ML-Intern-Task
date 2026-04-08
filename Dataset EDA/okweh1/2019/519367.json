@@ -1,0 +1,135 @@
+{
+  "id": 519367,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC81MTkzNjc=",
+  "url": "https://hackerone.com/reports/519367",
+  "title": "Attacker can read password from log data",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-03-31T20:55:20.158Z",
+  "submitted_at": "2019-03-31T20:55:20.158Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kingamir",
+    "url": "/kingamir",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/usr64ds9eG51JPCgQUqxooEz/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 38469,
+    "url": "https://hackerone.com/midpoint_h1c",
+    "handle": "midpoint_h1c",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/038/469/33d1ab1e95431ecf7574308dfa970791ad9e8aa8_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/038/469/33d1ab1e95431ecf7574308dfa970791ad9e8aa8_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Midpoint (European Commission - DIGIT)",
+      "twitter_handle": "",
+      "website": "http://ec.europa.eu",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-06-15T12:47:55.648Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-05-16T12:47:50.041Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nAttacker can read plain text password from log data.\n\n## Steps To Reproduce:\n\n  1. From application dashboard choose Users section, I simultaneously ran process hacker to see the process disk write and read behavior.\n  2. change the password of one of the users, and you see in process hacker window the place for log data creation.\n  3. Open the file in favorite editor in that place:\n%UserProfile%\\AppData\\Local\\Temp\\tomcat.1470616378544174392.8080\\work\\Tomcat\\localhost\\midpoint \n\n## Supporting Material/References:\nI have uploaded a video for POC.\n\n## Impact\n\nAttacker can read plain text password from log data.",
+  "bounty_amount": "168.68",
+  "formatted_bounty": "$168.68",
+  "weakness": {
+    "id": 21,
+    "name": "Plaintext Storage of a Password"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 455608,
+      "file_name": "PlainText.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/455/608/4cefe209174069eef02b1f16849a325948bd7204/PlainText.mp4?response-content-disposition=attachment%3B%20filename%3D%22PlainText.mp4%22%3B%20filename%2A%3DUTF-8%27%27PlainText.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWREVEZO5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014620Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDiMObL34v9fAaIKhp3rzo3omHuT0K86TgqTgNFfLUGgAiAJEf9SNIAhEAuyTbnWVKCjPqMzdyrRWoyviuOCMqqXEyq7BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMWqzZag2zLDgWkoSQKo8FhBlzba%2FseBcANfhlpzQgtuzgbVVWK26CuREUrk2kYFSFCd1eP8c2rXv5XAYUm%2FUPBkYoLyUTQzxEaNGrIN0yU7b6gXslpSNmm7gZUbLhARwV9o7ks8V8CM5VE13Zj4ST%2FX7HgIg4YnvZ3%2F%2FbXbHuJQ412BDXQY6QSMqFN3UqP4jxk%2BNaKcTH1B2APravH0Ni7YjcK2kkQ%2FEYwuQaZt6JLmzuZuJNrNzGM3Y1uV3eEmojWMPdIVMKjYzFmVFuc1P90ggtODTnQkZjgjF7Y7meh9ufKLPpUhZZ6hOnq9EWOMPZCOw5RZ6XcxjtbwRVO2K8yd2uRmaPhQSU72TWHnBdvpTG%2Fd2oW5FHCJmhIqAdfmLEvyTsQU4IA4PDNR0SKEU5YIFoLrznoY4JQixV82nmZqczPERK2vxP0qftgXBSzsiormAlzswDeqNn3jq0R4w0m6m9TrpMZ0kUwckbddqAaWoMy7gjxb%2B%2Fq7YX7tk3cbnS8wttaXWIK4%2B9XgUAb0CJvOPCMfnka45tuBQNoHcj9N73A0MNhwaqe9m2Tp6yvL4s4z3g8UWJCoOE5LhIlIcr3b1MI3eML9cSt8KG%2B0GVbUvwlFxXeBO6%2BQ2LPS85hM0cORrCzwYMG4u8Xu0fWbkeZJbmxgL42l%2Fro%2FQi9rt%2B76isJKHx%2FmAkJ6s87wcjqlkjzNVyxkw2PDWk1rymGqjofsWEHPbcunnM6OzhhPQdrDE5lRN93m34fKj6SwiiX5PfO6wNxmpjT8fhhHJdDG1TKFygS5YKO0YTqXUNUdwxLcM7v8tgK%2FyIrFg68GQIZ%2FmLRcAPZqKEjrQAEVcWiJMl7mN3kgkYRbOeartlWbzopVe5kuBotUIrcUcn3x%2Fo%2FzDl6%2BPMBjqyAUoTsKQ408LGNOgulHnL1wyPEzTWxl3XQytE3mwP0gTOAj1Umt8FEERRChmvCVHE7A8rOCnz7tDx0skWUTnfyJKz7MRNHrfovtAFKd5ZmpBXPYKFkt0mipBM%2BKLD31DqupT%2FoPUdON%2BbdEUakrvTqfZd%2BYgByEEht9RW8XCzSS9DpUb4%2F%2F9wdBGeu6xhDJOSV%2BZllN9Ew6Ux%2BY9e%2F3xguKJVh6KMLH6F%2BdqpEDGByRPcC6g%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5edaf9af33ab7d3a63eca285cd2b4d6c0fcc395c79282e892499e680bc99aea3",
+      "file_size": 3026527,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-06-15T12:47:50.091Z",
+  "allow_singular_disclosure_after": -211035509.99753675,
+  "singular_disclosure_allowed": true,
+  "vote_count": 35,
+  "voters": [
+    "rmmal",
+    "ali",
+    "sameerphad72",
+    "m7mdharoun",
+    "tiago-danin",
+    "cryptographer",
+    "unknown_person",
+    "freem0",
+    "inactiveaccount2222231313",
+    "h3ndrav1ru5",
+    "and 25 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 21944,
+    "asset_type": "URL",
+    "asset_identifier": "https://github.com/evolveum/midpoint",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

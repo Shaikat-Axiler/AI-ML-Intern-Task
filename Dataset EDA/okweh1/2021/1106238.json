@@ -1,0 +1,133 @@
+{
+  "id": 1106238,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTA2MjM4",
+  "url": "https://hackerone.com/reports/1106238",
+  "title": "Stored XSS via Mermaid Prototype Pollution vulnerability",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2021-02-18T09:04:42.525Z",
+  "submitted_at": "2021-02-18T09:04:42.728Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "taraszelyk",
+    "url": "/taraszelyk",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 264,
+    "url": "https://hackerone.com/gitlab",
+    "handle": "gitlab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GitLab",
+      "twitter_handle": "gitlab",
+      "website": "https://about.gitlab.com",
+      "about": "A single application for the entire software development lifecycle."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-07-12T23:00:34.329Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-07-12T23:00:34.236Z",
+  "team_member_agreed_on_going_public_at": "2021-07-12T22:51:53.582Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Prologue\n\nGitlab supports Mermaid as part of GFM to allow users to generate diagrams and flowcharts from text.\n\nIn version 8.6.0, Mermaid added a support of directives to add more controll over styles(themes) applied to the diagrams.\n\nYou can read more about how this works here: https://mermaid-js.github.io/mermaid/diagrams-and-syntax-and-examples/directives.html\n\nSyntax for declaring the directive is `%%{init: {<JSON_OBJECT>}}%%`\n\nDirectives can be used to overwrite default theme properties like `fontFamily` or `fontSize` to the graph.\n\nBehind the scenes, library takes JSON_OBJECT from directive and merges it with config object. Later that config is used to generate new CSS rules:\n\n```\n  let userStyles = '';\n  // user provided theme CSS\n  if (cnf.themeCSS !== undefined) {\n    userStyles += `\\n${cnf.themeCSS}`;\n  }\n  // user provided theme CSS\n  if (cnf.fontFamily !== undefined) {\n    userStyles += `\\n:root { --mermaid-font-family: ${cnf.fontFamily}}`;\n  }\n  // user provided theme CSS\n  if (cnf.altFontFamily !== undefined) {\n    userStyles += `\\n:root { --mermaid-alt-font-family: ${cnf.altFontFamily}}`;\n  }\n```\n\n## Vulnerability description\n\nThe issue is that directive JSON_OBJECT is lacking proper sanitization which means we can specify `__proto__` attribute to overwrite Object prototype.\n\nFor example, if we use following payload, it will add attribute `polluted` to every new object in the application:\n```\n%%{init: { '__proto__': {'polluted': 'asdf'}} }%%\nsequenceDiagram\nAlice->>Bob: Hi Bob\nBob->>Alice: Hi Alice\n```\n\nI have tried to use it to overwrite config values or other attributes to achieve XSS, but since a new attribute will be accessible in every object, it just breaks the application. \n\n## Steps to reproduce\n\n1. Create an issue in any repository\n2. Create mermaid diagram with following payload:\n```\n%%{init: { '__proto__': {'polluted': 'asdf'}} }%%\nsequenceDiagram\nAlice->>Bob: Hi Bob\nBob->>Alice: Hi Alice\n```\n\n3. Save the issue. Now when you open this page and click anywhere, you will see that nothing works. In Developer Console you can see a lot of exceptions that are triggered by a polluted prototype.\n\n## PoC\nOpen https://gitlab.com/bugbountyuser1/dos/-/issues/1/\nYou will see that you can't comment or perform any action except clicking on the left sidebar links.\n\n{F1200063}\n\n## What is the current *bug* behavior?\n\nMermaid allows setting `__proto__` attribute in the directive which leads to DOS via prototype pollution.\n\n## What is the expected *correct* behavior?\n\nMermaid doesn't allow` __proto__` attributed to being set in the directive and merged with the config. \n\n## Output of checks\n\nThis vulnerability was tested on gitlab.com. On a local Gitlab instance with a newer version(same as gitlab.com) of Mermaid, it works too.\n\n## Impact\n\nAn attacker who can add Mermaid diagram to the page will make this page broken. Users will not be able to add comments, edit comments, etc.",
+  "bounty_amount": "3000.0",
+  "formatted_bounty": "$3,000",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1200063,
+      "file_name": "2021-02-18_11-03.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/fu11cgg6p5ljpmth60r7ciervn87?response-content-disposition=attachment%3B%20filename%3D%222021-02-18_11-03.png%22%3B%20filename%2A%3DUTF-8%27%272021-02-18_11-03.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ733M5QWI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225806Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD%2BWh%2BPq0wPmHUVBiVAaWKZVwYrTqLHYrfMF32wCmjB1gIgb3NXZQewlhy2UHr5YP6x%2BWd47%2Fbktczfj5Hn6dCaUKIqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPIBP%2FfPpevzZHFL5SqOBZyj3QiCfx4by1RXn%2FbSJ0uqarjHgAduBWk0uNVwVhQPpbEy%2BHoTjJ1rlh0JCr7bZo1AI9p2AekHBpO9EuRgSkm1wbV9STt8jM0jQioxkHj0cnu%2BX4rJ%2BtcyXRpqjl2rVqZYTLUgOEGqYuAvFtV5gknwjujRePsWvIc1SRKvPZD79DP1NnLl1xt%2BMqchWgCiHYAieEm3NXC3yM11VkgWBLYQwBkwpM6LFjms5jOCDDD8HNILWO5mp22Xg9nKhXbYjKe0msUMnr05A9PHc1ugMyJxuwGB0lYgqF3XA6FQRzkUTmcf%2FN91cJEIKjOVIx6%2BdYZonuW4OgorMQNXpbgOV5De1WHxLB91CwNr8hIEhDuMIBNfSGMFfQGo6C8QVX55SLCVvITyTO673hYxqpb9CpdqVgWbfTWn%2FmWfVfdHNnFys%2Bu4%2FDiUpqRARiglQmHWjyGIdcHUQ8Y395Q7aXIr96I9r21fobLslDQ4T09fL11Q7KtwwMhAyWzU2Ho1MVgIYPZBB%2Fm8oh2deNNYbhCIk6ZCr%2BWlOi67VDRxUSidTxZnWAQyFVYs289%2B1IQcDNv4H7j6CgMK53nxSV3oUD3TZfWJrPmhOuXs78CwDJ9S%2BsgQ1pHGzGok%2FGXxc2beSfHbMgA%2BaIqhQjeXY3O%2Bb6Sn81VTIKxRhDN49v0GacVgOIbqXJa32k6HBksoeAU242L1I%2Bp4%2Fh3mYDuMKxQ40ByxcxajLydWIxI0Ah%2BLyn7r3k4BcozqVx3wP5uR2Eb5wWf4zhaKQwZnB4v9WmH%2FcZMnIUYr7EvJ%2BSoWZ0cJ74HGIckt%2B1nVy%2FSMtOY%2Fo20IQKq3%2FL4fJp2lKMT8CmAgS%2FoMZaMjJL634klIIV2CYn8lfjCCxuLMBjqxARpDCWFwcvrjcYyWKprleZyRI7ouss9GnFJG6qLYniwke39a%2FAsOXoVDxWXcfReZAPBCrv%2FS3H2QWvm9WVLp81TVsk6ZpCqAn0V%2FGZNsNw2yCxr2BHqQguiHv6LnzZoWW%2F4tNDrwpybirY%2FLIoBY6jaZDMz%2BYCjQmzcX74gxpJ6Nbv9PDWbVC0%2FItkrczpWJizgIRPySdPliKpqJYWsBlD12NL2hVbQWR0xb95PhtT8%2B7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=51b38ec5a4a3824fbda6f3f84094042cf48f75225e085fdca4b2f2dd12671484",
+      "file_size": 183693,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 56,
+  "voters": [
+    "coffee_cache",
+    "5h4l",
+    "lvmalware",
+    "cryptopone",
+    "achabi7",
+    "menicas",
+    "mr-medi",
+    "n1m0",
+    "bombon",
+    "osman1337",
+    "and 46 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 18138,
+    "asset_type": "URL",
+    "asset_identifier": "gitlab.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

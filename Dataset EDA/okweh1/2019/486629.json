@@ -1,0 +1,171 @@
+{
+  "id": 486629,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80ODY2Mjk=",
+  "url": "https://hackerone.com/reports/486629",
+  "title": "Improper validation allows user to unlock Zomato Gold multiple times at the same restaurant within one day",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-01-26T11:56:30.808Z",
+  "submitted_at": "2019-01-26T11:56:30.808Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "dertajora",
+    "url": "/dertajora",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/389/206/5e7aefce776b3080d2388975cb5d658e1986310c_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2943,
+    "url": "https://hackerone.com/eternal",
+    "handle": "eternal",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Eternal",
+      "twitter_handle": "Zomato",
+      "website": "https://www.eternal.com",
+      "about": "Eternal is India’s largest new-age tech company by market cap, comprising of 4 businesses (as of now) – Zomato, Blinkit, District, & Hyperpure."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-01-28T08:06:46.809Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-01-28T08:06:46.748Z",
+  "team_member_agreed_on_going_public_at": "2019-01-28T07:43:02.486Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** \nUsing this vulnerability, a user can use his account to claim Zomato Gold benefit several times in the same restaurant within one day.  \n\n**Description:** \nBased on Zomato Gold terms and condition, Zomato Gold can be used only once at each partner restaurant in a day. But I think it doesn't work that way.\n\nI have found improper validation in Zomato Android app, on Zomato Gold feature. This vulnerability allows a user to claim Zomato Gold benefit ( 1+1 complementary food or 2+2 complementary drinks) in the same restaurant on a single day. This potentially could be abused by users to share his account to their friends, so they can get the Zomato Gold benefit without subscribing or doing multiple claim in one day. I think this bug potentially bring loss to Zomato if not fixed immediately.\n\nSince I can't take a screenshot of my page while on Visit ID page, I use additional phone to take a picture and video, I hope you still understand.\n\n**Platform(s) Affected:** [website/mobile app]\nAndroid mobile app\n\n## Steps To Reproduce:\n\n  1. Open Zomato Android App (please make sure your account already subscribed to Zomato Gold)\n  2. Find a restaurant with Zomato Gold badge or go to Gold Menu on Main Menu\nF412873\n  3. Click Enjoy your Gold Privilege\nF412874\n  4. Press the Confirm Unlock button\nF412875\n  5. Then you will get the Visit ID\nF412876\n  6. Do the step 2 - 6 again, Here is my second visit on the same restaurant within one day. If you look carefully, the Visit ID and the time is different with the previous one.\nF412877\n\n## Supporting Material/References:\nZomato Gold Terms and Conditions, please take a look at point number 3\nF412882\nhttps://www.zomato.com/conditions?country_id=94&page_type=SUBSCRIPTION&gold_plan_page=1\n\n## Impact\n\nAs I said before, this vulnerability allows one user to claim Zomato Gold benefit several times at one parner restaurant. Lets say after visiting cafe A using Zomato Gold, he lends his account to his friend so his friend could also get the benefit of Zomato Gold without subscribing. He could also use it for himself if he use it for lunch and dinner on the same restaurant.",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 412873,
+      "file_name": "WhatsApp_Image_2019-01-26_at_18.22.31.jpeg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/412/873/e22d991d92596bc7644e886dba14a18d32343469/WhatsApp_Image_2019-01-26_at_18.22.31.jpeg?response-content-disposition=attachment%3B%20filename%3D%22WhatsApp_Image_2019-01-26_at_18.22.31.jpeg%22%3B%20filename%2A%3DUTF-8%27%27WhatsApp_Image_2019-01-26_at_18.22.31.jpeg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=08511598330e81fec68fc9e31a8b7eff60cccfbef8303a3e265d8c7cd6233e67",
+      "file_size": 107778,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 412874,
+      "file_name": "WhatsApp_Image_2019-01-26_at_18.43.55.jpeg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/412/874/8437e338058db0b70ab19ae28bf242cbb6be8357/WhatsApp_Image_2019-01-26_at_18.43.55.jpeg?response-content-disposition=attachment%3B%20filename%3D%22WhatsApp_Image_2019-01-26_at_18.43.55.jpeg%22%3B%20filename%2A%3DUTF-8%27%27WhatsApp_Image_2019-01-26_at_18.43.55.jpeg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=698107b7da59725f7fe34c6f007a708bba8601425aa574355113e9d3b1478967",
+      "file_size": 96212,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 412875,
+      "file_name": "WhatsApp_Image_2019-01-26_at_18.43.54.jpeg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/412/875/e016dc5253ce087b1f2431919775b7d6270111d6/WhatsApp_Image_2019-01-26_at_18.43.54.jpeg?response-content-disposition=attachment%3B%20filename%3D%22WhatsApp_Image_2019-01-26_at_18.43.54.jpeg%22%3B%20filename%2A%3DUTF-8%27%27WhatsApp_Image_2019-01-26_at_18.43.54.jpeg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e4aafd8a015c6c6c7b8f671758fec42ed725b8ef69eab02593d3a09573cc96f9",
+      "file_size": 126371,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 412876,
+      "file_name": "WhatsApp_Image_2019-01-26_at_18.43.54_(1).jpeg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/412/876/df92067d9a53d666a91aae06694e7f4155c7b849/WhatsApp_Image_2019-01-26_at_18.43.54_%281%29.jpeg?response-content-disposition=attachment%3B%20filename%3D%22WhatsApp_Image_2019-01-26_at_18.43.54_%25281%2529.jpeg%22%3B%20filename%2A%3DUTF-8%27%27WhatsApp_Image_2019-01-26_at_18.43.54_%25281%2529.jpeg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=97426d96a290012b4811f684c7a21b1dc61598035787c8a36af23de02af2d5d5",
+      "file_size": 97183,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 412877,
+      "file_name": "WhatsApp_Image_2019-01-26_at_18.43.53.jpeg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/412/877/07514e0a38f8c345fb241a3df99bd68400040cf5/WhatsApp_Image_2019-01-26_at_18.43.53.jpeg?response-content-disposition=attachment%3B%20filename%3D%22WhatsApp_Image_2019-01-26_at_18.43.53.jpeg%22%3B%20filename%2A%3DUTF-8%27%27WhatsApp_Image_2019-01-26_at_18.43.53.jpeg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f9bb13e703ad84fb73d50f7e6e71c5294c3b8d32fbdd4f960d0cac9b66da27a9",
+      "file_size": 85357,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 412882,
+      "file_name": "Screen_Shot_2019-01-26_at_18.52.48.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/412/882/03dd46bb0da1af762111bf2e4bb9665ad7089545/Screen_Shot_2019-01-26_at_18.52.48.png?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2019-01-26_at_18.52.48.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2019-01-26_at_18.52.48.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5991f74adb7fab21d6b142dc094675d8235493305a1276c50e0be341683545b9",
+      "file_size": 1574268,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 22,
+  "voters": [
+    "ali",
+    "sameerphad72",
+    "dhakal_ananda",
+    "mohaned0101",
+    "thalaivar304",
+    "savitar0x01",
+    "apapedulimu",
+    "haxta4ok00",
+    "eveeez",
+    "codeanddecode",
+    "and 12 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 387,
+    "asset_type": "GOOGLE_PLAY_APP_ID",
+    "asset_identifier": "com.application.zomato",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

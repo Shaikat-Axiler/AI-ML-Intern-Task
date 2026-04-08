@@ -1,0 +1,139 @@
+{
+  "id": 855013,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84NTUwMTM=",
+  "url": "https://hackerone.com/reports/855013",
+  "title": "[www.stripo.email] You can override the speed limit by adding the X-Forwarded-For header.",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-04-21T12:41:29.813Z",
+  "submitted_at": "2020-04-21T12:41:29.813Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "what_web",
+    "url": "/what_web",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/v7lf6jf1kr90jpuvhcaoe1t2vhjw/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 42368,
+    "url": "https://hackerone.com/stripo",
+    "handle": "stripo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Stripo Inc",
+      "twitter_handle": "",
+      "website": "https://stripo.email",
+      "about": "Stripo is a lightweight and intuitive email template editor that lets users build professional looking and highly responsive email templates."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-04-23T08:44:00.659Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-04-22T14:22:18.648Z",
+  "team_member_agreed_on_going_public_at": "2020-04-23T08:44:00.543Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "###Summary\nIn *https://stripo.email/template-order* I think you have implemented rate limiting via 429 status code for too many requests, but in reality it is not. An attacker could bypass the 429 speed limit by adding an X-Forwarded-For header.\n\n###Steps To Reproduce\n1. Go to the *https://stripo.email/template-order* page\n2. fill in the random content and Click the Order Template grab the packet.\n3. Automate the request by adding the X-Forwarded-For header.\n\n###Proof of Concept\nThe first photo bypasses the speed limit by adding an X-Forwarded-For header.\n{F797676}\n\nThe second figure shows the 429 status code playing due to the speed limit if the X-Forwarded-For header is not added.\n{F797677}\n\n###Fix\nFix this bug by changing the way the server handles X-Forwarded-For headers\n\n## Impact\n\nOverride speed limit",
+  "weakness": {
+    "id": 124,
+    "name": "Improper Authorization"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 797676,
+      "file_name": "testc1.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/FrCWuABAQFpkvyUvV5ofFbiZ?response-content-disposition=attachment%3B%20filename%3D%22testc1.PNG%22%3B%20filename%2A%3DUTF-8%27%27testc1.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004003Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3197bfbb1965f5db31f76df53c4ff971069e6942eb81c8dd85cfa9f4d3a509f1",
+      "file_size": 53524,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 797677,
+      "file_name": "testc2.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/i44vKxNnqv2RounHUrvMShR1?response-content-disposition=attachment%3B%20filename%3D%22testc2.PNG%22%3B%20filename%2A%3DUTF-8%27%27testc2.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004003Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1699f4aae51330004eb914de0f83962bd3f8f667618ee1c9d9551e6bf408fe3d",
+      "file_size": 44420,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 34,
+  "voters": [
+    "a_d_a_m",
+    "gevakun",
+    "rook1337",
+    "iam_a_jinchuriki",
+    "ahmd_halabi",
+    "shubham_srt",
+    "0xelkomy",
+    "its_afolic",
+    "zimmer75",
+    "maxicrisp",
+    "and 24 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 38701,
+    "asset_type": "URL",
+    "asset_identifier": "stripo.email",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

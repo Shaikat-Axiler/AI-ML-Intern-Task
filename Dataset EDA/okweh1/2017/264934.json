@@ -1,0 +1,135 @@
+{
+  "id": 264934,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNjQ5MzQ=",
+  "url": "https://hackerone.com/reports/264934",
+  "title": " Application allowing old password to be set as new password | hosted.weblate.org",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2017-08-31T09:46:56.320Z",
+  "submitted_at": "2017-08-31T09:46:56.320Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sadhu16",
+    "url": "/sadhu16",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/070/036/0d038cea418ac972b0f0410481381c1a11610436_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19468,
+    "url": "https://hackerone.com/weblate",
+    "handle": "weblate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Weblate",
+      "twitter_handle": "WeblateOrg",
+      "website": "https://weblate.org/",
+      "about": "Weblate is a libre software web-based continuous localization system"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-10-05T14:22:17.624Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-10-05T14:22:17.553Z",
+  "team_member_agreed_on_going_public_at": "2017-10-05T13:37:25.251Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Team,\n\nI found an issue that your application is allowing user to set new password same as that of the old password.\n\nSteps to reproduce the defect\n\n-Firstly logged into the application with existing password (refer screenshot named : Original Password login Request)-Old password highlighted in screenshot\n\n-secondly now go to change password link and tried to set the new password with same value set in old password (refer screenshot named : Change Password Request Old and new password are same )\n\n-thirdly now as a result of the above step you can see the new password same as old password (refer screenshot named : Change Password Request and Response- Old and new password are same)\n\n\nIssue Description\n\nAs per secure password policy application should not allow same old password value to be used in setting new password value cos there might be possibility that old password might be exposed or leaked to an adversary so its advisable on application end to enforce strong password policy and should implement check to not to allow user to set old password value in new password value.\n\nSee the attached screenshots for issue details.\n\nPlease also refer the below mentioned link for reference:\n\nhttps://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 217280,
+      "file_name": "Change_Password_Request_and_Response-_Old_and_new_password_are_same.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/217/280/309861d0324da460eae61d31e1ee094e8f51fb05/Change_Password_Request_and_Response-_Old_and_new_password_are_same.png?response-content-disposition=attachment%3B%20filename%3D%22Change_Password_Request_and_Response-_Old_and_new_password_are_same.png%22%3B%20filename%2A%3DUTF-8%27%27Change_Password_Request_and_Response-_Old_and_new_password_are_same.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031719Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=605ca2607f4cb3b37f0746697d7188c95b60f011ad350dba49a15ed67b11c4ff",
+      "file_size": 72323,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 217281,
+      "file_name": "Change_Password_Request_Old_and_new_password_are_same.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/217/281/09f39036df14ae66e92f011bba382665af9a980d/Change_Password_Request_Old_and_new_password_are_same.png?response-content-disposition=attachment%3B%20filename%3D%22Change_Password_Request_Old_and_new_password_are_same.png%22%3B%20filename%2A%3DUTF-8%27%27Change_Password_Request_Old_and_new_password_are_same.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031719Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=34cb03d42e3b33c17deb2a0d402d8d11a5b77f76b2bcba8a1447b6f02fbf6a3a",
+      "file_size": 112565,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 217282,
+      "file_name": "Original_Password_login_Request.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/217/282/978aa51f3050ea31f716b5a0c51295b8a9a32008/Original_Password_login_Request.png?response-content-disposition=attachment%3B%20filename%3D%22Original_Password_login_Request.png%22%3B%20filename%2A%3DUTF-8%27%27Original_Password_login_Request.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3XXDOUDJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031719Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCyH6In8823%2B6u8bYCnF6VNfEim4ZgiFikAqdfxordrSwIhAOsc3yoIPGktyflm%2BBWsr9tdTmjmIKPesjmNDXPAwmpkKroFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzUpV0e6hNI4O43vE8qjgX1LBO59DVRx7JLXA3l9qBiojkJ3AXfK0mTQ3r%2FWOYzqacaW1m%2BleUSu8jdwfSF97X8fTwQ4OVy5WUXJS5mVac6L4ncHDRQZ8gEDfQvG%2BlTzXA6SJDRZZ4AyfMZbZeP1opjKnfFxmMh3RDr%2Bt%2F5tbAWUoznvTcI2WhBlQ4BY%2FC%2BQsdjuAD2lOFCYWzpVYEDVDi8jFcYgQYHAz%2FjqwTwl0Mm2Dtcs7k0eIOXQCfN2v5VOeby4W2vDyaT40AykR2UaIdyKJQb%2BlEKwOPxuLaYaJHoJJ3IGz0A3VhLfXpvk3qW7BXwu6teJesYMIne%2FyV2asx5bTufd6Ms5jQK%2F221A1P3BZBYbXpSDP7DHbTuxGz9Bl4JLs%2F%2FmdUKXYvWUVX0zqBd0VeoKny6HdBHiKCGPvedx9JZSxfifDRhqSU%2BTck5W77PAxXBk8pDQCKuXiQLhkB%2FfmFS8YqItIhHMdATrqi44Gx%2FXhB%2Fre5iCt08q%2Fhk8Wniyk%2Bp6ksGtinwGFg%2BTYhQKH2Rn0UA91hMPBeTXOK57nnFA2UTHRd8UjgRWmCirKixsGkkB28M5J6B7v9CDUIfKTg7Z4Nwymu2p%2B9Q%2FxdQlcKCdzM5dvudr5BXvstnP2EBehF8%2FbC7a9Z6j5cfGp0X%2B6HymrFcQ3fn8lVpAPA%2BWsTpxDNXXkyWZ0U%2Fu99lNrYkwObl8fSu00TUVKtav7u8eRKi3qEzmm7gh%2FbzgcrO3LCUhlUy1B2%2F5%2BikEiE%2Fac4h8816K6aNt0JHuEX98cxoSM6bXPVm9gJbvJbBSFQZfLvvxcGpKsxRG1MHYukL2BegWYwbIT93eOIukI%2FTGthTwcgBfqR0gds%2BgvfJOx0DT%2FfiattPnTJH2NEhnXcw4YzkzAY6sAF41Ki4PLgPkGSYEqHxZbCI2yTPYLrePGTLC4rYfDO826ABYsPlzfYwY62Ztpz0gsRsg%2Bh2884frwgKnXQyRiW6hc5vKQveb5AeVhGCBuGLfGXfhmAO64MJg9a0%2Fsh6gAsuS31nI9ui7FAx8235k%2FwPPGeJ7EYazG%2F4eDXZkDCwCKNmY87B2H%2Boq7DqYXQyrFX3B4Qfv1E7NqvTwoaF303yKAoa%2Fa%2FOf9q0Bxni3iXCyw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=98756fa760c5ecc030b2566113f24d54f727bb6aa047818df0fe8c77edc6bc2e",
+      "file_size": 81254,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-11-04T13:37:25.294Z",
+  "allow_singular_disclosure_after": -261841194.53487837,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "shubham_srt",
+    "r3y",
+    "eveeez",
+    "zerodaykb",
+    "sadhu16",
+    "the_ancient"
+  ],
+  "structured_scope": {
+    "databaseId": 171,
+    "asset_type": "URL",
+    "asset_identifier": "hosted.weblate.org",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

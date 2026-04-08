@@ -1,0 +1,131 @@
+{
+  "id": 164224,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNjQyMjQ=",
+  "url": "https://hackerone.com/reports/164224",
+  "title": "Urgent: Server side template injection via Smarty template allows for RCE",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2016-08-29T17:27:44.749Z",
+  "submitted_at": "2016-08-29T17:27:44.749Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "yaworsk",
+    "url": "/yaworsk",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/046/435/8321e52445321287eea5b5b3f4c9f6ea69e92bb5_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2672,
+    "url": "https://hackerone.com/unikrn",
+    "handle": "unikrn",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/672/c6c2b32746235b372285a9047457642b7b9bc6a1_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/002/672/c6c2b32746235b372285a9047457642b7b9bc6a1_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Unikrn",
+      "twitter_handle": "unikrnco",
+      "website": "https://unikrn.com",
+      "about": "unikrn offers a world class comprehensive esports betting platform"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-08-17T18:25:41.763Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-07-30T01:36:54.287Z",
+  "team_member_agreed_on_going_public_at": "2017-08-17T18:25:41.679Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi All,\nI've found an issue which has allowed me to execute file_get_contents and extract your /etc/passwd file.\n\n##Description\nIt appears as though you are using smarty on the backend for templating. Entering a malicious payload as my firstname, lastname and nickname and then inviting a user to join the site results in the code being executed.\n\nTo start, I began with the payload {7*7} and received a template error in the email I received {F115749} Recognizing the injection, I then was able to confirm the version of smarty used via {$smarty.version} {F115750} Next I was able to test {php} tags by using ```{php}print \"Hello\"{/php}``` {F115751}. Finally I used file_get_contents to begin extracting the etc/pass file ```{php}$s = file_get_contents('/etc/passwd',NULL, NULL, 0, 100); var_dump($s);{/php}``` {F115752}\n\n##Steps to reproduce\n1. Edit your profile\n2. Add the payload ```{php}$s = file_get_contents('/etc/passwd',NULL, NULL, 0, 100); var_dump($s);{/php}``` as your first name, last name and user name (I'm not sure which field is vulnerable)\n3. Invite a friend using another email of yours\n4. View the email and you will see part of the etc file dumped\n\n##Vulnerability\nSince the {php} tags are being parsed and executed, we can execute php functions. In this case, you'll see I'm able to extract the etc/passwd file. While I haven't tried, an attacker can more than likely create a shell on the server.\n\nPlease let me know if you have any questions.\nPete",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 115749,
+      "file_name": "ssti_rce_initial_payload_error.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/115/749/6c86806cab69b14ef51267f5b9a594d309165444/ssti_rce_initial_payload_error.png?response-content-disposition=attachment%3B%20filename%3D%22ssti_rce_initial_payload_error.png%22%3B%20filename%2A%3DUTF-8%27%27ssti_rce_initial_payload_error.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4MESXEE2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032938Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCqlaMcLDne%2Bh6Cio5ob4LmV1%2B8uNYGmrnyqtBLmvMKzQIhANP6cP5Kjlv9LWe%2F%2Fl2HRD0SehxgIp%2B42ZTNb1IH1L7NKrsFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyUI4unVS0J0pR5RKUqjwWEZGVkT9MSR6PqCfI2YLOAHZOoca7XKVeo7G368u6nRLtcbTApNgOBi0E0eMpb4Z6U9M2sCrJ%2Bqu6H%2B6OVipdlGnxVhMk7zWkoybm1HHiNu4cmNDTmOtCv33St1D3nrjwQy3haJCB0Z9nUJ8FvKSbHFaqa%2B6DipWWzZouwmg85RxyHpBQdLLuKjEOlWtn03basciOD8NB%2BoPjnLf9xyNckVesKsx0cb%2BYf8nzjrPtRhGNKcVh3byLPKiGOjBA9WYW3Vi0Q7daobmrGUIIxxc8hgn%2BnG0rLBOguLcdCjY90SIi4JMPYOknrXRMCpCAnTFoxx8CoCFvZJzSZzGBSLab1na3wZPYdbaHJnXmQ%2FVziYXcvhX37SCWFJT8U%2FRtZY92TVeMkxSzZ%2FOdAPHKJAdJeSFAvJtWpZs0p4lCX8TG8h4Mnr5xCeo2QqsZzWEjKf1AZVgbHSPDRTMci8skRLRneRUrTH4hhhoLqgcRAGqBKcxP%2BqiXmHll74L1S6LfoICNv2AXouiOm%2Buaz4oUQXmNplKstUhkyvtG0SbY6WFyvzj4L4MfKdz6CAi9gsKKUudohng9iUMjinqQogxakBzGk4KtAye7XIFX8lSpwf2hGU6g5AxSz397khinJXB7gsy42Vlr8q5gtRIGi7XMrPCpFvNsnsoz4A30JtlCRux%2BLPg4X2WKSqoKKm5msIGB06sI6AN3%2BIErHbO6MY7L8BP1kn8sq2lZsZNw1rZ04nFhwJPgdJn9%2BLgR0LKEmT15i9lTlAPB0%2Fq0cQg9PUZT8IN%2Fq8K5tRbqroZO9gXh3CihvT2M9VgZbsisV5jiW62sR3mMQtGmNiZXNO24cXyED5SG73h2k0SvnDX14qdzS1DfUMOaf5MwGOrAB%2Bti1u62NthsskBkB7%2F8heCiyK1C45jQsGERJnF9GtIoRcZ%2FasuNeAnZQjLDhmD0TpOaJFIq4TWplxFMGGku%2FUOcL4Yc52kuEsh32ejSeZfqW2VT7KAK8l7ogz%2BzoujHoYIKMe6CmE4TcDt3TTg5P6yaUbFRIx1eX%2FR9m0OfYMJ1Zcpc5%2FyGVtwirGizxoBQPQm%2BExggJGOLHKmQqpbxaW25pG4LEi3nmoCa3wuD8EDw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8275cb2e5d47706e478f63244ea80eb2c6f5fc0af041fd66fccf4a9882efcdb2",
+      "file_size": 34400,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 115752,
+      "file_name": "ssti_rce_etc_passwd.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/115/752/14cb20f0fd604c2c774a081db1e71d3660c87fa3/ssti_rce_etc_passwd.png?response-content-disposition=attachment%3B%20filename%3D%22ssti_rce_etc_passwd.png%22%3B%20filename%2A%3DUTF-8%27%27ssti_rce_etc_passwd.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4MESXEE2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032938Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCqlaMcLDne%2Bh6Cio5ob4LmV1%2B8uNYGmrnyqtBLmvMKzQIhANP6cP5Kjlv9LWe%2F%2Fl2HRD0SehxgIp%2B42ZTNb1IH1L7NKrsFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyUI4unVS0J0pR5RKUqjwWEZGVkT9MSR6PqCfI2YLOAHZOoca7XKVeo7G368u6nRLtcbTApNgOBi0E0eMpb4Z6U9M2sCrJ%2Bqu6H%2B6OVipdlGnxVhMk7zWkoybm1HHiNu4cmNDTmOtCv33St1D3nrjwQy3haJCB0Z9nUJ8FvKSbHFaqa%2B6DipWWzZouwmg85RxyHpBQdLLuKjEOlWtn03basciOD8NB%2BoPjnLf9xyNckVesKsx0cb%2BYf8nzjrPtRhGNKcVh3byLPKiGOjBA9WYW3Vi0Q7daobmrGUIIxxc8hgn%2BnG0rLBOguLcdCjY90SIi4JMPYOknrXRMCpCAnTFoxx8CoCFvZJzSZzGBSLab1na3wZPYdbaHJnXmQ%2FVziYXcvhX37SCWFJT8U%2FRtZY92TVeMkxSzZ%2FOdAPHKJAdJeSFAvJtWpZs0p4lCX8TG8h4Mnr5xCeo2QqsZzWEjKf1AZVgbHSPDRTMci8skRLRneRUrTH4hhhoLqgcRAGqBKcxP%2BqiXmHll74L1S6LfoICNv2AXouiOm%2Buaz4oUQXmNplKstUhkyvtG0SbY6WFyvzj4L4MfKdz6CAi9gsKKUudohng9iUMjinqQogxakBzGk4KtAye7XIFX8lSpwf2hGU6g5AxSz397khinJXB7gsy42Vlr8q5gtRIGi7XMrPCpFvNsnsoz4A30JtlCRux%2BLPg4X2WKSqoKKm5msIGB06sI6AN3%2BIErHbO6MY7L8BP1kn8sq2lZsZNw1rZ04nFhwJPgdJn9%2BLgR0LKEmT15i9lTlAPB0%2Fq0cQg9PUZT8IN%2Fq8K5tRbqroZO9gXh3CihvT2M9VgZbsisV5jiW62sR3mMQtGmNiZXNO24cXyED5SG73h2k0SvnDX14qdzS1DfUMOaf5MwGOrAB%2Bti1u62NthsskBkB7%2F8heCiyK1C45jQsGERJnF9GtIoRcZ%2FasuNeAnZQjLDhmD0TpOaJFIq4TWplxFMGGku%2FUOcL4Yc52kuEsh32ejSeZfqW2VT7KAK8l7ogz%2BzoujHoYIKMe6CmE4TcDt3TTg5P6yaUbFRIx1eX%2FR9m0OfYMJ1Zcpc5%2FyGVtwirGizxoBQPQm%2BExggJGOLHKmQqpbxaW25pG4LEi3nmoCa3wuD8EDw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=096f1700080c86d96aef7740ef9e004759d612b2499458d2a660c6f0a48ef418",
+      "file_size": 24153,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-08-29T01:36:54.334Z",
+  "allow_singular_disclosure_after": -267673963.83893034,
+  "singular_disclosure_allowed": true,
+  "vote_count": 122,
+  "voters": [
+    "flamezzz",
+    "arist0phanes",
+    "orange303",
+    "test0x00",
+    "omarelfarsaoui",
+    "jensec",
+    "ziot",
+    "ramsexy",
+    "mashoud1122",
+    "foobar7",
+    "and 112 more..."
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

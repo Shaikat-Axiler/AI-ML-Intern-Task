@@ -1,0 +1,146 @@
+{
+  "id": 1582160,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNTgyMTYw",
+  "url": "https://hackerone.com/reports/1582160",
+  "title": "Bypass for Domain-level redirects (Unvalidated Redirects and Forwar)",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2022-05-26T13:04:20.971Z",
+  "submitted_at": "2022-05-26T13:04:21.160Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "thypon",
+    "url": "/thypon",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 264,
+    "url": "https://hackerone.com/gitlab",
+    "handle": "gitlab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GitLab",
+      "twitter_handle": "gitlab",
+      "website": "https://about.gitlab.com",
+      "about": "A single application for the entire software development lifecycle."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-06-22T22:57:33.323Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-06-22T22:57:33.256Z",
+  "team_member_agreed_on_going_public_at": "2022-06-22T22:45:09.973Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "### Summary\n\n{F1745460}\n\nWhile testing for the ability to define custom redirects in Gitlab Pages,\nI discovered I was able to define `Domain-level redirects` which are explicitly disabled in the documentation.\nAt a first glance, the validation step seems to disable any link not starting with `/`,\nIt has however to be noted that distinct domain redirects can be defined even with starting slash/backslash.\nFor example, all these three examples will redirect to another domain:\n\n- `//anotherdomain.com/...`\n- `/\\anotherdomain.com/...`\n- `\\\\anotherdomain.com\\...`\n\nAll these previous domains are equivalent to writing `https?://anotherdomain.com/...`\n\nAn attacker may define vanity URLs hosted on GitLab targeting phishing websites.\n\n### Steps to reproduce\n\nIn order to reproduce this vulnerability follow these steps:\n\n1. Generate a new pages project (eg. anyone from https://gitlab.com/pages ).\n      You can create a new project forking https://gitlab.com/pages/jekyll\n2. Enable CI/CD pipeline\n3. Enable pages support in Settings\n4. Add a `_redirects` file and include that file in the output through the `_config.yml` include directive\n5. Add a redirect such as `/jekyll-test/test3.html /\\desktop.pompel.me\\test2.html 301```\n6. Wait for the CI to complete the deploy\n7. Navigate to the defined redirect\n8. Verify that the redirect is reaching an external website\n\n### Impact\n\nAn attacker may define vanity URLs hosted on GitLab targeting phishing websites.\n\n### Examples\n\nhttps://gitlab.com/miwaxe/jekyll-test/-/blob/master/_redirects\n\n```\n/jekyll-test/antani1.html /projectname/antani2.html 302\n/jekyll-test/test1.html \\\\projectname\\@desktop.pompel.me/test2.html 302\n/jekyll-test/test3.html /\\desktop.pompel.me\\test2.html 301\n```\n\n### What is the current *bug* behavior?\n\nCheck the attached demo video {F1745467}\n\n### What is the expected *correct* behavior?\n\nThe redirects should not happen to external domains. \nThis is pointed out in the documentation https://docs.gitlab.com/ee/user/project/pages/redirects.html and is explicitly forbidden.\n\n### Relevant logs and/or screenshots\n\nCheck the attached screenshot {F1745460}\n\n## Impact\n\nAn attacker may define vanity URLs hosted on GitLab targeting phishing websites.",
+  "weakness": {
+    "id": 53,
+    "name": "Open Redirect"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1745460,
+      "file_name": "screenshot_2022-05-25_at_16.07.32.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/52gqjg20u81uebic0rn3cuq17i7u?response-content-disposition=attachment%3B%20filename%3D%22screenshot_2022-05-25_at_16.07.32.png%22%3B%20filename%2A%3DUTF-8%27%27screenshot_2022-05-25_at_16.07.32.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T220441Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f5c690f3da507cb0e232445774cf9d12f775579bab7217e58e54b6e79c7f3789",
+      "file_size": 205714,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1745467,
+      "file_name": "CleanShot_2022-05-25_at_16.20.33.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/t3dzgf1hi0mwdsllf3aosh1vqams?response-content-disposition=attachment%3B%20filename%3D%22CleanShot_2022-05-25_at_16.20.33.mp4%22%3B%20filename%2A%3DUTF-8%27%27CleanShot_2022-05-25_at_16.20.33.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T220441Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=521ce9484896394e402c02e65c7f65266df0b7a1f70249b75a69aa59c4f04653",
+      "file_size": 58879095,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 7,
+  "voters": [
+    "zy9ard3",
+    "7odamoo",
+    "jmo740",
+    "shivammusic",
+    "cheesycinnamon",
+    "alhumbaty",
+    "cbox108"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.1,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "changed",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 55901,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://gitlab.com/gitlab-org/gitlab-pages",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

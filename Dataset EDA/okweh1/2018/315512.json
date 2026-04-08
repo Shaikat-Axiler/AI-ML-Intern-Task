@@ -1,0 +1,128 @@
+{
+  "id": 315512,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMTU1MTI=",
+  "url": "https://hackerone.com/reports/315512",
+  "title": "No authentication on email address for password reset functionality/ https://platform.thecoalition.com/forgot-password",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-02-13T10:02:59.618Z",
+  "submitted_at": "2018-02-13T10:02:59.618Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "startedfromthebottom",
+    "url": "/startedfromthebottom",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 24846,
+    "url": "https://hackerone.com/coalition",
+    "handle": "coalition",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/gv1u28zwr9cpbtsd1ejv7rni58nn/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/gv1u28zwr9cpbtsd1ejv7rni58nn/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Coalition, Inc.",
+      "twitter_handle": "SolveCyberRisk",
+      "website": "https://www.coalitioninc.com/",
+      "about": "Coalition provides comprehensive cyber and technology insurance coverage, and free cyber security tools to protect  businesses."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-05-03T08:06:18.244Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-04-03T08:05:59.914Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "> NOTE! Thanks for submitting a report! Please replace *all* the [square] sections below with the pertinent details. Remember, the more detail you provide, the easier it is for us to triage and respond quickly, so be sure to take your time filling out the report!\n\n**Summary:** It was observed that the forgot password functionality on https://platform.thecoalition.com/forgot-password did not verify the email addresses of user accounts before sending an email to them. An attacker can use this functionality and send faulty password reset links to legitimate users.\n\n**Description:** It was also observed that the website did not verify the authenticity of the email and accepted any arbitrary test mail. It also allowed multiple requests for the same email id without any limit. This vulnerability can be leveraged to spam genuine users of platform.thecoalition.com.\n\n## Steps To Reproduce:\n\n(Add details for how we can reproduce the issue)\n\n  1.Visit the site https://platform.thecoalition.com/login\n  2.Go to the forgot password functionality on https://platform.thecoalition.com/forgot-password\n  3.Write an arbitrary email of attackers choice and click email me reset functions.\n\n## Impact\n\nAn attacker could leverage this vulnerability by sending faulty password reset links 'n' number of times to legitimate users of platform.thecoalition.com  . This can also be done to add unnecessary load to the server by sending illegitimate mails repeatedly via using this functionality",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 262957,
+      "file_name": "COALITION.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/262/957/4f338daef026d0dce8ddf630a1ffa0c8db0477af/COALITION.png?response-content-disposition=attachment%3B%20filename%3D%22COALITION.png%22%3B%20filename%2A%3DUTF-8%27%27COALITION.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUA5QK5VM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024000Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHm3btGgzlHis%2F9oOvDESSVePwMxPk4gaBS9iNiFviM3AiAPW4u6lqAH6O3yHvm7bIIcgWVWFnqYsbO0u9JBe7yUiyq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMcnYPosg7URHoCiAsKo4FadOTpgQUOQsra9GYh96WIhzwAyOBNd2Vt3Qec%2Fgp%2B%2BaVGBiAlxfSNPk0%2B%2FweLcmJgii%2FHxEMBtCNDKrMUaCY3jeLGrOxGdGHFHjYQ%2FUJkquobacRE1k%2BJThpoeED3m2iXLcBxl9Du3ilY%2FKiM1%2FLXbxvbp9oTVeu02rdo6WYQ%2F0hcawgggpwf7BdaW93ZiAFSGA%2BksIxFjkaMdv59JJtHuZ9xgoR4iinarwKFEGcwr76Ewo9gzOw98MP%2F%2F6BiL6rn48yiqGKW6r9Y1%2Bu%2BbXRQD%2Fh4OE7ZWwMJ9D61y7BcO9GlqvKSD013lVN%2Be8mnjapPA3llc00y13lavGRw1XJ8Yweb5JiEltZLNYD7U97UVkJXQ4qTblffHxiSAQSu3cwynw1NxYipJuPpK8ICludkl3%2F3w95uDuKJCKw6xYQ%2FXWVEtAHmnfRwzLz%2Fg0xdlLrvdgiEl5DImy3dUYnFxKg1esN%2FPHm3EmaEb95rMYIkVNzU0ibZAbq5s%2F7LH4i4%2BVzplxFDT0gt4%2FfqBVYADFq8c7kZhMZS5PZcFpxExJL8ztuU85PQTy7Sngh9zHB4Vr3tpIidd6CYDF8fner5noNOTeTzsDIVVEK1bIk8%2F1t6pt7z%2BPqwk2ormCBJshSUZ8lI0yAGafaEXj1p5LktF6ry161%2FUy1nhHgg0UIZBUJ8HweWcKKTOHlohRrttZTgDRaz8VqzrswkkNsT%2FhGJ6sTmHmyyM4FPMCOobHO9lSPW%2BPmfcO4%2FJcYtJjeJrH684CXmkZ5AScck8adSGeCv0R6BBHWWD7XmbAYtvjKhQDKfBklp%2F8FstDxGlobJdfOHqRp08VYyhx9eE9h1glcQBTJmdRj%2F8vBKDdpydb2gRxAMLiO5MwGOrIBiYUQSOFVSboEO4%2FCyL%2Bphoe1fcxLtPOyCw92kU%2Bs971KDYauREWX6iVasq0gazDHhU4lmu43NhxOAgDU9Nmy8eGu8eMeAs49rQngMUfJpgZ9ANH00W3o89h68qQo3G08UZm5U%2BZIFnekRLGUfq2OlwlVboT4Tjz7Xu3H49YLJZ%2BlqEGjxU1jWst7Bco8nAvwITl21SekSNbSzK0fNDZ1V2mQeqPwPLtJ1mAAw0KGfZsneA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5884492d5a431d1ecf1beb75803ef7078949d8c162133f26d111dd89457bba0e",
+      "file_size": 51936,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-05-03T08:06:00.026Z",
+  "allow_singular_disclosure_after": -246306840.9026822,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "pr0f0x01",
+    "eveeez",
+    "protector47",
+    "startedfromthebottom",
+    "r4sh7n_",
+    "destinedtohack"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 4543,
+    "asset_type": "URL",
+    "asset_identifier": "platform.thecoalition.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

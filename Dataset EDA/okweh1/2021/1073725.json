@@ -1,0 +1,152 @@
+{
+  "id": 1073725,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDczNzI1",
+  "url": "https://hackerone.com/reports/1073725",
+  "title": "DOM XSS on www.omnipod.com/freedom/birthdate-confirmation and www.omnipod.com/pif/thanks-freedom",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-01-07T19:12:24.701Z",
+  "submitted_at": "2021-01-07T19:12:24.764Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "mechatech84",
+    "url": "/mechatech84",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/034/496/d7e9d66c96f5841a7a4348285ff6831ca61a73c6_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 34784,
+    "url": "https://hackerone.com/insulet_corporation",
+    "handle": "insulet_corporation",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2nbn4k180l8xdyrux6ll7793e7xw/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/2nbn4k180l8xdyrux6ll7793e7xw/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Insulet Corporation",
+      "twitter_handle": "myomnipod",
+      "website": "http://www.insulet.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2025-09-13T20:19:33.680Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-08-14T20:19:31.671Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nDOM based XSS was found on multiple pages (and may exist on still more pages)\n\n## Steps To Reproduce:\n1. Navigate to the following URL:\nhttps://www.omnipod.com/freedom/birthdate-confirmation?sid=a1t2J000005vUzlQAE&#'onload='alert(document.domain)\n2. Observe alert box appears containing the domain from which the injected script is executed.\nNOTE: The value of the sid parameter does not seem to matter for this vulnerability\n\nOR\n\n1. Navigate to the following URL:\nhttps://www.omnipod.com/pif/thanks-freedom?&#'onload='alert(document.domain)\n2. Observe alert box appears containing the domain from which the injected script is executed.\n\n## Supporting Material/References:\nThere are two screenshots attached that demonstrate these vulnerabilities\n\nThis appears to be the vulnerable script:\n\n<script>\n var loc = window.location.toString();\n var params = loc.split('?')[1];\n //var srcstring = \"https://na-sandbox.myomnipod.com/test-lic-p4-proc?\" + params;\n var srcstring = \"https://na.myomnipod.com/lic-p4-proc?\" + params;\n\ndocument.write(\"<iframe id='frame' name='frame' src='\" + srcstring + \"' width='950'></iframe>\");\n </script>\n\n## Impact\n\nAn attacker could use Cross-Site Scripting to modify the appearance of the site to deface it, to log user keystrokes, to create forms on your site which request confidential information that is then sent to the attacker, or even hijack user sessions.",
+  "weakness": {
+    "id": 63,
+    "name": "Cross-site Scripting (XSS) - DOM"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1148522,
+      "file_name": "XSS1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7s2mkavzeukghpx60dyprqhyw99v?response-content-disposition=attachment%3B%20filename%3D%22XSS1.png%22%3B%20filename%2A%3DUTF-8%27%27XSS1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195538Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=eddfcdc1850e373378e791d4d6df5936684582aa67b1caae9cc11f92b1166bf7",
+      "file_size": 31257,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1148523,
+      "file_name": "XSS2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ke9yd8izx496m8gwudg5epl5e6v0?response-content-disposition=attachment%3B%20filename%3D%22XSS2.png%22%3B%20filename%2A%3DUTF-8%27%27XSS2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195538Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=480108f74ed782278ef089e4af4b0518583bc0d96a6fc9f8e64c5d8532f475a0",
+      "file_size": 29504,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2025-09-13T20:19:32.115Z",
+  "allow_singular_disclosure_after": -13822566.361636672,
+  "singular_disclosure_allowed": true,
+  "vote_count": 57,
+  "voters": [
+    "roland_hack",
+    "thalaivar304",
+    "sisi0x",
+    "ahmed_xyz",
+    "jmo740",
+    "khoof",
+    "2026",
+    "wefega",
+    "mohammadtayb",
+    "sottam",
+    "and 47 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.0,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 41020,
+    "asset_type": "URL",
+    "asset_identifier": "www.omnipod.com",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

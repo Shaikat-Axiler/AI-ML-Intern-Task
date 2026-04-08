@@ -1,0 +1,141 @@
+{
+  "id": 275714,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNzU3MTQ=",
+  "url": "https://hackerone.com/reports/275714",
+  "title": "Subdomain takeover on developer.openapi.starbucks.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2017-10-09T17:46:08.293Z",
+  "submitted_at": "2017-10-09T17:46:08.293Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "dpgribkov",
+    "url": "/dpgribkov",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/047/548/c891760bfc8de922a431de50e941d8f70bc6481e_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1989,
+    "url": "https://hackerone.com/starbucks",
+    "handle": "starbucks",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Starbucks",
+      "twitter_handle": "Starbucks",
+      "website": "http://www.starbucks.com",
+      "about": "Premier purveyor of the finest coffee in the world, inspiring and nurturing the human spirit — one person, one cup and one neighborhood at a time."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-02-17T16:34:37.814Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-01-18T16:34:34.472Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi team,\n\n### Summary: \nSubdomain `developer.openapi.starbucks.com` is vulnerable to subdomain takeover via Mashery service. The reason why it's worked unfortunately not fully clear to me.\n\n### Details:\nDoing my recent research on starbucks.com subdomains, I stumbled upon http://developer.openapi.starbucks.com/ The server returned 200 response with the following {F227581} The `Server` header of HTTP responce was `Mashery Proxy` so it gave me an idea, that I should go and try register an trial account at https://www.mashery.com/\n\nAfter registering an account and confirming it, I got access to the dashboard. Under the `Portal Settings` menu there was an option to add your own domain name. I added developer.openapi.starbucks.com as my domain and I get no error. After I went to the http://developer.openapi.starbucks.com/ and saw welcome page {F227586} which gave me understanding that I can serve my own content under developer.openapi.starbucks.com\n\n### PoC:\nI added simple js code to the Welcome page `alert(document.domain)` for this proof-of-concept.\nTo confirm it just click this link http://developer.openapi.starbucks.com/\n\n### Impact:\nAs I can serve my own content without any restrictions, with this webpage I can set up a campaign to steal user cookie sessions, or use it to steal credentials, or for phishing purposes. \n\nPlease let me know, if you need more information!\n\nThanks,\nDanil",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 227581,
+      "file_name": "developers_starbucks_com__216_87_148_114__80.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/227/581/4b4004776d70ce916e539a2d1f1960d67b18edd6/developers_starbucks_com__216_87_148_114__80.png?response-content-disposition=attachment%3B%20filename%3D%22developers_starbucks_com__216_87_148_114__80.png%22%3B%20filename%2A%3DUTF-8%27%27developers_starbucks_com__216_87_148_114__80.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025159Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d75f0dcbe1f270e5bb3ed7c21db41b6eaae65b300257750213132cae1129c928",
+      "file_size": 14595,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 227586,
+      "file_name": "Screenshot_2017-10-09_13.38.41.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/227/586/184bf2c1ee4d5e14a975499ce083d58669d1bcce/Screenshot_2017-10-09_13.38.41.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2017-10-09_13.38.41.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2017-10-09_13.38.41.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025159Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=51f90064fb914b865b11311d088624b5c6f5fb982b7c0899c7643b02d8d9328c",
+      "file_size": 223561,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-02-17T16:34:34.594Z",
+  "allow_singular_disclosure_after": -252757045.20904124,
+  "singular_disclosure_allowed": true,
+  "vote_count": 50,
+  "voters": [
+    "kashsec",
+    "jokebookservice1",
+    "jensec",
+    "europa",
+    "bogdantc",
+    "muon4",
+    "yumi",
+    "ali",
+    "spam404",
+    "harrymg",
+    "and 40 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 13008,
+    "asset_type": "OTHER",
+    "asset_identifier": "Other non domain specific items",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

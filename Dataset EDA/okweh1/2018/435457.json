@@ -1,0 +1,139 @@
+{
+  "id": 435457,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MzU0NTc=",
+  "url": "https://hackerone.com/reports/435457",
+  "title": "Ability to login to the Nexus Repo Manager from https://nexus.imgur.com/ ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-11-07T02:32:40.014Z",
+  "submitted_at": "2018-11-07T02:32:40.014Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sbakhour",
+    "url": "/sbakhour",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/090/792/5bf60f21bd1431cc4a9f2822cd2a005334cb693b_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 638,
+    "url": "https://hackerone.com/imgur",
+    "handle": "imgur",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/638/c66ef01545064639821798ab311aa0063acd8aa7_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/638/c66ef01545064639821798ab311aa0063acd8aa7_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Imgur",
+      "twitter_handle": "imgur",
+      "website": "http://imgur.com",
+      "about": "The most awesome images on the Internet."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-12-13T19:02:43.939Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-11-13T19:02:28.228Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello Imgur Administrators,\n\nI am not sure if this falls in your scope but I wanted to alert you that your Nexus Repository Manager can be accessed through https://nexus.imgur.com/\nUsually the default user/pass for the NRM are admin/admin123 but there is an alternative way to login using the below default credentials.\nuser: anonymous\npass: anonymous\n\nI was able to login and I got access to check all the repositories available. I uploaded the attached video as a proof of traversal.\nKindly arrange to remove the user anonymous or change its password & limit the access to the Nexus Repo Manager site https://nexus.imgur.com/\n\n## Impact\n\nThe attacker can manage to proxy, collect, and manage your dependencies (delete components & Analyze applications).",
+  "weakness": {
+    "id": 19,
+    "name": "Path Traversal"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 371864,
+      "file_name": "Nexus_Repo_Manager_IMGUR.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/371/864/44c571bacba3aab1f446847344422a39ef0b642b/Nexus_Repo_Manager_IMGUR.mp4?response-content-disposition=attachment%3B%20filename%3D%22Nexus_Repo_Manager_IMGUR.mp4%22%3B%20filename%2A%3DUTF-8%27%27Nexus_Repo_Manager_IMGUR.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6DREO5IG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020642Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCnneVoiheeVrYn06TOHU%2Fq2zgqOC8Sv%2BOKH%2FGAnshAIQIgAPAHqJZ7DjWF3X9HWktBOirApuw%2F19BKR3KmNLS6VgQquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDBv%2BAORdmAf2qKtPgiqPBfdxFGQ4gh1bXu4t%2FwfazyZQBKebhdXFQjgNUe34tkbZp7l9aQIkk3VWFtfMyOlRK2oNwIrTg9J4Z%2BCt2N%2FvW0teeJli8qV0vL6ESaeQMlEGRk1WRO0VGr4Qm%2FLIaunnloSdG0lfCIhk1k0TaZAgkrXk9lZIExdoyaTVXMccsNbbWrtbxm8nygt7Gymot6aPm7Y4LoseFs5bzUHNGKkrQLW4PUETKdmhesy3fpKLnEbU4U%2BgvSpSDobTHI7i8q1O2Agsz%2FQ6CzzYW6L9L1JbCdpCABsdDQd5APZOGHGpYriaixGnInxfumF9pCNaq9CxkaK4dAN%2FsJCokmAOWSB8h0%2BDYSOT7UCnNrKNxSKlG0w6R28IL5gidAHNZp2PmCFAVmzz1uzVOX6ilobwTRoe4NgOYyCsIzvjJE6TIy724dBjGtCaxvrKSAFpcy4GYYglas2WUiGxouwm1p8qW6PUsylmixJ8fLdP9TYwGxbk529SnVz90zxdh694yXCbYZhzG8tl%2B3qD5e0%2B2UYl6vm43xclP7rNmGqm%2BTH0V0RjNpGK5Qb7eVpfncFdPI83k64pSZWRNB9JLvv9sUaGw2Hv9ppOCssA%2BpCaKzRhUBDm%2FSkAzi2K%2FHL9MEq7jYRSxbcD5IhaG0ICp3BV19tEyRYYNHGzyswUoKyl51kpKJSMrVOST4BiewjCEotNnSjWEdg7Jv3sBXGJNri2ypIv5%2BNx9SMbAYK6yewK4Iupt9AI%2B0qPD%2F6SyipUvMfjzZBP9haDbfjuJS5inj%2BDmRhXklnVfK4bqUdGo7LNs0k5cY9FrKlqh0H%2Fzt40AITSqW8SzQBHiVrWjEl38BWJe0ajrdqANQsvlH%2FiUIZ3KqzN0T7c9AowmOrjzAY6sQFduaBRItRS0p2ShadMPmvPjxVngd9AVFQNmslDCMNOSMGb%2F%2FR8SbjqnRtL7mkf7pTvwBcswAZUK2xu5IrpfCfZ98fxSJsaMWF8KqiFpmqDbuosWTTB38Rs0Hb4a2pKa1DMZUirIO5mzo6oTNIZvKbSdHMm2d0a0WPQhgZJlkfEB3AOZhnIzzJo%2FT3gKOZNgIc2I%2Bd6muGNebdM6Ly%2BhUnTqk9p9aKzPS6CclS6Ada8bxc%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b0796d13a769e137553c66b8e450ec3f5acad4ec48741efaf94bcbaae71a59f5",
+      "file_size": 6678529,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-12-13T19:02:28.291Z",
+  "allow_singular_disclosure_after": -226911854.2165075,
+  "singular_disclosure_allowed": true,
+  "vote_count": 16,
+  "voters": [
+    "ali",
+    "sameerphad72",
+    "dhakal_ananda",
+    "jmo740",
+    "pr0f0x01",
+    "khizer47",
+    "cr4xerbik4sh",
+    "cryptographer",
+    "sbakhour",
+    "king1815",
+    "and 6 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "high",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

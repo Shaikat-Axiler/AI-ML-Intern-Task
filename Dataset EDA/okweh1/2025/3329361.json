@@ -1,0 +1,131 @@
+{
+  "id": 3329361,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzI5MzYx",
+  "url": "https://hackerone.com/reports/3329361",
+  "title": "2FA bypass possible on https://authsvc.singlestore.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2025-09-06T16:31:33.361Z",
+  "submitted_at": "2025-09-06T16:31:33.705Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "axolot23",
+    "url": "/axolot23",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/x6vazy5h52j3tydmxdhtxrpguy6o/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 77907,
+    "url": "https://hackerone.com/singlestore",
+    "handle": "singlestore",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/r90pntetw79njltl9vvtua70vp5v/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/r90pntetw79njltl9vvtua70vp5v/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "SingleStore",
+      "twitter_handle": "singlestoredb",
+      "website": "http://singlestore.com",
+      "about": "SingleStore (formerly MemSQL) is a proprietary, cloud-native database designed for data-intensive applications."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-10-22T06:44:27.198Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-10-17T10:34:25.375Z",
+  "team_member_agreed_on_going_public_at": "2025-10-22T06:44:26.673Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nTo exploit this vulnerability and break into the victim's account, the attacker only needs to know the email address and password of the victim's account. The 2FA authentication mechanism can be bypassed completely.\n\n## Steps To Reproduce:\n * Firstly, enter the victim's account e-mail address and password at `https://portal.singlestore.com/` and click login.\n * Then make a fake 2FA code attempt, intercept the request in Burp and do not send the request in Burp, leave Intercept on.\n * Then, send the request you caught to the intruder, tick the code next to the mfaToken parameter. Then, mark the Payload type as Number. For example, if the 2FA code sent to your e-mail address is 156289, enter a value between 155900 and 1556300 so that the brute force does not take too long. Then press the start attack button.\n * Observe the transition from status code 303 to 302 at the end of the attack. Since the 2FA mechanism was developed incorrectly, as a result of the 3rd incorrect attempt, it switches from an HTTP status code of 200 to a status code of 302 and returns you to the beginning of the login process, but you can still try the request via Burp, and when you make a correct 2FA attempt, including subsequent attempts, it switches to a status code of 302 and you are logged into the account in the browser.\n\nCVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N/CR:H/IR:H/AR:H\n\n## Impact\n\nThis vulnerability makes it possible to completely bypass the 2FA mechanism developed to protect victims from malicious attacks when logging into their account",
+  "weakness": {
+    "id": 1002,
+    "name": "Authentication Bypass"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 4756428,
+      "file_name": "PoC.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/2ovaufgmul5vvvxvw0fv43agj4qh?response-content-disposition=attachment%3B%20filename%3D%22PoC.webm%22%3B%20filename%2A%3DUTF-8%27%27PoC.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195300Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8845f24d961dec8b4ac3f207a313311745d0a757ecc29bc88c55ce881da9a317",
+      "file_size": 11081555,
+      "type": "video/webm",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 80,
+  "voters": [
+    "orange303",
+    "achabi7",
+    "he4am",
+    "loaymorad",
+    "alp",
+    "alejandroar",
+    "bl4ck-",
+    "mohaned0101",
+    "cosmossec",
+    "thalaivar304",
+    "and 70 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 631429,
+    "asset_type": "URL",
+    "asset_identifier": "https://portal.singlestore.com/",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

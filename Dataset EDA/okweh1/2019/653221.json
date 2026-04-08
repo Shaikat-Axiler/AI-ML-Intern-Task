@@ -1,0 +1,130 @@
+{
+  "id": 653221,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82NTMyMjE=",
+  "url": "https://hackerone.com/reports/653221",
+  "title": "XSS in https://merchant.kartpay.com/settlements",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2019-07-22T19:40:36.832Z",
+  "submitted_at": "2019-07-22T19:40:36.832Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "c00lbugs",
+    "url": "/c00lbugs",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22925,
+    "url": "https://hackerone.com/kartpay",
+    "handle": "kartpay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/022/925/d481af80adf6cd2b19449b09c785cb232f74eeba_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/022/925/d481af80adf6cd2b19449b09c785cb232f74eeba_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kartpay",
+      "twitter_handle": "",
+      "website": "http://Kartpay.com",
+      "about": "Kartpay is an Online Payment Gateway For Indian Region."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-08-28T15:27:35.632Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-08-12T14:30:22.533Z",
+  "team_member_agreed_on_going_public_at": "2019-08-28T15:27:35.536Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Parameter**\n``Search``\n\n**Payload**\n``\"><img src=x onerror=alert(domain)>``\n\n**URL**\n``https://merchant.kartpay.com/settlements``\n\n**Steps to reproduce**\n1. Go to URL: https://merchant.kartpay.com/settlements\n2. Enter above payload.\n3. You will see xss payload getting executed.\n\n{F535235}\n{F535234}\n{F535236}\n\n## Impact\n\nCross-site scripting is a flaw that allows users to inject HTML or JavaScript code into a page enabling arbitrary input. There are two main variants of XSS, stored and reflected.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 535234,
+      "file_name": "Annotation_2019-07-23_010228.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/535/234/a78f10dc0aca3489360f3ad0cfb36615d99b09ef/Annotation_2019-07-23_010228.png?response-content-disposition=attachment%3B%20filename%3D%22Annotation_2019-07-23_010228.png%22%3B%20filename%2A%3DUTF-8%27%27Annotation_2019-07-23_010228.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013600Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=aeec1ee7c3f868ff6dd2f100e7e8dc6550853b4574ee952ea9042fd063adbd05",
+      "file_size": 176552,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 535235,
+      "file_name": "Annotation_2019-07-23_010316.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/535/235/e3e348ede55fdb1b0b040ca30943dd786c32bfe8/Annotation_2019-07-23_010316.png?response-content-disposition=attachment%3B%20filename%3D%22Annotation_2019-07-23_010316.png%22%3B%20filename%2A%3DUTF-8%27%27Annotation_2019-07-23_010316.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013600Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a53c698c31918c104662a34b9500f1797ac7085f1021bdeda4e3f1ebf710275f",
+      "file_size": 172874,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 535236,
+      "file_name": "Annotation_2019-07-23_010421.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/535/236/59a4cc759794da6b9eb0b61c6ba34ef36cf0a234/Annotation_2019-07-23_010421.png?response-content-disposition=attachment%3B%20filename%3D%22Annotation_2019-07-23_010421.png%22%3B%20filename%2A%3DUTF-8%27%27Annotation_2019-07-23_010421.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013600Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=445a7f7139344a522e7dc4016d2d6a6275d1dbbed89200288c0d3734a7ad0cbb",
+      "file_size": 162317,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-09-11T14:30:22.622Z",
+  "allow_singular_disclosure_after": -203425538.07395354,
+  "singular_disclosure_allowed": true,
+  "vote_count": 1,
+  "voters": [
+    "thelilnix"
+  ],
+  "structured_scope": {
+    "databaseId": 3965,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.kartpay.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

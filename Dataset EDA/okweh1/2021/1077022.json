@@ -1,0 +1,133 @@
+{
+  "id": 1077022,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDc3MDIy",
+  "url": "https://hackerone.com/reports/1077022",
+  "title": "Brave Browser Tor Window leaks user's real IP to the external DNS server",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2021-01-12T13:44:50.222Z",
+  "submitted_at": "2021-01-12T13:44:50.530Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "newfunction",
+    "url": "/newfunction",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2miia86h6gou58lati8p3usdvhan/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2021-22917"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-06-17T05:25:38.585Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-06-17T05:25:38.464Z",
+  "team_member_agreed_on_going_public_at": "2021-06-16T21:25:24.562Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\nWhen a user navigates to a URL in Tor Window, the DNS requests are sent directly without using the Tor proxy, which leaks the user's real IP address and the requested domain name to the user's ISP and the DNS server.\n\n## Products affected: \n\n * OS: Ubuntu 18.04.5 LTS x86_64\n * Brave: Version 1.18.78 Chromium: 87.0.4280.141 (Official Build) (64-bit)\n\n## Steps To Reproduce:\n\n * Open WireShark, and start capturing traffic on the Internet interface. Set WireShark's display filter to `dns`.\n * Open Brave Browser. Then open new private window with Tor.\n * On the Tor window, navigate to https://tools.ietf.org/ (or any other URLs)\n * In WireShark, you can see a DNS request for tools.ietf.org sent to your DNS server.\n\n## Supporting Material/References:\n\n  * a screenshot attached\n\n## Impact\n\nBrave's Tor window passively leaks users' IP addresses and requests to DNS servers. This undermines the user's anonymity.",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1154663,
+      "file_name": "tor-window-dns-leakage.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/xttorg14ioj89s3icdtiju08sn7w?response-content-disposition=attachment%3B%20filename%3D%22tor-window-dns-leakage.png%22%3B%20filename%2A%3DUTF-8%27%27tor-window-dns-leakage.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVWIESNLA%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T230331Z&X-Amz-Expires=2159&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCICcH6o3d61XUmf9jSKpfX6PZItG2eFm%2FP%2BxT1VQPYYo9AiASEz7RsrnMxKm0HgVU6OcbQVwoZ5VIucq713xUw%2BVWuSq6BQia%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM2MDOAsJR%2F9Tkb%2FgKKo4FU%2BVsTrk%2BfN0uOy%2FX1iiO%2BJBkJMHqx3tRikzZYK8TIqH7zNDilihFH812Zoxxu7xDi3kuAXXeEXNKrVrrzQOfD8n4iieb5P%2FCUPvHj7uqcOyP8ENLoa9tFiWxGthTaiv5%2BRKxq75ASpI63iuDt6ElzHV3NbqbcfiaUDqFerMdgtthIBNKX31LpeV1%2FVR5fEpzwAXqe%2Bm5GjCjzc088SY6GZOTrGRHnWnTA8vWt7Q7oGs02U%2F2WGEcEW8cHELcyCsm3cCizrWPG8o8PS0RP5u17nvgFJjzyQuUX0jXi6RBuZYTgbBkzttXmCCEONciNZAygpwgEkgDnQu7Xd4bVpH5kBWRKJmLwYAEbXIAlYcQv69ShSC5UE%2B4tHab9Oe4zzBGSy7TQjTU%2BgwvxoZqnuqSD7hPdMj8W6TenSawZy9wAWLvk6ySphcQfNcdf2xYUCoEITqSBNY5lw5a9RjrWGRb9fyZ3L605CMPyA%2BycnGR1kHsSiTkPjrMzPmQPvVqwv9PFJT2h3SCwRSvSLxIqWvFfZM%2BgDXRTXNrpQikNAj4VW%2Bf2O5hswHCOIvmGVuE97ecG%2FAewEuZp7gXznLqOxKBJXxWKa74q8x65JFNkLe6nxs5x2%2FSXDtoIwvQrSZR3UFy2kXebfX0lQYZdoOq3zTwhFlUXoePG5cY4o9nuK1lFHPsPRU6NIIVrCVoWJLwtLb7vqNcHirkk1InR%2FVV%2FtdCU4mJU2lNgYk0%2B1uihxwHzAGDovFCSnSHa3DSlG4YmfN63iNyDpaITIp35%2FHGWHzxFkdIbd749wzL3mURIpiVCAb8NoUcRtTTuigYtKSpX%2Fn9uZQb2spD4BIzZbCmKYMeDxOMnSaaE0YoSF%2BFKRm1MNKv4swGOrIBxhWnQX%2BCj9MWTIXfb6jWkhldDqWrnsnVck%2BYfYLwX2F3Zr57zpzdMkadoCT9%2FejJAWqhahY2kKWBrV88iX8Sfd0pLM%2BDiP6Po3kxhTyosySUWA%2FC95hZiMexMH9aNrKsYDK%2BjI4Hg2E9mBsR4aRxkgUVpnWQfYuYJJm7a4eexkZhUzmHiN84SQ7J5eHoPuNNpURJt2%2FeyzWruDq1SgZiWXQeTtexN9FgolVFC8g6g%2BZP%2Fg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e6c54a2e4b1f1606173ed76ec07550664b6daf322927e8afd5b1772134da6aef",
+      "file_size": 113932,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 280,
+  "voters": [
+    "neeythann",
+    "th3hidd3nmist",
+    "rootz491",
+    "mr-medi",
+    "awhacken",
+    "bncrypted",
+    "orange303",
+    "lvmalware",
+    "hotshotgg",
+    "menicas",
+    "and 270 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 7949,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "https://laptop-updates.brave.com/latest/linux64",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

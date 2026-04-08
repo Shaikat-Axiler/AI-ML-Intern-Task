@@ -1,0 +1,155 @@
+{
+  "id": 2545994,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNTQ1OTk0",
+  "url": "https://hackerone.com/reports/2545994",
+  "title": "Cloudflare /cdn-cgi/ path allows resizing images from unauthorised sources on enjinusercontent.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2024-06-11T09:27:26.905Z",
+  "submitted_at": "2024-06-11T09:27:27.279Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "19whoami19",
+    "url": "/19whoami19",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/lsp1denhafetrl7r7ng16rjqouzf/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 16388,
+    "url": "https://hackerone.com/enjin",
+    "handle": "enjin",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2zTTRkhHQsTWFfft1f8ityjB/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/2zTTRkhHQsTWFfft1f8ityjB/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Enjin",
+      "twitter_handle": "enjin",
+      "website": "https://enjin.io",
+      "about": "Enjin offers an ecosystem of integrated products that make it easy for everyone to develop, trade, monetize, and market with blockchain."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2024-06-19T10:35:37.087Z",
+  "bug_reporter_agreed_on_going_public_at": "2024-06-11T10:11:30.576Z",
+  "team_member_agreed_on_going_public_at": "2024-06-19T10:35:36.771Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "##Summary\n\nHello team,\nDuring a review of the website: https://nft.production.enjinusercontent.com/ I discovered that any resource hosted under any external CDN can be rendered on the website without any restrictions. This behavior leads display of images or resources on the website, which may cause confusion for users or expose potentially sensitive assets or otherwise deface the websites or carry our misinformation or malware campaigns.\n\n- You Achive :\n1- HTML INJECTION\n2- SSRF and Portal Scanning\n3- Unrestricted rendering of resources from external CDNs\n\n##Steps to Reproduce :\n\n1- For HTMLi Visit : https://nft.production.enjinusercontent.com/cdn-cgi/image/width=1000,format=auto/https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/cloudflare.svg\n\n{F3347763}\n\n## Impact\n\nMisuses of the cdn-cgi Misconfig to render external resources\nAccess control Bypass by smuggling in external resources to render at the company url unrestricted\nMisinformation and platform manipulation for displayed content to any user without interaction\nAttacker can redirect users to another websites, virtual defacement of your website etc.\nWebpage modifications\nHTML Injection",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3347763,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/w8lrtciibf864yvhyyhx1nawurh7?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T203727Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=80ea0835817c878e404438d366c6b277d32fcf0b0b397ffe238d772bae9b758b",
+      "file_size": 70973,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 27,
+  "voters": [
+    "3thm4n",
+    "forcedrofes",
+    "dukrov",
+    "never_die",
+    "shubham_srt",
+    "20kilograma",
+    "0xsheet",
+    "f_m",
+    "2026",
+    "whocallme",
+    "and 17 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 674288,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.enjinusercontent.com",
+    "max_severity": "low"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 468359,
+      "category": "team",
+      "content": "@19whoami19 identified that one of Enjin's websites (`enjinusercontent.com`) had a misconfiguration within Cloudflare, due to being on a legacy pricing model, which enabled resizing images outside of the domain for which the request was initiated. A toggle was introduced for users of the legacy pricing model which allowed disabling this functionality without direct engagement with Cloudflare. The functionality was disabled, cache was purged, and the issue confirmed as having been resolved.",
+      "updated_at": "2024-06-19T10:39:02.839Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 147297,
+        "username": "bradez",
+        "name": "Brad Bayliss",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2017-03-03T17:13:02.114Z",
+        "url": "https://hackerone.com/bradez",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/XBr6WpHogqk3dVyfmLeigmbS/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/XBr6WpHogqk3dVyfmLeigmbS/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/XBr6WpHogqk3dVyfmLeigmbS/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

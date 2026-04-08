@@ -1,0 +1,159 @@
+{
+  "id": 462503,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80NjI1MDM=",
+  "url": "https://hackerone.com/reports/462503",
+  "title": "Claiming package names in GitLab's automatic package referencer.",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-12-14T17:54:10.835Z",
+  "submitted_at": "2018-12-14T17:54:10.835Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "edoverflow",
+    "url": "/edoverflow",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/116/374/9a3cf4d62b2f507a0d33808aacbad863ec4455ac_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 264,
+    "url": "https://hackerone.com/gitlab",
+    "handle": "gitlab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GitLab",
+      "twitter_handle": "gitlab",
+      "website": "https://about.gitlab.com",
+      "about": "A single application for the entire software development lifecycle."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-04-05T17:30:51.575Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-03-06T17:30:44.239Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi team,\n\nGitLab has a pretty neat feature that auto-links packages to their respective registry. The problem is that GitLab currently assumes that packages have been uploaded to a registry by default. For example, if no `homepage` key is pointing to GitLab in a `package.json` file, Gitlab assumes that the package has been uploaded to the npm registry. This not always the case, in fact, I have come across many packages that were defined for local use only and never published — this can be seen on multiple popular projects belonging to Facebook. To demonstrate my point I picked one of your projects and claimed the package on npm, so now if users navigate to https://gitlab.com/gitlab-org/gitter/desktop/blob/master/package.json and click on `gitter-desktop`, they will be redirected to my \"malicious\" npm module where there are clear instructions on how to install the package.\n\n{F390411}\n\n```html\n<div class=\"blob-viewer\" data-type=\"auxiliary\">\n   <i aria-hidden=\"true\" data-hidden=\"true\" class=\"fa fa-cubes fa-fw\"></i>\n   This project manages its dependencies using\n   <strong>npm</strong>\n   and defines a package named\n   <strong><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://www.npmjs.com/package/gitter-desktop\">gitter-desktop</a></strong>.\n   <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://www.npmjs.com/\">Learn more</a>\n</div>\n```\n\nnpm modules are particularly dangerous since by design, npm executes certain scripts from dependencies during the installation process as demonstrated in https://hackerone.com/reports/399166 and https://vince-uploaded.s3.amazonaws.com/static/vulcoord/files/319816_attach_npmwormdisclosure.pdf.\n\nI would also like to add, it is really easy to automate this hijacking process and I would be more than happy to demonstrate an exploit on my own personal GitLab instance where I can claim lots of these package links in various test projects, if you are interested.\n\n## Impact\n\nAn adversary can trick an unsuspecting user into installing and executing a malicious package from the npm registry. What makes this attack possible is the fact that the package appears to belong to a trusted entity due to GitLab linking to the malicious packet from the project's page.\n\n\\- Ed",
+  "bounty_amount": "1000.0",
+  "formatted_bounty": "$1,000",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 390411,
+      "file_name": "Screenshot_from_2018-12-14_18-37-27.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/390/411/4410f047c1d6682bd0a34f56fca7cd78683e7347/Screenshot_from_2018-12-14_18-37-27.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2018-12-14_18-37-27.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2018-12-14_18-37-27.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015540Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3ddd9565738938da236358646c9b18a703a85894f06a3e6612c7ea808c582b2b",
+      "file_size": 15841,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-04-05T17:30:44.381Z",
+  "allow_singular_disclosure_after": -217153495.75207946,
+  "singular_disclosure_allowed": true,
+  "vote_count": 26,
+  "voters": [
+    "ezzra",
+    "heckintosh",
+    "8ayac",
+    "kapytein",
+    "ali",
+    "sameerphad72",
+    "bl4de",
+    "dhakal_ananda",
+    "mohaned0101",
+    "thalaivar304",
+    "and 16 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 18138,
+    "asset_type": "URL",
+    "asset_identifier": "gitlab.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 18703,
+      "category": "researcher",
+      "content": "@insiderphd did a really good job summarising this report in https://youtu.be/RobCqW2KwGs?t=1033. :)",
+      "updated_at": "2019-10-30T12:51:47.381Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 116374,
+        "username": "edoverflow",
+        "name": "Ed",
+        "bio": "Web developer & security researcher. @EdOverflow",
+        "cleared": false,
+        "verified": false,
+        "website": "https://edoverflow.com",
+        "location": "",
+        "created_at": "2016-10-10T17:09:21.272Z",
+        "url": "https://hackerone.com/edoverflow",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/116/374/9a3cf4d62b2f507a0d33808aacbad863ec4455ac_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/116/374/9a3cf4d62b2f507a0d33808aacbad863ec4455ac_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/116/374/9a3cf4d62b2f507a0d33808aacbad863ec4455ac_original.png/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    }
+  ]
+}

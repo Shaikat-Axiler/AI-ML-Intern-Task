@@ -1,0 +1,125 @@
+{
+  "id": 1082521,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDgyNTIx",
+  "url": "https://hackerone.com/reports/1082521",
+  "title": "Full Path Disclosure of Server through 500 Server Error",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2021-01-20T15:41:43.021Z",
+  "submitted_at": "2021-01-20T15:41:43.064Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "basant0x01",
+    "url": "/basant0x01",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/oitzkkqb6ewiw41l2doc7lviei4w/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22925,
+    "url": "https://hackerone.com/kartpay",
+    "handle": "kartpay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/022/925/d481af80adf6cd2b19449b09c785cb232f74eeba_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/022/925/d481af80adf6cd2b19449b09c785cb232f74eeba_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kartpay",
+      "twitter_handle": "",
+      "website": "http://Kartpay.com",
+      "about": "Kartpay is an Online Payment Gateway For Indian Region."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-08-16T17:46:04.025Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-07-17T17:46:02.342Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello team,\n\nEXPLANATION\n============\nI found a interesting vulnerability into your site that it unexpected disclosing the server path where the PHP files are being hosted. When application sends account verification links in email then if anyone tries to verify his account with that link at a twice then on the title of the website the whole server path is disclosing through 500 Server Error.\n\nVulnerable Path :\n---------------\n`/usr/share/ngnix/website/resources/view/auth/create_password.blade.php`\n\n\nI have added a POC .\n\n## Impact\n\n1. Server Information Disclosure",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1165132,
+      "file_name": "Full_Path_Disclosure.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/jul4du9r7wmhbi80r7mtoiitq0ge?response-content-disposition=attachment%3B%20filename%3D%22Full_Path_Disclosure.mp4%22%3B%20filename%2A%3DUTF-8%27%27Full_Path_Disclosure.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6CXBEYJD%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225242Z&X-Amz-Expires=2202&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCPh66AlO5T02mAZYL3fssZAaBB8SZUoBSrrNW0Ju0xGwIgWwtpA9rH3G4mstoWbLMBz4hubv37RklarnHKPLLDDCYqugUImv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMPGAszwqQmKi%2BFnPCqOBXPO6jrBNe%2FahJQgL3GE%2BAm4A%2FxilheK%2F3mPupxT1S5zzO0O%2BXBO0tRnYEE05KCbSRuiw%2B3DiXX1yuJCxoBFlKEIbvTGVdu5fvipMwqDydzMWWV9LcP09K%2By2wuMDWgmtkEKpB4Li88xMF%2FmNPkU7Tmm%2BLwhnB4tjEJw%2Bd4DWshR7UFiCAfjl%2F%2FMkV81sCXD9ODuYZqzYYzmd499C0UlvWqZ14inWJJIdrWMycYPKkfL2JhLW%2B0PbfHpJk8%2BKflA5WMFl%2FN5xgrXPYMddLA%2F4LBDdX4oUDQmXdi1n9ePYMvXWNF7%2FLjHQnEcBULU4mRlpLR78cMtKfUKUVcauTSb5vgyjG94sCeSBT%2BVKv%2FWmSHN3pSuvPcCwDmwGU9h8PYiq8W23UPmnIGwpk%2F%2F%2BkW9DgZSJFXxhDL%2FtAjNN5vduN1efjiOxW6Zh6mtG3nh1FSV3gzF4zm7Utx2EuPVwYcdwbvcq5rR%2FX36bRJBK9%2Fgoh5UIYyPPdHI06fWifToggfu%2BHiZAONZiGmjjahB%2BpKljLT5aGAfCxtCb%2FHaaRB3i%2BzeNUmNjYo9wuVbMzGm7eagw9f5y8h0OkiegJT9SNUejx9sq12qKS2V0upRipB5oL6wbsGY443POSSoVY6M8n62gX49NymtYRDYapvHAE830eLvvD2jBA%2Bbw0jHbbx%2Bpz55CymcPvHYQ9axF0xVKRhTTA9lW5Ry%2BcBdEH4xaphU5sPNHcCZKknOXvPvDryPf7b%2Bq81EQKNDEpyajMKSX1RCHb3YIZyhkXbF3SMyCfp3s2XuHd2OerLNNfPusVNiKhucVLfMfzUwOpkTVZTF0c8WgLbcEaCyzE%2FG040U5VP07Pxl%2By5I27azxC91dUpgazClr%2BLMBjqxAadSPwD2aKA30e3FxlDF6Av92yeZ03zn%2F3WjmKN5LR9n8Bnd8k7ckMSairlI28lfP92kA6szo27%2Ffpieux%2FvJxrrOtK2FrYR920pAavl4TJZwTCvH2n5uNNdzzyD2zL8BoJhELluzs8Jz5QDBfsAw4hapBjZ8rl%2BfNdsRtegrmyTwrKE5drqeWqjKmY%2FapGD8B8lj4fKh5Gy8HhJOHGZbBAEu0OuCm85x8ZtE1RE1WtZcg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3972ee7ba2091695a6a18418ce4791c4dbe2411a9e0f1e21e9473187f32b2650",
+      "file_size": 4274075,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-08-16T17:46:02.440Z",
+  "allow_singular_disclosure_after": -142492000.26566887,
+  "singular_disclosure_allowed": true,
+  "vote_count": 3,
+  "voters": [
+    "he4am",
+    "2026",
+    "ankit_tiwari"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 3965,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.kartpay.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

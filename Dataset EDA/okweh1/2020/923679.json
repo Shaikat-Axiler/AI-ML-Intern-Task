@@ -1,0 +1,131 @@
+{
+  "id": 923679,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85MjM2Nzk=",
+  "url": "https://hackerone.com/reports/923679",
+  "title": "stored xss via Campaign Name.",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-07-14T17:29:59.163Z",
+  "submitted_at": "2020-07-14T17:29:59.163Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "omarelfarsaoui",
+    "url": "/omarelfarsaoui",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2zrt7s1qccyg8fbquh83lasrqzoe/8774a5031fc14b74dc4404da039040c69df8ed41021007c0c2beb9de489fcf66"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 44045,
+    "url": "https://hackerone.com/lemlist",
+    "handle": "lemlist",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/mnjvbzddg4cv6q2aeiugho7ozkth/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/mnjvbzddg4cv6q2aeiugho7ozkth/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "lemlist",
+      "twitter_handle": "",
+      "website": "https://lemlist.com",
+      "about": "lempire is a tech company that specializes in developing solutions for email outreach and productivity, aimed at enhancing growth for businesses"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-07-21T14:46:35.025Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-07-21T14:46:34.973Z",
+  "team_member_agreed_on_going_public_at": "2020-07-21T14:11:22.454Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHi,\nI found a stored  xss https://app.lemlist.com\n\n## Steps To Reproduce:\n1. go to https://app.lemlist.com/.\n2. create or edit campaigns.\n3. set the payload `/><svg src=x onload=confirm(document.domain);>` in the **Campaign Name**.\n4. visit Buddies-to-Be tab .\n5. click Add one on the right Top . or click on one of the list of  **Contact**\n6. you will see pop-up.\n\n## Poc\n{F907302}\n\n## Impact\n\nStealing cookies",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 907302,
+      "file_name": "Poc.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ajR1KwBkPW71BKECHSjaDsMJ?response-content-disposition=attachment%3B%20filename%3D%22Poc.webm%22%3B%20filename%2A%3DUTF-8%27%27Poc.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001720Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c10d730a1f51b9d0a163a5f1213553d1aac0208fbe0db198fe63c2ccda7f9def",
+      "file_size": 1504702,
+      "type": "video/webm",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 11,
+  "voters": [
+    "omarelfarsaoui",
+    "tess",
+    "0xc0c0",
+    "sa1tama0",
+    "mm936",
+    "jassiepinkman",
+    "k1llheal",
+    "s3cur3tap",
+    "iambaymax",
+    "jerry_1729",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 37907,
+    "asset_type": "URL",
+    "asset_identifier": "app.lemlist.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

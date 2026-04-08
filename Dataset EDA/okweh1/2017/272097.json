@@ -1,0 +1,113 @@
+{
+  "id": 272097,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNzIwOTc=",
+  "url": "https://hackerone.com/reports/272097",
+  "title": "Interger overflow in eval trigger write out of bound",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2017-09-26T16:44:35.846Z",
+  "submitted_at": "2017-09-26T16:44:35.846Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "mipu94",
+    "url": "/mipu94",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVSC3WWJQ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030013Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQChM5Azk%2FdMxyc29hxaAY%2Fmo66isiAsktcjVGzE1oNisgIhAKKCabgHkere%2Fn6765awtwlujM67BR8BePlrPv%2FDV0dNKrsFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxT6pkAVx09JSVGR4EqjwX%2BIIpR2QtUKX4oebSDz%2F5pYv9qRPKmckQVPywyKa6spJazwR7FOTazURduCu0Wrk8ALUcapSJgskuMBDjlW%2FHlrvWlD5ocNYPLDdqs6fVvq3OR147mz9Wuevuh3yz30Cib29QUt8fWqLOfC3lRQET8A9efV2ePT4bqRWRY18nZRiLTcocaV9J5SNu9zmTD1hVCHNNidWfgKc8%2BOGjBO9phpxmlGjR3rg0%2B6F4MZOpAZyS1DGUMVpRFsCMryqhVu4emJISPkfAG8VzmtsSapZY%2F3MFRYYsPG3BHctmDG%2BKtyaoFm6LkpNe6zO2v%2B6%2FnSaFpRLGaSCqY%2BKTdtH41dQMoWK62tjw7tJ%2BIvpyFkjkqxq8wh3alSO4FacZUWi578RZjC%2Fp12IppnuzQ1K87EyqlwqjMUPILJT3WRWvydtHK89SeIuCmOZm2tz80G0SU%2BLfpyJxeNYe8t1oz0qYAYoJ1Hqeef7yJ4naocBSS5Nt1yz6pSaPQ%2Bos%2FNhgk%2Bg%2BcoGDbHUfMhvgbSsYhg8RzlDdnG7Gw57IhKLe6F%2F85jasRPmKxs12dlFjXSkgP49fU2Jqz7iHPzDlWWPg7K%2FXNHh%2FGPkJQlG%2Bu61pSOSTqqATJo%2FRlrO50LMQiFWhsySfkQXYYsHLZAaald6MVtPC3UGTSO2w1RN2DOj50Y7DGAFP4Ju4mXzSfZ98HYbij%2FTkFH0uVQZplJ9ILFOO59Y1WhsS7COAcHuI6qd5Hy2UaoUk%2BemzUHFZ%2BCwc%2FxgIDyLCVY%2FOizStq4YdIJjOZdofTTJJwgbhORJ%2FyT3vwM4iW7UCBCLBO0K7oWfkLL9HUkfFH0FG5XTvglKQo%2FxCdudRad40iZqFyeBGX1arK6FqsUKFnMJP848wGOrABuU8sktc8jLY2H19stS9YLjsPUCg3Cgi19Jt4jG5VlAcaZ%2Bb0PyUuapRAE1VjpEFO5r3vtYLImN3sCfyDtj233JHVKuI8uVajeNWCKwwE9RRTHM5eUed5qGjpvpWX2aVS%2Fvg2ybiO4NDYkZ8C2hEc%2BPWQcXhDAqBQtDU4tqxLivcx6MIGyUCDmMyByGoTOywZT%2FKklVl%2FIzUaqnIlezX34tYs2E6Oylz2zUmc%2BmUJtkE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b797193fa551c11f85c561694a7ad71e3c671646df4a5bd16c7c72123e8e28f7",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVSC3WWJQ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030013Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQChM5Azk%2FdMxyc29hxaAY%2Fmo66isiAsktcjVGzE1oNisgIhAKKCabgHkere%2Fn6765awtwlujM67BR8BePlrPv%2FDV0dNKrsFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxT6pkAVx09JSVGR4EqjwX%2BIIpR2QtUKX4oebSDz%2F5pYv9qRPKmckQVPywyKa6spJazwR7FOTazURduCu0Wrk8ALUcapSJgskuMBDjlW%2FHlrvWlD5ocNYPLDdqs6fVvq3OR147mz9Wuevuh3yz30Cib29QUt8fWqLOfC3lRQET8A9efV2ePT4bqRWRY18nZRiLTcocaV9J5SNu9zmTD1hVCHNNidWfgKc8%2BOGjBO9phpxmlGjR3rg0%2B6F4MZOpAZyS1DGUMVpRFsCMryqhVu4emJISPkfAG8VzmtsSapZY%2F3MFRYYsPG3BHctmDG%2BKtyaoFm6LkpNe6zO2v%2B6%2FnSaFpRLGaSCqY%2BKTdtH41dQMoWK62tjw7tJ%2BIvpyFkjkqxq8wh3alSO4FacZUWi578RZjC%2Fp12IppnuzQ1K87EyqlwqjMUPILJT3WRWvydtHK89SeIuCmOZm2tz80G0SU%2BLfpyJxeNYe8t1oz0qYAYoJ1Hqeef7yJ4naocBSS5Nt1yz6pSaPQ%2Bos%2FNhgk%2Bg%2BcoGDbHUfMhvgbSsYhg8RzlDdnG7Gw57IhKLe6F%2F85jasRPmKxs12dlFjXSkgP49fU2Jqz7iHPzDlWWPg7K%2FXNHh%2FGPkJQlG%2Bu61pSOSTqqATJo%2FRlrO50LMQiFWhsySfkQXYYsHLZAaald6MVtPC3UGTSO2w1RN2DOj50Y7DGAFP4Ju4mXzSfZ98HYbij%2FTkFH0uVQZplJ9ILFOO59Y1WhsS7COAcHuI6qd5Hy2UaoUk%2BemzUHFZ%2BCwc%2FxgIDyLCVY%2FOizStq4YdIJjOZdofTTJJwgbhORJ%2FyT3vwM4iW7UCBCLBO0K7oWfkLL9HUkfFH0FG5XTvglKQo%2FxCdudRad40iZqFyeBGX1arK6FqsUKFnMJP848wGOrABuU8sktc8jLY2H19stS9YLjsPUCg3Cgi19Jt4jG5VlAcaZ%2Bb0PyUuapRAE1VjpEFO5r3vtYLImN3sCfyDtj233JHVKuI8uVajeNWCKwwE9RRTHM5eUed5qGjpvpWX2aVS%2Fvg2ybiO4NDYkZ8C2hEc%2BPWQcXhDAqBQtDU4tqxLivcx6MIGyUCDmMyByGoTOywZT%2FKklVl%2FIzUaqnIlezX34tYs2E6Oylz2zUmc%2BmUJtkE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=475f2a4ecd56a413d0824c5d07d8b9b9d5fcbd6a0047376d03827e543033965b"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-12-11T07:53:16.489Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-12-11T07:40:08.148Z",
+  "team_member_agreed_on_going_public_at": "2017-12-11T07:53:16.392Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi security team,\ni [reported](https://rt.perl.org/Public/Bug/Display.html?id=131562)  some samples triggered crash in eval funtion in perl. \nThe bug come because variable `start` and `items` used type `I32` which takes half the range of line_t and folds it into negative numbers, leading to trying to store the lines at negative indexes.",
+  "weakness": {
+    "id": 16,
+    "name": "Integer Underflow"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 2,
+  "voters": [
+    "r3y",
+    "geeknik"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 84128,
+    "asset_type": "OTHER",
+    "asset_identifier": "Perl (Legacy)",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

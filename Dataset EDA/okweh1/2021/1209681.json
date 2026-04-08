@@ -1,0 +1,156 @@
+{
+  "id": 1209681,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMjA5Njgx",
+  "url": "https://hackerone.com/reports/1209681",
+  "title": "OOB read in libuv",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-05-26T06:22:37.469Z",
+  "submitted_at": "2021-05-26T06:22:37.526Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ericsesterhenn",
+    "url": "/ericsesterhenn",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22984,
+    "url": "https://hackerone.com/nodejs",
+    "handle": "nodejs",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/022/984/e600648ace4a8553247bce967d461a030aa81d49_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/022/984/e600648ace4a8553247bce967d461a030aa81d49_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js",
+      "twitter_handle": "nodejs",
+      "website": "https://nodejs.org",
+      "about": "The Node.js JavaScript Runtime"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2021-22918"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-07-05T08:30:01.209Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-07-05T08:30:01.146Z",
+  "team_member_agreed_on_going_public_at": "2021-07-01T16:25:38.501Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** \n\nThe pointer p is read and increased without checking whether it is beyond pe, with the latter holding a pointer to the end of the buffer. This can lead to information disclosures or crashes. This function can be triggered via uv_getaddrinfo().  nodejs seems to use libuv and is possibly affected by this as well.\n\n**Description:**\nAn out-of-bound read can occur when uv__idna_toascii() is used to convert strings to ASCII. The pointer p is read and increased without checking whether it is beyond pe, with the latter holding a pointer to the end of the buffer. This can lead to information disclosures or crashes. This function can be triggered via uv_getaddrinfo().  nodejs seems to use libuv and is possibly affected by this as well.\n\n## Steps To Reproduce:\n\ni attached a testcase and the ad-hoc fuzzer I used to identify the issues. If you need further help reproducing, please let me know.\n\n~~~\nstatic unsigned uv__utf8_decode1_slow(const char** p,\n                                      const char* pe,\n                                      unsigned a) {\n  unsigned b;\n  unsigned c;\n  unsigned d;\n  unsigned min;\n\n  if (a > 0xF7)\n    return -1;\n\n  switch (*p - pe) {\n  default:\n    if (a > 0xEF) {\n      if (p + 3 > pe)\n        return -1;\n      min = 0x10000;\n      a = a & 7;\n      b = (unsigned char) *(*p)++;   // OOB READ\n      c = (unsigned char) *(*p)++;   // OOB READ\n      d = (unsigned char) *(*p)++;   // OOB READ\n      break;\n    }\n    /* Fall through. */\n~~~\n\n\n\n## Impact: [add why this issue matters]\n\nPossiblity to crash the process when untrusted hostnames are passed to uv__getaddrinfo()\n\n## Supporting Material/References:\n\n-\n\n## Misc\n\nThis issue was found during an audit of Cure53 for ExpressVPN but ExpressVPN is not affected by the issue. I reported it to the libuv project, whose maintainers suggested that i report it to nodejs directly as well.\n\n## Impact\n\nAn oob read that does not seem to be abused to leak data, but possibly read to a guarded page which segfaults the process.",
+  "weakness": {
+    "id": 9,
+    "name": "Buffer Over-read"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1315537,
+      "file_name": "desc.txt",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/zlczkomw0d1qyag3f74cjvys5wqc?response-content-disposition=attachment%3B%20filename%3D%22desc.txt%22%3B%20filename%2A%3DUTF-8%27%27desc.txt&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVWIESNLA%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225931Z&X-Amz-Expires=2399&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCICcH6o3d61XUmf9jSKpfX6PZItG2eFm%2FP%2BxT1VQPYYo9AiASEz7RsrnMxKm0HgVU6OcbQVwoZ5VIucq713xUw%2BVWuSq6BQia%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM2MDOAsJR%2F9Tkb%2FgKKo4FU%2BVsTrk%2BfN0uOy%2FX1iiO%2BJBkJMHqx3tRikzZYK8TIqH7zNDilihFH812Zoxxu7xDi3kuAXXeEXNKrVrrzQOfD8n4iieb5P%2FCUPvHj7uqcOyP8ENLoa9tFiWxGthTaiv5%2BRKxq75ASpI63iuDt6ElzHV3NbqbcfiaUDqFerMdgtthIBNKX31LpeV1%2FVR5fEpzwAXqe%2Bm5GjCjzc088SY6GZOTrGRHnWnTA8vWt7Q7oGs02U%2F2WGEcEW8cHELcyCsm3cCizrWPG8o8PS0RP5u17nvgFJjzyQuUX0jXi6RBuZYTgbBkzttXmCCEONciNZAygpwgEkgDnQu7Xd4bVpH5kBWRKJmLwYAEbXIAlYcQv69ShSC5UE%2B4tHab9Oe4zzBGSy7TQjTU%2BgwvxoZqnuqSD7hPdMj8W6TenSawZy9wAWLvk6ySphcQfNcdf2xYUCoEITqSBNY5lw5a9RjrWGRb9fyZ3L605CMPyA%2BycnGR1kHsSiTkPjrMzPmQPvVqwv9PFJT2h3SCwRSvSLxIqWvFfZM%2BgDXRTXNrpQikNAj4VW%2Bf2O5hswHCOIvmGVuE97ecG%2FAewEuZp7gXznLqOxKBJXxWKa74q8x65JFNkLe6nxs5x2%2FSXDtoIwvQrSZR3UFy2kXebfX0lQYZdoOq3zTwhFlUXoePG5cY4o9nuK1lFHPsPRU6NIIVrCVoWJLwtLb7vqNcHirkk1InR%2FVV%2FtdCU4mJU2lNgYk0%2B1uihxwHzAGDovFCSnSHa3DSlG4YmfN63iNyDpaITIp35%2FHGWHzxFkdIbd749wzL3mURIpiVCAb8NoUcRtTTuigYtKSpX%2Fn9uZQb2spD4BIzZbCmKYMeDxOMnSaaE0YoSF%2BFKRm1MNKv4swGOrIBxhWnQX%2BCj9MWTIXfb6jWkhldDqWrnsnVck%2BYfYLwX2F3Zr57zpzdMkadoCT9%2FejJAWqhahY2kKWBrV88iX8Sfd0pLM%2BDiP6Po3kxhTyosySUWA%2FC95hZiMexMH9aNrKsYDK%2BjI4Hg2E9mBsR4aRxkgUVpnWQfYuYJJm7a4eexkZhUzmHiN84SQ7J5eHoPuNNpURJt2%2FeyzWruDq1SgZiWXQeTtexN9FgolVFC8g6g%2BZP%2Fg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=def4a60d3d913e5f59091558180489ea16fde49513408563a5b2e7353008dea6",
+      "file_size": 1823,
+      "type": "text/plain",
+      "moderated": null
+    },
+    {
+      "id": 1315538,
+      "file_name": "fuzz.tar.bz2",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/qop1d0f6mwhn82lh79dewou1gxoe?response-content-disposition=attachment%3B%20filename%3D%22fuzz.tar.bz2%22%3B%20filename%2A%3DUTF-8%27%27fuzz.tar.bz2&response-content-type=application%2Fx-bzip&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVWIESNLA%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225931Z&X-Amz-Expires=2399&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCICcH6o3d61XUmf9jSKpfX6PZItG2eFm%2FP%2BxT1VQPYYo9AiASEz7RsrnMxKm0HgVU6OcbQVwoZ5VIucq713xUw%2BVWuSq6BQia%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM2MDOAsJR%2F9Tkb%2FgKKo4FU%2BVsTrk%2BfN0uOy%2FX1iiO%2BJBkJMHqx3tRikzZYK8TIqH7zNDilihFH812Zoxxu7xDi3kuAXXeEXNKrVrrzQOfD8n4iieb5P%2FCUPvHj7uqcOyP8ENLoa9tFiWxGthTaiv5%2BRKxq75ASpI63iuDt6ElzHV3NbqbcfiaUDqFerMdgtthIBNKX31LpeV1%2FVR5fEpzwAXqe%2Bm5GjCjzc088SY6GZOTrGRHnWnTA8vWt7Q7oGs02U%2F2WGEcEW8cHELcyCsm3cCizrWPG8o8PS0RP5u17nvgFJjzyQuUX0jXi6RBuZYTgbBkzttXmCCEONciNZAygpwgEkgDnQu7Xd4bVpH5kBWRKJmLwYAEbXIAlYcQv69ShSC5UE%2B4tHab9Oe4zzBGSy7TQjTU%2BgwvxoZqnuqSD7hPdMj8W6TenSawZy9wAWLvk6ySphcQfNcdf2xYUCoEITqSBNY5lw5a9RjrWGRb9fyZ3L605CMPyA%2BycnGR1kHsSiTkPjrMzPmQPvVqwv9PFJT2h3SCwRSvSLxIqWvFfZM%2BgDXRTXNrpQikNAj4VW%2Bf2O5hswHCOIvmGVuE97ecG%2FAewEuZp7gXznLqOxKBJXxWKa74q8x65JFNkLe6nxs5x2%2FSXDtoIwvQrSZR3UFy2kXebfX0lQYZdoOq3zTwhFlUXoePG5cY4o9nuK1lFHPsPRU6NIIVrCVoWJLwtLb7vqNcHirkk1InR%2FVV%2FtdCU4mJU2lNgYk0%2B1uihxwHzAGDovFCSnSHa3DSlG4YmfN63iNyDpaITIp35%2FHGWHzxFkdIbd749wzL3mURIpiVCAb8NoUcRtTTuigYtKSpX%2Fn9uZQb2spD4BIzZbCmKYMeDxOMnSaaE0YoSF%2BFKRm1MNKv4swGOrIBxhWnQX%2BCj9MWTIXfb6jWkhldDqWrnsnVck%2BYfYLwX2F3Zr57zpzdMkadoCT9%2FejJAWqhahY2kKWBrV88iX8Sfd0pLM%2BDiP6Po3kxhTyosySUWA%2FC95hZiMexMH9aNrKsYDK%2BjI4Hg2E9mBsR4aRxkgUVpnWQfYuYJJm7a4eexkZhUzmHiN84SQ7J5eHoPuNNpURJt2%2FeyzWruDq1SgZiWXQeTtexN9FgolVFC8g6g%2BZP%2Fg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d59720a70cbec015f7285436f5f57736bfb77d029b5a4a573b8ec2661c9e59ef",
+      "file_size": 3179,
+      "type": "application/x-bzip",
+      "moderated": null
+    },
+    {
+      "id": 1315539,
+      "file_name": "testcase_oob_read",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/4nkx5qe7tdkpa1oknni9y4qvwa42?response-content-disposition=attachment%3B%20filename%3D%22testcase_oob_read%22%3B%20filename%2A%3DUTF-8%27%27testcase_oob_read&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVWIESNLA%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T225931Z&X-Amz-Expires=2399&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCICcH6o3d61XUmf9jSKpfX6PZItG2eFm%2FP%2BxT1VQPYYo9AiASEz7RsrnMxKm0HgVU6OcbQVwoZ5VIucq713xUw%2BVWuSq6BQia%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM2MDOAsJR%2F9Tkb%2FgKKo4FU%2BVsTrk%2BfN0uOy%2FX1iiO%2BJBkJMHqx3tRikzZYK8TIqH7zNDilihFH812Zoxxu7xDi3kuAXXeEXNKrVrrzQOfD8n4iieb5P%2FCUPvHj7uqcOyP8ENLoa9tFiWxGthTaiv5%2BRKxq75ASpI63iuDt6ElzHV3NbqbcfiaUDqFerMdgtthIBNKX31LpeV1%2FVR5fEpzwAXqe%2Bm5GjCjzc088SY6GZOTrGRHnWnTA8vWt7Q7oGs02U%2F2WGEcEW8cHELcyCsm3cCizrWPG8o8PS0RP5u17nvgFJjzyQuUX0jXi6RBuZYTgbBkzttXmCCEONciNZAygpwgEkgDnQu7Xd4bVpH5kBWRKJmLwYAEbXIAlYcQv69ShSC5UE%2B4tHab9Oe4zzBGSy7TQjTU%2BgwvxoZqnuqSD7hPdMj8W6TenSawZy9wAWLvk6ySphcQfNcdf2xYUCoEITqSBNY5lw5a9RjrWGRb9fyZ3L605CMPyA%2BycnGR1kHsSiTkPjrMzPmQPvVqwv9PFJT2h3SCwRSvSLxIqWvFfZM%2BgDXRTXNrpQikNAj4VW%2Bf2O5hswHCOIvmGVuE97ecG%2FAewEuZp7gXznLqOxKBJXxWKa74q8x65JFNkLe6nxs5x2%2FSXDtoIwvQrSZR3UFy2kXebfX0lQYZdoOq3zTwhFlUXoePG5cY4o9nuK1lFHPsPRU6NIIVrCVoWJLwtLb7vqNcHirkk1InR%2FVV%2FtdCU4mJU2lNgYk0%2B1uihxwHzAGDovFCSnSHa3DSlG4YmfN63iNyDpaITIp35%2FHGWHzxFkdIbd749wzL3mURIpiVCAb8NoUcRtTTuigYtKSpX%2Fn9uZQb2spD4BIzZbCmKYMeDxOMnSaaE0YoSF%2BFKRm1MNKv4swGOrIBxhWnQX%2BCj9MWTIXfb6jWkhldDqWrnsnVck%2BYfYLwX2F3Zr57zpzdMkadoCT9%2FejJAWqhahY2kKWBrV88iX8Sfd0pLM%2BDiP6Po3kxhTyosySUWA%2FC95hZiMexMH9aNrKsYDK%2BjI4Hg2E9mBsR4aRxkgUVpnWQfYuYJJm7a4eexkZhUzmHiN84SQ7J5eHoPuNNpURJt2%2FeyzWruDq1SgZiWXQeTtexN9FgolVFC8g6g%2BZP%2Fg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7532d3abc8081c76bd0a1bd767180c64c0c4d8401ea9e5945d7c0c72daa10372",
+      "file_size": 21,
+      "type": "application/octet-stream",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-07-31T16:25:38.687Z",
+  "allow_singular_disclosure_after": -143879632.58244562,
+  "singular_disclosure_allowed": true,
+  "vote_count": 5,
+  "voters": [
+    "ibring",
+    "binary_wrecker",
+    "soohongkim123",
+    "ekgaribadmi",
+    "greylupi"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.5,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 666,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/nodejs/node",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

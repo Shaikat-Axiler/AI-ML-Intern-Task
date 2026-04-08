@@ -1,0 +1,129 @@
+{
+  "id": 363049,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNjMwNDk=",
+  "url": "https://hackerone.com/reports/363049",
+  "title": "Punny code Detection Parsing should be implemented on Markdown ",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "none",
+  "readable_substate": "Informative",
+  "created_at": "2018-06-07T11:24:38.717Z",
+  "submitted_at": "2018-06-07T11:24:38.717Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kunal94",
+    "url": "/kunal94",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/vre0eel6yrdokxj27op0h2wo375f/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 28411,
+    "url": "https://hackerone.com/liberapay",
+    "handle": "liberapay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Liberapay",
+      "twitter_handle": "",
+      "website": "https://liberapay.com",
+      "about": "An open source platform designed to facilitate recurrent donations."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-06-07T17:25:42.979Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-06-07T17:25:42.907Z",
+  "team_member_agreed_on_going_public_at": "2018-06-07T15:46:46.801Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello Liberapay Security Team,\n\n#Description \nWhen we insert any URL in Markdown Box in `liberapay.com/profile_name/edit/statement`, it reflects on our main profile page. \nThere was main issue which I discovered was about Punny code parsing method which was not enabled on Markdown.\n\n#Step to Reproduce\nFor demonstration, let's take two url.\nNormal Url - apple.com and Punny Code url - аррlе.com\n\n1) Go to liberapay.com/profile_name/edit/statement, and enter this url like this.\n2) Now looking at url,it's not distinguishable ,however another one is punny code.\n\n[Note:Since hackerone report posts detects punnycode ,so I am not inserting https in both urls ,but you can try with this format in the below screenshot.]\n\n3) Go to markdown box and type in this format both the urls and save it.\n{F306263}\n\n4) After saving,move on to profile front page, liberapay.com/profile_name and check both the urls are displaying apple.com,however when person will click 1st link,it'll redirect to normal apple.com ,but second url on clicking will redirect to punny code url.\nIt's because both the urls have been decoded in the same way while in the markdown without any punny code parsing method.\n\n{F306270}\n\nFor verification,click on my profile link ,here I already mentioned both urls,check and verify.\nhttps://liberapay.com/kunal609\n\n\n#Reason to Report\n+ Since punnycode is not detecting in markdown,then it'll look exactly the same,isn't it.\n+ Judging both the urls which I have mentioned,one can't differentiate between as they look exactly the same before submitting and after submitting in profile page.\n+ In this way, one can redirect to another domain.\n+ Also ,punny code url can be registered so a person can be redirect to other site.\n\n\n\n#Solution\n+ We can initiate punny code parsing or warning link ,where when punny code will be inserted and rendered afterwards in Markdown then ,it should display their original Punny code URL in profile page.\n+ So before clicking any link,user can check that it's punny code url and not safe to click in the first place.\n\n\nThanks\nKunal\n(Low impact,but still punny code parsing must be initiated in between Markdown Process for URL rendering)\n\n## Impact\n\nAs explained in reason",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 306263,
+      "file_name": "punny1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/306/263/3575011a4a8bef3e4c87ad2a70220f26a1d6036f/punny1.png?response-content-disposition=attachment%3B%20filename%3D%22punny1.png%22%3B%20filename%2A%3DUTF-8%27%27punny1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSBE3AKLT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023325Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGyieowL3ju9Q62exG%2BDTuChyVOc1Mg7%2BYJ9S8MYBpcKAiEA5C3kcaFuCmE%2F4OWx1FicS2m1oYeV2FUwJGNh7f7fPekqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDM3i42xq9%2Fv%2BDD7cCSqOBROdN90KKmq4dqM%2FQ1dbRpgTPSUXomx1swOP2q%2F0KMYHPJ02HBNGs4IvVDBRQk3YMZAy20pCcvff62KM9I%2BkVOpgk5DmSUK2NlOx%2Bu8uiFhvrdoku%2FRDrv6x7b0pq3RX%2BhnUtdfaInGqndlzP6kNRDWq0e4nSumeN9PCFslWQ2Gj8O0E4tDQAKVILesgZiS%2BDaEbHEX%2FnwqmE%2F3RSxh7qZt3dG%2B5Sf5U844qTzpJ2kNI4pQPRAbqPw23MkQBgKhqjNJ9IZQmD1C67skq5HJuPxeEZijHqWSALcC19ZpXWLX1ZHpXFPJfYS4pzhIS1EsUuwto6q0vJxxcDCQzLNRcRfzOHRxSJZaTPS9nN7Njx4bdtQsl1kgL9hPMs3cNJWUHhTqqLoLGi6ei0lctLur0xfzI1ExXYy1OhASR16Lkjne0PkavaqRtTCepwANIMu69ou%2BsuAbDfMrAzS1lGulslOJVUwSICLpi3Ok4CJdlEMMTAZHMA0h0wAWwF7h18u%2F9cLC2sNd8ltip4HfphzHyZD2EsXENSvWeZTAzZyYmKaG8lA2QjgDqWys6gu6QPdlu279ynr5F4B8bF1l%2FkYE1PxZT%2BPTPYRVddjAyMc%2BBpYoquMLVIOjnb72seidOB8bdiMu%2BbdRo1TbRuoPjLUhbYLZvP%2Beg%2BgKcNb4AVlT20PNahH%2BntY1h7QFUorkMUXGqfZDEesX9Eq8Cbi9zm8GdnmhcdK9sgshAugFKOF9Fj984TDn3exa%2FL9%2BAvT8xT4FnIvL5hIRfrzp6BLa9JhE96ZYkGQ7CelGJeRtIjv9TJpCT0%2FkHsj5pBLLOiVHhgDLYAx1J0mXvibP%2BnuH92QhtodPbB%2BX7ulBLzHaC1o9dEzDO5%2BPMBjqxAXQ6THfET1Jf1RRl%2Fh6TXO1%2F03cJJVqg7RWnDkklmj8YAhc9wYE28jwLo3%2FPVxuO%2BIw%2By2Djj7nQtlat2KNVBQJmPdYcK5mHmW3n2bnO0C8eGiA66LPlbeXgbY24S5z7qcsHmEeJvPbuj%2FO3%2Fpam52Wch3o9NQevxQXmsL9upnFphnbfZ%2BpLklPHg94JBDWRbPl6CHUXsCFkc6Dd3EUjFAoOT9BmgSKEMV1sAadePOBN6w%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7b5910c6e17caf0fd67154963497db72e3d82c6571b63af7d81dd638768a97fb",
+      "file_size": 106943,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 306270,
+      "file_name": "punny2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/306/270/55b284743365c8f3b42564cc521c45034dcdfb9b/punny2.png?response-content-disposition=attachment%3B%20filename%3D%22punny2.png%22%3B%20filename%2A%3DUTF-8%27%27punny2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSBE3AKLT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023325Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGyieowL3ju9Q62exG%2BDTuChyVOc1Mg7%2BYJ9S8MYBpcKAiEA5C3kcaFuCmE%2F4OWx1FicS2m1oYeV2FUwJGNh7f7fPekqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDM3i42xq9%2Fv%2BDD7cCSqOBROdN90KKmq4dqM%2FQ1dbRpgTPSUXomx1swOP2q%2F0KMYHPJ02HBNGs4IvVDBRQk3YMZAy20pCcvff62KM9I%2BkVOpgk5DmSUK2NlOx%2Bu8uiFhvrdoku%2FRDrv6x7b0pq3RX%2BhnUtdfaInGqndlzP6kNRDWq0e4nSumeN9PCFslWQ2Gj8O0E4tDQAKVILesgZiS%2BDaEbHEX%2FnwqmE%2F3RSxh7qZt3dG%2B5Sf5U844qTzpJ2kNI4pQPRAbqPw23MkQBgKhqjNJ9IZQmD1C67skq5HJuPxeEZijHqWSALcC19ZpXWLX1ZHpXFPJfYS4pzhIS1EsUuwto6q0vJxxcDCQzLNRcRfzOHRxSJZaTPS9nN7Njx4bdtQsl1kgL9hPMs3cNJWUHhTqqLoLGi6ei0lctLur0xfzI1ExXYy1OhASR16Lkjne0PkavaqRtTCepwANIMu69ou%2BsuAbDfMrAzS1lGulslOJVUwSICLpi3Ok4CJdlEMMTAZHMA0h0wAWwF7h18u%2F9cLC2sNd8ltip4HfphzHyZD2EsXENSvWeZTAzZyYmKaG8lA2QjgDqWys6gu6QPdlu279ynr5F4B8bF1l%2FkYE1PxZT%2BPTPYRVddjAyMc%2BBpYoquMLVIOjnb72seidOB8bdiMu%2BbdRo1TbRuoPjLUhbYLZvP%2Beg%2BgKcNb4AVlT20PNahH%2BntY1h7QFUorkMUXGqfZDEesX9Eq8Cbi9zm8GdnmhcdK9sgshAugFKOF9Fj984TDn3exa%2FL9%2BAvT8xT4FnIvL5hIRfrzp6BLa9JhE96ZYkGQ7CelGJeRtIjv9TJpCT0%2FkHsj5pBLLOiVHhgDLYAx1J0mXvibP%2BnuH92QhtodPbB%2BX7ulBLzHaC1o9dEzDO5%2BPMBjqxAXQ6THfET1Jf1RRl%2Fh6TXO1%2F03cJJVqg7RWnDkklmj8YAhc9wYE28jwLo3%2FPVxuO%2BIw%2By2Djj7nQtlat2KNVBQJmPdYcK5mHmW3n2bnO0C8eGiA66LPlbeXgbY24S5z7qcsHmEeJvPbuj%2FO3%2Fpam52Wch3o9NQevxQXmsL9upnFphnbfZ%2BpLklPHg94JBDWRbPl6CHUXsCFkc6Dd3EUjFAoOT9BmgSKEMV1sAadePOBN6w%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0d054cd319c7b534d27a723df8906cb89d97dc8ef735841ab69a6dcbfe8c1c82",
+      "file_size": 97720,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "armansameer"
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 8926,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.liberapay.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

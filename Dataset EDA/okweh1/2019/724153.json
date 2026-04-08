@@ -1,0 +1,144 @@
+{
+  "id": 724153,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MjQxNTM=",
+  "url": "https://hackerone.com/reports/724153",
+  "title": "XSS (leads to arbitrary file read in Rocket.Chat-Desktop)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-10-28T19:11:09.189Z",
+  "submitted_at": "2019-10-28T19:11:09.189Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sectex",
+    "url": "/sectex",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/qttgqsg03h4w994ig4zjfdqjj7io/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19858,
+    "url": "https://hackerone.com/rocket_chat",
+    "handle": "rocket_chat",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Rocket.Chat",
+      "twitter_handle": "RocketChat",
+      "website": "https://rocket.chat",
+      "about": "Rocket.Chat is a company built on open source values and a love for efficiency. The company is driven by our amazing community of contributors."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-01-02T16:19:08.554Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-01-02T16:19:08.515Z",
+  "team_member_agreed_on_going_public_at": "2020-01-02T16:18:18.276Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Description:** Rocket.Chat allows administrative users to customize the home body. Since `<script>` tags are removed, I think that running scripts should not be allowed. However, event handlers are not removed, allowing you to inject your own scripts.\n\n## Releases Affected:\n\n  * Rocket.Chat-Desktop-Client: v2.15.5\n  * Rocket.Chat-Server: v2.0.0\n  * Apps-Engine-Version: v1.5.2\n\n## Steps To Reproduce (from initial installation to vulnerability):\n\n  - Go to `Administration » Layout » Content`\n  - Set `Home Body` to `<img src=0 onerror=\"alert(0)\"/>`\n  - Visit `/home`\n\n### Arbitrary file read in Rocket.Chat-Desktop\n\n  - Go to `Administration » Layout » Content`\n  - Set `Home Body` to `<iframe src=\"file://c:/windows/system32/drivers/etc/hosts\" onload=\"alert(iframe.contentDocument.body.innerHTML)\" id=\"iframe\"></iframe>`\n  - Visit `/home`\n\n## Supporting Material/References:\n\n  * {F613006}\n  * {F613007}\n  * {F620074}\n\n## Impact\n\n* Attackers can execute scripts which leads to arbitrary file read and rce in Rocket.Chat-Desktop",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 613006,
+      "file_name": "admin-panel.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/RRG2vdBhWcrhTEwKmrFCfdYz?response-content-disposition=attachment%3B%20filename%3D%22admin-panel.png%22%3B%20filename%2A%3DUTF-8%27%27admin-panel.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSQYA2ZTM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC1BTFBFIGBCfRzJ%2F9qWWUi0%2FwgJ7uKqB0XrqE%2F5tjSGAIhAJJcq9OzWWi%2F0TTpabsKp5oskh3ChbXcqueGSu6e%2B26xKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwtDGoj4s7%2FtZ8VFEAqjgVkdBmUSrTgEiHfOZ8F4NXWUtvY3x22oEl7XRsL3EFY7PjhoTlE0YuHaL2KunlmQnmUegmnzCxn%2BcBHnwJFzGl1r00QnEyYYdX7RI935n3WPvmFZP5Me6G88cbj3Q83umI3Q2TGmncazqN%2B1x9FL4qWYWuH8lc3hr6vWhvF9EfW%2B8Jx0kCbRJHcSHAIc11v9rMK0tNgXYT%2FSIFDGc%2BdXjaLJWyvd00XtZjPWL%2F9H4tbS9n8YyK4YOojT3KhyXwFLBIehPgAzJuoI52tJGpGutcEDPllJG3XYlpYqHLGFsX2iQpyJ2Uuknx%2Fuq5pce96tmlTbrDr6anOlYG3NyvPmmfk1fl63Wp%2BRN5lqdAVnEMcLu6uozMH%2BZcjMBMtMT%2FqBz7sJO4F9tiwS6w%2BGnWTlNSkdAqvYuz1ZbPTrJ4s1qo2DI8Ea9AUPXCO66gVSVNy6V22VB09GCEnM9I0LC8lFQT4Hmwbb2JiFp%2BNcLpQSmO0X8DnLJu0bIjBB0XgFKMFPlcaB%2B5MmBMTyl4FqQaly3wDvnrPL1On92E1%2BotIRXHhkgdsPIX8KsTl3ITwOUhE8wzHoGCD3iU0VVn25nqSZG4IR6zYubSc1VMTn9uz36buQNVGIe6N86WY%2BpX%2FHLTRwcbZ5ak39ZV1FvS5%2BzwJxUurHehXLqdg1%2FdYOsqggMA7SNLk6O8sjp4VEfFVMAD4PqRB0pnNMSOK90NDClJXmX5rgCYfHvVftqVWyWniBSDrJf2skvTl33sAjYSh%2BwVoBe6%2BtH0IHGfUgoGwb7h7d%2FFJS8WSbNXlUpbeYA0hnAsRzoYreA9hFxCXVTybOw809fqVX0wBLLYV8FSxslL%2BjT1z5vCG48AcSS3jLY2pB6AwweXjzAY6sAE0Z9CS9UZCklB7JyXz%2BbggxuAUc0hRJZzjdGvoqoHiV0ozU%2B9joXNeTPKlJqvpM6CnhM0LOa01CGAtKU%2BEpT1b8PuaKPv7MEcWeuCLIVfUBn16VT22G7m0FshJP8XaJNZxK8wLP91IGpbxyTaahsqXChUu6U5eFDZbkh2R60cjISlyWjGWE7Tgk5X2LEWBiaUSpWFiY%2FbPCPAY%2Fn2uJ%2B2aUVSBvwOOjA1RySbjeOp4Cg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1e433fbf4d92a6147e25fb3c4bbdb8ac888c7e705ea30afdaa24b109342ada63",
+      "file_size": 62776,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 613007,
+      "file_name": "alert.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/BMQe9NQrEi1rk4dTifu39cMi?response-content-disposition=attachment%3B%20filename%3D%22alert.png%22%3B%20filename%2A%3DUTF-8%27%27alert.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSQYA2ZTM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC1BTFBFIGBCfRzJ%2F9qWWUi0%2FwgJ7uKqB0XrqE%2F5tjSGAIhAJJcq9OzWWi%2F0TTpabsKp5oskh3ChbXcqueGSu6e%2B26xKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwtDGoj4s7%2FtZ8VFEAqjgVkdBmUSrTgEiHfOZ8F4NXWUtvY3x22oEl7XRsL3EFY7PjhoTlE0YuHaL2KunlmQnmUegmnzCxn%2BcBHnwJFzGl1r00QnEyYYdX7RI935n3WPvmFZP5Me6G88cbj3Q83umI3Q2TGmncazqN%2B1x9FL4qWYWuH8lc3hr6vWhvF9EfW%2B8Jx0kCbRJHcSHAIc11v9rMK0tNgXYT%2FSIFDGc%2BdXjaLJWyvd00XtZjPWL%2F9H4tbS9n8YyK4YOojT3KhyXwFLBIehPgAzJuoI52tJGpGutcEDPllJG3XYlpYqHLGFsX2iQpyJ2Uuknx%2Fuq5pce96tmlTbrDr6anOlYG3NyvPmmfk1fl63Wp%2BRN5lqdAVnEMcLu6uozMH%2BZcjMBMtMT%2FqBz7sJO4F9tiwS6w%2BGnWTlNSkdAqvYuz1ZbPTrJ4s1qo2DI8Ea9AUPXCO66gVSVNy6V22VB09GCEnM9I0LC8lFQT4Hmwbb2JiFp%2BNcLpQSmO0X8DnLJu0bIjBB0XgFKMFPlcaB%2B5MmBMTyl4FqQaly3wDvnrPL1On92E1%2BotIRXHhkgdsPIX8KsTl3ITwOUhE8wzHoGCD3iU0VVn25nqSZG4IR6zYubSc1VMTn9uz36buQNVGIe6N86WY%2BpX%2FHLTRwcbZ5ak39ZV1FvS5%2BzwJxUurHehXLqdg1%2FdYOsqggMA7SNLk6O8sjp4VEfFVMAD4PqRB0pnNMSOK90NDClJXmX5rgCYfHvVftqVWyWniBSDrJf2skvTl33sAjYSh%2BwVoBe6%2BtH0IHGfUgoGwb7h7d%2FFJS8WSbNXlUpbeYA0hnAsRzoYreA9hFxCXVTybOw809fqVX0wBLLYV8FSxslL%2BjT1z5vCG48AcSS3jLY2pB6AwweXjzAY6sAE0Z9CS9UZCklB7JyXz%2BbggxuAUc0hRJZzjdGvoqoHiV0ozU%2B9joXNeTPKlJqvpM6CnhM0LOa01CGAtKU%2BEpT1b8PuaKPv7MEcWeuCLIVfUBn16VT22G7m0FshJP8XaJNZxK8wLP91IGpbxyTaahsqXChUu6U5eFDZbkh2R60cjISlyWjGWE7Tgk5X2LEWBiaUSpWFiY%2FbPCPAY%2Fn2uJ%2B2aUVSBvwOOjA1RySbjeOp4Cg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c15d411689d67fd42808d1bfe511cc9c77442b661bafe18aa30cd2e15b9858b9",
+      "file_size": 50117,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 620074,
+      "file_name": "arbitrary_file_read.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/nQtJYBMvQRabVVWMKukXTU7W?response-content-disposition=attachment%3B%20filename%3D%22arbitrary_file_read.mp4%22%3B%20filename%2A%3DUTF-8%27%27arbitrary_file_read.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSQYA2ZTM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005958Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC1BTFBFIGBCfRzJ%2F9qWWUi0%2FwgJ7uKqB0XrqE%2F5tjSGAIhAJJcq9OzWWi%2F0TTpabsKp5oskh3ChbXcqueGSu6e%2B26xKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwtDGoj4s7%2FtZ8VFEAqjgVkdBmUSrTgEiHfOZ8F4NXWUtvY3x22oEl7XRsL3EFY7PjhoTlE0YuHaL2KunlmQnmUegmnzCxn%2BcBHnwJFzGl1r00QnEyYYdX7RI935n3WPvmFZP5Me6G88cbj3Q83umI3Q2TGmncazqN%2B1x9FL4qWYWuH8lc3hr6vWhvF9EfW%2B8Jx0kCbRJHcSHAIc11v9rMK0tNgXYT%2FSIFDGc%2BdXjaLJWyvd00XtZjPWL%2F9H4tbS9n8YyK4YOojT3KhyXwFLBIehPgAzJuoI52tJGpGutcEDPllJG3XYlpYqHLGFsX2iQpyJ2Uuknx%2Fuq5pce96tmlTbrDr6anOlYG3NyvPmmfk1fl63Wp%2BRN5lqdAVnEMcLu6uozMH%2BZcjMBMtMT%2FqBz7sJO4F9tiwS6w%2BGnWTlNSkdAqvYuz1ZbPTrJ4s1qo2DI8Ea9AUPXCO66gVSVNy6V22VB09GCEnM9I0LC8lFQT4Hmwbb2JiFp%2BNcLpQSmO0X8DnLJu0bIjBB0XgFKMFPlcaB%2B5MmBMTyl4FqQaly3wDvnrPL1On92E1%2BotIRXHhkgdsPIX8KsTl3ITwOUhE8wzHoGCD3iU0VVn25nqSZG4IR6zYubSc1VMTn9uz36buQNVGIe6N86WY%2BpX%2FHLTRwcbZ5ak39ZV1FvS5%2BzwJxUurHehXLqdg1%2FdYOsqggMA7SNLk6O8sjp4VEfFVMAD4PqRB0pnNMSOK90NDClJXmX5rgCYfHvVftqVWyWniBSDrJf2skvTl33sAjYSh%2BwVoBe6%2BtH0IHGfUgoGwb7h7d%2FFJS8WSbNXlUpbeYA0hnAsRzoYreA9hFxCXVTybOw809fqVX0wBLLYV8FSxslL%2BjT1z5vCG48AcSS3jLY2pB6AwweXjzAY6sAE0Z9CS9UZCklB7JyXz%2BbggxuAUc0hRJZzjdGvoqoHiV0ozU%2B9joXNeTPKlJqvpM6CnhM0LOa01CGAtKU%2BEpT1b8PuaKPv7MEcWeuCLIVfUBn16VT22G7m0FshJP8XaJNZxK8wLP91IGpbxyTaahsqXChUu6U5eFDZbkh2R60cjISlyWjGWE7Tgk5X2LEWBiaUSpWFiY%2FbPCPAY%2Fn2uJ%2B2aUVSBvwOOjA1RySbjeOp4Cg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=55eeec5c0b7702fe1b844e0957b17d4b2b7834aded18551531b48349e5466f6f",
+      "file_size": 902197,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-02-01T16:18:18.343Z",
+  "allow_singular_disclosure_after": -191061699.67786577,
+  "singular_disclosure_allowed": true,
+  "vote_count": 11,
+  "voters": [
+    "0xmagna",
+    "he4am",
+    "mashoud1122",
+    "deb0con",
+    "cryptographer",
+    "sourceflow",
+    "cailleach_",
+    "mhaja7",
+    "thasmokey",
+    "b7845ae0fc9e3b4a2072a01",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "id": 779442,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83Nzk0NDI=",
+  "url": "https://hackerone.com/reports/779442",
+  "title": "Subdomain takeover of storybook.lystit.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2020-01-21T16:51:00.002Z",
+  "submitted_at": "2020-01-21T16:51:00.002Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "parzel",
+    "url": "/parzel",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/kAVxjQwjsERoJp9eMTQEwZD1/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 16334,
+    "url": "https://hackerone.com/lyst",
+    "handle": "lyst",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/016/334/0915cf74d60a19ff359a42f4dfa3f9878957e589_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/016/334/0915cf74d60a19ff359a42f4dfa3f9878957e589_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Lyst",
+      "twitter_handle": "makinglyst",
+      "website": "https://www.lyst.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-01-22T14:38:48.812Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-01-22T14:35:17.834Z",
+  "team_member_agreed_on_going_public_at": "2020-01-22T14:38:48.687Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Summary:\nThe subdomain storybook.lystit.com had an CNAME record pointing to an unclaimed S3 bucket. This is a high severity security issue because an attacker can register the bucket on AWS and therefore can serve her own content on the subdomain. This allows for various attacks.\n\n# Description:\nThe dangling CNAME record of storybook.lystit.com is pointing to ███████ and the bucket which could not be found was: \"storybook.lystit.com\". I was able to register a S3 bucket with this name in AWS. After enabling static website hosting I was able to takeover the subdomain and serve arbitrary content. I am serving a POC to proof I am controlling the subdomain as well as a simple XSS POC.\n\n# POC\nPOC: view-source:http://storybook.lystit.com/\nStored XSS: http://storybook.lystit.com/asdjklkas1312das879123.html\n{F691531}\n{F691530}\n\n# Supporting Material/References:\nhttps://www.hackerone.com/blog/Guide-Subdomain-Takeovers\n\n# Recommendations for fix\nRemove the dangling CNAME record from storybook.lystit.com\n\n## Impact\n\nThe domain takeover allows various attacks. As the full domain is attacker controlled it can be used to serve XSS attacks, phishing campaigns and might be used to bypass the Same Origin Policy on other lystit.com domains and services.",
+  "bounty_amount": "1000.0",
+  "formatted_bounty": "$1,000",
+  "weakness": {
+    "id": 75,
+    "name": "Privilege Escalation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 691530,
+      "file_name": "Screenshot_from_2020-01-21_17-48-41.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ujm2R7u3eWuFXjweCEx6iTPm?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2020-01-21_17-48-41.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2020-01-21_17-48-41.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZZFH4ZWJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005722Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCebYGLtP1fg6avPiofj0%2FGR4pPM8U0s0q6Zx59sZ0%2FrwIhAKFwzK%2FoQhuaTO54dwwxFCpnL12iyYwAgkqJIZhZwV4XKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy12XWw%2Bc3n4FZYNQwqjwU3wqdrcPph%2BGHkfUoQQ6h9Pz8bTyWmLWYeJnUGWlITbRDRMhSBL6xzoSQD%2Fvki95jS5hopBlvzxJSU5fJrjRzmo%2BUZOY2R%2BZLpIjo5FxV6BCsIucmewquGDjfOKqBtX9kHzs7ApCquRb2c4fTaL8GifKLYAERo2V1sdOGBze%2FpSRxv%2BIe9lum47VccCDF8Ntrh5i5heUlyuRNqIx1Q78aTcb2p%2Bnz%2FraFXMi3C9TtgDJDkPcd4hOOlJRDxxac1VsJFmADepTLAFjmd%2Bd%2BjFYtDkJX65ObUFRz5DP0F9bhOZC%2FELUOx6dJDwxkKVSDAGzP8PX8LYr%2B7kT6PvDtma%2F5sY7T479Nz47koh3N0%2FZcs%2FWTxM7ut%2FrJbb3UKvio98H%2BX8stvrGfT%2Bg2wyUwtZhPmFSEMWlOpt2675FBDqHuocoZgrh7XvL2Qw932K5Ht0mP1tBDchT9bQmNFIsse8aJOu4B7jy59u3I4pV61i%2F6dolvsniFub5T8D4fFLRbalr1%2BXNClpKcWTEqOteAxajKTbeDh3ppQQ3ege5fVFbit4Csyq67ecUZpyivVkBIxqj9UKCWonXMerBkpNMmYgwngHLGwig4eT1%2FSL%2BDRP9lHF9CsJF%2F1LiF926krZbTb6a6LbsjuE5GvaCJ9dGNNPkds2tnvwfquOd7swbcCxpeOB9x8xWrDfMk%2FcoYuDv%2FXvRBiJwO0Xe7UO6m4TionCU7CWLxpb2v2DgNU7bZoQcariFwBhxLxul9z7DnICzz9xQ4iZmpiwCGRGUl52bYp%2FvKDO1lKcub2QBIv9zRCDdv9FjVmwlzOC84SSc2Vk4Z1G6r9o6xjbRgzGYBC3dENvtbfzhVHUoouobUOAW875%2FzfMNLh48wGOrABrizQ6%2F%2BQwOq6j85ZckmE6FKQKsPZmC%2F0Bi%2Beq1b8q5ek4EIaUKTjmKY7BerobUgxWTwEVvzBPNOWTfN1ekdDSrBFlYWrPyMajB3z3vJ51UDooJNUY1dS4PLjV%2FkIyRdeagGo5rREx%2BlHLNPyocsCu6Dkl%2FuSMgXDnH2aQ8JHQWJi0KDfT6gnb5S6XTD5gEBzZFgwuhV0%2BlLbzkc4FlJHlMv72BFOlgam%2B3uVOW24Kew%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=82f1d42c8bd4a5ea10e0314f47c672a50e70496f702a5cf1c7cace3fa06ed200",
+      "file_size": 34023,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 691531,
+      "file_name": "Screenshot_from_2020-01-21_17-48-19.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/R8qSWEsmCsYWrjJoZR5UrE8P?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2020-01-21_17-48-19.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2020-01-21_17-48-19.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZZFH4ZWJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005722Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCebYGLtP1fg6avPiofj0%2FGR4pPM8U0s0q6Zx59sZ0%2FrwIhAKFwzK%2FoQhuaTO54dwwxFCpnL12iyYwAgkqJIZhZwV4XKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy12XWw%2Bc3n4FZYNQwqjwU3wqdrcPph%2BGHkfUoQQ6h9Pz8bTyWmLWYeJnUGWlITbRDRMhSBL6xzoSQD%2Fvki95jS5hopBlvzxJSU5fJrjRzmo%2BUZOY2R%2BZLpIjo5FxV6BCsIucmewquGDjfOKqBtX9kHzs7ApCquRb2c4fTaL8GifKLYAERo2V1sdOGBze%2FpSRxv%2BIe9lum47VccCDF8Ntrh5i5heUlyuRNqIx1Q78aTcb2p%2Bnz%2FraFXMi3C9TtgDJDkPcd4hOOlJRDxxac1VsJFmADepTLAFjmd%2Bd%2BjFYtDkJX65ObUFRz5DP0F9bhOZC%2FELUOx6dJDwxkKVSDAGzP8PX8LYr%2B7kT6PvDtma%2F5sY7T479Nz47koh3N0%2FZcs%2FWTxM7ut%2FrJbb3UKvio98H%2BX8stvrGfT%2Bg2wyUwtZhPmFSEMWlOpt2675FBDqHuocoZgrh7XvL2Qw932K5Ht0mP1tBDchT9bQmNFIsse8aJOu4B7jy59u3I4pV61i%2F6dolvsniFub5T8D4fFLRbalr1%2BXNClpKcWTEqOteAxajKTbeDh3ppQQ3ege5fVFbit4Csyq67ecUZpyivVkBIxqj9UKCWonXMerBkpNMmYgwngHLGwig4eT1%2FSL%2BDRP9lHF9CsJF%2F1LiF926krZbTb6a6LbsjuE5GvaCJ9dGNNPkds2tnvwfquOd7swbcCxpeOB9x8xWrDfMk%2FcoYuDv%2FXvRBiJwO0Xe7UO6m4TionCU7CWLxpb2v2DgNU7bZoQcariFwBhxLxul9z7DnICzz9xQ4iZmpiwCGRGUl52bYp%2FvKDO1lKcub2QBIv9zRCDdv9FjVmwlzOC84SSc2Vk4Z1G6r9o6xjbRgzGYBC3dENvtbfzhVHUoouobUOAW875%2FzfMNLh48wGOrABrizQ6%2F%2BQwOq6j85ZckmE6FKQKsPZmC%2F0Bi%2Beq1b8q5ek4EIaUKTjmKY7BerobUgxWTwEVvzBPNOWTfN1ekdDSrBFlYWrPyMajB3z3vJ51UDooJNUY1dS4PLjV%2FkIyRdeagGo5rREx%2BlHLNPyocsCu6Dkl%2FuSMgXDnH2aQ8JHQWJi0KDfT6gnb5S6XTD5gEBzZFgwuhV0%2BlLbzkc4FlJHlMv72BFOlgam%2B3uVOW24Kew%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e205cec9e976c78312a9b4817013cc765a70c66c56e09ceb32c17118ccfd22a3",
+      "file_size": 13658,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 161,
+  "voters": [
+    "loaymorad",
+    "daehee",
+    "sebd",
+    "a_d_a_m",
+    "hackerontwowheels",
+    "sourc7",
+    "sklnhunt",
+    "securitychops",
+    "rook1337",
+    "kickino",
+    "and 151 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 32967,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.lyst.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

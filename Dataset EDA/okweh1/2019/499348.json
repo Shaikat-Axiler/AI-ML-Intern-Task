@@ -1,0 +1,133 @@
+{
+  "id": 499348,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80OTkzNDg=",
+  "url": "https://hackerone.com/reports/499348",
+  "title": "Twitter lite(Android): Vulnerable to local file steal, Javascript injection, Open redirect ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2019-02-21T16:14:32.124Z",
+  "submitted_at": "2019-02-21T16:14:32.124Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rahulkankrale",
+    "url": "/rahulkankrale",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/005/502/d37e781fc65b9d9b3af63e6a0094450fe5c68509_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-04-29T16:17:02.180Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-04-12T06:32:16.515Z",
+  "team_member_agreed_on_going_public_at": "2019-04-29T16:17:01.989Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** com.twitter.android.lite.TwitterLiteActivity is set to exported and doesn't validate data pass to intent due to which this activity vulnerable to steal users local files, javascript injection and open redirect.\n\n**Description:** com.twitter.android.lite.TwitterLiteActivity is set to exported so external app can communicate with it.\nAs this activity doesn't validate data pass through intent critical uri like javascript and file so malicious app can steal users files as well as inject javascript.\nIt can leads to many issue like UXSS, Token steal, etc.\n\n## Steps To Reproduce:\n\n  1. To reproduce we use ADB tool\n\n  2. To reproduce local file access use: adb shell am start -n com.twitter.android.lite/com.twitter.android.lite.TwitterLiteActivity -d \"file:///sdcard/BugBounty/1.html\"\n\n  3. To reproduce javascript injection: adb shell am start -n com.twitter.android.lite/com.twitter.android.lite.TwitterLiteActivity -d \"javascript://example.com%0A alert(1);\"\n\n  4. To reproduce open redirect: adb shell am start -n com.twitter.android.lite/com.twitter.android.lite.TwitterLiteActivity -d \"http://evilzone.org\"\n\n * Video of POC attached.\n\nThanks\n\n## Impact\n\nAs critical uri like javascript & file is not being validate malicious app can steal users session token, users files etc.",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 427777,
+      "file_name": "Screenrecorder-2019-02-21-21-41-11-973.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/427/777/9003dd44f2c851d680c3c35059f1132e02d15d9c/Screenrecorder-2019-02-21-21-41-11-973.mp4?response-content-disposition=attachment%3B%20filename%3D%22Screenrecorder-2019-02-21-21-41-11-973.mp4%22%3B%20filename%2A%3DUTF-8%27%27Screenrecorder-2019-02-21-21-41-11-973.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7KZMNWF3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015038Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIBpctk5vIcz8fqSxmSbvaEaA1vPXGZAzy8p2lTcuSOqcAiEA8XDMNvLIH8IFW8sJzuwl%2Fofjl3QmgKtFRp1BIZMlQZAquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDCLD1FNfAq4lNpj37iqPBa0M7iq3oIheySEZNnmgACvAWV%2BkbXHCsteA4rscn1beTFz8534XLB5ilpc%2Fnb2Xpze8GBNJanaSc9cKiHGAFyDZ0OTmKOpVNzyomRG0id4bgUU1pBse6JfR%2FR9T2APt%2Fl0WOKa5AXonxVTB%2B%2FJz73R%2FFrd%2F8UOXlHqkfWd2vvO4BBH1Dw2p0jabiXTpLfaM54se%2FuPl4Kx%2F6XZabduPzoDY6azarYmHqYMroGTWKRYMzGt7HY3wYyVQvxOShtv4DL1vJdsOpBck2W5jYLnh3%2FzYmjvulpVouKFkyLDTf2H6bzaEXG0mRDVSUNSZu3bsddxvLzUCYEUVi1pU63sadXWdyeUaSEte4kGuwBeF%2Fj2SwNmHUk0YBjztG673X%2BPSx7AUOxC2zxqiWn9Fpwpk3Sn6UI5GuKkMvDhUg7bVT8Tykrd4zJTMepJOXucr0Ap%2F4f17KA8KEY6aUjzwNIn6S4vTgrTRt956sxSBAXEF1x7Lc5PuSU68b2ogIpDAapXbTIMNE7k4RaVH4b8rmKB8CKnGQRDksAAL71R8MZvpLGu9Mq2mbYmRA45gS8iA2ONZ10pAykkIGt%2BQ23rfUucGlP5jC53R5LU3k0QqUDLSca5btK1RVLH3AZXyvvUu8hB4Necr4XRKe9TJg78oxt%2B1Q1cMSvSEJNcyJc58qsNuFdRZ4gnbnthWNb%2BLBTouqApwUrrQxXZ0T5eM8sFf%2FWsbAfcyHCU2ApLZp5k2rioOWP7hKIHZOyUwtK3cra1m5Ke7vQF3yRJzqEt6MFe2%2Fz35TwM37cZSvlEm7DFVb4dxZz72iFsxiwo%2BKKssN1gsahlA6yUZGllZLDbfkcLPyfzAeD2afFrRDW4WvPoaYOBUkrUw9uvjzAY6sQGzXLxWXzhgzd%2B5dLZO6RbnHP%2B6iFTlCTdtc4JwCY0jfTZglLiZSz99SQo%2BzQE%2F3D20j22aHOE8PBgYRMimZvwuQB5bpBVz0yj1MOfAStV4Cn3p8PXaEUhYRcfZvUp5lzGizE04VAR33TkhfeRgK4urnVz1lqRZzrLRWQ4H4lsswg5E5engZqMjZUtTsPg103tBhqe5JPopQlW5sppUFToVRJ3%2B%2Fk%2F2bjl5LiRDHNL0J8I%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=65976897d7d09f8088af28784b9cf7e9debdb8990298dbf5e5c2f9640b94e170",
+      "file_size": 6534806,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-05-12T06:32:16.575Z",
+  "allow_singular_disclosure_after": -213995902.2430832,
+  "singular_disclosure_allowed": true,
+  "vote_count": 93,
+  "voters": [
+    "kurogai",
+    "ajinkyadeokar7",
+    "vavkamil",
+    "p1stachios",
+    "foobar7",
+    "kapytein",
+    "stealthy",
+    "sameerphad72",
+    "cyber_humans",
+    "ta8ahi",
+    "and 83 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 1068,
+    "asset_type": "GOOGLE_PLAY_APP_ID",
+    "asset_identifier": "com.twitter.android",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

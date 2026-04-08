@@ -1,0 +1,128 @@
+{
+  "id": 710006,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MTAwMDY=",
+  "url": "https://hackerone.com/reports/710006",
+  "title": "Elasticsearch leaks data through the notes scope",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-10-08T21:45:57.718Z",
+  "submitted_at": "2019-10-08T21:45:57.718Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rpadovani",
+    "url": "/rpadovani",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/geoyjjx2sc7a7bvf6hguumezg0i0/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef?response-content-disposition=inline%3B%20filename%3D%22avatar.jpg%22%3B%20filename%2A%3DUTF-8%27%27avatar.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235953Z&X-Amz-Expires=703&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7f2897aa4c71fc1077d86d740ab8c4b31ce4191d3162cf04e4d47c8615875a86"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 264,
+    "url": "https://hackerone.com/gitlab",
+    "handle": "gitlab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GitLab",
+      "twitter_handle": "gitlab",
+      "website": "https://about.gitlab.com",
+      "about": "A single application for the entire software development lifecycle."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-10-06T21:57:20.940Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-10-06T21:57:20.764Z",
+  "team_member_agreed_on_going_public_at": "2020-10-06T19:24:47.151Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "### Summary\n\nThe Elasticsearch results, when filtering using the `notes` scope, leaks data about private groups, private projects, and private issues.\n\n### Steps to reproduce\n\n1. Search, as an anonymous user, `nextbit` in the Gitlab group, filtering for \"comments\" ([link](https://gitlab.com/search?group_id=9970&repository_ref=&scope=notes&search=nextbit&snippets=))\n2. You will have as result a private note saying `Riccardo Padovani mentioned in nextbit/virtualcore/gui#109` (see screenshot). This basically leaks information about the existence of a private group, a private subgroup, a private project, the ID of an issue in the project, and a membership of the project. 3. You can also retrieve more data through the APIs:\n\n```\n19:55:18 in ~ \n➜ curl \"https://gitlab.com/api/v4/projects/278964/search?scope=notes&search=nextbit\" --header \"PRIVATE-TOKEN: TEST\" | jq\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n100   520  100   520    0     0    508      0  0:00:01  0:00:01 --:--:--   508\n[\n  {\n    \"id\": 215547575,\n    \"type\": null,\n    \"body\": \"mentioned in issue nextbit/VirtualCore/gui#109\",\n    \"attachment\": null,\n    \"author\": {\n      \"id\": 16048,\n      \"name\": \"Riccardo Padovani\",\n      \"username\": \"rpadovani\",\n      \"state\": \"active\",\n      \"avatar_url\": \"https://secure.gravatar.com/avatar/9d89d4072afb4457b0c49131d8d258f5?s=80&d=identicon\",\n      \"web_url\": \"https://gitlab.com/rpadovani\"\n    },\n    \"created_at\": \"2019-02-19T12:54:23.670Z\",\n    \"updated_at\": \"2019-02-19T12:54:23.670Z\",\n    \"system\": true,\n    \"noteable_id\": 24685040,\n    \"noteable_type\": \"Issue\",\n    \"resolvable\": false,\n    \"noteable_iid\": 25362\n  }\n]\n``` \n\nThe token used is from another account, whom doesn't have access to `nextbit`, or doesn't have any relation with the mentioned issue. It is necessary 'cause search APIs can be used only by logged users.\n\nThe ID of the project where we perform the search is the Gitlab one.\n\n### Impact\n\nElasticsearch doesn't properly authorize access to the notes in search results, so there are leaks of private data, given the right search query.\n\n### Output of checks\n\nThis bug happens on GitLab.com\n\n## Impact\n\nElasticsearch doesn't properly authorize access to the notes in search results, so there are leaks of private data, given the right search query",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 602827,
+      "file_name": "Screenshot_2019-10-08_nextbit___Search.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/9uSDK8vSE3RzyjJ1DYUdBgf1?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2019-10-08_nextbit___Search.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2019-10-08_nextbit___Search.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235953Z&X-Amz-Expires=703&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cc26ecf9d8362aaeaa553b044a7b7b574b8a65fdf0569ae690d5add680c9837a",
+      "file_size": 56080,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 8,
+  "voters": [
+    "thaivu",
+    "since2003",
+    "exception",
+    "cryptographer",
+    "horsebackhacker",
+    "artkulak",
+    "mohanan_t",
+    "destinedtohack"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 18138,
+    "asset_type": "URL",
+    "asset_identifier": "gitlab.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": 971234,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NzEyMzQ=",
+  "url": "https://hackerone.com/reports/971234",
+  "title": "Clickjacking on cas.acronis.com login page",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-08-31T13:45:40.449Z",
+  "submitted_at": "2020-08-31T13:45:40.667Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "dgirlwhohacks",
+    "url": "/dgirlwhohacks",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/vAazsqfhwVbxCsPKcKhKYtHN/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13428,
+    "url": "https://hackerone.com/acronis",
+    "handle": "acronis",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Acronis",
+      "twitter_handle": "Acronis",
+      "website": "https://www.acronis.com",
+      "about": "Complete integrated cybersecurity and data protection for MSPs and IT teams"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-11-03T09:10:26.593Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-10-31T10:51:29.738Z",
+  "team_member_agreed_on_going_public_at": "2020-11-03T09:10:26.494Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Steps To Reproduce:\n\n    Create a new HTML file\nSource code:\n<!DOCTYPE HTML>\n<html lang=\"en-US\">\n<head>\n<meta charset=\"UTF-8\">\n<title>I Frame</title>\n</head>\n<body>\n<h2>Clickjacking Vulnerability</h2>\n<iframe src=\"https://cas.acronis.com/\" frameborder=\"0\" height=\"700px\" width=\"850px\"></iframe>\n</body>\n</html>\n \n    Save the file as whatever.html\n    Open document in browser \n\nReference: https://hackerone.com/reports/591432\n\nFIX-\nThe vulnerability can be fixed by adding \"frame-ancestors 'self';\" to the CSP (Content-Security-Policy) header.\nNOTE\n\nBest Regards,\nDgirl\n\n## Impact\n\nAttacker may tricked user, sending them malicious link then user open it clicked some image and their account unconsciously has been deactivated",
+  "weakness": {
+    "id": 74,
+    "name": "UI Redressing (Clickjacking)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 970544,
+      "file_name": "UiRedressing.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/kGPPF8jS7kpuEmxYjgXEPokX?response-content-disposition=attachment%3B%20filename%3D%22UiRedressing.png%22%3B%20filename%2A%3DUTF-8%27%27UiRedressing.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2PPGKUPX%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235433Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIHLuGZcGnvXm50doyTuEQuvS1KWRRUfILYloWKG8z17vAiEAwm%2Bd%2FxZTyBqubxpcWNduXjpRzTBGwxeJx5m2gRIp68gqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMY5aCx5ornu4LbxLCqOBVugZlS%2FEFRS%2BuSQXC3TgOXSENRjnk71%2Blmi9lJgLusZZGORWPIvlPzguFDwHQ2kYL3jVTv2eaLyPLfbT6FyCuzWX1mk8nfbnKmI3miMT%2Fj%2FYCXRGbHw6XBtusXtshD1KKas8JMagvOSSWWh7nkef848tJcOJ4rZOZ7xDLA3NrjtovzyKF1K%2FLaR836OhWWL87ihiwq9TobPJ712btcIJa0SrABTNiaZiDUXnMWM5ky%2BMaXpGd6fxEn%2B5pPzZXSv1zzRBraB741nYdQ%2FLd4Gh0yNEB7rSpm%2FyHveCjemnZePmzM01ubdFJXi%2FcXdC1v54IH4OFM6pQy8u8GY0B3hZn%2Fl%2BsPIyHwiK90eUwXbGLdMCJJTcfYSRTHQdA5X24fTxo%2FA2zPxC%2BgaSLeMDKKfQr4ZPUH1EISCQPOuMIaHuVSVLexGm%2BM2XE9oDlcHbutNyBjoVcI9hLuM%2BiBbfRfUj9%2B26mTMcSyCMVLACsGcWZZ3IcbfFiY62p5kXzO5fmFmYNIgMC4%2FCfL70NuVrxVRXudv%2FEgWNxT80eo%2B743s2%2BXrM1VOQaCWL2tdfkdNNxHsl1PN%2FyQdscAvebdaNhEaM5GkSGmsonaNzCREhPXPprjeVN15UjdcOeJnUiHnEUPUpUHWyzi%2BvvEIrV87Zf%2F1qaW0X2cU%2Facke0S5lj4SVBPqAvmvLt9sWRK3YkgjRyamPDcv1Dz2iS1xdoL4dN%2F%2BNYUg7Ix18hjlXFjX%2Br%2B3x5paRV1cmM0tcWaWoak%2FNGv%2BqSAlrvOL1RTQUl9z2fTterFQ9VxMIvpg4t31QvM9HKgGwWh7Hw8%2FBTZ0ub9qQd4XdO530Y9DsPwhbpLzR%2Bus1TgvXsdDdWGPw4q3Je3aETDE2ePMBjqxAb41hWlhrlcpst4sWkcp0JVkfT%2BfxIOEUrHnTALlgOzJ5EZbjOr09ySRm0N8wKh2YRdbIFI9V6jeboUsTWi01HkD3pQXaAbVTM58p9Cp%2BJl58CyMhEN2oOuNo9gg8ncCmCF%2F7GvdRF0iOh0R2y8sSmYZpfYQNR2Xs8WDimn8EtjHqC5OWrZxQHrGx3c9APT57ePzkFPj%2FgjQD%2B28fZz6NEEvl%2Fd02O%2FfxVBJwl5QkYv8zQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=915c0ae5493f0bfc9351f4189fd1e3db5db0b16ed1c586c25bee28b4cc624e86",
+      "file_size": 83702,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-11-30T10:51:29.792Z",
+  "allow_singular_disclosure_after": -164898183.7670974,
+  "singular_disclosure_allowed": true,
+  "vote_count": 19,
+  "voters": [
+    "rook1337",
+    "shadowrunner",
+    "akashhamal0x01",
+    "kassem_s94",
+    "2026",
+    "pr0f0x01",
+    "demonia",
+    "sleepnotf0und",
+    "m0ti0nl3ss_",
+    "drjzoidberg",
+    "and 9 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 50773,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.acronis.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

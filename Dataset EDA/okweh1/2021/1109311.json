@@ -1,0 +1,131 @@
+{
+  "id": 1109311,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMTA5MzEx",
+  "url": "https://hackerone.com/reports/1109311",
+  "title": "SQL injection in  https://www.acronis.cz/ via the log parameter",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-02-23T07:48:46.695Z",
+  "submitted_at": "2021-02-23T07:48:46.720Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "mmg",
+    "url": "/mmg",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/222/119/30b5386d5cc0fd351927b57fa02a7cf7c81a7a2b_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13428,
+    "url": "https://hackerone.com/acronis",
+    "handle": "acronis",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/e54TDdWdgLKsH3h1oFpK26bq/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Acronis",
+      "twitter_handle": "Acronis",
+      "website": "https://www.acronis.com",
+      "about": "Complete integrated cybersecurity and data protection for MSPs and IT teams"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-06-11T12:58:04.810Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-06-11T12:58:04.678Z",
+  "team_member_agreed_on_going_public_at": "2021-06-11T12:16:23.988Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I have discovered a SQL injection in https://www.acronis.cz/ using the POST request via the log parameter.\nUsing sqlmap, I have retrieved the current user: 'u_acronis@localhost''\n\nThe command used:\nsqlmap  -p log -r request-cz.txt --current-user  --level=2 --risk=2\n\nI did not perform any other actions.\n\n## Impact\n\nAn attacker can use SQL injection it to bypass a web application's authentication and authorization mechanisms and retrieve the contents of an entire database.\nThis can also be used by an attacker to execute OS commands, which may then be used to escalate an attack even further.",
+  "weakness": {
+    "id": 67,
+    "name": "SQL Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1206164,
+      "file_name": "request-cz.txt",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/02ku0gobohl3f2k55iazevogwcak?response-content-disposition=attachment%3B%20filename%3D%22request-cz.txt%22%3B%20filename%2A%3DUTF-8%27%27request-cz.txt&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T230451Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b8acce04444340b45364d2ce737706019ccadc4de57594ddbde8d978a2623709",
+      "file_size": 862,
+      "type": "text/plain",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 100,
+  "voters": [
+    "aagat_sh",
+    "brunopaixao",
+    "m4khn0",
+    "mr-medi",
+    "bombon",
+    "w31rd0",
+    "youstin",
+    "osman1337",
+    "alp",
+    "fqdn",
+    "and 90 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 13996,
+    "asset_type": "OTHER",
+    "asset_identifier": "Other Acronis Domains",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

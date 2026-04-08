@@ -1,0 +1,144 @@
+{
+  "id": 881855,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84ODE4NTU=",
+  "url": "https://hackerone.com/reports/881855",
+  "title": "Arbitrary change of blog's background image via CSRF",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-05-24T17:13:23.625Z",
+  "submitted_at": "2020-05-24T17:13:23.625Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "erwan_lr",
+    "url": "/erwan_lr",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/kL9zJEZXY89ocnwagnb5yBfK/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 55,
+    "url": "https://hackerone.com/wordpress",
+    "handle": "wordpress",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WordPress",
+      "twitter_handle": "wordpress",
+      "website": "https://wordpress.org/",
+      "about": "Beautiful sites of any kind."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-12-14T10:19:54.363Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-12-14T10:09:12.763Z",
+  "team_member_agreed_on_going_public_at": "2020-12-14T10:19:54.221Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Description:\n\nDespite being deprecated since v3.5.0, the `wp_set_background_image` method (defined in wp-admin/includes/class-custom-background.php), registered as an authenticated AJAX call (`wp_ajax_set-background-image`), is still active.\n\nGiven that the method is lacking CSRF checks, an attacker could change the background image of the blog to an arbitrary one from the media library via a CSRF attack on a logged in user with the `edit_theme_options` capability (by default administrators).\n\n## Steps To Reproduce:\n\nSave the code below in an HTML file, replace the `[WP]` by the correct domain, and change the `attachement_id` to an existing attachment id. The `size` parameter can also be changed to `thumbnail`, `medium`, `large` or `full`.\n\n```html\n<html>\n  <body>\n    <form action=\"https://[WP]/wp-admin/admin-ajax.php\" method=\"POST\">\n      <input type=\"hidden\" name=\"attachment_id\" value=\"5\" />\n      <input type=\"hidden\" name=\"action\" value=\"set-background-image\" />\n      <input type=\"hidden\" name=\"size\" value=\"thumbnail\" />\n      <input type=\"submit\" value=\"Submit request\" />\n    </form>\n  </body>\n</html>\n```\n\nThen log on to the blog as an administrator, open the file (with the same web browser used to login) and click the `Submit request` button. Then go the homepage of the blog and notice that the background image has been changed.\n\n## Recommendations\n\nGiven that the method has been deprecated and replaced with the `ajax_background_add` one which has the correct checks (both CSRF and authorisation), it would be recommended to remove the `wp_set_background_image` function all together, or at least not register it in the `wp_ajax_` hook.\n\n## Affected Code\n\nIn wp-admin/includes/class-custom-background.php\n\n```php\n// Unused since 3.5.0.\nadd_action( 'wp_ajax_set-background-image', array( $this, 'wp_set_background_image' ) );\n\n/**\n * @since 3.4.0\n * @deprecated 3.5.0\n */\npublic function wp_set_background_image() {\n\tif ( ! current_user_can( 'edit_theme_options' ) || ! isset( $_POST['attachment_id'] ) ) {\n\t\texit;\n\t}\n\n\t$attachment_id = absint( $_POST['attachment_id'] );\n\n\t$sizes = array_keys(\n\t\t/** This filter is documented in wp-admin/includes/media.php */\n\t\tapply_filters(\n\t\t\t'image_size_names_choose',\n\t\t\tarray(\n\t\t\t\t'thumbnail' => __( 'Thumbnail' ),\n\t\t\t\t'medium'    => __( 'Medium' ),\n\t\t\t\t'large'     => __( 'Large' ),\n\t\t\t\t'full'      => __( 'Full Size' ),\n\t\t\t)\n\t\t)\n\t);\n\n\t$size = 'thumbnail';\n\tif ( in_array( $_POST['size'], $sizes ) ) {\n\t\t$size = esc_attr( $_POST['size'] );\n\t}\n\n\tupdate_post_meta( $attachment_id, '_wp_attachment_is_custom_background', get_option( 'stylesheet' ) );\n\n\t$url       = wp_get_attachment_image_src( $attachment_id, $size );\n\t$thumbnail = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );\n\tset_theme_mod( 'background_image', esc_url_raw( $url[0] ) );\n\tset_theme_mod( 'background_image_thumb', esc_url_raw( $thumbnail[0] ) );\n\texit;\n}\n```\n\n## Impact\n\nAn attacker could make a logged in administrator change the background image of the blog to one of the image available in the media library.\n\nDepending on the images available, the blog may become unreadable as the image repeats itself, potentially masking the text.",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 841212,
+      "file_name": "Screenshot_2020-05-24_at_18.21.57.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/qX5vT9rUDVeQfdQtKfJkmYLE?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2020-05-24_at_18.21.57.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2020-05-24_at_18.21.57.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234512Z&X-Amz-Expires=1584&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=70bb65eef4cefba8088ed73dc5f2e2d24f5d5cc106fedeb724ed93dcdf265f53",
+      "file_size": 1107005,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-01-13T10:09:12.863Z",
+  "allow_singular_disclosure_after": -161098559.67577162,
+  "singular_disclosure_allowed": true,
+  "vote_count": 20,
+  "voters": [
+    "mattberg",
+    "ali",
+    "bibekshah",
+    "akashhamal0x01",
+    "erwan_lr",
+    "demonia",
+    "nikhilaadhi",
+    "ro00t",
+    "temporary_nickname",
+    "hallbryght",
+    "and 10 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.4,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 2750,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "WordPress Core",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

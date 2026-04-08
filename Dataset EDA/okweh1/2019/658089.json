@@ -1,0 +1,131 @@
+{
+  "id": 658089,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82NTgwODk=",
+  "url": "https://hackerone.com/reports/658089",
+  "title": "Rate Limit too lenient for endpoint sending emails",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "none",
+  "readable_substate": "Resolved",
+  "created_at": "2019-07-24T13:40:32.847Z",
+  "submitted_at": "2019-07-24T13:40:32.847Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "harshita174",
+    "url": "/harshita174",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/taAXA1pvvWf9X51wZnPjuyDi/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21801,
+    "url": "https://hackerone.com/wakatime",
+    "handle": "wakatime",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6t1wy3jbq9kayjwvqbnymavxizfx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/6t1wy3jbq9kayjwvqbnymavxizfx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WakaTime",
+      "twitter_handle": "wakatime",
+      "website": "https://wakatime.com",
+      "about": "Automated metrics about your programming from text editor plugins."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-08-19T15:11:55.662Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-19T14:25:58.691Z",
+  "team_member_agreed_on_going_public_at": "2020-08-19T15:11:55.550Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Rate-limiting is a process that is used to define the rate at which consumers can access APIs. Also, it determines the speed at which a consumer can access APIs. Rate limit is calculated in real time.\n\nHow to reproduce?\n\n1. Sign-up for the account for WakaTime.  Domain - www.wakatime.com\n2. After signing up login to the caviar account with login credentials\n3. Then,press forgot password and enter your email or temporary email address i.e https://temp-mail.org 4. Open burpsuite and intercept the request from browser ,if you get the intercepted request.\n5. Send the intercepted request to the intruder, In target section check the Host and Port section . In Positions section, clear all $signs and add $ sign to the anyone parameter In Payload section, add payload type to Numbers and set Numbers range.\n6. After all settings done press start attack, and the attack started till it reaches the Number range that we will set in the Payload sections.\n8. And you will get the mail regarding to the  password reset links to your mail box.\n\nHTTP Request-\n\nPOST /api/v1/users/reset_password HTTP/1.1\nHost: wakatime.com\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nReferer: https://wakatime.com/\nContent-Type: application/json\nX-CSRFToken: ad5d275dc3197936cc18040ae1882e89b04b6cf5b6d891d0dc337b38792f61b4\nX-Requested-With: XMLHttpRequest\nContent-Length: 34\nConnection: close\n\n## Impact\n\nThe user will get continuous email ragarding to password reset links till the attack stop.",
+  "weakness": {
+    "id": 92,
+    "name": "Weak Password Recovery Mechanism for Forgotten Password"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 537959,
+      "file_name": "Screenshot_(173).png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/537/959/eb172fa680d2ad7c952b894cf739e0d22270356f/Screenshot_%28173%29.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_%2528173%2529.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_%2528173%2529.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000916Z&X-Amz-Expires=1809&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bba8a883913d9acb5558cae7603187dc6c5ac926fbcd53d72c2dcdd8bc3a037f",
+      "file_size": 304242,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-09-18T14:25:58.747Z",
+  "allow_singular_disclosure_after": -171193397.69940302,
+  "singular_disclosure_allowed": true,
+  "vote_count": 3,
+  "voters": [
+    "sa1tama0",
+    "a13h1",
+    "harshita174"
+  ],
+  "severity": {
+    "rating": "none",
+    "score": 0.0,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

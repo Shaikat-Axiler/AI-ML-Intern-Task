@@ -1,0 +1,166 @@
+{
+  "id": 3120790,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMTIwNzkw",
+  "url": "https://hackerone.com/reports/3120790",
+  "title": "Session Replay Attack Allows Authentication Bypass via Captured Login Responses Allowing Bypass of 429 Too many attempts for Multiple Failed Logins",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "high",
+  "readable_substate": "Informative",
+  "created_at": "2025-05-01T00:05:52.774Z",
+  "submitted_at": "2025-05-01T00:05:53.247Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ctrl_cipher",
+    "url": "/ctrl_cipher",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/461iai2ff9jznylfgim6gfeus6ct/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21801,
+    "url": "https://hackerone.com/wakatime",
+    "handle": "wakatime",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6t1wy3jbq9kayjwvqbnymavxizfx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/6t1wy3jbq9kayjwvqbnymavxizfx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WakaTime",
+      "twitter_handle": "wakatime",
+      "website": "https://wakatime.com",
+      "about": "Automated metrics about your programming from text editor plugins."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-05-01T19:33:10.423Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-05-01T13:02:43.504Z",
+  "team_member_agreed_on_going_public_at": "2025-05-01T19:33:10.098Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "#Summary\nAn attacker can bypass authentication by capturing a valid login response (including session cookies/tokens) and replaying it during a failed login attempt with incorrect credentials. The server fails to invalidate or validate session tokens properly, allowing unauthorized access even after logout.\n\n#Steps to Reproduce\n1. Legitimate Login:\nSend a valid login request (correct email/password).\nCapture the response using Burp Suite and copy it.\n\n2. Invalid Login:\nLog out the user.\nSend a new login request with an incorrect password.\nReplace the 400 Bad Request response with the previously captured legitimate login response (including the valid session cookie).\n\n3. Result:\nThe server grants access to the account despite the wrong password.\nThe attacker can now interact with the account as the legitimate user.\n\n#Recommendations\nServer-Side Session Invalidation:\nMaintain a database of active sessions and revoke old tokens on logout or failed login attempts.\n\nToken Binding:\nBind session tokens to user context (e.g., IP address, user agent hash).\n\nShort-Lived Tokens:\nUse JWT with short expiration times (e.g., 15 minutes) and refresh tokens.\n\nReplay Attack Mitigation:\nAdd a unique nonce or timestamp to each login request.\n\nSecure Cookie Attributes:\nEnsure cookies include Secure, HttpOnly, SameSite=Strict, and Max-Age\n\n## Impact\n\nUnauthorized Account Access: Attackers can compromise any account by replaying captured session tokens.\nPersistence: Old tokens remain valid indefinitely.\nData Theft/Abuse: Sensitive user data (coding activity, API keys, etc.) can be stolen or modified.",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 4303332,
+      "file_name": "1.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/9lw99y9q1c32qgarh4jl5guao03t?response-content-disposition=attachment%3B%20filename%3D%221.jpg%22%3B%20filename%2A%3DUTF-8%27%271.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200745Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f42e4ec89282c2f3505b69b452b38ec97797fbbe37f69785498609efb238e44b",
+      "file_size": 180657,
+      "type": "image/jpeg",
+      "moderated": false
+    },
+    {
+      "id": 4303334,
+      "file_name": "2.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/yw597r62yzx2qe1fmiojhri48ccf?response-content-disposition=attachment%3B%20filename%3D%222.jpg%22%3B%20filename%2A%3DUTF-8%27%272.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200745Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0f4cc90aa743b13fba3207dcc88ac84b886aee290914697cdc5fce2ea1bff2d8",
+      "file_size": 240574,
+      "type": "image/jpeg",
+      "moderated": false
+    },
+    {
+      "id": 4303336,
+      "file_name": "4.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/94b0mx3m0jh3t2l28qmlrlo323ho?response-content-disposition=attachment%3B%20filename%3D%224.jpg%22%3B%20filename%2A%3DUTF-8%27%274.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200745Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=514d5ac95e0c33d7a32818f3a03f62bac5731e2d250c255198342775dbca2a72",
+      "file_size": 220441,
+      "type": "image/jpeg",
+      "moderated": false
+    },
+    {
+      "id": 4303337,
+      "file_name": "5.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/qejqwuk8uilwtig7t4qjt9tjwln3?response-content-disposition=attachment%3B%20filename%3D%225.jpg%22%3B%20filename%2A%3DUTF-8%27%275.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200745Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2f796f0c7e41171b55c6daa49450bcdddc5b8e32978da0bbd0431bb34f2c3f15",
+      "file_size": 128972,
+      "type": "image/jpeg",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 51,
+  "voters": [
+    "echopwn",
+    "k0ns0l",
+    "mohaned0101",
+    "thalaivar304",
+    "2026",
+    "mr-inspector",
+    "sh3rif0x",
+    "mr-alienx-kurd",
+    "veeraprasannavp007",
+    "lonelybones",
+    "and 41 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 8.2,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 614470,
+    "asset_type": "URL",
+    "asset_identifier": "wakatime.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

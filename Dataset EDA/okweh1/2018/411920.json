@@ -1,0 +1,139 @@
+{
+  "id": 411920,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MTE5MjA=",
+  "url": "https://hackerone.com/reports/411920",
+  "title": "Leaking Username and Password in the URLs via Virustotal, can leads to account takeover",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "none",
+  "readable_substate": "Informative",
+  "created_at": "2018-09-20T19:04:52.919Z",
+  "submitted_at": "2018-09-20T19:04:52.919Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sumit7",
+    "url": "/sumit7",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/EjyfxvKEgAnMvPDhA1prW6uH/8774a5031fc14b74dc4404da039040c69df8ed41021007c0c2beb9de489fcf66"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 30475,
+    "url": "https://hackerone.com/chaturbate",
+    "handle": "chaturbate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Chaturbate",
+      "twitter_handle": "chaturbate",
+      "website": "https://chaturbate.com",
+      "about": "The largest online adult cam site"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-09-21T21:17:30.192Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-09-21T02:16:49.786Z",
+  "team_member_agreed_on_going_public_at": "2018-09-21T21:17:30.013Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Dear @chaturbate team\n\n**Vulnerability Type**\n> Critical Information Leakage in URLs via Virustotal.\n\n**Vulnerability Severity**\nHigh. \n\n**Description**\nDuring my regular testing, went to https://www.virustotal.com/#%2Fdomain%2Fchaturbate.com\nAfter reviewing all URLs more and more, I got 2 Interesting and Critical Endpoints like this\n1) https://chaturbate.com/accounts/autologin/?username=aman4aman&password=Sha1$f5b91$0d6c2c053145a088373344d6fa08e97ce31312c6&next=/accounts/stopemails/\n2) https://chaturbate.com/accounts/autologin/?username=haydos1995&password=Sha1$b1d15$90623ee4d02216eb06947fea9770187dd1a1398c&next=/accounts/stopemails/\n3) https://chaturbate.com/accounts/autologin/?username=haydos1995&password=Sha1$b1d15$90623ee4d02216eb06947fea9770187dd1a1398c&next=/b/haydos1995\n\nAbove URLs are leaking Sensitive Crediantals like Username and Password with Sha1. \nThis Information helps attackers to get username and password by decryption of sha1.\n\nPassword always should be stripped from URLs.\n\n## Impact\n\nAccount Takeover using username and decrypted password.\n\n**Remediation**\n> Remove Sensitive URLs before leaking username and password. Password should be not send in clear format in the urls. Critical Information like password should not send via URL without stripping.\n\nThank You.\n\nHappy to Help.\n\nBest Regards,\n@smit",
+  "weakness": {
+    "id": 113,
+    "name": "Information Exposure Through Sent Data"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 348937,
+      "file_name": "IMG_20180921_003239.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/348/937/1afa6e8aed4b7ccab3bbc5d778f218bcf30c8a12/IMG_20180921_003239.jpg?response-content-disposition=attachment%3B%20filename%3D%22IMG_20180921_003239.jpg%22%3B%20filename%2A%3DUTF-8%27%27IMG_20180921_003239.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWREVEZO5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022007Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDiMObL34v9fAaIKhp3rzo3omHuT0K86TgqTgNFfLUGgAiAJEf9SNIAhEAuyTbnWVKCjPqMzdyrRWoyviuOCMqqXEyq7BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMWqzZag2zLDgWkoSQKo8FhBlzba%2FseBcANfhlpzQgtuzgbVVWK26CuREUrk2kYFSFCd1eP8c2rXv5XAYUm%2FUPBkYoLyUTQzxEaNGrIN0yU7b6gXslpSNmm7gZUbLhARwV9o7ks8V8CM5VE13Zj4ST%2FX7HgIg4YnvZ3%2F%2FbXbHuJQ412BDXQY6QSMqFN3UqP4jxk%2BNaKcTH1B2APravH0Ni7YjcK2kkQ%2FEYwuQaZt6JLmzuZuJNrNzGM3Y1uV3eEmojWMPdIVMKjYzFmVFuc1P90ggtODTnQkZjgjF7Y7meh9ufKLPpUhZZ6hOnq9EWOMPZCOw5RZ6XcxjtbwRVO2K8yd2uRmaPhQSU72TWHnBdvpTG%2Fd2oW5FHCJmhIqAdfmLEvyTsQU4IA4PDNR0SKEU5YIFoLrznoY4JQixV82nmZqczPERK2vxP0qftgXBSzsiormAlzswDeqNn3jq0R4w0m6m9TrpMZ0kUwckbddqAaWoMy7gjxb%2B%2Fq7YX7tk3cbnS8wttaXWIK4%2B9XgUAb0CJvOPCMfnka45tuBQNoHcj9N73A0MNhwaqe9m2Tp6yvL4s4z3g8UWJCoOE5LhIlIcr3b1MI3eML9cSt8KG%2B0GVbUvwlFxXeBO6%2BQ2LPS85hM0cORrCzwYMG4u8Xu0fWbkeZJbmxgL42l%2Fro%2FQi9rt%2B76isJKHx%2FmAkJ6s87wcjqlkjzNVyxkw2PDWk1rymGqjofsWEHPbcunnM6OzhhPQdrDE5lRN93m34fKj6SwiiX5PfO6wNxmpjT8fhhHJdDG1TKFygS5YKO0YTqXUNUdwxLcM7v8tgK%2FyIrFg68GQIZ%2FmLRcAPZqKEjrQAEVcWiJMl7mN3kgkYRbOeartlWbzopVe5kuBotUIrcUcn3x%2Fo%2FzDl6%2BPMBjqyAUoTsKQ408LGNOgulHnL1wyPEzTWxl3XQytE3mwP0gTOAj1Umt8FEERRChmvCVHE7A8rOCnz7tDx0skWUTnfyJKz7MRNHrfovtAFKd5ZmpBXPYKFkt0mipBM%2BKLD31DqupT%2FoPUdON%2BbdEUakrvTqfZd%2BYgByEEht9RW8XCzSS9DpUb4%2F%2F9wdBGeu6xhDJOSV%2BZllN9Ew6Ux%2BY9e%2F3xguKJVh6KMLH6F%2BdqpEDGByRPcC6g%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=32371807e023ca12bcc6e66e63694e002dfa04d1730318e5f7a36985acfc2e66",
+      "file_size": 82967,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 348938,
+      "file_name": "Screenshot_2018-09-21-00-31-19.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/348/938/f82b5aeb88e1000e251519990506bd99bc48facc/Screenshot_2018-09-21-00-31-19.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2018-09-21-00-31-19.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2018-09-21-00-31-19.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWREVEZO5%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022007Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDiMObL34v9fAaIKhp3rzo3omHuT0K86TgqTgNFfLUGgAiAJEf9SNIAhEAuyTbnWVKCjPqMzdyrRWoyviuOCMqqXEyq7BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMWqzZag2zLDgWkoSQKo8FhBlzba%2FseBcANfhlpzQgtuzgbVVWK26CuREUrk2kYFSFCd1eP8c2rXv5XAYUm%2FUPBkYoLyUTQzxEaNGrIN0yU7b6gXslpSNmm7gZUbLhARwV9o7ks8V8CM5VE13Zj4ST%2FX7HgIg4YnvZ3%2F%2FbXbHuJQ412BDXQY6QSMqFN3UqP4jxk%2BNaKcTH1B2APravH0Ni7YjcK2kkQ%2FEYwuQaZt6JLmzuZuJNrNzGM3Y1uV3eEmojWMPdIVMKjYzFmVFuc1P90ggtODTnQkZjgjF7Y7meh9ufKLPpUhZZ6hOnq9EWOMPZCOw5RZ6XcxjtbwRVO2K8yd2uRmaPhQSU72TWHnBdvpTG%2Fd2oW5FHCJmhIqAdfmLEvyTsQU4IA4PDNR0SKEU5YIFoLrznoY4JQixV82nmZqczPERK2vxP0qftgXBSzsiormAlzswDeqNn3jq0R4w0m6m9TrpMZ0kUwckbddqAaWoMy7gjxb%2B%2Fq7YX7tk3cbnS8wttaXWIK4%2B9XgUAb0CJvOPCMfnka45tuBQNoHcj9N73A0MNhwaqe9m2Tp6yvL4s4z3g8UWJCoOE5LhIlIcr3b1MI3eML9cSt8KG%2B0GVbUvwlFxXeBO6%2BQ2LPS85hM0cORrCzwYMG4u8Xu0fWbkeZJbmxgL42l%2Fro%2FQi9rt%2B76isJKHx%2FmAkJ6s87wcjqlkjzNVyxkw2PDWk1rymGqjofsWEHPbcunnM6OzhhPQdrDE5lRN93m34fKj6SwiiX5PfO6wNxmpjT8fhhHJdDG1TKFygS5YKO0YTqXUNUdwxLcM7v8tgK%2FyIrFg68GQIZ%2FmLRcAPZqKEjrQAEVcWiJMl7mN3kgkYRbOeartlWbzopVe5kuBotUIrcUcn3x%2Fo%2FzDl6%2BPMBjqyAUoTsKQ408LGNOgulHnL1wyPEzTWxl3XQytE3mwP0gTOAj1Umt8FEERRChmvCVHE7A8rOCnz7tDx0skWUTnfyJKz7MRNHrfovtAFKd5ZmpBXPYKFkt0mipBM%2BKLD31DqupT%2FoPUdON%2BbdEUakrvTqfZd%2BYgByEEht9RW8XCzSS9DpUb4%2F%2F9wdBGeu6xhDJOSV%2BZllN9Ew6Ux%2BY9e%2F3xguKJVh6KMLH6F%2BdqpEDGByRPcC6g%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1710bafbdb38fc75125ccd9627b5bfceef3df8590d1d8774c35db409735a02f1",
+      "file_size": 79800,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 11,
+  "voters": [
+    "ali",
+    "johndoe1492",
+    "eveeez",
+    "khizer47",
+    "cryptographer",
+    "mefkan",
+    "sumit7",
+    "0x08",
+    "armansameer",
+    "jatacheers",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 11722,
+    "asset_type": "URL",
+    "asset_identifier": "chaturbate.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

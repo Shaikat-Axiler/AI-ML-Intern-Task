@@ -1,0 +1,128 @@
+{
+  "id": 2764952,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNzY0OTUy",
+  "url": "https://hackerone.com/reports/2764952",
+  "title": "Unauthenticated phpinfo()files could lead to ability file read at █████████ ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2024-10-07T19:34:05.366Z",
+  "submitted_at": "2024-10-07T19:34:05.521Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "odaysec",
+    "url": "/odaysec",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/cqjxx3wbhejfzvl1dwusepkdthvr/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 41919,
+    "url": "https://hackerone.com/mtn_group",
+    "handle": "mtn_group",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4e6ikuxrt34g8b14w2bk53c6vyry/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/4e6ikuxrt34g8b14w2bk53c6vyry/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "MTN Group",
+      "twitter_handle": "",
+      "website": "https://www.mtn.com/",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2024-11-15T02:30:57.252Z",
+  "bug_reporter_agreed_on_going_public_at": "2024-10-16T02:30:54.097Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary \nMany PHP installation tutorials instruct the user to create a PHP file that calls the PHP function 'phpinfo()' for debugging purposes, and various PHP applications may also include such a file by default. By accessing it, a remote attacker can discover a large amount of information about the remote web server configuration to help conduct further attacks, including :\n * root/vps of the web server, operating system and PHP components\n * Details of the PHP configuration\n * Loaded PHP extensions with their configurations\n * Server environment variables.\n\n\n**Proof On Concepts:**\n█████\n```\nLinux uggogamesdb 5.4.17-2136.323.8.2.el8uek.x86_64 #2 SMP ████ █████ PDT 2023 x86_64\n```\n\n## Steps to Reproduce\n* Visit the target scope is ██████\n * You can used `burp-suite-intruder` for finding sensitive directory\n * And now we found a directory is `info.php`\n * Let's see opened in our browser is directory ██████████\n * You can see this page can be view without authenticate\n\n## Suggested Mitigation/Remediation Actions\nRemove the affected file(s).\n███████\n\nThe remote web server contains a PHP script that is prone to an information disclosure attack.",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3661213,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/276tqqzw5gjxayfr2m2f9rck1w7v?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202112Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c9dfafef7f6a57b038dd70030b80753d21abb1d8a26dbc349e13aaab1d419f93",
+      "file_size": 56901,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": "2024-11-15T02:30:54.246Z",
+  "allow_singular_disclosure_after": -39981017.764680475,
+  "singular_disclosure_allowed": true,
+  "vote_count": 42,
+  "voters": [
+    "eslam11x",
+    "loaymorad",
+    "k0ns0l",
+    "mohaned0101",
+    "thalaivar304",
+    "jmo740",
+    "aliyueka",
+    "muralidharan_1530",
+    "bb00x",
+    "mohand00",
+    "and 32 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

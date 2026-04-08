@@ -1,0 +1,150 @@
+{
+  "id": 258710,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNTg3MTA=",
+  "url": "https://hackerone.com/reports/258710",
+  "title": "Download attribute allows downloading local files",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2017-08-10T18:10:16.714Z",
+  "submitted_at": "2017-08-10T18:10:16.714Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "skansing",
+    "url": "/skansing",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/039/510/0486a9d2ba97f04a35e587c7483914cb5299c526_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-03-29T03:04:59.964Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-03-13T23:02:01.622Z",
+  "team_member_agreed_on_going_public_at": "2018-03-29T03:04:59.406Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\nThe attribute `download` in a `a` tag allows for download the `href` target to file and saving it locally. \nIn mozilla and chrome, it is forbidden to download local file via `file:// ..`, in Brave however this is not enforced and it is not clear to the user if they are downloading something remote or local. This could be abused to social engineering and phishing that is hard to spot without reviewing the js code.\n\n## Products affected: \n```\nName\tVersion\nBrave\t0.18.16\nrev\t8003c66\nMuon\t4.3.6\nlibchromiumcontent\t60.0.3112.78\nV8\t6.0.286.44\nNode.js\t7.9.0\nUpdate Channel\tdev\nOS Platform\tLinux\nOS Release\t4.4.0-64-generic\nOS Architecture\tx64\n```\n## Steps To Reproduce:\nCreate a `<a href=\"files:///etc///passwd\" download>Download local file</a>`\nOn a linux machine, click the link, download the file, open it. It's the local file.\n\nExpected result `file:// not allowd`\nResult `file downloaded`\n\nPlease see the poc below and screenshots\n\n## Supporting Material/References:\nI added a POC with a phishing page that attempts to gets users passwd file. \n`http://159.203.190.123/braaaaaaaaaave/3t98j2398jegjsguieiu3tuihsgdiu___brave_0010-localfile.html` with the purpose to phish passwd files and added pictures of each frame of the attack.\n",
+  "bounty_amount": "100.0",
+  "formatted_bounty": "$100",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 211288,
+      "file_name": "brave_3.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/211/288/ad20a84a51b67fd66609b4c0b182737c5789b764/brave_3.png?response-content-disposition=attachment%3B%20filename%3D%22brave_3.png%22%3B%20filename%2A%3DUTF-8%27%27brave_3.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024639Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=39014c8eb93d5efa4bacdb0bcef3c506228dc2421f81f134224f3b3b1a0197c3",
+      "file_size": 82635,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 211289,
+      "file_name": "brave_4.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/211/289/759cbed6954b2c4a1701b5122621d47682d0b718/brave_4.png?response-content-disposition=attachment%3B%20filename%3D%22brave_4.png%22%3B%20filename%2A%3DUTF-8%27%27brave_4.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024639Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1672aef69f833e4e920f73a8a3be966f3bb04cf33ec0c6d0380008f0982f4f6c",
+      "file_size": 61800,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 211290,
+      "file_name": "brave_2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/211/290/7ebd10de1e22815bbe62ac9179219a3a309e1a63/brave_2.png?response-content-disposition=attachment%3B%20filename%3D%22brave_2.png%22%3B%20filename%2A%3DUTF-8%27%27brave_2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024639Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f16a5e5fd8287e2d040d2514457b98c20edc34994af6f250a4056558b1b1a67e",
+      "file_size": 80874,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 211291,
+      "file_name": "brave_1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/211/291/fde68e05c5f1b297e296cb9b4b8dd337cfdca015/brave_1.png?response-content-disposition=attachment%3B%20filename%3D%22brave_1.png%22%3B%20filename%2A%3DUTF-8%27%27brave_1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024639Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1a1851242704950cf179d871386d88c1a30c4291d5b4e3791ac2072b3f4ad5b4",
+      "file_size": 61864,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-04-12T23:02:01.751Z",
+  "allow_singular_disclosure_after": -248067877.60778835,
+  "singular_disclosure_allowed": true,
+  "vote_count": 11,
+  "voters": [
+    "sp1d3rs",
+    "foobar7",
+    "skansing",
+    "apapedulimu",
+    "bobo_ka",
+    "ak1",
+    "akaash_pantherdefence",
+    "eveeez",
+    "tranquille",
+    "abbasmrjoker4200",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

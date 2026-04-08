@@ -1,0 +1,131 @@
+{
+  "id": 481518,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80ODE1MTg=",
+  "url": "https://hackerone.com/reports/481518",
+  "title": "Bypass GraphQL rate limit by abusing negative cost queries",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-01-17T16:51:07.923Z",
+  "submitted_at": "2019-01-17T16:51:07.923Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "emitrani",
+    "url": "/emitrani",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/206/181/54e8d7444534dbe32a21bd75c87febb777a18496_original.PNG/65551465b0d18d952f306b2d0c5e69ed082a8c9bc5c9b7bec024e5edc01c00a5"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-01-24T15:29:24.263Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-01-24T15:25:50.147Z",
+  "team_member_agreed_on_going_public_at": "2019-01-24T15:29:24.068Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi security team,\n\nWhile looking into the graphql app I noticed an interesting implementation where each app has a bucket of query cost they are allowed to used in a given time with a certain refresh rate associated with it.\n\nThe details can be found at https://help.shopify.com/en/api/graphql-admin-api/call-limit\n\nNow Using the app I noticed by calling something like `first(-100)` will give you a negative cost \n{F408086}\n\nThis doesn't give you more than the maximum amount however you can deplete your resources down to 50 and then use a negative query to fill it back up to a maximum of 1000 to keep querying indefinitely.\n\nIn order to reproduce I used a high cost query like:\n```\n{\n  appInstallations(first: 10) {\n    edges {\n      node {\n        id\n        uninstallUrl\n        accessScopes {\n          description\n          handle\n        }\n        accessScopes {\n          description\n          handle\n        }\n        accessScopes {\n          description\n          handle\n        }\n        accessScopes {\n          description\n          handle\n        }\n        launchUrl\n        app {\n          pricingDetailsSummary\n          apiKey\n          banner {\n            altText\n            metafields(first: 2) {\n              edges {\n                node {\n                  description\n                  value\n                  namespace\n                  id\n                }\n              }\n            }\n          }\n          handle\n          features\n          pricingDetails\n          published\n          feedback {\n            messages {\n              message\n            }\n            link {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n}\n```\nAnd hit sent 10-15 times at https://emitrani.myshopify.com/admin/apps/shopify-graphiql-app\n\nAfter that change one of the `first` parameters into `(first: -1000)` and try a regular query again and you will see it succeeds as the pool will be back up to full.\n\n## Impact\n\nIt is possible to leverage the logic error to bypass GraphQL rate limiting.\n\nBest,\nEray",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 408086,
+      "file_name": "Screen_Shot_2019-01-17_at_11.24.35_AM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/408/086/60f58eb7776d0d0ab1acb6081296d517815f01d1/Screen_Shot_2019-01-17_at_11.24.35_AM.png?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2019-01-17_at_11.24.35_AM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2019-01-17_at_11.24.35_AM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7ULBGLHE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020246Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCXypkG06cSeiV%2BLrJ%2BsW%2BpLHPMj8wXOVStnXk1NGGq%2BQIgJUNF7d5ZzQviioOxFN4Gv4%2FPBOgH6vMpER2s66ys5icquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHhrlptjQeWDC6vfciqPBcw9KQs%2FwdwEm5yK7jqgjJ%2FuGD%2F1QiuiKDcU4zdmZllEGNi7XXtbh%2FqfEfiZM%2FbVOL1HKHkDNuBcRXcYwZNLoL2Ni4xac5qlGwqYYMhWz7IMSTIWE47g2ffUcBx0npiTjztKjrcCmWxd8lclNCoj6%2FoXaUo8cfUSGmcuKTee3x3eWBKJW1MIL%2BmUh1B5KRXHGZme8YuFY09fsBhIwwjfc7fwSKrlUA1A%2F8zcGZtniIL3datKRrWYRfd6ni196A%2FfQ%2BJ7Hg1MzMI3Ezcif095qeOSfGEixTTKiLKCFt2Nc0kESqZZcqqY0Rmno5dgI294wMLfF1cLgpyBGL%2FXvqlXCtFiPrbrL53W5jNByQ2lDy5gRbwdMXf7cWDM0GgLj98T9YJMd99cNHYbxY6ca6CMY%2FhC5K7m57eD4MfUu9GwtFtcNfXL8Wp187PIVpFXdezgcBEe2HVQnHb6NJJXdQELElK3eP7v8cQwgHC6vy1Pgv%2B1lst8ZWDBBr7pMFsNt7HMxKHeJszTjhknT5n7agA3SrGtF6u0Qa6ImSbBVocYfqJUfCwH68R%2F%2F1ECUsaq66iHhHWUfqjqcmV52HCAYa9WweE2DWilDqGvcg6HSf1yp0v1nbirpFQslr0TirQ2kZA4ElIJzs0WbPntnQaKtMj2DgBDj0xCtOB8nqWw0fwfXgICXjDDLbBxT%2FJ4zlceEf4tAV%2B2awwOtkJmcKRNLYFrLHWwwSkjJNSoNLCAPR3oyeprbncIYs%2B6JSjj3ZPWh6qFpocwzI2vM3%2B49bvLVRGDZ8B1%2B%2BqTq%2FZ8iz6O801ndMJdk55S3I4dz2yD%2Fi2phntnVdjag2YFQq2MzUlicXRAz7mTYJk%2B7Dr6SgPrXHlZN2kwzfDjzAY6sQGAsuKmN7hPJ9XdD1AqNk4FR9Ab2HM9mXzDem6f1VdpQJ%2FeWKK6foNSg9a9%2FsjobZlbeBPiRk8LEmG7cM7niwGEQoUovfG8xiurzbwjU7%2Fqy1O4E87uXvzgXQHi%2Bs3Rq%2Fz71xNjnlYB639y8DCm%2BjvhXTfiR%2BmevJY6EXkXpEka7Rdy5T2TaUOBrAYfx48pC5oR%2FTIqTGsQv2d9VtGS%2FUNN07aK5NGfmBAuX6qG8YBi8OQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ae7eb5361abe4783dbbd2b2a3aec2f097b340f59ba05a557a63666f1db9a3b9f",
+      "file_size": 251590,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 22,
+  "voters": [
+    "drsniper",
+    "foobar7",
+    "kapytein",
+    "ali",
+    "sameerphad72",
+    "dhakal_ananda",
+    "mohaned0101",
+    "thalaivar304",
+    "savitar0x01",
+    "0xc0ffee",
+    "and 12 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 413,
+    "asset_type": "URL",
+    "asset_identifier": "your-store.myshopify.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

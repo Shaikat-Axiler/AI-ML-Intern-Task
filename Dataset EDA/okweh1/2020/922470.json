@@ -1,0 +1,146 @@
+{
+  "id": 922470,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85MjI0NzA=",
+  "url": "https://hackerone.com/reports/922470",
+  "title": "No rate limiting on sinup page",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-07-13T11:14:56.115Z",
+  "submitted_at": "2020-07-13T11:14:56.115Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "faeeq24",
+    "url": "/faeeq24",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/bd1jrnnzowefkdl7nqvot7aion4t/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-8228"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-09-28T10:18:05.018Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-09-28T10:18:04.975Z",
+  "team_member_agreed_on_going_public_at": "2020-09-28T09:17:39.471Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Team,\n\nSummary:\nAs a best practice a login page should have a rate limiting.\nBelow is the captured request of respective login page of nextcloud.com\n--------------------------------------------------------------------------------------------------------------------\nPOST /index.php/apps/preferred_providers/password/submit/D4oCzV7LrgyTtULRXsOp2 HTTP/1.1\nHost: efss.qloud.my\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nContent-Type: application/x-www-form-urlencoded\nContent-Length: 65\nOrigin: null\nConnection: close\nCookie: ocn6e46ay0uf=g5gaufmdvaa2ab480rl3m3e2fp; oc_sessionPassphrase=rXsGoXrFnFNmXjG7wqHo25XUJ75w4gCINgeLpQ6nUy8GJQel2%2F14gFzIIhagLg7o8uuIcNuNiWKdhzxUtdyDoPaPPsqsSqHk6xbJYMK1U0DuVvM%2BJ%2Bz8rB6%2B9j25LcYT; __Host-nc_sameSiteCookielax=true; __Host-nc_sameSiteCookiestrict=true\nUpgrade-Insecure-Requests: 1\nCache-Control: max-age=0\n\nocsapirequest=&email=<targer username>&password=<target password>\n---------------------------------------------------------------------------------------------------------------------\nSteps to reproduce :\n1. Tamper login page and send the request to Burp Intruder.\n2. Configure the payloads\n3. Start the Burp Intruder\n\nPOC: \nin the attached image.\n\n\nAs you can see i have sent more than 85 requests ,\nTherefore all the requests are being exexuted with response code 200\n\n## Impact\n\nImpact:\nAn attacker can freely bruteforce any username and can takeover any account.",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 905420,
+      "file_name": "nextcloud1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/eDRCEVNZaWUdPcmmfDm5YqXa?response-content-disposition=attachment%3B%20filename%3D%22nextcloud1.png%22%3B%20filename%2A%3DUTF-8%27%27nextcloud1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000113Z&X-Amz-Expires=2292&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a5ff51c9d2a43287466c66077571d73b6659238c61f2bc93dcf66a6daeb8ea17",
+      "file_size": 110334,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-10-28T09:17:39.550Z",
+  "allow_singular_disclosure_after": -167755413.4846738,
+  "singular_disclosure_allowed": true,
+  "vote_count": 16,
+  "voters": [
+    "ezzra",
+    "todayisnew-",
+    "xnutronex",
+    "mohaned0101",
+    "shubham_srt",
+    "thalaivar304",
+    "hensis",
+    "demonia",
+    "zimmer75",
+    "sheerwood",
+    "and 6 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.5,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 56,
+    "asset_type": "URL",
+    "asset_identifier": "nextcloud.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

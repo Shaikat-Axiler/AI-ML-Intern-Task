@@ -1,0 +1,147 @@
+{
+  "id": 1040533,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDQwNTMz",
+  "url": "https://hackerone.com/reports/1040533",
+  "title": "[intensedebate.com] XSS Reflected POST-Based ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2020-11-22T12:04:54.180Z",
+  "submitted_at": "2020-11-22T12:04:54.232Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "fuzzme",
+    "url": "/fuzzme",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/F9LSiEs1ckRkcUXxrvznmg2n/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-01-15T21:20:46.577Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-12-16T21:20:43.347Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHello, i have found a XSS Reflected POST-Based in `https://www.intensedebate.com/ajax.php`.\n\nVulnerable(s) URL :\n\n```POST /https://www.intensedebate.com/ajax.php```\n\nVulnerable(s) Parameter(s):\n\n```\n$_POST['txt'];\n```\n\nPayload\n\n```\nazertyuiop<<><img+src=\"x\"/onerror=\"prompt(document.cookie)\">\n```\n\n##Steps to reproduce\n1. Open the xss.html and will you see a javascript pop-up\n\nYou can  also follow me into the video POC.\n\nThank you, good bye.\n\n## Impact\n\nA attacker can perform a phishing attack or perform a CORS attack",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1089690,
+      "file_name": "xss.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/aiuahdhf4fhqavzqhjw9qet445i0?response-content-disposition=attachment%3B%20filename%3D%22xss.html%22%3B%20filename%2A%3DUTF-8%27%27xss.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233545Z&X-Amz-Expires=860&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3a08d12f8b14881fbbe12968119520ad2a341e164aa799654d12c17f19347d2d",
+      "file_size": 587,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 1089693,
+      "file_name": "xss.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/jmcuc838614t2riawz6swjq0t5hf?response-content-disposition=attachment%3B%20filename%3D%22xss.mp4%22%3B%20filename%2A%3DUTF-8%27%27xss.mp4&response-content-type=video%2Fogg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233545Z&X-Amz-Expires=860&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=20197fc5e5afeb27a3d1fa04dd7efe89662842c6b7045f6bc835c7584c1664f9",
+      "file_size": 2384900,
+      "type": "video/ogg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-01-15T21:20:43.544Z",
+  "allow_singular_disclosure_after": -160884901.7558682,
+  "singular_disclosure_allowed": true,
+  "vote_count": 42,
+  "voters": [
+    "taha",
+    "spobb",
+    "mrmax4o4",
+    "najeh_halawani",
+    "rook1337",
+    "ali",
+    "goedix",
+    "th4nu_0x0",
+    "urushya",
+    "akashhamal0x01",
+    "and 32 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.9,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "low"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

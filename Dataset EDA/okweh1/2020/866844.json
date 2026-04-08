@@ -1,0 +1,134 @@
+{
+  "id": 866844,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84NjY4NDQ=",
+  "url": "https://hackerone.com/reports/866844",
+  "title": "CSRF on https://apps.topcoder.com/wiki/plugins/socialbookmarking/updatebookmark.action",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-05-05T23:02:01.775Z",
+  "submitted_at": "2020-05-05T23:02:01.775Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "meryem0x",
+    "url": "/meryem0x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/q8pmp3uer62m3i1t769rk6x9trwe/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 43330,
+    "url": "https://hackerone.com/lab45",
+    "handle": "lab45",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/uss17aubpsiag1df5tlp5mriefid/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/uss17aubpsiag1df5tlp5mriefid/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Lab45",
+      "twitter_handle": "",
+      "website": "http://wipro.com/lab45",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-05-12T13:37:58.750Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-05-12T08:58:23.824Z",
+  "team_member_agreed_on_going_public_at": "2020-05-12T13:37:58.580Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHi :) There is a CSRF on creating bookmarks form.\n\n## Steps To Reproduce:\n\nThere is no CSRF token or anything like that on https://apps.topcoder.com/wiki/plugins/socialbookmarking/updatebookmark.action. I added the poc html file below. When someone opens this html file, or we can add it into our website, he/she creates a bookmark unwillingly.\n\n## Impact\n\nAn attacker can force other users to create a bookmark without their knowledge.",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 816826,
+      "file_name": "csrf.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1kbFY74UkdXkTKCfK5H2Hzdf?response-content-disposition=attachment%3B%20filename%3D%22csrf.html%22%3B%20filename%2A%3DUTF-8%27%27csrf.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSQYA2ZTM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003600Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC1BTFBFIGBCfRzJ%2F9qWWUi0%2FwgJ7uKqB0XrqE%2F5tjSGAIhAJJcq9OzWWi%2F0TTpabsKp5oskh3ChbXcqueGSu6e%2B26xKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwtDGoj4s7%2FtZ8VFEAqjgVkdBmUSrTgEiHfOZ8F4NXWUtvY3x22oEl7XRsL3EFY7PjhoTlE0YuHaL2KunlmQnmUegmnzCxn%2BcBHnwJFzGl1r00QnEyYYdX7RI935n3WPvmFZP5Me6G88cbj3Q83umI3Q2TGmncazqN%2B1x9FL4qWYWuH8lc3hr6vWhvF9EfW%2B8Jx0kCbRJHcSHAIc11v9rMK0tNgXYT%2FSIFDGc%2BdXjaLJWyvd00XtZjPWL%2F9H4tbS9n8YyK4YOojT3KhyXwFLBIehPgAzJuoI52tJGpGutcEDPllJG3XYlpYqHLGFsX2iQpyJ2Uuknx%2Fuq5pce96tmlTbrDr6anOlYG3NyvPmmfk1fl63Wp%2BRN5lqdAVnEMcLu6uozMH%2BZcjMBMtMT%2FqBz7sJO4F9tiwS6w%2BGnWTlNSkdAqvYuz1ZbPTrJ4s1qo2DI8Ea9AUPXCO66gVSVNy6V22VB09GCEnM9I0LC8lFQT4Hmwbb2JiFp%2BNcLpQSmO0X8DnLJu0bIjBB0XgFKMFPlcaB%2B5MmBMTyl4FqQaly3wDvnrPL1On92E1%2BotIRXHhkgdsPIX8KsTl3ITwOUhE8wzHoGCD3iU0VVn25nqSZG4IR6zYubSc1VMTn9uz36buQNVGIe6N86WY%2BpX%2FHLTRwcbZ5ak39ZV1FvS5%2BzwJxUurHehXLqdg1%2FdYOsqggMA7SNLk6O8sjp4VEfFVMAD4PqRB0pnNMSOK90NDClJXmX5rgCYfHvVftqVWyWniBSDrJf2skvTl33sAjYSh%2BwVoBe6%2BtH0IHGfUgoGwb7h7d%2FFJS8WSbNXlUpbeYA0hnAsRzoYreA9hFxCXVTybOw809fqVX0wBLLYV8FSxslL%2BjT1z5vCG48AcSS3jLY2pB6AwweXjzAY6sAE0Z9CS9UZCklB7JyXz%2BbggxuAUc0hRJZzjdGvoqoHiV0ozU%2B9joXNeTPKlJqvpM6CnhM0LOa01CGAtKU%2BEpT1b8PuaKPv7MEcWeuCLIVfUBn16VT22G7m0FshJP8XaJNZxK8wLP91IGpbxyTaahsqXChUu6U5eFDZbkh2R60cjISlyWjGWE7Tgk5X2LEWBiaUSpWFiY%2FbPCPAY%2Fn2uJ%2B2aUVSBvwOOjA1RySbjeOp4Cg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e64a5b5ced1f59fdd3b893210f569d2283c2ae839f4e111a3fb048ce4fdf423a",
+      "file_size": 762,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 3,
+  "voters": [
+    "xsky",
+    "mik317",
+    "metwallysec"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 37578,
+    "asset_type": "URL",
+    "asset_identifier": "apps.topcoder.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

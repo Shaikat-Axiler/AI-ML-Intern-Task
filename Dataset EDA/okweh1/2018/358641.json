@@ -1,0 +1,137 @@
+{
+  "id": 358641,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNTg2NDE=",
+  "url": "https://hackerone.com/reports/358641",
+  "title": "[serve] Stored XSS in the filename when directories listing",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-05-29T05:53:21.938Z",
+  "submitted_at": "2018-05-29T05:53:21.938Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "tungpun",
+    "url": "/tungpun",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/074/643/53db3c3da091000ce826787b75855f65371bc517_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-10-19T07:53:28.886Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-10-19T07:53:21.470Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report a Stored XSS issue in module **serve**\nIt allows executing malicious javascript code in the user's browser.\n\n# Module\n\n**module name:** serve\n**version:** 7.0.1\n**npm page:** `https://www.npmjs.com/package/serve`\n\n## Module Description\n\nAssuming you would like to serve a static site, single page application or just a static file (no matter if on your device or on the local network), this package is just the right choice for you.\n\nIt behaves exactly like static deployments on Now, so it's perfect for developing your static project. Then, when it's time to push it into production, you deploy it.\n\nFurthermore, it also provides a neat interface for listing the directory's contents\n\n# Vulnerability\n\n## Steps To Reproduce:\n\n* Install the module\n\n`$ npm i serve`\n\n* Run\n\n`$ ./node_modules/serve/bin/serve.js`\n\n* In the target directory, create a file with name `\"><svg onload=alert(3333333);`\n\n`bash$ touch '\"><svg onload=alert(3333333);'`\n\n* In the browser, go to http://127.0.0.1:3000/, the XSS popup will fire.\n\n{F302807}\n\n## Supporting Material/References:\n\n* macOS High Sierra 10.13.4\n* node v8.10.0\n* npm 6.1.0\n* Chrome Version 66.0.3359.139 (Official Build) (64-bit)\n\n# Wrap up\n\n- I contacted the maintainer to let them know: N\n- I opened an issue in the related repository: N\n\n## Impact\n\nIt allows executing malicious javascript code in the user's browser.\n\nThe hacker selected the **Cross-site Scripting (XSS) - Stored** weakness. This vulnerability type requires contextual information from the hacker. They provided the following answers:\n\n**URL**\nhttp://127.0.0.1:3000/\n\n**Verified**\nYes\n\n",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 302807,
+      "file_name": "serve.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/302/807/543c0dbf746cd78d8bb71536eec4109fcfc12e61/serve.png?response-content-disposition=attachment%3B%20filename%3D%22serve.png%22%3B%20filename%2A%3DUTF-8%27%27serve.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7KZMNWF3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021439Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIBpctk5vIcz8fqSxmSbvaEaA1vPXGZAzy8p2lTcuSOqcAiEA8XDMNvLIH8IFW8sJzuwl%2Fofjl3QmgKtFRp1BIZMlQZAquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDCLD1FNfAq4lNpj37iqPBa0M7iq3oIheySEZNnmgACvAWV%2BkbXHCsteA4rscn1beTFz8534XLB5ilpc%2Fnb2Xpze8GBNJanaSc9cKiHGAFyDZ0OTmKOpVNzyomRG0id4bgUU1pBse6JfR%2FR9T2APt%2Fl0WOKa5AXonxVTB%2B%2FJz73R%2FFrd%2F8UOXlHqkfWd2vvO4BBH1Dw2p0jabiXTpLfaM54se%2FuPl4Kx%2F6XZabduPzoDY6azarYmHqYMroGTWKRYMzGt7HY3wYyVQvxOShtv4DL1vJdsOpBck2W5jYLnh3%2FzYmjvulpVouKFkyLDTf2H6bzaEXG0mRDVSUNSZu3bsddxvLzUCYEUVi1pU63sadXWdyeUaSEte4kGuwBeF%2Fj2SwNmHUk0YBjztG673X%2BPSx7AUOxC2zxqiWn9Fpwpk3Sn6UI5GuKkMvDhUg7bVT8Tykrd4zJTMepJOXucr0Ap%2F4f17KA8KEY6aUjzwNIn6S4vTgrTRt956sxSBAXEF1x7Lc5PuSU68b2ogIpDAapXbTIMNE7k4RaVH4b8rmKB8CKnGQRDksAAL71R8MZvpLGu9Mq2mbYmRA45gS8iA2ONZ10pAykkIGt%2BQ23rfUucGlP5jC53R5LU3k0QqUDLSca5btK1RVLH3AZXyvvUu8hB4Necr4XRKe9TJg78oxt%2B1Q1cMSvSEJNcyJc58qsNuFdRZ4gnbnthWNb%2BLBTouqApwUrrQxXZ0T5eM8sFf%2FWsbAfcyHCU2ApLZp5k2rioOWP7hKIHZOyUwtK3cra1m5Ke7vQF3yRJzqEt6MFe2%2Fz35TwM37cZSvlEm7DFVb4dxZz72iFsxiwo%2BKKssN1gsahlA6yUZGllZLDbfkcLPyfzAeD2afFrRDW4WvPoaYOBUkrUw9uvjzAY6sQGzXLxWXzhgzd%2B5dLZO6RbnHP%2B6iFTlCTdtc4JwCY0jfTZglLiZSz99SQo%2BzQE%2F3D20j22aHOE8PBgYRMimZvwuQB5bpBVz0yj1MOfAStV4Cn3p8PXaEUhYRcfZvUp5lzGizE04VAR33TkhfeRgK4urnVz1lqRZzrLRWQ4H4lsswg5E5engZqMjZUtTsPg103tBhqe5JPopQlW5sppUFToVRJ3%2B%2Fk%2F2bjl5LiRDHNL0J8I%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f2d0e4821ddbb4e9ba7448140355ed7bc503ebccf16ab6de724480ad0cdf342c",
+      "file_size": 284758,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-11-18T07:53:21.575Z",
+  "allow_singular_disclosure_after": -229112477.61856195,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "bl4de",
+    "eveeez",
+    "khizer47",
+    "spetr0x"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.5,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "high",
+      "user_interaction": "required",
+      "scope": "changed",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 5006,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "serve",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

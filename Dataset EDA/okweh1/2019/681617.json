@@ -1,0 +1,176 @@
+{
+  "id": 681617,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82ODE2MTc=",
+  "url": "https://hackerone.com/reports/681617",
+  "title": "Stored XSS in localhost:* via integrated torrent downloader",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-08-25T12:34:31.859Z",
+  "submitted_at": "2019-08-25T12:34:31.859Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ryotak",
+    "url": "/ryotak",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/Nb79aqy3v6SyMh8rwZZh43cu/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2019-15782"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-09-24T20:30:52.095Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-09-06T00:57:28.105Z",
+  "team_member_agreed_on_going_public_at": "2019-09-24T20:30:51.968Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\nDue to filename of downloading torrent file isn't sanitized, an attacker is able to execute arbitrary JavaScript on localhost:* by abusing crafted torrent file.\n\n## Products affected: \n\n * Brave 0.68.131 Chromium: 76.0.3809.100 (Official Build)\n\n## Steps To Reproduce:\n\n 1. Open https://exec.ga/browser/brave/xss.torrent in Brave Browser.\n 1. Click \"Start Torrent\" button\n 1. Copy link address of \"Save File\" button.\n 1. Paste it to URL bar with only hostname and port (e.g. http://localhost:8080).\n 1. Alert will be popped up.\n\n**Note**: Since it can be embedded with iframe (and it's possible to brute force port number), Steps after 2 won't be needed in real attack.\n\n## Video PoC\n{F565161}\n\n## Impact\n\nAttacker will be able to store arbitrary JavaScript on localhost:* with service worker, so if victim run any software on same port after attack, any information in the website that on same port can be stolen.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 565155,
+      "file_name": "PoC.torrent",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/NGwpGPViWXXCcBFwcAG6DdS8?response-content-disposition=attachment%3B%20filename%3D%22PoC.torrent%22%3B%20filename%2A%3DUTF-8%27%27PoC.torrent&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV4YEW6ML%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T012120Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDqM9ZU3dfXkJNhMHaHZqCyv62uMjtDEt1VUptyZn62pgIhAMGOZJHS7d5UCx6i5D7tU9cMgDKnBKsBlEnOM4UP8qWoKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwwsquZz0wgJDWlq2oqjgWKFY%2BOXnrG%2BAauwJ6Z4ApiLssKdwozS4PcNCIZuTKSSuYzhLeBkEMkjAau5IWnNjzwAcJIK9iJdY%2F4HG3muw5ALevudoxGbGKiQoyH2dnEcArTI1WSsQq2eSvRRCUVx8sFNVA3Tx8zJ%2BBYIGmINPCLQSaS%2FMB%2BXil1bQl4i%2BMMJQRHdJ8p1Ql%2BNHMA7v2e8MrO5kxOlITVbKTEDkXuJNahNEvz2EPMxVBMKjyw4C8sUDEAAEDz1x5ZLypzpM%2FywtJeHT1QYddrvUAhCuksJWUHBoJ8svDZC7d8wr0KKH%2Bdeq8ymWPX9SEdtDGgkdGkUxP2xjE%2B7z4%2BUGKpiedWV33Opp0gSESF1u99Jv9L%2BI206vAHnoqgK7Er7TswAx%2Bnz99NwWsTc8h%2B8wrkH2dzOYin%2F7N0xWSTKfHw7%2FRlvsZzqujeeBhts89pw7m%2BHDnVyTzKBZbwMLyyRDZTGeb0Uiu6e49OT6jQT8zsak789IQc%2Bh%2BLcKVYeqPTw45tUE%2FCOvdqv49Fh2IT%2Bdx9SOQfMD2ljglIPDtyhR5u2fxGM3m%2FLLnTclGik1kRfsO3qThA1Hp5KjmDnRnJo%2F%2By8N1j5YXX7GO4ehh208M8%2FyNAQSntSEAdC5uzd83QFETKDWpZlC5LfctR0UgHnmfugQBU7Vjz6nnkArPOcOEl9nRrky1IGNnnAgTe%2FBFiBr%2F92jezhAJFnHlVbQRXixuvTn8CjUVr0xWlqrsucUCYEDswMp8nzjOm6od1jP97IwOwKRc5Q0BaRdtN5swBJqLk3nZbUbFJeYlxnkVvYw4YevdMDlmZV5a6zdN9PdaUiqgj7EKGJDGs%2BO5yG8tAwAsD2psbaGSqwd%2FPN97OdOoTXzAiZAMwguLjzAY6sAF0TawxTKESuwC6TSO1Z4y01CFY2IUXk88HTsyBGcLvhaN%2BQL9GYmr2guLNm%2BIZZd%2FrNHJuGTBwbadVSEci%2Ft5G8jV%2B3%2FQtOia%2F0hi5IHRm6GNbtqLiK7wm4n%2B95mScnhF9cjQbLvFg%2BjNQyHLAX9bjAQXAbCv3UyrquwH1iXqZ53rye639UEGlHIsa5tlgE9J43rWnxgYDopFXyhAe6kOb7Qmu9SCah%2BJ2UOLMPXBh0Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e4926423f232bbdc3a35fd6a05d87830dae93018a14178e4904adb81e1f8fbb2",
+      "file_size": 202,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 565161,
+      "file_name": "PoC.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/2vARx7ducTvFXRGSZkCvL9oG?response-content-disposition=attachment%3B%20filename%3D%22PoC.mp4%22%3B%20filename%2A%3DUTF-8%27%27PoC.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV4YEW6ML%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T012120Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDqM9ZU3dfXkJNhMHaHZqCyv62uMjtDEt1VUptyZn62pgIhAMGOZJHS7d5UCx6i5D7tU9cMgDKnBKsBlEnOM4UP8qWoKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwwsquZz0wgJDWlq2oqjgWKFY%2BOXnrG%2BAauwJ6Z4ApiLssKdwozS4PcNCIZuTKSSuYzhLeBkEMkjAau5IWnNjzwAcJIK9iJdY%2F4HG3muw5ALevudoxGbGKiQoyH2dnEcArTI1WSsQq2eSvRRCUVx8sFNVA3Tx8zJ%2BBYIGmINPCLQSaS%2FMB%2BXil1bQl4i%2BMMJQRHdJ8p1Ql%2BNHMA7v2e8MrO5kxOlITVbKTEDkXuJNahNEvz2EPMxVBMKjyw4C8sUDEAAEDz1x5ZLypzpM%2FywtJeHT1QYddrvUAhCuksJWUHBoJ8svDZC7d8wr0KKH%2Bdeq8ymWPX9SEdtDGgkdGkUxP2xjE%2B7z4%2BUGKpiedWV33Opp0gSESF1u99Jv9L%2BI206vAHnoqgK7Er7TswAx%2Bnz99NwWsTc8h%2B8wrkH2dzOYin%2F7N0xWSTKfHw7%2FRlvsZzqujeeBhts89pw7m%2BHDnVyTzKBZbwMLyyRDZTGeb0Uiu6e49OT6jQT8zsak789IQc%2Bh%2BLcKVYeqPTw45tUE%2FCOvdqv49Fh2IT%2Bdx9SOQfMD2ljglIPDtyhR5u2fxGM3m%2FLLnTclGik1kRfsO3qThA1Hp5KjmDnRnJo%2F%2By8N1j5YXX7GO4ehh208M8%2FyNAQSntSEAdC5uzd83QFETKDWpZlC5LfctR0UgHnmfugQBU7Vjz6nnkArPOcOEl9nRrky1IGNnnAgTe%2FBFiBr%2F92jezhAJFnHlVbQRXixuvTn8CjUVr0xWlqrsucUCYEDswMp8nzjOm6od1jP97IwOwKRc5Q0BaRdtN5swBJqLk3nZbUbFJeYlxnkVvYw4YevdMDlmZV5a6zdN9PdaUiqgj7EKGJDGs%2BO5yG8tAwAsD2psbaGSqwd%2FPN97OdOoTXzAiZAMwguLjzAY6sAF0TawxTKESuwC6TSO1Z4y01CFY2IUXk88HTsyBGcLvhaN%2BQL9GYmr2guLNm%2BIZZd%2FrNHJuGTBwbadVSEci%2Ft5G8jV%2B3%2FQtOia%2F0hi5IHRm6GNbtqLiK7wm4n%2B95mScnhF9cjQbLvFg%2BjNQyHLAX9bjAQXAbCv3UyrquwH1iXqZ53rye639UEGlHIsa5tlgE9J43rWnxgYDopFXyhAe6kOb7Qmu9SCah%2BJ2UOLMPXBh0Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=97ca92e732712dcb17ad68642743461fe105c8567aa7a395110543a4d65c5a2f",
+      "file_size": 1426920,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 124,
+  "voters": [
+    "orange303",
+    "p1stachios",
+    "zonduu",
+    "lemonoftroy",
+    "ali",
+    "sameerphad72",
+    "stealthcopter",
+    "metnew",
+    "spam404",
+    "shubham_srt",
+    "and 114 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.0,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 7942,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "https://laptop-updates.brave.com/latest/winx64",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 62257,
+      "category": "researcher",
+      "content": "The original PoC that I used in the report doesn't work anymore because my domain (exec.ga) is expired.\n",
+      "updated_at": "2021-07-07T03:09:29.623Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 569456,
+        "username": "ryotak",
+        "name": "RyotaK",
+        "bio": "",
+        "cleared": true,
+        "verified": true,
+        "website": "https://ryotak.net",
+        "location": "",
+        "created_at": "2019-04-04T07:16:31.098Z",
+        "url": "https://hackerone.com/ryotak",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/Nb79aqy3v6SyMh8rwZZh43cu/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/Nb79aqy3v6SyMh8rwZZh43cu/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/Nb79aqy3v6SyMh8rwZZh43cu/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    }
+  ]
+}

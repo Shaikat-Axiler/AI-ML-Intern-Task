@@ -1,0 +1,147 @@
+{
+  "id": 165570,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNjU1NzA=",
+  "url": "https://hackerone.com/reports/165570",
+  "title": "Race Condition in account survey",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2016-09-03T20:44:49.995Z",
+  "submitted_at": "2016-09-03T20:44:49.995Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cablej",
+    "url": "/cablej",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/859/7fdafea90092a305ae2cb6cec7d43461783abf0c_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 69,
+    "url": "https://hackerone.com/slack",
+    "handle": "slack",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Slack",
+      "twitter_handle": "slackhq",
+      "website": "https://slack.com",
+      "about": "All your team communication in one place, instantly searchable, and available wherever you go."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-11-12T11:25:59.583Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-10-13T11:25:38.251Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "There exists a race condition in the beginning survey, allowing a user to get $100 in credit multiple times. In my example, I made 2 asynchronous requests, and was credited with $200.\n\nPOC:\n\n1. Create a new slack team.\n2. Set your password, and find the account creation survey.\n3. Complete the survey, and intercept the request using a proxy such as BurpSuite.\n4. Repeat the request asynchronously, such as in the command line by executing `(command) & (command)`.\n5. The survey will be credited to your account multiple times. See the attached screenshot.\n\nPlease let me know if you need any more information.",
+  "weakness": {
+    "id": 57,
+    "name": "Violation of Secure Design Principles"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 117127,
+      "file_name": "Screen_Shot_2016-09-03_at_3.44.02_PM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/117/127/8fa2007ef6c4391c7a581da2ea0f653f88f5a957/Screen_Shot_2016-09-03_at_3.44.02_PM.png?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2016-09-03_at_3.44.02_PM.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2016-09-03_at_3.44.02_PM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030413Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2c097868a82811becdc28095154894db631db334ab6b73fb69bead0ee0054f92",
+      "file_size": 160385,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-11-12T11:25:38.350Z",
+  "allow_singular_disclosure_after": -261157115.07601637,
+  "singular_disclosure_allowed": true,
+  "vote_count": 27,
+  "voters": [
+    "irvinlim",
+    "loaymorad",
+    "he4am",
+    "2026",
+    "r3y",
+    "eveeez",
+    "khizer47",
+    "kuyschi",
+    "geekninja",
+    "t4ym",
+    "and 17 more..."
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 5597,
+      "category": "team",
+      "content": "@cablej found a race condition in our account creation survey, which allowed a user to receive extra Slack credits. We investigated and fixed the issue. Thanks for the report @cablej!",
+      "updated_at": "2017-10-16T23:07:28.697Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 16613,
+        "username": "maxfeldman",
+        "name": "Max Feldman",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "",
+        "location": "",
+        "created_at": "2015-01-22T21:37:19.754Z",
+        "url": "https://hackerone.com/maxfeldman",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/016/613/37b54dbac5da0a42db471713959c8bf2de89a12d_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/016/613/37b54dbac5da0a42db471713959c8bf2de89a12d_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/016/613/37b54dbac5da0a42db471713959c8bf2de89a12d_original.png/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

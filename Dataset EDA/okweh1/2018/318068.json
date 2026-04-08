@@ -1,0 +1,155 @@
+{
+  "id": 318068,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMTgwNjg=",
+  "url": "https://hackerone.com/reports/318068",
+  "title": "SSH server compatible with several vulnerable cryptographic algorithms",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-02-21T02:23:21.045Z",
+  "submitted_at": "2018-02-21T02:23:21.045Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "northivanastan",
+    "url": "/northivanastan",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 50592,
+    "url": "https://hackerone.com/gsa_bbp",
+    "handle": "gsa_bbp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/iyPFgzbsX86VXw5wJHyfPg9s/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/iyPFgzbsX86VXw5wJHyfPg9s/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GSA Bounty",
+      "twitter_handle": null,
+      "website": "http://gsa.gov",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-03-02T20:44:31.260Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-02-25T17:32:03.920Z",
+  "team_member_agreed_on_going_public_at": "2018-03-02T20:44:31.165Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "An ssh-audit scan found that ssh.fr.cloud.gov supports sha1 for various purposes(including exclusively for MAC addresses), as well as arcfour. Both of these are outdated and known vulnerable.\n\nThe algorithms used are also indicative of an outdated SSH version (OpenSSH 6 or Dropbear 2013). It's probably a good idea to upgrade.\n\nThe output of ssh-audit is attached.\n\n## Impact\n\nA man-in-the-middle attack may expose data encrypted with arcfour and/or hashed with sha1, which can then be decrypted to find things like passwords or payloads sent over SSH.",
+  "weakness": {
+    "id": 41,
+    "name": "Use of a Broken or Risky Cryptographic Algorithm"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 265408,
+      "file_name": "ssh-audit-out.txt",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/265/408/f70a2bc580dfb4f992b9c8c5824bce580d51841c/ssh-audit-out.txt?response-content-disposition=attachment%3B%20filename%3D%22ssh-audit-out.txt%22%3B%20filename%2A%3DUTF-8%27%27ssh-audit-out.txt&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQS64WP5ZB%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024925Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAxEIDxvWJyyNfIHeDTUUH%2FIn8UN2dz4EPGd8Ht9uVO%2BAiEAkBbh0P7xL9XnRofRuxNyAmso1G9vA70Wk5FENEaRolIqugUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPTQRk9Tg5OQ6LGUTyqOBZHEX1KxhsPRwDkx4jDRQ1MBnsg9KjB8ppwtdWEePIpGYjVfDrXRQKhtjeJQyEHCGgf70ZjK8sgXf%2F37v3lLsPxjQHe%2BF4HE0zH7UI4gxIqy0JNU4KyRD%2Bk0do5nykKmZUsYBE91RUuCLV1qf3g0cCSzII2jDr3EzEp2UP5S%2FbCrBsZT0YGSLz20EzVHKP6S0ux8DehgQCdrxzZMS9FAzcRk60vv14Fz4oznJLM1raJ8uDfZOOfjA3VtJmiDEwSoPaRrNdYX9QGihA%2BoVtLr%2BzrcHFzt4d6H3Q70Pj4UAvMDixRGwVkk8hODs%2Bw92Z13R%2B%2FvSR1qXK3PtSWsecEQ8tQpyFgeDrbsGEBShWQo66PElo1jBbXIVLUyr56Sa2zoH0z12%2BO%2FBn7pqhr%2BNg%2BAyJwCNkW%2BNCtz3Q%2FMuwoXroQ%2Fkm%2FKdlRyL%2Fw3nNKJwK9nIXZVCLmS%2B4qzWO%2FXjdjhl4FD%2BrwHXmW7FsMHjS2krpt3S68xmU01DAuul8Hxs3l3wnIo7YoF9N1v23DoUM%2BuXI44NnRJiCqm4cubSYXyzfcy2dEQjPSALeJlklMWlqg%2F5laYU%2B9TdjAOuqm23DhLObDbYNbPgjdH209nVDI%2BE1SBLz5Y8VNEAgU0L3ZxIsQt3ivsmjSwCgEndA3MRZZFOOGJMq80jUNzp3n8dTaasEutP9SpAnpcGPZl3VQ6fibehrtUov3IAFNDTQ6pYRnORBoLMyS%2FL0yISX2qasSx7G5ayl8e8tyjIY0pMl0JJJlvpZdlmKrAA1wd32zekZjXHXdOJrgZ37wAKUc0vhWsfAUBbMZSzsjOdPM%2FcdBnKPKE%2BpNaM82KJSXiRLb7NXVwOxWBJNDcoz4QcULIz9PyTDDXqeTMBjqxAZ5VR698k4G1exWyLYPlnhz2z7jPunTnKS4Z3a1vkNaw0cOXa8XPfvEtgkUIXeO%2FXBWIp%2B59naMGaAbpEQf%2BrAIYTKmuVtSv5DIgeqhAskvZzAYaWlLKcTjFS%2FSrhzkxyBVOwv7Q5BeOwqnEf28ft6YDYn9OFsJ4gVoGtA3l5YN8h2JaON%2FCOB16pxLZ8ETrt1n7nbYZvjaFosnoBchQdZtwrsJHQyn5bowFC65tYCFW8A%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=76a3940b1f5becbe8808437ce433376717ffb34309608c7e4aba520080880bd6",
+      "file_size": 5278,
+      "type": "text/plain",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 14,
+  "voters": [
+    "loaymorad",
+    "base_64",
+    "savitar0x01",
+    "apapedulimu",
+    "eveeez",
+    "chiragtiwari",
+    "t4ym",
+    "cr4xerbik4sh",
+    "silv3rpoision",
+    "axosolaman",
+    "and 4 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 81491,
+    "asset_type": "URL",
+    "asset_identifier": "ssh.fr.cloud.gov",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 6693,
+      "category": "researcher",
+      "content": "As soon as ssh.fr.cloud.gov was added to scope, I decided to test the server for security issues. Three SSH ports were open, so I checked the algorithms that were in use. I found that the server used RC4 for secure transmission and SHA1 for MAC addresses. These are algorithms for which attacks are known that are thousands of times faster than brute force.\nApparently this was the default configuration of cloud.gov's cloudfoundry installation. This was fixed by manually configuring AES, SHA2, and curve25516.",
+      "updated_at": "2018-02-24T16:38:20.073Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 242570,
+        "username": "northivanastan",
+        "name": "",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "",
+        "location": "",
+        "created_at": "2018-02-17T18:31:20.559Z",
+        "url": "https://hackerone.com/northivanastan",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    }
+  ]
+}

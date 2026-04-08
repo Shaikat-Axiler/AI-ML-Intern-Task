@@ -1,0 +1,140 @@
+{
+  "id": 415350,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MTUzNTA=",
+  "url": "https://hackerone.com/reports/415350",
+  "title": "Missing CSRF Protection in  /stats EndPoint.",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "none",
+  "readable_substate": "Informative",
+  "created_at": "2018-09-27T16:46:30.865Z",
+  "submitted_at": "2018-09-27T16:46:30.865Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kaustubh",
+    "url": "/kaustubh",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 30475,
+    "url": "https://hackerone.com/chaturbate",
+    "handle": "chaturbate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Chaturbate",
+      "twitter_handle": "chaturbate",
+      "website": "https://chaturbate.com",
+      "about": "The largest online adult cam site"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-10-09T00:14:14.151Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-10-08T13:50:12.591Z",
+  "team_member_agreed_on_going_public_at": "2018-10-09T00:14:14.037Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "##EndPoint /affiliates/stats. doesnot verify the CSRF Tokens##\n\n\n## Steps To Reproduce:\n\n 1. Login with the your account \n 2. Navigate to the URL https://chaturbate.com/affiliates/stats.. \n 3. Check the stats in default its todays date or this week in select period.\n4. Intercept the request and change the parameter to whatever you want to set.\n5. generate the POC And open it in browser\n6. You can see the changes in the form.\n\n## Supporting Material/References:\nPlease find attached for the CSRF POC and CSRF_1 for PreCSRF And CSRF_2 For Post CSRF.\n\n## Impact\n\nAttacker may change the parameters in stat or may force user to download the malicious .",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 351964,
+      "file_name": "Csrf.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/351/964/2e8db7042888a0ae3dd64d3b035fee115733ec36/Csrf.html?response-content-disposition=attachment%3B%20filename%3D%22Csrf.html%22%3B%20filename%2A%3DUTF-8%27%27Csrf.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQ2IO5XSR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021704Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDB7E3VguWtWMAGzz%2BISNZkClzXLIq7Kz38mgE1hn36mQIgOuY5s2DNI0Q5jcVx%2Bu%2BemJnImdjaGFGNjfz2j8HSVe0quwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDA96xb3Mifij%2FMgfgCqPBeo%2FVH36pKMTILs61uEK8davxekN6LUJQjoyhB5fc43c%2BQ0RcKDHmvDHC94tXZVJfEqlbMAG1wPbv0JFKZ%2BV4gqeXnwawNTHi3G9nZQTSYBO16pMzJ3RQSSAn5g003t5r%2FJHXYRiqp4fUh0ZrxDIA%2B2m4EwpNRAFP%2BiaUuwN%2BQ5D8jEOo26pABUXLEfPGGrkK1%2B%2BjTvoYuL7pfcxLryXJNk58FOW7Zep5uiPTEGJ%2FJ%2Ffw7v3IKGgP%2BoLEDM8nzxCIFGSYumXOI68B9KtumtWZccu0R%2BZXGfR6dnlk9ppBcFC23nbtoYGbo6b2nXg%2FJLMoxhtx7TncCg07MQOnF7Ks3l9XGYR4iZw3qSFOICPEYz9uGkqMb8sF8ddalk1w3JadHWi9jYMjS25BvjSpL8jclSq2Ie0Knw53FAbcgRPWbLP2%2BABN1%2FUxorQWKXo%2FrPkML6l1BQ6FIVEWsGFCwqX83JEjSvT6LWof09a0evru5TXJe8xoSpqQ3OPLwxbz6ebl1nUu%2F6%2BCpS%2BcoZfaKBf4DqiYGCsLkyoJ2qW41AVweYrGiqqGSsXHCxPOXwmtsMW5ETo9KxcS3fZp08lbdubGb7NQm8I4vvX08UrW%2FCLSXgh%2Br7a9gg%2BvEILSN5FyZON3fpEiCmffhUH1iD2a6PjPQRlXzl1ZGnHcMFl7FAi1DKaMNrpNYRrLPmnwMdf4LohujLgCVSBU7pk0mVFJjWycfY%2Fyj%2BiI2yquFoKVE%2BRyfiXD08BkgzkLvn7iYfznM7VKF7REPneHbiuswBuQaE12vqRMf66WYvWtJdIh1zHiC%2BOw5RylIP00wJBd6CPWtsv7ROLSN%2FM0dQhO7mzklUyGPmAJM3fLWcqicYE7dKMTpkwoZbkzAY6sQGAj9jq%2F5ENZ8yZYdQ%2FgE6%2BxMy1L3OynPAcL13Ggo7kZ%2FQgy6thKwpwyqY%2FUjcfuRBNEd%2B8KHlBfhFEqO3FoDEFnRw38ixtXt6%2BYnkfSq0xYGU6PS11OjjIlMXcHgwu5OyfaG8svVs%2BFmLRonn8SrMVCgmG0HSzhn8KVertyYXGXYHv%2BuyVXVVMLR7Wq42YrGVEinjivkx7PsqdxgH%2FtlcsQjMxYieKdjyd1gjpUneyUsg%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b5023e8897ace4a18db4742ce784507c87337640c4953eac5e7d6c2ca285e654",
+      "file_size": 1032,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 351965,
+      "file_name": "csrf_1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/351/965/16a9723bfadab96025ee10419a258b916a17f813/csrf_1.png?response-content-disposition=attachment%3B%20filename%3D%22csrf_1.png%22%3B%20filename%2A%3DUTF-8%27%27csrf_1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQ2IO5XSR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021704Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDB7E3VguWtWMAGzz%2BISNZkClzXLIq7Kz38mgE1hn36mQIgOuY5s2DNI0Q5jcVx%2Bu%2BemJnImdjaGFGNjfz2j8HSVe0quwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDA96xb3Mifij%2FMgfgCqPBeo%2FVH36pKMTILs61uEK8davxekN6LUJQjoyhB5fc43c%2BQ0RcKDHmvDHC94tXZVJfEqlbMAG1wPbv0JFKZ%2BV4gqeXnwawNTHi3G9nZQTSYBO16pMzJ3RQSSAn5g003t5r%2FJHXYRiqp4fUh0ZrxDIA%2B2m4EwpNRAFP%2BiaUuwN%2BQ5D8jEOo26pABUXLEfPGGrkK1%2B%2BjTvoYuL7pfcxLryXJNk58FOW7Zep5uiPTEGJ%2FJ%2Ffw7v3IKGgP%2BoLEDM8nzxCIFGSYumXOI68B9KtumtWZccu0R%2BZXGfR6dnlk9ppBcFC23nbtoYGbo6b2nXg%2FJLMoxhtx7TncCg07MQOnF7Ks3l9XGYR4iZw3qSFOICPEYz9uGkqMb8sF8ddalk1w3JadHWi9jYMjS25BvjSpL8jclSq2Ie0Knw53FAbcgRPWbLP2%2BABN1%2FUxorQWKXo%2FrPkML6l1BQ6FIVEWsGFCwqX83JEjSvT6LWof09a0evru5TXJe8xoSpqQ3OPLwxbz6ebl1nUu%2F6%2BCpS%2BcoZfaKBf4DqiYGCsLkyoJ2qW41AVweYrGiqqGSsXHCxPOXwmtsMW5ETo9KxcS3fZp08lbdubGb7NQm8I4vvX08UrW%2FCLSXgh%2Br7a9gg%2BvEILSN5FyZON3fpEiCmffhUH1iD2a6PjPQRlXzl1ZGnHcMFl7FAi1DKaMNrpNYRrLPmnwMdf4LohujLgCVSBU7pk0mVFJjWycfY%2Fyj%2BiI2yquFoKVE%2BRyfiXD08BkgzkLvn7iYfznM7VKF7REPneHbiuswBuQaE12vqRMf66WYvWtJdIh1zHiC%2BOw5RylIP00wJBd6CPWtsv7ROLSN%2FM0dQhO7mzklUyGPmAJM3fLWcqicYE7dKMTpkwoZbkzAY6sQGAj9jq%2F5ENZ8yZYdQ%2FgE6%2BxMy1L3OynPAcL13Ggo7kZ%2FQgy6thKwpwyqY%2FUjcfuRBNEd%2B8KHlBfhFEqO3FoDEFnRw38ixtXt6%2BYnkfSq0xYGU6PS11OjjIlMXcHgwu5OyfaG8svVs%2BFmLRonn8SrMVCgmG0HSzhn8KVertyYXGXYHv%2BuyVXVVMLR7Wq42YrGVEinjivkx7PsqdxgH%2FtlcsQjMxYieKdjyd1gjpUneyUsg%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8e1738e6a705025124ebb8b4b29e35ebd265e839460782359cab6d28a1aa0943",
+      "file_size": 13748,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 351966,
+      "file_name": "csrf_2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/351/966/1297e74b1a7c49c1f1033171f38c34f6a2c84105/csrf_2.png?response-content-disposition=attachment%3B%20filename%3D%22csrf_2.png%22%3B%20filename%2A%3DUTF-8%27%27csrf_2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQ2IO5XSR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021704Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDB7E3VguWtWMAGzz%2BISNZkClzXLIq7Kz38mgE1hn36mQIgOuY5s2DNI0Q5jcVx%2Bu%2BemJnImdjaGFGNjfz2j8HSVe0quwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDA96xb3Mifij%2FMgfgCqPBeo%2FVH36pKMTILs61uEK8davxekN6LUJQjoyhB5fc43c%2BQ0RcKDHmvDHC94tXZVJfEqlbMAG1wPbv0JFKZ%2BV4gqeXnwawNTHi3G9nZQTSYBO16pMzJ3RQSSAn5g003t5r%2FJHXYRiqp4fUh0ZrxDIA%2B2m4EwpNRAFP%2BiaUuwN%2BQ5D8jEOo26pABUXLEfPGGrkK1%2B%2BjTvoYuL7pfcxLryXJNk58FOW7Zep5uiPTEGJ%2FJ%2Ffw7v3IKGgP%2BoLEDM8nzxCIFGSYumXOI68B9KtumtWZccu0R%2BZXGfR6dnlk9ppBcFC23nbtoYGbo6b2nXg%2FJLMoxhtx7TncCg07MQOnF7Ks3l9XGYR4iZw3qSFOICPEYz9uGkqMb8sF8ddalk1w3JadHWi9jYMjS25BvjSpL8jclSq2Ie0Knw53FAbcgRPWbLP2%2BABN1%2FUxorQWKXo%2FrPkML6l1BQ6FIVEWsGFCwqX83JEjSvT6LWof09a0evru5TXJe8xoSpqQ3OPLwxbz6ebl1nUu%2F6%2BCpS%2BcoZfaKBf4DqiYGCsLkyoJ2qW41AVweYrGiqqGSsXHCxPOXwmtsMW5ETo9KxcS3fZp08lbdubGb7NQm8I4vvX08UrW%2FCLSXgh%2Br7a9gg%2BvEILSN5FyZON3fpEiCmffhUH1iD2a6PjPQRlXzl1ZGnHcMFl7FAi1DKaMNrpNYRrLPmnwMdf4LohujLgCVSBU7pk0mVFJjWycfY%2Fyj%2BiI2yquFoKVE%2BRyfiXD08BkgzkLvn7iYfznM7VKF7REPneHbiuswBuQaE12vqRMf66WYvWtJdIh1zHiC%2BOw5RylIP00wJBd6CPWtsv7ROLSN%2FM0dQhO7mzklUyGPmAJM3fLWcqicYE7dKMTpkwoZbkzAY6sQGAj9jq%2F5ENZ8yZYdQ%2FgE6%2BxMy1L3OynPAcL13Ggo7kZ%2FQgy6thKwpwyqY%2FUjcfuRBNEd%2B8KHlBfhFEqO3FoDEFnRw38ixtXt6%2BYnkfSq0xYGU6PS11OjjIlMXcHgwu5OyfaG8svVs%2BFmLRonn8SrMVCgmG0HSzhn8KVertyYXGXYHv%2BuyVXVVMLR7Wq42YrGVEinjivkx7PsqdxgH%2FtlcsQjMxYieKdjyd1gjpUneyUsg%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4eb8ce61674947cb25760d73b7e7f88c4acbff1a80b50dfe64855267be6e3889",
+      "file_size": 15976,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 4,
+  "voters": [
+    "thalaivar304",
+    "khizer47",
+    "v13rsba",
+    "feiton"
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 11722,
+    "asset_type": "URL",
+    "asset_identifier": "chaturbate.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

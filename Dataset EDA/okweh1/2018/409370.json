@@ -1,0 +1,146 @@
+{
+  "id": 409370,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MDkzNzA=",
+  "url": "https://hackerone.com/reports/409370",
+  "title": "Denial of service via cache poisoning",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-09-13T10:14:16.500Z",
+  "submitted_at": "2018-09-13T10:14:16.500Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "albinowax",
+    "url": "/albinowax",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/056/414/9d843d496965d8c0e710de3867a41720c1577dc4_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-12-22T16:16:11.543Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-12-22T16:16:11.427Z",
+  "team_member_agreed_on_going_public_at": "2018-12-22T11:34:29.886Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "An attacker can persistently block access to any/all redirects on www.hackerone.com by using cache poisoning with the X-Forwarded-Port or X-Forwarded-Host headers to redirect users to an invalid port.\n\nTo replicate: \n```curl -H 'X-Forwarded-Port: 123' https://www.hackerone.com/index.php?dontpoisoneveryone=1```\nThen try to load https://www.hackerone.com/index.php?dontpoisoneveryone=1 in your browser.\n\nThis attack can also be done using the X-Forwarded-Host header:\n```curl -H 'X-Forwarded-Host: www.hackerone.com:123' https://www.hackerone.com/index.php?dontpoisoneveryone=1```\n\n\nFor more information on the theory behind this attack, check out https://portswigger.net/blog/practical-web-cache-poisoning\n\n## Impact\n\nAn attacker can persistently block access to any/all redirects on www.hackerone.com",
+  "bounty_amount": "2500.0",
+  "formatted_bounty": "$2,500",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 345778,
+      "file_name": "Screen_Shot_2018-09-13_at_11.08.12.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/345/778/6fece49a309a48d571c81a46aa7469626f5130ac/Screen_Shot_2018-09-13_at_11.08.12.png?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2018-09-13_at_11.08.12.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2018-09-13_at_11.08.12.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020522Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b2e47f038df33ef7572534f92c109f8ef60e352247b5fd67f332dedef1e0b42e",
+      "file_size": 35066,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-01-21T11:34:30.004Z",
+  "allow_singular_disclosure_after": -223569052.00355378,
+  "singular_disclosure_allowed": true,
+  "vote_count": 249,
+  "voters": [
+    "0-chrollo-0",
+    "shoeb_",
+    "mirchr",
+    "pajoda",
+    "loaymorad",
+    "8ayac",
+    "orange303",
+    "libcontainer",
+    "n1m0",
+    "lpi",
+    "and 239 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.7,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 6,
+    "asset_type": "URL",
+    "asset_identifier": "www.hackerone.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

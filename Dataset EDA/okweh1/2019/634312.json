@@ -1,0 +1,152 @@
+{
+  "id": 634312,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82MzQzMTI=",
+  "url": "https://hackerone.com/reports/634312",
+  "title": "HTML injection and information disclosure in support panel",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-07-03T08:15:19.173Z",
+  "submitted_at": "2019-07-03T08:15:19.173Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "xaleraf4ra",
+    "url": "/xaleraf4ra",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nh2eej69lmgyw1khbe46j9q82s1p/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19468,
+    "url": "https://hackerone.com/weblate",
+    "handle": "weblate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/468/71eb3827ae9f2a388f27bd4b7eefd20bc3ac813c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Weblate",
+      "twitter_handle": "WeblateOrg",
+      "website": "https://weblate.org/",
+      "about": "Weblate is a libre software web-based continuous localization system"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-07-09T13:43:59.828Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-07-03T11:18:36.939Z",
+  "team_member_agreed_on_going_public_at": "2019-07-09T13:43:59.720Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello Weblate Team!\n\nI found HTML injection and information disclosure in support panel\n\n###Description\nThere is a form to ```weblate.org``` and ```hosted.weblate.org``` to send to support\nI poisoned the request, where I inserted such payload in all fields:\n```\n\"><img src=\"[SERVER]\">\n```\n\nAfter that, when my payload got into the support panel, it was reproduced and the picture was uploaded, after that requests were sent to my server\n\n#####So HTML injection is there\nFurther, having examined in detail the requests that came to me on the server, I saw (private) ip addresses of administrators or employees (support panel)\n\n###### IP Adresses\n```\n37.9.65.65\n89.187.189.240\n95.108.197.9\n178.154.167.78\n```\n\n###### User Agent\n```\nUser-Agent: Mozilla/5.0 (iPad; CPU OS 12_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Canary\n```\n\n## Impact\n\nThe vulnerability allows you to execute HTML code in the support panel, also steal personal data of administrators, employees, for example: IP Addresses, which browsers employees use, and so on.\n\n\nBest regards Bogdan",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 521325,
+      "file_name": "_________________2019-07-03_11-14-51.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/521/325/ecd450218828205bb2d28c181b278442d3835348/_________________2019-07-03_11-14-51.png?response-content-disposition=attachment%3B%20filename%3D%22_________________2019-07-03_11-14-51.png%22%3B%20filename%2A%3DUTF-8%27%27_________________2019-07-03_11-14-51.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTXWCUGDC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014241Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIBeujaUaRjq75nzLXWaFr8QFSFa6gGKR3ZzcjOsHqb1BAiAW8iGqCQTInfXBwaI5UHQ%2FXaW%2BIu9nrkvyPMaHZGcm4iq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMUIN%2B%2FNV5EqrBAvmlKo8FnSNPzuRfzPkLq6Q8SxXwin0aOsx439Lzj9qcnkTa%2B64ghLHjKCY2fAQFhEEx1UJG9Poi2nuwfCnbJcBRwyeZ41b03wQVRxrc3FX7xaOYuPkz7cy%2FYrURi6ZCQBl%2FSTtFr%2BvwORjHCjMkrB3YvEU9JXfRXzVTkCrW0iZVR4oa2Ty8b1Gx7%2FXP4jBxjfumRKKFO0BhnqCTIcJSItRgxxs4lwOBh1wWwnTHFfaDalLMEdPdramhnkqJ%2Fq7915%2FIECeCey%2FiyNBYKdKHaifZ891S%2BeHH%2BSNaW6Wot0KfzEU4Yvi%2FXQkSmfXDppIThqy1SBFb5fbB%2FdGHiTjPQN0TuoHm4XDcQ0CWk30rRo6hG%2BBdQFFv8WyPr6LRkGM%2Fy7A1%2FHLzWczcHwCo19OJWExnuDpVKuPpIrdmrrB4uCxKkZh1YClxFFajAoVyJwuQmELFKGGbgCDfTb0TQmjc7ZJnlq0wrlfDawxnJ7r%2F0Jdr2c%2F5LOW%2F4bAjeTqYDQ5YF4a4yBXwt5cETbLlxw5nHrVlls1aDnwtKYq%2BQ3VdedEJ15Wx0BnXDgHHvgUi%2BsaeeBG6NSXX%2BLWxTSsBKoXaYVKvEapR7quP0Eotqaakghsxl9jU%2FNHIPudrynfGaWnS%2BOP%2BEfyXGWPdjJ41I0pIyilD4qlJBEtJ4oJDrgV5mhC%2FNE5zA9GrHjR3c1EzRPvVeNHuYXaxMHpXHgqGNCsVrBMLh2yMtTOhtOQGwYaRR781r7m3%2BXb%2BBtnVsgz2UItu9XPF3qWoTFaU%2F27%2FlsSgvJgFmrIOgedF5ey0FJL3VPs5WNALObmGWnYcjZaJcsZDiVXeSJr70yl%2BBB8QAzq6U%2BC1zzxiVbFwdokMyGlCBOgaBVsfKTC1jOTMBjqyAbmaRZs5FDHJX3yFP0z9LZp63qVHIteGZqtCQM7%2B5%2FqrSN%2FeU0Gg4%2FXZkNWQQyczeYpT2erKG%2Bk2rxew90GaxyF%2BjEEx%2BlEtEvXa5X%2BW2B5fEv34A58jYzAW0zD3LnhSzMBUbYBaD%2Fb89sbPr9db9DZoGfSuaM9YjTgf19K9TLiGHCuClT9ykzpkzt2C%2BnoR8hYKwhUYNQsuGpP3rffBXhgz3JmpMWrBrs97oSqMHUVM2H8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=65aa1304a37f9b37bd673ce6655c966aa86f703af74e3a0e6a5510c2d67e77cb",
+      "file_size": 32513,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 521326,
+      "file_name": "_________________2019-07-03_11-14-59.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/521/326/b36dd51ae7cdd2a30cd9c8bbd54623c700536b74/_________________2019-07-03_11-14-59.png?response-content-disposition=attachment%3B%20filename%3D%22_________________2019-07-03_11-14-59.png%22%3B%20filename%2A%3DUTF-8%27%27_________________2019-07-03_11-14-59.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTXWCUGDC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014241Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIBeujaUaRjq75nzLXWaFr8QFSFa6gGKR3ZzcjOsHqb1BAiAW8iGqCQTInfXBwaI5UHQ%2FXaW%2BIu9nrkvyPMaHZGcm4iq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMUIN%2B%2FNV5EqrBAvmlKo8FnSNPzuRfzPkLq6Q8SxXwin0aOsx439Lzj9qcnkTa%2B64ghLHjKCY2fAQFhEEx1UJG9Poi2nuwfCnbJcBRwyeZ41b03wQVRxrc3FX7xaOYuPkz7cy%2FYrURi6ZCQBl%2FSTtFr%2BvwORjHCjMkrB3YvEU9JXfRXzVTkCrW0iZVR4oa2Ty8b1Gx7%2FXP4jBxjfumRKKFO0BhnqCTIcJSItRgxxs4lwOBh1wWwnTHFfaDalLMEdPdramhnkqJ%2Fq7915%2FIECeCey%2FiyNBYKdKHaifZ891S%2BeHH%2BSNaW6Wot0KfzEU4Yvi%2FXQkSmfXDppIThqy1SBFb5fbB%2FdGHiTjPQN0TuoHm4XDcQ0CWk30rRo6hG%2BBdQFFv8WyPr6LRkGM%2Fy7A1%2FHLzWczcHwCo19OJWExnuDpVKuPpIrdmrrB4uCxKkZh1YClxFFajAoVyJwuQmELFKGGbgCDfTb0TQmjc7ZJnlq0wrlfDawxnJ7r%2F0Jdr2c%2F5LOW%2F4bAjeTqYDQ5YF4a4yBXwt5cETbLlxw5nHrVlls1aDnwtKYq%2BQ3VdedEJ15Wx0BnXDgHHvgUi%2BsaeeBG6NSXX%2BLWxTSsBKoXaYVKvEapR7quP0Eotqaakghsxl9jU%2FNHIPudrynfGaWnS%2BOP%2BEfyXGWPdjJ41I0pIyilD4qlJBEtJ4oJDrgV5mhC%2FNE5zA9GrHjR3c1EzRPvVeNHuYXaxMHpXHgqGNCsVrBMLh2yMtTOhtOQGwYaRR781r7m3%2BXb%2BBtnVsgz2UItu9XPF3qWoTFaU%2F27%2FlsSgvJgFmrIOgedF5ey0FJL3VPs5WNALObmGWnYcjZaJcsZDiVXeSJr70yl%2BBB8QAzq6U%2BC1zzxiVbFwdokMyGlCBOgaBVsfKTC1jOTMBjqyAbmaRZs5FDHJX3yFP0z9LZp63qVHIteGZqtCQM7%2B5%2FqrSN%2FeU0Gg4%2FXZkNWQQyczeYpT2erKG%2Bk2rxew90GaxyF%2BjEEx%2BlEtEvXa5X%2BW2B5fEv34A58jYzAW0zD3LnhSzMBUbYBaD%2Fb89sbPr9db9DZoGfSuaM9YjTgf19K9TLiGHCuClT9ykzpkzt2C%2BnoR8hYKwhUYNQsuGpP3rffBXhgz3JmpMWrBrs97oSqMHUVM2H8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b88f0ecc0a6bd2394475a87b82978a8e241f27902bb7c13eff56bc480c789fbe",
+      "file_size": 46687,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-08-02T11:18:37.060Z",
+  "allow_singular_disclosure_after": -206893444.89186585,
+  "singular_disclosure_allowed": true,
+  "vote_count": 20,
+  "voters": [
+    "mashoud1122",
+    "sameerphad72",
+    "ankitsingh",
+    "akaash_pantherdefence",
+    "sa1tama0",
+    "xaleraf4ra",
+    "cryptographer",
+    "0xm1racle",
+    "0x08",
+    "sigmapwn",
+    "and 10 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.8,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "changed",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 171,
+    "asset_type": "URL",
+    "asset_identifier": "hosted.weblate.org",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

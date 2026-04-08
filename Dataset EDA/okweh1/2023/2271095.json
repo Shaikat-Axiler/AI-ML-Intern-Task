@@ -1,0 +1,159 @@
+{
+  "id": 2271095,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMjcxMDk1",
+  "url": "https://hackerone.com/reports/2271095",
+  "title": "ASAR Integrity bypass via filetype confusion",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2023-12-04T06:02:02.108Z",
+  "submitted_at": "2023-12-04T06:02:02.260Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "marshallofsound",
+    "url": "/marshallofsound",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ546FE6RH%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T205042Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDsL%2FlyHNNouwZwgzNY1t2TYoLKLr5OH8PR5t%2Ba3ZEjXQIgS1HRkzIpQlUkqg6DxQseK4yBa2wb9dP%2FnXdlpqoJQwoquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDD6eloIPhdyAiFxSHyqPBbXVbFurWSTIl4LKL4Lo4MAU3XX%2Fea3nHLPrqj8qFDHZEv5JBJsPwP0LgHhKEbuc52qGYAM2owkskRQv5%2B4qkeQdfpzpmHYHE6nbRIN1WyMEFEv7QUpFdsX4lm1VbDFL6anGLetwJ1k%2Bs15KM6esIZAVANmFBJoNSLnaV5w7iK0BAq5CgMSZE%2F%2FMoj72yakNsPzX%2Frkx1F%2Bh8z34Y4JFkRvmB4SD8Aa6AHc59LIATtCzklGd8tGD%2FPHWN7Q5OFlM20bkKVHOFKBFOqBHaavS9yw01k%2FM18LbMk%2F6gF50nV4Q%2Byi1bSj2pQk%2FXBeATZOHQfFSCmb6YlIVJbi2sHR3Jfv3t0IuZzt%2B7%2BhH8xCM55AZpJNRGzCCBKdm817JdYso2XHhUUABCXI0eCfa7MtOcVAHHeFxDG2%2FKhsCBw75d4ZO8Tkpaw1NfrjUcm9pTHgHZlmIZ15McTWjOkWiM01nXsHMXhsnWm1q0GtjLwzW2WCKibHe3BNGpeO2gPxuUYYImMX0JSLvpX9DatOIIY5VGPZOzP4jeCL9XlgegdzxpTmhERr046%2BNvQe1%2BAo22sdxHQUyROlvgvepin97fsK5u1dehR803Echm6vpQUEK5ngxpGzq1%2FF812ifve1BJhdTZaB8JDkRlCS5B%2Fo13Av13F3ggsdn4mMT8By6KV4RKBXHNGT6YaMvOkw77awHQ6jtCJbrFkPw8ogY8aHLWNSoD0OAUfNR1GG4BfFPSQG6Lau3ZBw0VCoXJBj4lYEhmIwAsfVpZj2u39CFIYw8kucBrr9IQzZ%2FwvTUj5UWfox%2FG5est1hao8UVquQCBRQcqhHrAjb23FdUxjjePY4gMTvZS78hw54x96KjV%2BktpwqtTf4w0sHizAY6sQGwRuB6JMQrnIzGye%2FOXDod0Rtkj6vxm3tL4kSstU2TLYumenZBayJDbs6%2BayzCerWCYwSBi%2FbHRAInBrTpsuqObKcI030KqTl2U1K0WFfmITtQLPY9T%2Be%2Bq5oZey4qjlPeHnw0MPRK7LASbjNkTXuoRrwRgyY9Qs9WTatv36hjOauf53uDVjrpVS3BEEDo792QCtjhLY2ZFDjBn0DQMIiAAUBUKP4QR%2BKEmzeuvY2blOU%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6c512163ea1c1096bf5b451bfef473e9c2d245a490f2f9a9488efd130397d859",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ546FE6RH%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T205042Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDsL%2FlyHNNouwZwgzNY1t2TYoLKLr5OH8PR5t%2Ba3ZEjXQIgS1HRkzIpQlUkqg6DxQseK4yBa2wb9dP%2FnXdlpqoJQwoquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDD6eloIPhdyAiFxSHyqPBbXVbFurWSTIl4LKL4Lo4MAU3XX%2Fea3nHLPrqj8qFDHZEv5JBJsPwP0LgHhKEbuc52qGYAM2owkskRQv5%2B4qkeQdfpzpmHYHE6nbRIN1WyMEFEv7QUpFdsX4lm1VbDFL6anGLetwJ1k%2Bs15KM6esIZAVANmFBJoNSLnaV5w7iK0BAq5CgMSZE%2F%2FMoj72yakNsPzX%2Frkx1F%2Bh8z34Y4JFkRvmB4SD8Aa6AHc59LIATtCzklGd8tGD%2FPHWN7Q5OFlM20bkKVHOFKBFOqBHaavS9yw01k%2FM18LbMk%2F6gF50nV4Q%2Byi1bSj2pQk%2FXBeATZOHQfFSCmb6YlIVJbi2sHR3Jfv3t0IuZzt%2B7%2BhH8xCM55AZpJNRGzCCBKdm817JdYso2XHhUUABCXI0eCfa7MtOcVAHHeFxDG2%2FKhsCBw75d4ZO8Tkpaw1NfrjUcm9pTHgHZlmIZ15McTWjOkWiM01nXsHMXhsnWm1q0GtjLwzW2WCKibHe3BNGpeO2gPxuUYYImMX0JSLvpX9DatOIIY5VGPZOzP4jeCL9XlgegdzxpTmhERr046%2BNvQe1%2BAo22sdxHQUyROlvgvepin97fsK5u1dehR803Echm6vpQUEK5ngxpGzq1%2FF812ifve1BJhdTZaB8JDkRlCS5B%2Fo13Av13F3ggsdn4mMT8By6KV4RKBXHNGT6YaMvOkw77awHQ6jtCJbrFkPw8ogY8aHLWNSoD0OAUfNR1GG4BfFPSQG6Lau3ZBw0VCoXJBj4lYEhmIwAsfVpZj2u39CFIYw8kucBrr9IQzZ%2FwvTUj5UWfox%2FG5est1hao8UVquQCBRQcqhHrAjb23FdUxjjePY4gMTvZS78hw54x96KjV%2BktpwqtTf4w0sHizAY6sQGwRuB6JMQrnIzGye%2FOXDod0Rtkj6vxm3tL4kSstU2TLYumenZBayJDbs6%2BayzCerWCYwSBi%2FbHRAInBrTpsuqObKcI030KqTl2U1K0WFfmITtQLPY9T%2Be%2Bq5oZey4qjlPeHnw0MPRK7LASbjNkTXuoRrwRgyY9Qs9WTatv36hjOauf53uDVjrpVS3BEEDo792QCtjhLY2ZFDjBn0DQMIiAAUBUKP4QR%2BKEmzeuvY2blOU%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=43456e5db49ecd345cd5ab033aeaad9de3f527aa05bd491ea5219269ca365ccf"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-44402"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2024-01-20T16:43:37.361Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2023-12-21T16:43:32.135Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Maliciously crafted directories mirroring an ASAR file structure could be used to trick apps with ASAR integrity enabled into loading non-validated code.\n\n## Impact\n\nThis only impacts apps that have the embeddedAsarIntegrityValidation and onlyLoadAppFromAsar fuses enabled. Apps without these fuses enabled are not impacted. This issue is specific to macOS as these fuses are only currently supported on macOS.\n\nSpecifically this issue can only be exploited if your app is launched from a filesystem the attacker has write access too. i.e. the ability to edit files inside the .app bundle on macOS which these fuses are supposed to protect against.\n\nThere are no app side workarounds, you must update to a patched version of Electron.\n\n**Fixed Versions**\n* `27.0.0-alpha.7`\n* `26.2.1`\n* `25.8.1`\n* `24.8.3`\n* `22.3.24`",
+  "bounty_amount": "2540.0",
+  "formatted_bounty": "$2,540",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2024-01-20T16:43:32.223Z",
+  "allow_singular_disclosure_after": -65851630.754704624,
+  "singular_disclosure_allowed": true,
+  "vote_count": 49,
+  "voters": [
+    "8910jq",
+    "cr1m5on",
+    "prathap_ilango",
+    "alp",
+    "exec_iq",
+    "zy9ard3",
+    "cave14",
+    "neilx",
+    "011alsanosi",
+    "oxf4h1m",
+    "and 39 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.1,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 80986,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/Electron",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 386987,
+      "category": "team",
+      "content": "ASAR Integrity bypass via filetype confusion\nSeverity: Medium\n\nFull GHSA: https://github.com/electron/electron/security/advisories/GHSA-7m48-wc93-9g85",
+      "updated_at": "2023-12-21T16:41:02.615Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 904892,
+        "username": "kunderkoffler",
+        "name": "Kayla Underkoffler",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2020-01-13T19:26:22.339Z",
+        "url": "https://hackerone.com/kunderkoffler",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

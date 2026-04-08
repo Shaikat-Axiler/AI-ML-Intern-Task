@@ -1,0 +1,135 @@
+{
+  "id": 877303,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84NzczMDM=",
+  "url": "https://hackerone.com/reports/877303",
+  "title": "Internal IP addresses range and AWS cluster region leaked in a Github repository ",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "none",
+  "readable_substate": "Informative",
+  "created_at": "2020-05-18T17:25:09.627Z",
+  "submitted_at": "2020-05-18T17:25:09.627Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "njaysec",
+    "url": "/njaysec",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6PwHKohUMLEwZ6AwKe7YGHzz/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 39386,
+    "url": "https://hackerone.com/kubernetes",
+    "handle": "kubernetes",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kubernetes",
+      "twitter_handle": "kubernetesio",
+      "website": "https://kubernetes.io/",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-07-24T00:43:28.230Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-05-19T22:45:56.574Z",
+  "team_member_agreed_on_going_public_at": "2020-07-24T00:43:28.154Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Report Submission Form\n\n## Summary:\nI was exploring the GitHub repository and found some internal IP address and its cluster region related to AWS cluster. So i decided to report it to you. Please have a look and let me know.\n\n## Steps To Reproduce:\nVISIT THIS LINK : \nRepository - kubernetes / kubernetes \nFile Link - https://github.com/kubernetes/kubernetes/blob/d4d02a9028337e41b4f7a76e4e7de50067e8529e/cluster/aws/config-default.sh\n\n\n## Supporting Material/References:\nReference:\nhttps://hackerone.com/reports/329791\nhttps://hackerone.com/reports/271700\nhttps://hackerone.com/reports/310036\n\n## Impact\n\n1. These IPs are related to AWS cloud, if someone get enter in the Vnet can also exploit machine on the machines already known.\n2. Gives the idea of the organization of internal network. \n3. Revealing the AWS cluster region can also narrow down the search of any hacker and make their work easy\n4. This will allow attackers to gain access to an internal IP of a DOD website along with other sensitive information that may be leaked with the request",
+  "weakness": {
+    "id": 101,
+    "name": "Insecure Storage of Sensitive Information"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 833184,
+      "file_name": "kub-aws1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/TpMtXd55hPh3uEYghkPLboN3?response-content-disposition=attachment%3B%20filename%3D%22kub-aws1.png%22%3B%20filename%2A%3DUTF-8%27%27kub-aws1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001556Z&X-Amz-Expires=757&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b8d83e0b84de64fe9b56d4efae91c83c86196b17e4a5558d631f96fb1ba67b07",
+      "file_size": 51288,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 833185,
+      "file_name": "kub-aws2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/8DnufovSYMDdMJCxXErM8uE4?response-content-disposition=attachment%3B%20filename%3D%22kub-aws2.png%22%3B%20filename%2A%3DUTF-8%27%27kub-aws2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001556Z&X-Amz-Expires=757&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c5a5f53b481b13b7ddbe65c6107e7da850a403c1ca1c7330f5850cffcf8427d2",
+      "file_size": 59884,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 833186,
+      "file_name": "kub-aws3.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/5FkzTvSn5cKASJsvkx6HMBLD?response-content-disposition=attachment%3B%20filename%3D%22kub-aws3.png%22%3B%20filename%2A%3DUTF-8%27%27kub-aws3.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001556Z&X-Amz-Expires=757&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cfdf3a205d4cc992cec50804b4657d887737ec923ddfe9786e695b224762418a",
+      "file_size": 70058,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 0,
+  "voters": [],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 32459,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/kubernetes/kubernetes",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "id": 755354,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83NTUzNTQ=",
+  "url": "https://hackerone.com/reports/755354",
+  "title": "Prevent XSS when passing a parameter directly into link_to ",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2019-12-10T18:00:07.892Z",
+  "submitted_at": "2019-12-10T18:00:07.892Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "speleding",
+    "url": "/speleding",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/vJRkCxyKWpQqekuvyr1WFKec/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22,
+    "url": "https://hackerone.com/rails",
+    "handle": "rails",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/022/5e2b46658c8b86bed62f574d8e1793f353cbbc63_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/022/5e2b46658c8b86bed62f574d8e1793f353cbbc63_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Ruby on Rails",
+      "twitter_handle": "rails",
+      "website": "http://rubyonrails.org/security",
+      "about": "Web development that doesn't hurt."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-05-13T18:19:25.408Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2020-05-12T16:38:42.187Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "*Note: I would say this is perhaps more of a feature request than an actual vulnerability, but Rafael França deleted this from GitHub and asked to submit it here instead*\n\nIn a rails views it's easy to accidentally create an XSS vulnerability by using the following in a template:\n`<%= link_to 'Back', params[:back] %>`\n\nDoing this exposes the app to an attack that can easily be demonstrated by simply adding this to URL of that view:\n`?back=javascript%3Aalert%28boom%29%3B`\n\nI think it would be good if rails detects this situation and filters the link_to parameter if it's from an untrusted source. The attached two-line patch does this by only allowing the HTTP(S) protocol in that case.\n\n## Impact\n\nIf a programmer inadvertently passes a parameter directly into link_to then this would leave his site open to an XSS attack. Since rails filters untrusted parameters in many other situations it may not be apparent to the casual observer that link_to does not filter javascript.",
+  "weakness": {
+    "id": 63,
+    "name": "Cross-site Scripting (XSS) - DOM"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 656072,
+      "file_name": "Prevent_XSS_when_passing_param_directly_into_link_to.patch",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/V97WNmtmEepCjFWqSc5c5tCT?response-content-disposition=attachment%3B%20filename%3D%22Prevent_XSS_when_passing_param_directly_into_link_to.patch%22%3B%20filename%2A%3DUTF-8%27%27Prevent_XSS_when_passing_param_directly_into_link_to.patch&response-content-type=text%2Fx-patch&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003554Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=14beeaffbe50d9c9469138cd896316705ce6d4495d0f9ad7feefe7c0cf93b3d2",
+      "file_size": 560,
+      "type": "text/x-patch",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 2,
+  "voters": [
+    "brahim_boufakri01",
+    "mr_assassin"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 160,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/rails/rails",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

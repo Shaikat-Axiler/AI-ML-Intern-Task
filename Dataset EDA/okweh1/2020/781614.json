@@ -1,0 +1,139 @@
+{
+  "id": 781614,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83ODE2MTQ=",
+  "url": "https://hackerone.com/reports/781614",
+  "title": "subdomain takeover at status-stage0.stripo.email",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-01-23T15:40:37.720Z",
+  "submitted_at": "2020-01-23T15:40:37.720Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "laz0rde",
+    "url": "/laz0rde",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/98nm0ngmkn44aqzfgnkoieg4gtei/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 42368,
+    "url": "https://hackerone.com/stripo",
+    "handle": "stripo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Stripo Inc",
+      "twitter_handle": "",
+      "website": "https://stripo.email",
+      "about": "Stripo is a lightweight and intuitive email template editor that lets users build professional looking and highly responsive email templates."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-01-30T10:14:21.187Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-01-29T18:46:55.147Z",
+  "team_member_agreed_on_going_public_at": "2020-01-30T10:14:21.117Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The subdomain status-stage0.stripo.email was pointed at uptimerobot.com\nwhereas it was not being used , but having Cname record as stats.uptimerobot.com .\nHence anyone can takeover it.\n\nI have parked it with an account on uptimerobot.com\nnote : \nthis issue is similar to [report](https://hackerone.com/reports/737695)\nbut with another subdomain\n\n## Impact\n\nSubdomain takeover can be abused to do several things like :\n\nMalware distribution\nPhishing / Spear phishing\nXSS\nAuthentication bypass\nLegitimate mail sending and receiving on behalf of ford subdomain\n...\nList goes on and on",
+  "weakness": {
+    "id": 75,
+    "name": "Privilege Escalation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 694031,
+      "file_name": "100.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/n9YxE4X41P9Lth2KecckVdsZ?response-content-disposition=attachment%3B%20filename%3D%22100.png%22%3B%20filename%2A%3DUTF-8%27%27100.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005603Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7483a87c635ac68455a2bb9a7d4777ab74897b5156fc36ab4fe5dc125e70c227",
+      "file_size": 76135,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 694033,
+      "file_name": "poc.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/3W2AbamHGMHDxTq1ytiokp5d?response-content-disposition=attachment%3B%20filename%3D%22poc.png%22%3B%20filename%2A%3DUTF-8%27%27poc.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005603Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3a2c9741d34c2bddc2717a668255007748889cd87c82cd4f1467035310836263",
+      "file_size": 38308,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 16,
+  "voters": [
+    "checkm50",
+    "tess",
+    "bb00x",
+    "exception",
+    "omakmoh",
+    "dunedain",
+    "hakmod",
+    "b9372d4605459ca97219795",
+    "sherohack",
+    "utkarsh_prajapati",
+    "and 6 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 38701,
+    "asset_type": "URL",
+    "asset_identifier": "stripo.email",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

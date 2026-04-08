@@ -1,0 +1,128 @@
+{
+  "id": 1067824,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDY3ODI0",
+  "url": "https://hackerone.com/reports/1067824",
+  "title": "Database error shown to the user when using a long guest name in richdocuments",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2020-12-28T22:33:09.651Z",
+  "submitted_at": "2020-12-28T22:33:09.675Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "hitman_47",
+    "url": "/hitman_47",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/KKToEm4ceuWpEmuv6Lh1SXpn/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-02-07T07:55:38.116Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2021-01-08T07:55:29.958Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "When sharing a file to a guest and the file is allow for editing, the user is asked to enter a guestname if you enter a really long value for that name you get a database error that displays sensitive information:\n\nAn exception occurred while executing 'INSERT INTO `oc_richdocuments_wopi`(`fileid`,`owner_uid`,`version`,`canwrite`,`server_host`,`token`,`expiry`,`guest_displayname`,`template_destination`,`hide_download`,`direct`,`is_remote_token`,`template_id`,`share`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)' with params [8606022, \"8JaQyYP5xM7w2PJ6\", 0, true, \"https:\\/\\/demo2.nextcloud.com\\/\", \"hUYL4uh9Dals51BoAT2YA7WZ1IJMaCLp\", 1609196332, \"reallylongnameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (Guest)\", 0, false, false, false, 0, \"c4A53CW6wAN2ZZa\"]: SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'guest_displayname' at row 1\n\nDemo\n{F1133198}\n\n## Impact\n\nInformation Disclosure",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1133198,
+      "file_name": "recording-1609194562161.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/dw81hzxfgm7t0cff2var6rlx1jhm?response-content-disposition=attachment%3B%20filename%3D%22recording-1609194562161.webm%22%3B%20filename%2A%3DUTF-8%27%27recording-1609194562161.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQX7T3DB4I%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233146Z&X-Amz-Expires=1353&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDBX6iSzaFyfvzFBbW%2BGR%2FbsiUdRGS2ZFlDPnz%2FzdvBIAIhAMkk2NKpZXyT4sf%2BkzyB8mv5zVRy51CGaZ5rhrUtG9F8KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyleY3yfrYFv8CwslgqjgUcarpVSwKq6L3q1FQNWjWPoFOsd7DtpB8P75iLY9Ndz%2Bl0TJTy%2FPtXppzIFKgsB74HwuG9V8I%2BB0ql%2FT5Efif2TP0lL%2BLSwYPu1iH%2BCMBYitS6FbPeeZCHxXGIP7qLklsYEbNrP5TnBfjNyAvUCFo0rvsQlbRTV5imgTy2RC59HsPadkYS0m9qbT4BpGP%2FfSpMXvkd5Ypmfwq8LSUlDL%2BvHlKRQi%2B3XkUd80q6eG1Af1col5%2FV9df6v2I%2Be%2FaRVV8lYx1iI%2BdwJSupnd4AzAJXbxPMGIG%2BIUTmXmkeQLrOC95V0Jh17sy1Kk4%2FJjMdIXb7MZAn9TlhlsL1Izy7VwPpzLStTNSY4UQ1d3DqQNhiIu%2FXeqcgqJntEKp6Ed1%2F1rB4XGEldWdhdOsY9w1A7SaKcSIkksewNNiHMAfflenIJ39Wi%2BXyWpXO2UGmuRy3zjkp28DjKgl%2FUJBKFhKClqOGS1CrfrBsEdfYqV1dNCpEJ%2FxZjVeVsyMYHgfgzoo3hp4E%2BVgGKKFtg0uzwLGP23fMfpgj%2BYxbUZNM1VEMUOfkIwRD536Jz8an62zAD%2FZeGs2JQ86aBg5OwVKPRflKyBGi8d%2FRn9X1M92uKzzF4%2BYRRiitumnMFmAf9MSGk%2BkVcMhX5PxqIx5S6y6M%2Fg2DZgzQKKwaYmWOerc%2FYDWYeqPYQbXySJaAQjMGg3i5bM3ZK4YGfCDVzxiplySsUPHUcppahytQkWyqvV%2FZO09z%2F3aeNTdalp3DuiMbKfKSQADpAyZg7vY9Swy4k3%2BQKi9TeefvHroZxAZTYWSepxrv7PlZ3rffrme3kRmPL4%2Bxcrb3kJqaMTXVLASYvekxhl3LXIpjwzDYDpdFDI2TNXDSz3YwmbvizAY6sAEeq828T%2FEuqwfGilgVyCOWvJhvVOuJFIHgfI24UuSLmWGnMTFxzS1lJcV9Izp6xVpq%2Bs%2BX2ycNlSdtweuqmey65nNkAS9bb53v9dmn8SxxZCCEA8kph2cwqDWhQYhaJRLS4pVOaDV%2FnQCJ8gj2RqAGWwdbXLvPic8fEIc%2FdXNISWWBwrYvtuYd06H%2BpeOWRCikAOWNtGROiXSsGD4WgmSskq9closLgvwiQLQ72HCISg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7719cf642bf605782dd7b3feb4e44402db96ec57b79263dbba8d8da29d4e8e34",
+      "file_size": 9273290,
+      "type": "video/webm",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-02-07T07:55:30.041Z",
+  "allow_singular_disclosure_after": -158945776.82797647,
+  "singular_disclosure_allowed": true,
+  "vote_count": 29,
+  "voters": [
+    "trein",
+    "m4khn0",
+    "yassinek3ch",
+    "ali",
+    "bibekshah",
+    "nightm4re",
+    "red_darkin",
+    "0xelkomy",
+    "h4x0r_dz",
+    "dilawer",
+    "and 19 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 13,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "nextcloud/server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "id": 425314,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MjUzMTQ=",
+  "url": "https://hackerone.com/reports/425314",
+  "title": "API request signature can be reused with other parameters/data than the original in certain cases",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-10-18T10:35:37.715Z",
+  "submitted_at": "2018-10-18T10:35:37.715Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "p4fg",
+    "url": "/p4fg",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2nfql99dp2er0dhwrbo3nv212i6l/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21546,
+    "url": "https://hackerone.com/gatecoin",
+    "handle": "gatecoin",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/021/546/b42ace28168a502b51e5ecc5021c0ac6d67c7abf_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/021/546/b42ace28168a502b51e5ecc5021c0ac6d67c7abf_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Gatecoin",
+      "twitter_handle": "Gatecoin",
+      "website": "https://gatecoin.com",
+      "about": "Gatecoin is a bitcoin and ethereum token exchange"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-02-23T07:19:45.050Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-01-24T07:19:39.977Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "If an attacker can intercept/see an API-request from a client who has a system-clock that is slightly ahead of the server time then the attacker can re-use the API request-signature towards the same URL (but with a different payload). This can for some of the endpoint lead to serious vulnerabilities.\n\nThis means that if an attacker can see a API-request from the user to create a read-only API-key, then the attacker can create a API-key with full privileges.\n\nThe system seems to be caching the signature for 300 seconds (5 minutes), any request with the same signature within this time will get the response:\n```\nHTTP 401\nYou are not authorized. The same request was already made within the same millisecond.\n```\n\nIf the request timestamp is more than 5 minutes old, the system will reject the request (as per documentation):\n```\nHTTP 401\nYou are not authorized. The request timestamp must be within 5 minutes of the server time. Your request is -5.01693514166667 minutes compared to the server. Server time is currently Thursday, October 18, 2018 6:04:26 PM.\n```\n\nHowever, IF the original request comes from a computer with a system-clock that is ahead of the server by a few seconds, there exists a window of opportunity where the signature is removed from the cache AND the request time is less than 5 minutes from the server-time.\n\nAt this time it is possible to re-use the signature but with another payload (as the payload is, unfortunately, not part of the signature). \n\nIn the enclosed python-example a read-only API key is created with a timestamp 3 seconds in the future. The script then waits until 299 seconds has passed and then starts sending a new request to create a API-key but with privileges to trade and withdraw. The first requests will get \"You are not authorized. The same request was already made within the same millisecond.\" indicating that the signature is still cached, but after a few requests the signature will be removed from the cache and the request will go through, creating a API-key with all privileges.\n\nA quick-fix would be to cache the signatures 10+ minutes instead of 5 minutes (as the first request in the worst-worst-worst case could be 5 minutes ahead of the server-time and the attacker then can use the signature until 5 minutes after server-time).\n\nA proper fix of the problem would be to both cache 10+ minutes AND include the payload-data in the data that is signed. That way a replay/reuse attack would only repeat the operation with the same parameters.\n\n## Impact\n\nIf an attacker can add a API with trading privileges, that key could enable the attacker to do unfavorable trades using the victims account (dump a coin with low liquidity or buy some coin at a very high price), and giving the attacker a potential to profit.\n\nThe same exploit could also be used to add a attacker-controlled withdraw-wallet, which in combination with a API-key with withdraw-privileges would lead to loss of funds.",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 362493,
+      "file_name": "reuse_signature_gatecoin.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/362/493/3a53d6b8bdd503df00223293b31c7b9d924fb158/reuse_signature_gatecoin.py?response-content-disposition=attachment%3B%20filename%3D%22reuse_signature_gatecoin.py%22%3B%20filename%2A%3DUTF-8%27%27reuse_signature_gatecoin.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015836Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c062c811a784ddf37b68bc420883a2e392791164fb53c7de5a686d4a5cf975dd",
+      "file_size": 2733,
+      "type": "text/x-python",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-02-23T07:19:40.047Z",
+  "allow_singular_disclosure_after": -220732736.4605098,
+  "singular_disclosure_allowed": true,
+  "vote_count": 33,
+  "voters": [
+    "base_64",
+    "ali",
+    "sameerphad72",
+    "mohaned0101",
+    "w2w",
+    "mik317",
+    "savitar0x01",
+    "khizer47",
+    "t4ym",
+    "cryptographer",
+    "and 23 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 4423,
+    "asset_type": "URL",
+    "asset_identifier": "gatecoin.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

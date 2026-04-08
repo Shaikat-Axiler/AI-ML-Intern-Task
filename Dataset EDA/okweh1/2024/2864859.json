@@ -1,0 +1,150 @@
+{
+  "id": 2864859,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODY0ODU5",
+  "url": "https://hackerone.com/reports/2864859",
+  "title": "-H with space prefix leads to previous header injection when used with --proxy",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "medium",
+  "readable_substate": "N/A",
+  "created_at": "2024-11-25T19:03:06.178Z",
+  "submitted_at": "2024-11-25T19:03:06.675Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "spongebhav",
+    "url": "/spongebhav",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nfnjnvwsivcfw130wiwoaf3vlju9/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-07-07T10:17:20.855Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2025-07-06T21:18:12.413Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHi team,\nI hope you're doing well.\n\nRecently I came accross this weird curl behavior where -H \"[space]header: value\" would inject the header in the previous HTTP header.\n\nTried it on mac OS Sequoia 15.1 with curl version\n\n```\ncurl 8.11.0 (aarch64-apple-darwin24.1.0) libcurl/8.11.0 OpenSSL/3.4.0 (SecureTransport) zlib/1.2.12 brotli/1.1.0 zstd/1.5.6 AppleIDN libssh2/1.11.1 nghttp2/1.64.0 librtmp/2.3\nRelease-Date: 2024-11-06\n```\n\nWeirdly, this only seems to work when --proxy argument exists.\n\n\n## Steps To Reproduce:\n\n```bash\ncurl -X GET \"https://iaw2x2g8gw7mfnouqxj3z2hc036uunic.oastify.com\" -H \"Secure-Header: XYZ\" -H \" new-header-that-will-inject-to-previous-header: value\" --proxy 127.0.0.1:8080\n```\n\nResulting request:\n\n{F3789552}\n\nwhen the first header itself contains space, the behavior will again be to attach to previous header:\n\n```\ncurl -X GET \"https://iaw2x2g8gw7mfnouqxj3z2hc036uunic.oastify.com\" -H \" new-header-that-will-inject-to-previous-header: value\" --proxy 127.0.0.1:8080\n```\n\n{F3789554}\n\n\nWithout proxy argument however, the behavior is normal and it will send them in new lines:\n\n```\ncurl -X GET \"https://iaw2x2g8gw7mfnouqxj3z2hc036uunic.oastify.com\" -H \" new-header-that-will-inject-to-previous-header: value\"\n```\n\nResulting request:\n\n{F3789556}\n\n\nThis also works with -H @file.txt where the file begins with the space.\n\n\nI do not have an exact scenerio where this can be exploited, however, since curl is so widely used, I can imagine a scenerio where @file.txt or a single header name input may be attacker controlled in someway, which can lead to malformed requests to servers.\n\nAlso, if request like this is sent:\n\n```\ncurl -X GET \"https://iaw2x2g8gw7mfnouqxj3z2hc036uunic.oastify.com\" -H \" new-header-that-will-inject-to-previous-header: value\" -H @headers2.txt -H 'User-Agent:' -H 'Accept:' --proxy 127.0.0.1:8080\n```\n\nThe headers will directly attach to Host header, which may lead to incorrect logging, and introduce other issues depending upon the program.\n\n{F3789609}\n\n\nSince, headers field-name can't contain spaces anyway, stripping them and always adding them to new line would be prefect solution.\n\n## Impact\n\nPrevious header/ previous line injection via -H",
+  "weakness": {
+    "id": 115,
+    "name": "Improper Check or Handling of Exceptional Conditions"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3789552,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/c3wjbfl95arfshe6rgiad1khw9gw?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200102Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7f09a5d98004484d897e132656138e90230f53dd5081fe2252de2f20f50085d1",
+      "file_size": 58656,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3789554,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/p2bc0tuiciu4gtmb2t9daondfhv5?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200102Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=148b93a73ec564e998616c58902a54376b0a174e8be2c1e9ac4dff2f30ca3e9d",
+      "file_size": 49462,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3789556,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ajle4i6wcs83v13y2uk2d8xpa61t?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200102Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=6ad06794c81a56497e0eeda649dd3767b263effb879e098de5b826d56f21232d",
+      "file_size": 44281,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3789609,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/3gt6nryeuwdk5ial40mmtr7lmh0y?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200102Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d31512f2cc227c273f6849f01bac4f80a9891d07e24d68caf295ad0e911c93b4",
+      "file_size": 43740,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 6,
+  "voters": [
+    "thalaivar304",
+    "2026",
+    "adarsh01securityanlayst",
+    "francophone",
+    "sjflow",
+    "hunt_98"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

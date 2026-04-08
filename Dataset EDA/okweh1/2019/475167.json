@@ -1,0 +1,129 @@
+{
+  "id": 475167,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80NzUxNjc=",
+  "url": "https://hackerone.com/reports/475167",
+  "title": "Apache mod_negotiation filename bruteforcing https://api.ratelimited.me",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-01-05T22:26:17.964Z",
+  "submitted_at": "2019-01-05T22:26:17.964Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "codeslayer1337",
+    "url": "/codeslayer1337",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/v6fcs9k6nxzscaei3wo5fcpqfbnt/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 26860,
+    "url": "https://hackerone.com/ratelimited",
+    "handle": "ratelimited",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/026/860/4c9a902446bc9aa57b82156df4b7e358bdecd727_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/026/860/4c9a902446bc9aa57b82156df4b7e358bdecd727_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "RATELIMITED",
+      "twitter_handle": "",
+      "website": "https://ratelimited.me",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-08-01T04:40:07.369Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-07-02T04:40:04.512Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "mod_negotiation is an Apache module responsible for selecting the document that best matches the clients capabilities, from one of several available documents. If the client provides an invalid Accept header, the server will respond with a 406 Not Acceptable error containing a pseudo directory listing. This behaviour can help an attacker to learn more about his target, for example, generate a list of base names, generate a list of interesting extensions, look for backup files and so on.\nThis vulnerability affects Web Server.\n\nPOC:\nGET /index HTTP/1.1\nHost: api.ratelimited.me\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0\nAccept: codeslayer137\nAccept-Language: id,en-US;q=0.7,en;q=0.3\nConnection: close\nCookie: __cfduid=d1223d3114b0d6a19cb09dbdbf358c2721544548659; fs_uid=rs.fullstory.com`HCE07`5666823336886272:5639274879778816; PHPSESSID=iipu5birnh9jap713248e5vlb7; _ga=GA1.2.1698835729.1546721836; _gid=GA1.2.1401928030.1546721836; mp_9e50b60442d3361880f79100f15e5aac_mixpanel=%7B%22distinct_id%22%3A%20%221681fc8d6fc1ee-00a6f91171d9d8-12666d4a-e1000-1681fc8d6fd2cc%22%2C%22%24device_id%22%3A%20%221681fc8d6fc1ee-00a6f91171d9d8-12666d4a-e1000-1681fc8d6fd2cc%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%7D\nUpgrade-Insecure-Requests: 1\n\n## Impact\n\nPossible information disclosure: directory listing, filename bruteforcing, backup files.\nHow to fix this vulnerability\nDisable the MultiViews directive from Apache's configuration file and restart Apache.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 401634,
+      "file_name": "api.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/401/634/cce010f1184118c5afdc9201728b87f2721d793e/api.jpg?response-content-disposition=attachment%3B%20filename%3D%22api.jpg%22%3B%20filename%2A%3DUTF-8%27%27api.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T210927Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1d11a1db08b60dd9598212b84a4ca13c1940ebeff4d80c88243b5eb26f9fa0c2",
+      "file_size": 264945,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-08-01T04:40:04.609Z",
+  "allow_singular_disclosure_after": -80756962.7905501,
+  "singular_disclosure_allowed": true,
+  "vote_count": 27,
+  "voters": [
+    "orange303",
+    "zy9ard3",
+    "shubham_srt",
+    "dilawer",
+    "2026",
+    "quack711",
+    "samurai_jack0",
+    "what_web",
+    "codeslayer1337",
+    "shivammusic",
+    "and 17 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 8575,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.ratelimited.me",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

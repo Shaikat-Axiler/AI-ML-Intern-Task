@@ -1,0 +1,155 @@
+{
+  "id": 812351,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84MTIzNTE=",
+  "url": "https://hackerone.com/reports/812351",
+  "title": "Username Information Disclosure via Json response - Using parameter number Intruder",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2020-03-06T19:27:48.065Z",
+  "submitted_at": "2020-03-06T19:27:48.065Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "0xrobot",
+    "url": "/0xrobot",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/vi11Pk66EJtPgG9G97Gm5ztC/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-06-04T00:52:38.484Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-03-06T21:17:59.063Z",
+  "team_member_agreed_on_going_public_at": "2020-06-04T00:52:38.423Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nHi , Brave Team we found vulnerability's in your websites , I Found  all username disclosed using Json Response ``{parameter-number}``.\n\nPlatform(s) Affected: [website]\n*. https://community.brave.com/c/brave-feature-requests.json\n*. https://community.brave.com/c/beta-builds/38.json\n\n## Steps To Reproduce:\n  - Repreat URL ``.json`` to Burp Suite\n  - Sent to Parameter **Burp-Intruder**\n  - Set parameter , ``§random-number§`` , and start request\n  - You can see **Sensitive Information** in Responsive Header ``Number-Parameter``\n\n**Request**\n```\nGET /c/beta-builds/§38§.json HTTP/1.1\nHost: community.brave.com\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nDNT: 1\nConnection: close\nUpgrade-Insecure-Requests: 1\n```\n  - You can see Information Disclosure in Responsive Header ```200 OK.```\n\n##POC Supporting Material/References (Screenshots)\n  - F739659\n  - F739660\n  - F739661\n  - F739658\n\n## Impact\n\nInformation Disclousure",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 739658,
+      "file_name": "ScreenshotsPOC.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/zyyW2sMzgfmLpwxwfju4yC1G?response-content-disposition=attachment%3B%20filename%3D%22ScreenshotsPOC.png%22%3B%20filename%2A%3DUTF-8%27%27ScreenshotsPOC.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002917Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a05e402e1dbea36b5178ad344543d5c6c9ac55d381d2f8ea4248c949eefa36c5",
+      "file_size": 129424,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 739659,
+      "file_name": "ScreenshotsPOC1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/oNwRe7AscQBEF6vHEMnqc8Fp?response-content-disposition=attachment%3B%20filename%3D%22ScreenshotsPOC1.png%22%3B%20filename%2A%3DUTF-8%27%27ScreenshotsPOC1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002917Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=87111f4deaf6bea1f09410cb8c66facdc82d80383803e41cf070d49984bbd4e8",
+      "file_size": 58948,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 739660,
+      "file_name": "ScreenshotsPOC2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ozKo2SYXHAsz61vTcfH1chhA?response-content-disposition=attachment%3B%20filename%3D%22ScreenshotsPOC2.png%22%3B%20filename%2A%3DUTF-8%27%27ScreenshotsPOC2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002917Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7a7c57f940ce05ee85dbab3ae798921b43e1a59af79ec4bb0cf98b6edfb277b4",
+      "file_size": 169422,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 739661,
+      "file_name": "Responsive.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ReezhyfsTVDtUGoPneFJFELV?response-content-disposition=attachment%3B%20filename%3D%22Responsive.png%22%3B%20filename%2A%3DUTF-8%27%27Responsive.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002917Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=300429ad6d1be6ef717cdc35a9d749b17e119f76ecb18f44a6d837bc561d3b4a",
+      "file_size": 973743,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 16,
+  "voters": [
+    "iamgk808",
+    "brahim_boufakri01",
+    "deb0con",
+    "medbsq",
+    "runkixt",
+    "0xrobot",
+    "themidnight",
+    "niche_boi",
+    "ajay0341",
+    "kmentor216",
+    "and 6 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 7965,
+    "asset_type": "URL",
+    "asset_identifier": "brave.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

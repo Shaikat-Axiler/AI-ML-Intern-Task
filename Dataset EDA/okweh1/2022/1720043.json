@@ -1,0 +1,170 @@
+{
+  "id": 1720043,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNzIwMDQz",
+  "url": "https://hackerone.com/reports/1720043",
+  "title": "Desktop client can be tricked into opening/executing local files when clicking a nc://open/ link",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2022-10-02T20:51:25.495Z",
+  "submitted_at": "2022-10-02T20:51:25.612Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "lukasreschke",
+    "url": "/lukasreschke",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/037/891/e7fea4d5383dc07d1fe767b02f3bda2bc7639c63_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2022-41882"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-02-10T09:28:27.289Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-01-11T09:28:23.082Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "https://github.com/nextcloud/desktop/pull/4771 added support for \"local edit\", this feature is however implemented in an insecure way.\n\n[The code](https://github.com/nextcloud/desktop/blob/ee98244877e8ccaaa8487f2487c31ce112b746c5/src/gui/folderman.cpp#L1476-L1480) is calling into `QDesktopServices::openUrl(QUrl::fromLocalFile(foundFiles.first()));` and `foundFiled.first()` will be the path of the file specified via the deeplink:\n\n```cpp\n    // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl from a separate thread, or, there will be a freeze.\n    // To avoid searching for a specific folder and checking if the VFS is enabled - we just always call it from a separate thread.\n    QtConcurrent::run([foundFiles] {\n        QDesktopServices::openUrl(QUrl::fromLocalFile(foundFiles.first()));\n    });\n```\n\n`QDesktopServices::openUrl` is however not suited for not trusted user input as it will also execute files directly.\n\n## Proof of concept\n\nThe following proof of concept was performed under Windows 10:\n\n1. In the web interface create a `test.vbs` file such as `MsgBox \"Hallo\", VBOKOnly, \"Ok\"`.\n2. Open `nc://open/mSnmByRJcj6cwKwX@demo1.nextcloud.com/test.vbs` in the browser (adjust username and instance path)\n3. The VB Script will be executed and a popup will appear.\n\n**Note:** This can also be exploited by a remote attacker if they upload a file to the same instance a user has access to.\n\n## Recommendations\n\nThere are several mitigation recommendations here:\n\n- Add a CSRF token to the `nc://open/` link and have the client verify the token on request.\n- Ensure only safe file types can be opened using a local file viewer. \n\n## Disclosure Policy\nPlease note that all bugs reported by [Authentick GmbH](https://www.authentick.net) will be publicly disclosed within 90 days of vendor notification. In extraordinary cases we may increase that upon request by the vendor.\n\n## Impact\n\nThe Nextcloud Desktop Client in version 3.6.0 is vulnerable to a Remote Code Execution that can be exploited by anyone that is able to upload files to an instance the user has access to. **In many cases this will be everyone due to public chats, files drop upload, etc.**\n\nExploitation just requires the victim to visit a malicious web page (or click a link on an email or anything like that)",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1965949,
+      "file_name": "Screenshot_2022-10-02_22.49.35.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/32lusue9to75yed18lk0uwwueduy?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2022-10-02_22.49.35.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2022-10-02_22.49.35.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T213209Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cf5ac2cfc0f800e1b0401f0db7cffb5119f0b952f5140c065b22013761006c7c",
+      "file_size": 470098,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-02-10T09:28:23.171Z",
+  "allow_singular_disclosure_after": -95601826.63995679,
+  "singular_disclosure_allowed": true,
+  "vote_count": 13,
+  "voters": [
+    "zy9ard3",
+    "shreyaschavhan",
+    "shubham_srt",
+    "eminfidan",
+    "shivammusic",
+    "sandip05",
+    "meispi",
+    "gorigorisensei",
+    "unknown1122w",
+    "7ahmad_alrawi93",
+    "and 3 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.6,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "changed",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 77,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "Desktop Client",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 216692,
+      "category": "team",
+      "content": "Security advisory at https://github.com/nextcloud/security-advisories/security/advisories/GHSA-3w86-rm38-8w63",
+      "updated_at": "2022-11-10T10:01:42.277Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 89223,
+        "username": "nickvergessen",
+        "name": "Joas Schilling",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "Germany",
+        "created_at": "2016-07-01T08:17:59.061Z",
+        "url": "https://hackerone.com/nickvergessen",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

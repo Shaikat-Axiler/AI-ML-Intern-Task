@@ -1,0 +1,166 @@
+{
+  "id": 753386,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83NTMzODY=",
+  "url": "https://hackerone.com/reports/753386",
+  "title": "No CSRF Protection in Resend Confirmation Email feature leads to Sending Unwanted Email in Victim's Inbox without knowing Victim's email address",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-12-06T20:57:52.849Z",
+  "submitted_at": "2019-12-06T20:57:52.849Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "whoisbinit",
+    "url": "/whoisbinit",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 42368,
+    "url": "https://hackerone.com/stripo",
+    "handle": "stripo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Stripo Inc",
+      "twitter_handle": "",
+      "website": "https://stripo.email",
+      "about": "Stripo is a lightweight and intuitive email template editor that lets users build professional looking and highly responsive email templates."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-09-08T11:17:01.487Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-26T05:34:12.133Z",
+  "team_member_agreed_on_going_public_at": "2020-09-08T11:17:01.409Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nThere's no CSRF protection in confirmation email resending feature as a result of which an attacker can trick the victim to receive a confirmation email unknowingly. In other features of the website, the content-type must be \"application/json\", and there is same-origin policy, which prevents CSRF, but in this one, it isn't necessary to have the content-type \"application/json\", as a result of which the \"resendEmailConfirmation\" endpoint becomes vulnerable to CSRF.\n\n## Steps To Reproduce:\nStep 1. Login to your unverified Stripo account, and then intercept the request made while clicking on the \"Resend it\" text at the top-right corner of the webpage. The HTTP Request would look like this:\nRequest URL: https://my.stripo.email/cabinet/stripeapi/v1/resendEmailConfirmation\nRequest Method: POST\nRequest Data: {}\nStep 2. With the obtained information, create a HTML code like this:\n```\n<body onload=\"document.form.submit()\">\n<form name=\"form\" method=\"POST\" action=\"https://my.stripo.email/cabinet/stripeapi/v1/resendEmailConfirmation\">\n</form>\n</body>\n```\nStep 3. Save the file with .html extension, upload it to your website, and send the URL to the victim.\nWhen the victim visits the URL, the request is made automatically from victim's account\n\n### Example URL: https://binitghimire.com.np/stripo/resendEmail.html\n\nThis is how this vulnerability can be reproduced.\n\n## Remediation Actions\nIn accordance with the current situation of the website, the vulnerability can be fixed by making the \"application/json\" content-type compulsory in requests, and optionally passing certain data in the HTTP request so that the reproduction would be impossible, unless the `enctype=\"application/json\"` feature is introduced in higher versions of HTML, and other things would be handled by the existing Same-origin Policy just like in the other features of the website. If the Same-origin Policy hadn't existed, an attacker would have been able to, for example, put any image as someone's profile photo or delete anyone's profile photo, but this doesn't exist, all thanks to the SOP and the content-type \"application/json\" necessity.\n\nAnother way to fix the vulnerability is to introduce the CSRF token system, if you are thinking about bringing a change to the Stripo platform.\n\n## Supporting Material/References:\n  * An image has been attached along with this vulnerability report.\n\n## Impact\n\nAs a result of this vulnerability, an attacker would be able to lead the victim in receiving confirmation email without even knowing and without clicking any buttons or filling up any details.\n\nI would be looking forward to hearing from you soon.\n\nThanks,\n@binit",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 652858,
+      "file_name": "Result_of_CSRF.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/jYbWpRXL22UuLRiWeNCH33HK?response-content-disposition=attachment%3B%20filename%3D%22Result_of_CSRF.png%22%3B%20filename%2A%3DUTF-8%27%27Result_of_CSRF.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000509Z&X-Amz-Expires=1933&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e4c0bbb84a30ff49ea106a23dd7a18316906315489f5fa49acfa171f8f829d53",
+      "file_size": 24780,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 12,
+  "voters": [
+    "bibekshah",
+    "akashhamal0x01",
+    "dhakal_bibek",
+    "styrene",
+    "sa1tama0",
+    "metwallysec",
+    "linusiar",
+    "zaher1911",
+    "be9f2e097822923531f6582",
+    "n00813",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 38702,
+    "asset_type": "URL",
+    "asset_identifier": "my.stripo.email",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 24340,
+      "category": "researcher",
+      "content": "There was no CSRF protection in the feature used for resending confirmation email in **Stripo**, due to which an attacker could trick the victim to receive an account confirmation email unknowingly.",
+      "updated_at": "2020-09-08T12:02:13.356Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 204685,
+        "username": "whoisbinit",
+        "name": "Binit Ghimire",
+        "bio": "I am a Tech Enthusiastic full-stack web developer, programmer and web/network penetration tester from Nepal.",
+        "cleared": false,
+        "verified": false,
+        "website": "https://WHOISbinit.me/",
+        "location": "Bharatpur-9, Milanchowk, Chitwan",
+        "created_at": "2017-10-02T06:42:57.263Z",
+        "url": "https://hackerone.com/whoisbinit",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "id": 733248,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MzMyNDg=",
+  "url": "https://hackerone.com/reports/733248",
+  "title": "Stored XSS in wordpress.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2019-11-09T22:04:23.291Z",
+  "submitted_at": "2019-11-09T22:04:23.291Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "adhamsadaqah",
+    "url": "/adhamsadaqah",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/a3ldkiumy5q08zejrafnszygse9l/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-02-17T11:34:36.958Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-01-18T11:34:29.968Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nStored XSS as a comment or as a post (body or title)  at \n`https://wordpress.com/read/feeds/{blog_id}/posts/{post_id}`\n`https://yoursubdomain.wordpress.com`\nusing the payload:\n ```\n<iframe <><a href=javascript&colon;alert(document.cookie)>Click Here</a>=&gt;&lt;/iframe&gt;\n```\n## Steps To Reproduce:\n- As a comment \n  1. Log in to wordpress.com\n  2. Choose a post from the feeds\n  3. Add a comment with the payload:\n         `<iframe <><a href=javascript&colon;alert(document.cookie)>Click Here</a>=&gt;&lt;/iframe&gt;`\n 4. By clicking on `Click Here`, an alert will fire with cookies of the domain `wordpress.com`\n- As a post\n  1. Log in to wordpress.com\n  2. Create a new post or site.\n  3. Add the payload `<iframe <><a href=javascript&colon;alert(document.cookie)>Click Here</a>=&gt;&lt;/iframe&gt;`  to the body or the title of the blog post\n  4. preview or publish your new blog post\n  5. By clicking on `Click Here`, an alert will fire with cookies of the domain `yoursubdomain.wordpress.com` or `wordpress.com` if the post is previewed from the WordPress feed.  \n 6. If you add comments to your blog post and using the payload mentioned above as a comment an Stored XSS alert will fire when you click on the link.\n\n## Impact\n\n- Perform arbitrary requests on the behalf of other users with security context of  wordpress.com or blogsubdomain.wordpress.com\n- Read any data the attacked user has access to.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 630531,
+      "file_name": "POC2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/5Lf8PZj48vJnxFnV2849T3vZ?response-content-disposition=attachment%3B%20filename%3D%22POC2.png%22%3B%20filename%2A%3DUTF-8%27%27POC2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZUHQDDBU%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005157Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDq9%2B4RAGto8X9IFtGN%2FUICC%2Fo63ftLJNQCsYnDIVEFMgIhAIcdMmUcGL5uSa96zhv2F9zEifJta95dNpaVfxlVMvMEKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy1k%2Felb61VxVZPsL0qjgVnIOqoDZ%2B3Wl3QbE56JwHpdWMct1MaC9JR7O2LSRZgcltWTboD2wpZ4ERdGo3ukus%2Bstq0jQEo%2FlWOXrgJh%2B5w9Mijp8fZC04NZ7qzTNDU7%2BvHI1bJM7aENXsYP%2BZ08waL4oonS12NPeTFvYtK%2FNxpzevYOubcQpHisn5rHp0tdmafeOHCDW2knAlpqITFwqwc3Vvn41LJPjOs6%2BU%2BgCj8wvimfQYLv7AY%2B5QF2xQ%2BQQXOw0Yz9NpvQrqUBkueOCIHCenqOicTyybCb3rNwcEr6UYVnk4CiRl4LhbFinNEpQS3SHWPII1CG0cfueRJXfkmsBOJhsvDI1jsmGlCjcsu7NhxzXedbMu%2F0KRfUrlckjbIVNJmNqgu67VzouSU0%2Fg%2FH5f5xUQt4S4qGN8hf1J3PSmfFvtQaHtv2bCBU%2B5JyzlEDh41P7xrQkRHdRM%2Bbg6kN4VW0dqzVfSuPMt2lbTPY8I%2Bv%2BZomIPEwYNheqTlPln04Fjf8%2BBcTRRLPGE83zugKB4DuOQYu%2Fp2vkg8cb6dRxb1trYaDfV6DUxOBlqzd4ezRlMMDdUPhtBgxOXvf%2FAsHBT1oCoB1fQIqCSCaUbf20n0Xyvj4SsJOWDEk0%2Btt%2B1LA5%2FRuXEvhCtGeTYfbFAIn5xWS1AvYnzOautiQtDlgNCqDzLsR9WzpV1Ugle%2BI8zUYWDQw1Upv1B0yz7MH6ymCQ2I7StKJyUKCfxKliiFWWQshikPtcLWbXReLNy0sjyc0DNZdQb%2B9ixotEitn8pHvcX7XYV%2Ba%2FBsFZ7jmLH0ZMkh2dxo8NL%2FfhIX8f%2BKGTxD6FHi8KiCYqRAjYx1GugkoviNp%2FdMqYeZ6tpJCFSlVoqvOa6QyrEwqjI1mzEws%2B7jzAY6sAEE4SF3zqH7Co%2FE7EJDoly44npupwttbyIlMdu%2FRWwUNnfToUvSUaO2%2FR%2FV4pCKHr1J8brlthLGSCG3qS0i3efVihCMGK5hjr2OTCAukDeKcmusitc1RagUh3tz%2BqPVx7ufFNpZIav9YGIiiKW96aqw%2BsX2COI4Lq7a092H3rXOKxFX%2BON1xi%2F0PVoZJXif7F25BJ7OtjNKkKL0eu8B%2F7wB%2BfIQRAM2pCb0nO4dRtV4mg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=24e200ce0aff7b7fc8b2b89650b77e8f7e0834578fdb1145a4c5218185e56465",
+      "file_size": 153447,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 630532,
+      "file_name": "POC1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1bvMr6TUSpmtFDCYiixuA931?response-content-disposition=attachment%3B%20filename%3D%22POC1.png%22%3B%20filename%2A%3DUTF-8%27%27POC1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZUHQDDBU%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005157Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDq9%2B4RAGto8X9IFtGN%2FUICC%2Fo63ftLJNQCsYnDIVEFMgIhAIcdMmUcGL5uSa96zhv2F9zEifJta95dNpaVfxlVMvMEKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy1k%2Felb61VxVZPsL0qjgVnIOqoDZ%2B3Wl3QbE56JwHpdWMct1MaC9JR7O2LSRZgcltWTboD2wpZ4ERdGo3ukus%2Bstq0jQEo%2FlWOXrgJh%2B5w9Mijp8fZC04NZ7qzTNDU7%2BvHI1bJM7aENXsYP%2BZ08waL4oonS12NPeTFvYtK%2FNxpzevYOubcQpHisn5rHp0tdmafeOHCDW2knAlpqITFwqwc3Vvn41LJPjOs6%2BU%2BgCj8wvimfQYLv7AY%2B5QF2xQ%2BQQXOw0Yz9NpvQrqUBkueOCIHCenqOicTyybCb3rNwcEr6UYVnk4CiRl4LhbFinNEpQS3SHWPII1CG0cfueRJXfkmsBOJhsvDI1jsmGlCjcsu7NhxzXedbMu%2F0KRfUrlckjbIVNJmNqgu67VzouSU0%2Fg%2FH5f5xUQt4S4qGN8hf1J3PSmfFvtQaHtv2bCBU%2B5JyzlEDh41P7xrQkRHdRM%2Bbg6kN4VW0dqzVfSuPMt2lbTPY8I%2Bv%2BZomIPEwYNheqTlPln04Fjf8%2BBcTRRLPGE83zugKB4DuOQYu%2Fp2vkg8cb6dRxb1trYaDfV6DUxOBlqzd4ezRlMMDdUPhtBgxOXvf%2FAsHBT1oCoB1fQIqCSCaUbf20n0Xyvj4SsJOWDEk0%2Btt%2B1LA5%2FRuXEvhCtGeTYfbFAIn5xWS1AvYnzOautiQtDlgNCqDzLsR9WzpV1Ugle%2BI8zUYWDQw1Upv1B0yz7MH6ymCQ2I7StKJyUKCfxKliiFWWQshikPtcLWbXReLNy0sjyc0DNZdQb%2B9ixotEitn8pHvcX7XYV%2Ba%2FBsFZ7jmLH0ZMkh2dxo8NL%2FfhIX8f%2BKGTxD6FHi8KiCYqRAjYx1GugkoviNp%2FdMqYeZ6tpJCFSlVoqvOa6QyrEwqjI1mzEws%2B7jzAY6sAEE4SF3zqH7Co%2FE7EJDoly44npupwttbyIlMdu%2FRWwUNnfToUvSUaO2%2FR%2FV4pCKHr1J8brlthLGSCG3qS0i3efVihCMGK5hjr2OTCAukDeKcmusitc1RagUh3tz%2BqPVx7ufFNpZIav9YGIiiKW96aqw%2BsX2COI4Lq7a092H3rXOKxFX%2BON1xi%2F0PVoZJXif7F25BJ7OtjNKkKL0eu8B%2F7wB%2BfIQRAM2pCb0nO4dRtV4mg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c0a0e7828dfb33b5298f5ad6d4778400f2c786d94609b9978948d7131a792ca9",
+      "file_size": 342407,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-02-17T11:34:30.035Z",
+  "allow_singular_disclosure_after": -189695847.323397,
+  "singular_disclosure_allowed": true,
+  "vote_count": 353,
+  "voters": [
+    "tzrj",
+    "aituglo",
+    "omarelfarsaoui",
+    "johnberzi",
+    "googlelai",
+    "7urb0",
+    "hossam13",
+    "kouzirou",
+    "160cm",
+    "sebd",
+    "and 343 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

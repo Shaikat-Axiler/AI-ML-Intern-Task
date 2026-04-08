@@ -1,0 +1,133 @@
+{
+  "id": 629087,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82MjkwODc=",
+  "url": "https://hackerone.com/reports/629087",
+  "title": "No Valid SPF Records.",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-06-25T12:18:06.480Z",
+  "submitted_at": "2019-06-25T12:18:06.480Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "danangtriatmaja",
+    "url": "/danangtriatmaja",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/415/340/8f079d545aa8ade45f9b35e24059a94df2f37f9d_original.jpeg/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 31577,
+    "url": "https://hackerone.com/chainlink",
+    "handle": "chainlink",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/031/577/b030438885463162b42f2f9a61ceaa3df786d9ae_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/031/577/b030438885463162b42f2f9a61ceaa3df786d9ae_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Chainlink",
+      "twitter_handle": "chainlink",
+      "website": "https://chain.link/",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-07-18T15:27:29.951Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-07-18T15:27:29.841Z",
+  "team_member_agreed_on_going_public_at": "2019-07-17T20:49:55.213Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hiii,\n\nThere is any issue No valid SPF Records\n\nDesciprition :\n\nThere is a email spoofing vulnerability.Email spoofing is the forgery of an email header so that the message appears to have originated from someone or somewhere other than the actual source. Email spoofing is a tactic used in phishing and spam campaigns because people are more likely to open an email when they think it has been sent by a legitimate source. The goal of email spoofing is to get recipients to open, and possibly even respond to, a solicitation.\n\nI found : \n\nSPF record lookup and validation for: chain.link\nSPF records are published in DNS as TXT records.\n\nThe TXT records found for your domain are:\ngoogle-site-verification=a4ghJBW7o-Ss_TB82G2VqvQKq_8Km3UfqcuTgfc8lSY\nv=spf1 include:_spf.google.com ~all\n\nChecking to see if there is a valid SPF record.\n\nFound v=spf1 record for chain.link:\nv=spf1 include:_spf.google.com ~all\n\nevaluating...\nSPF record passed validation test with pySPF (Python SPF library)!\n\nUse the back button on your browser to return to the SPF checking tool without clearing the form.\n\nRemediation :\n\nReplace ~all with -all to prevent fake email.\n\nRefferences :\n\nhttps://www.digitalocean.com/community/tutorials/how-to-use-an-spf-record-to-prevent-spoofing-improve-e-mail-reliability\n\n## Impact\n\nAn attacker would send a Fake email. The results can be more dangerous.",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 516445,
+      "file_name": "chain.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/516/445/44338aee75b5c2ad8ec5b5339def28d58e4cf996/chain.png?response-content-disposition=attachment%3B%20filename%3D%22chain.png%22%3B%20filename%2A%3DUTF-8%27%27chain.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQ2IO5XSR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014121Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDB7E3VguWtWMAGzz%2BISNZkClzXLIq7Kz38mgE1hn36mQIgOuY5s2DNI0Q5jcVx%2Bu%2BemJnImdjaGFGNjfz2j8HSVe0quwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDA96xb3Mifij%2FMgfgCqPBeo%2FVH36pKMTILs61uEK8davxekN6LUJQjoyhB5fc43c%2BQ0RcKDHmvDHC94tXZVJfEqlbMAG1wPbv0JFKZ%2BV4gqeXnwawNTHi3G9nZQTSYBO16pMzJ3RQSSAn5g003t5r%2FJHXYRiqp4fUh0ZrxDIA%2B2m4EwpNRAFP%2BiaUuwN%2BQ5D8jEOo26pABUXLEfPGGrkK1%2B%2BjTvoYuL7pfcxLryXJNk58FOW7Zep5uiPTEGJ%2FJ%2Ffw7v3IKGgP%2BoLEDM8nzxCIFGSYumXOI68B9KtumtWZccu0R%2BZXGfR6dnlk9ppBcFC23nbtoYGbo6b2nXg%2FJLMoxhtx7TncCg07MQOnF7Ks3l9XGYR4iZw3qSFOICPEYz9uGkqMb8sF8ddalk1w3JadHWi9jYMjS25BvjSpL8jclSq2Ie0Knw53FAbcgRPWbLP2%2BABN1%2FUxorQWKXo%2FrPkML6l1BQ6FIVEWsGFCwqX83JEjSvT6LWof09a0evru5TXJe8xoSpqQ3OPLwxbz6ebl1nUu%2F6%2BCpS%2BcoZfaKBf4DqiYGCsLkyoJ2qW41AVweYrGiqqGSsXHCxPOXwmtsMW5ETo9KxcS3fZp08lbdubGb7NQm8I4vvX08UrW%2FCLSXgh%2Br7a9gg%2BvEILSN5FyZON3fpEiCmffhUH1iD2a6PjPQRlXzl1ZGnHcMFl7FAi1DKaMNrpNYRrLPmnwMdf4LohujLgCVSBU7pk0mVFJjWycfY%2Fyj%2BiI2yquFoKVE%2BRyfiXD08BkgzkLvn7iYfznM7VKF7REPneHbiuswBuQaE12vqRMf66WYvWtJdIh1zHiC%2BOw5RylIP00wJBd6CPWtsv7ROLSN%2FM0dQhO7mzklUyGPmAJM3fLWcqicYE7dKMTpkwoZbkzAY6sQGAj9jq%2F5ENZ8yZYdQ%2FgE6%2BxMy1L3OynPAcL13Ggo7kZ%2FQgy6thKwpwyqY%2FUjcfuRBNEd%2B8KHlBfhFEqO3FoDEFnRw38ixtXt6%2BYnkfSq0xYGU6PS11OjjIlMXcHgwu5OyfaG8svVs%2BFmLRonn8SrMVCgmG0HSzhn8KVertyYXGXYHv%2BuyVXVVMLR7Wq42YrGVEinjivkx7PsqdxgH%2FtlcsQjMxYieKdjyd1gjpUneyUsg%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4361118b98c20763929699e5644a98031da1c1a2f80970a7dda95a801652cfb1",
+      "file_size": 96747,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-08-16T20:49:55.514Z",
+  "allow_singular_disclosure_after": -205649485.57707205,
+  "singular_disclosure_allowed": true,
+  "vote_count": 52,
+  "voters": [
+    "yukusawa18",
+    "ali",
+    "sameerphad72",
+    "tess",
+    "2026",
+    "rivudon",
+    "ti0sec",
+    "t4ym",
+    "cryptographer",
+    "chemboli",
+    "and 42 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 13275,
+    "asset_type": "URL",
+    "asset_identifier": "chain.link",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

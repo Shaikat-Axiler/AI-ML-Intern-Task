@@ -1,0 +1,142 @@
+{
+  "id": 732415,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MzI0MTU=",
+  "url": "https://hackerone.com/reports/732415",
+  "title": "The authenticity_token can be reversed and used to forge valid per_form_csrf_tokens for arbitrary routes",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-11-08T14:03:47.855Z",
+  "submitted_at": "2019-11-08T14:03:47.855Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "jregele",
+    "url": "/jregele",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22,
+    "url": "https://hackerone.com/rails",
+    "handle": "rails",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/022/5e2b46658c8b86bed62f574d8e1793f353cbbc63_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/022/5e2b46658c8b86bed62f574d8e1793f353cbbc63_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Ruby on Rails",
+      "twitter_handle": "rails",
+      "website": "http://rubyonrails.org/security",
+      "about": "Web development that doesn't hurt."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-8166"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-08-27T16:25:50.354Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2020-07-28T16:25:47.942Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "When `per_form_csrf_tokens` is set to `true`, each form should protected against CSRF with a unique token that is not predictable by an attacker. The`per_form_csrf_token` is generated using a HMAC SHA-256 using a key that is exposed in a reversed `authenticity_token`. The `authenticity_token` is a Base64 encoding of\n\n`one_time_pad | (one_time_pad XOR session[:csrf_token])`\n\nBecause the `one_time_pad` is the first half of the `authenticity_token`, it is not secret and an attacker can reverse the token to learn `session[:csrf_token]`.\n\nFrom there the attacker can forge a hash for an arbitrary route (e.g. /articles/2):\n`HMAC ( session[:csrf_token], \"/articles/2#patch\")`\n\nTo reproduce:\n1. Have two Rails routes that accept only per form csrf tokens\n2. Validate that the `authenticity_token` sent in the POST data returns an HTTP 422 when sent in the other form\n3. Forge a per form token with the attached exploit script\n   - the `authenticity_token` parameter is taken from the <meta> tag in the header of any page for the session\n   - the `route` parameter is the action of the target HTML form (e.g /articles/2)\n   - the `method` parameter is the value from `_method` parameter sent in the POST data (e.g. patch)\n4. Take the forged token from the exploit script, URL-encode it, and send it as the `authenticity_token` in the POST data. For reliability, ensure that:\n   -  the route parameter matches the endpoint,\n   - the `_method` parameter in the POST data matches what used for `method` in the exploit script\n   - the forged `authenticity_token` in the POST data is properly URL-encoded\n\n## Impact\n\nExploitation allow an attacker to forge valid per-form CSRF tokens even in hardened situations where the global `authenticity_token` itself is not allowed.\n\nFor the attack to be successful, an attacker would need a valid global `authenticity_token`. This can be extracted out of a web page without any protections that cookies have (such as HTTP-Only). An attacker could leverage an XSS vulnerability to bypass per-form CSRF on unrelated pages. Because the token can be forged for any form, code execution on a page without forms could still lead to attackers bypassing CSRF protections of forms related to password changes, deletion of data, creation of new users, etc.",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 629421,
+      "file_name": "perform_csrftoken_forgery.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/SgetMcZgZhZF1JVrLGfTPudN?response-content-disposition=attachment%3B%20filename%3D%22perform_csrftoken_forgery.py%22%3B%20filename%2A%3DUTF-8%27%27perform_csrftoken_forgery.py&response-content-type=text%2Fx-python-script&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000629Z&X-Amz-Expires=925&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5dcd2e2b50cba45dc6e57aeeb34703e8a3c87bdfb3be30ca3a2103a77464fcd7",
+      "file_size": 2199,
+      "type": "text/x-python-script",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-08-27T16:25:48.083Z",
+  "allow_singular_disclosure_after": -173086841.3161355,
+  "singular_disclosure_allowed": true,
+  "vote_count": 7,
+  "voters": [
+    "yxw21",
+    "n0x496n",
+    "dmc3",
+    "alsinwar",
+    "iamn00b007",
+    "meispi",
+    "n3tra"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.9,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 160,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/rails/rails",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "id": 434763,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MzQ3NjM=",
+  "url": "https://hackerone.com/reports/434763",
+  "title": "Incorrect details on OAuth permissions screen allows DMs to be read without permission",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-11-06T10:04:29.257Z",
+  "submitted_at": "2018-11-06T10:04:29.257Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "edent",
+    "url": "/edent",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/oql2yecjuzn6yail857djheaxaxy/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-12-14T00:01:16.066Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-12-07T09:46:34.437Z",
+  "team_member_agreed_on_going_public_at": "2018-12-14T00:01:15.988Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "> NOTE! Thanks for submitting a report! Please replace *all* the [square] sections below with the pertinent details. Remember, the more detail you provide, the easier it is for us to triage and respond quickly, so be sure to take your time filling out the report!\n\n**Summary:** \nThe OAuth screen can be tricked into saying that an app cannot read Direct Messages. Despite that, DMs can be read.\n\n**Description:** \nThe official Twitter API keys have been leaked and are in use in several popular apps.\nThe iPhone keys and Google TV keys (as seen on https://gist.github.com/shobotch/5160017) present an OAuth screen which says the app \"Will not be able to:   Access your direct messages.\"\nThis is false.  The apps *can* read DMs.\n\n## Steps To Reproduce:\n\n(Add details for how we can reproduce the issue)\n\n  1. Ask the user to do the OAuth dance with a token generated from the official keys.\n  1. User sees that the app cannot read DMs.\n  1. User authorises.\n  1. App now has unauthorised access to DMs.\n  1. User is sad that their privacy has been violated.\n\n## Impact: [add why this issue matters]\nA user may not want a 3rd party app to have access to their DMs.\n\nThey rely on the OAuth screen to adequately inform them of the permissions they are granting.\n\nIs this a GDPR violation? I'm not sure. You are telling users that the 3rd party app can't read their private information - but that is false. These API keys do allow access from *any* app which integrates them.\n\n## Supporting Material/References:\n\n  * Screenshot of the OAuth screen for Google TV\n  * Screenshot of the OAuth screen for iPhone\n\n## Impact\n\nUnauthorised access to Direct Messages.",
+  "bounty_amount": "2940.0",
+  "formatted_bounty": "$2,940",
+  "weakness": {
+    "id": 46,
+    "name": "Privacy Violation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 371273,
+      "file_name": "Google_TV_Twitter_DMs.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/371/273/252b6771e12b518104fd49837026cb8a19958742/Google_TV_Twitter_DMs.png?response-content-disposition=attachment%3B%20filename%3D%22Google_TV_Twitter_DMs.png%22%3B%20filename%2A%3DUTF-8%27%27Google_TV_Twitter_DMs.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUDM56UOV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020642Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDQmYjUlE1ugu%2BlmbNwE7X0tqhAVghVk7YJr8ReKXQ4IAiBGHet0vnzaeTyR8s167S%2FKiGraTg8PmGSpiY51eFftfyq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMsJiABwCBF%2F7QhBp5Ko8Fwc5c8Y9%2FsM7t%2BoFGNLpZ1x5DOI4xN0chKf3VrKTZcXr93EzakOYJrRdSoDjLVPY%2FcLDR0fuCMAqQ%2BhjPQeSjG%2Bzyt5GDWB%2BXGrTfvM3JFkDaMwmIxdt1niCJ%2BprqIcaC4BMVCabTWDAnc0GZzRW%2BjSMXcPVZr4%2FHI1DQGAlncCjzdamTbIcfgMCzBDmW0KqmEC7p5p2WNmHZ1VH6MhZjng9kgF%2BOb8YUPzbMEaIdiYnE7INDJ0xkeq8dkl0FMWHa4l%2Bdxi6Qc6cSbZWji6mVPqi7v%2FsnG5fsBWRf9r8dOoasQDSiurPhcFns67s6PPaEmbpqpnGJKT%2BNnb96%2FSmiImnfCqVSRCf1rlLNejM34Guw5bR4rU7%2BXaPV%2BHUy1Fz5FA3E5d%2B%2FQ7GBE844cV3sk2UxGCFM8ZNMEm%2FTVaF4NSHh2abSE7fYyUBwdX8ttGfnmvd11jHNlWc1gmHtyFPLRgRyTrmcS5kEKxk4NuDDJUMp%2FKbGDirRyjGlIBOvOmXbW%2FiosbAt%2BmZu8xe80HU4clmSMFi17wYDANZG%2FX8JmmxKUb2E%2B8Qjfx8V%2FNeV%2BkRU8foxARrCYIYRz4LuL1qE4dDeD5exTHJgGuu%2Fnj4CM6ZN5BIE%2BLnHwNRwFUGndCnzENPWy4iBapEPdB1mjYPN8npA4fly5QeOBWwrLn%2Fd6PrSWOsHdysYD0z4z7rLtkjv5TfO4OG5fzfDm3cvgdPGCeoiC%2FaNHgmkTOvtuC9ntDLlageNhuPvjW03epQtlVQRy2ONBRsN%2B3q20R8zXqhAqEXDamPShayojhcv%2FlYsjFt2QEYROZ1G5P%2BTz5aQg0%2BZV0lwVWoQLOv3KWbPWOGSEmaomZwGRJ7r8jjsKp9nhzCxiOTMBjqyAbg1cOLqFDpGkbMp3T3JvGQ6wtksrdQeI%2BRs3twhw335%2FWJw9Odp9sodmHqESdPNnBLd8TH3h6hwcp64Euoa5Yt28tjUXGfWAiGFA95Tb8VEg3AFGlcbpO74a4dpMX9ip6KiMVmIMf1USNeJQm1gbn0EUGgR%2BavSrhShJj%2BeOrs4Vn2EQhJra9kDefk%2B9183z4b2qcaz4z0lYzTMB8XSOjo%2FMcB1wCC3xbCf%2F2kIPlQ%2FEhQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1fe3b0849176aa39d7b4e6a4bdd71b3a3771cf15764dfb437aeb642079b09737",
+      "file_size": 42942,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 371289,
+      "file_name": "iphone_dm.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/371/289/71cdb6dd82ed249063ab610315fba8885c5cfcb3/iphone_dm.png?response-content-disposition=attachment%3B%20filename%3D%22iphone_dm.png%22%3B%20filename%2A%3DUTF-8%27%27iphone_dm.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUDM56UOV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020642Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDQmYjUlE1ugu%2BlmbNwE7X0tqhAVghVk7YJr8ReKXQ4IAiBGHet0vnzaeTyR8s167S%2FKiGraTg8PmGSpiY51eFftfyq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMsJiABwCBF%2F7QhBp5Ko8Fwc5c8Y9%2FsM7t%2BoFGNLpZ1x5DOI4xN0chKf3VrKTZcXr93EzakOYJrRdSoDjLVPY%2FcLDR0fuCMAqQ%2BhjPQeSjG%2Bzyt5GDWB%2BXGrTfvM3JFkDaMwmIxdt1niCJ%2BprqIcaC4BMVCabTWDAnc0GZzRW%2BjSMXcPVZr4%2FHI1DQGAlncCjzdamTbIcfgMCzBDmW0KqmEC7p5p2WNmHZ1VH6MhZjng9kgF%2BOb8YUPzbMEaIdiYnE7INDJ0xkeq8dkl0FMWHa4l%2Bdxi6Qc6cSbZWji6mVPqi7v%2FsnG5fsBWRf9r8dOoasQDSiurPhcFns67s6PPaEmbpqpnGJKT%2BNnb96%2FSmiImnfCqVSRCf1rlLNejM34Guw5bR4rU7%2BXaPV%2BHUy1Fz5FA3E5d%2B%2FQ7GBE844cV3sk2UxGCFM8ZNMEm%2FTVaF4NSHh2abSE7fYyUBwdX8ttGfnmvd11jHNlWc1gmHtyFPLRgRyTrmcS5kEKxk4NuDDJUMp%2FKbGDirRyjGlIBOvOmXbW%2FiosbAt%2BmZu8xe80HU4clmSMFi17wYDANZG%2FX8JmmxKUb2E%2B8Qjfx8V%2FNeV%2BkRU8foxARrCYIYRz4LuL1qE4dDeD5exTHJgGuu%2Fnj4CM6ZN5BIE%2BLnHwNRwFUGndCnzENPWy4iBapEPdB1mjYPN8npA4fly5QeOBWwrLn%2Fd6PrSWOsHdysYD0z4z7rLtkjv5TfO4OG5fzfDm3cvgdPGCeoiC%2FaNHgmkTOvtuC9ntDLlageNhuPvjW03epQtlVQRy2ONBRsN%2B3q20R8zXqhAqEXDamPShayojhcv%2FlYsjFt2QEYROZ1G5P%2BTz5aQg0%2BZV0lwVWoQLOv3KWbPWOGSEmaomZwGRJ7r8jjsKp9nhzCxiOTMBjqyAbg1cOLqFDpGkbMp3T3JvGQ6wtksrdQeI%2BRs3twhw335%2FWJw9Odp9sodmHqESdPNnBLd8TH3h6hwcp64Euoa5Yt28tjUXGfWAiGFA95Tb8VEg3AFGlcbpO74a4dpMX9ip6KiMVmIMf1USNeJQm1gbn0EUGgR%2BavSrhShJj%2BeOrs4Vn2EQhJra9kDefk%2B9183z4b2qcaz4z0lYzTMB8XSOjo%2FMcB1wCC3xbCf%2F2kIPlQ%2FEhQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=84e7e24095dbd2f7835a6c036b3de7fa64b3ca5a9dcee7a30ca59f464c966432",
+      "file_size": 42216,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-01-06T09:46:34.485Z",
+  "allow_singular_disclosure_after": -224871607.62559304,
+  "singular_disclosure_allowed": true,
+  "vote_count": 78,
+  "voters": [
+    "mirhat",
+    "ali",
+    "stealthy",
+    "sameerphad72",
+    "michiel",
+    "diogourupes",
+    "irisrumtub",
+    "bl4de",
+    "andi",
+    "spam404",
+    "and 68 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 1062,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.twitter.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 12781,
+      "category": "team",
+      "content": "The reporter discovered that when a select set of applications are authenticated using a PIN or non-intended OAuth flow, the permission dialog that is shown may not show the permissions that the application has. We do not believe anyone was mislead by the permissions that these applications had or that their data was unintentionally accessed by the Twitter for iPhone or Twitter for Google TV applications as those applications use other authentication flows. To our knowledge, there was not a breach of anyone's information due to this issue. There are no actions people need to take at this time. ",
+      "updated_at": "2018-12-13T22:07:31.843Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 39154,
+        "username": "andrewsorensen",
+        "name": "Andrew Sorensen",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2015-08-27T17:27:02.940Z",
+        "url": "https://hackerone.com/andrewsorensen",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

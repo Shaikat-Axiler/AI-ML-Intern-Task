@@ -1,0 +1,147 @@
+{
+  "id": 3432833,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNDMyODMz",
+  "url": "https://hackerone.com/reports/3432833",
+  "title": "[SFTP] TOCTOU Race Condition in Upload Resume Logic Leads to Arbitrary File Append",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2025-11-19T08:12:45.346Z",
+  "submitted_at": "2025-11-19T08:12:45.995Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cainvsilf",
+    "url": "/cainvsilf",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ke5bf8hd623h973wfwtfjiu4ve2c/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-11-24T18:55:10.100Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2025-11-23T11:56:29.814Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nA Time-of-check to Time-of-use (TOCTOU) race condition exists in the SFTP upload resume functionality of libcurl.\n  When resuming an upload with CURLOPT_RESUME_FROM set to -1 (the equivalent of the curl -C - command-line flag),\n  libcurl first performs a STAT operation to determine the remote file's size and the correct offset to resume from.\n   Subsequently, it performs an OPEN operation to begin writing.\n\n  A window of time exists between the STAT and OPEN calls. An attacker with authenticated access to the SFTP server\n  can exploit this by replacing the target file with a symbolic link to a different file on the system. Because the\n  OPEN operation for a resume operation does not use a truncation flag (e.g., O_TRUNC), curl will then proceed to\n  seek to the previously determined offset and append data to the symlink's target file. This allows an attacker to\n  append arbitrary data to files the user has write access to, but did not intend to modify.\n\n## Affected version\n This was reproduced on curl 8.18.0-DEV (the master branch as of November 2025). The vulnerable logic appears to\n  be fundamental to the SFTP resume-from-end feature (-C -) and likely affects many previous versions as well.\n\n  A typical curl -V output for a system where this can be reproduced would be:\n  curl 8.18.0-DEV (x86_64-pc-linux-gnu) libcurl/8.18.0-DEV OpenSSL/3.2.1 zlib/1.2.13 libssh2/1.11.0\n  Protocols: sftp https ...\n  Features: AsynchDNS libssh2 ...\n\n## Steps To Reproduce:\n1. Setup the Environment:\n       * An SFTP server is required. For local testing, openssh-server can be used on a Linux machine, allowing\n         connections to localhost.\n       * The attacker needs an authenticated user account on the server with write permissions in a specific\n         directory.\n       * The victim is a curl user who will upload a file to this specific directory using the resume flag.\n\n 2. Prepare the Attack Scripts:\n      * Create the server-side script race_server.sh on the SFTP server. This script will rapidly swap the target\n         file with a symlink to a sensitive file.\n      * Create the client-side script race_client.sh on the client machine. This script will repeatedly attempt the\n         curl upload to trigger the race condition.\n\n   3. Execute the Attack:\n       1. On the server, run ./race_server.sh. It will begin creating and deleting the symlink in a tight loop.\n       2. On the client, configure race_client.sh with the correct credentials and paths, then run ./race_client.sh.\n          It will start sending upload requests.\n       3. Let both scripts run for 15-30 seconds. The client will show some \"No such file or directory\" errors, which\n          is expected.\n\n   4. Verify the Result:\n       1. Stop both scripts (Ctrl+C).\n       2. On the server, inspect the contents of the sensitive file targeted by the symlink (e.g.,\n          /tmp/test_vuln.log).\n       3. If the exploit was successful, the contents of the client's payload file will be appended to the sensitive\n          file.\n\n## Supporting Material/References:\n\n- **race_client.sh**  (F5023270: race_client.sh)\n\n- **race_server.sh**  (F5023271: race_server.sh)\n\n- **Vulnerable Code Flow Analysis.txt**  (F5023279: Vulnerable Code Flow Analysis.txt)\n\n### Vulnerable Code Pointer\nThe core of the vulnerability is in the `sftp_upload_init` function within:\n- `lib/vssh/libssh2.c`\n- `lib/vssh/libssh.c`\n\nSpecifically the logic branch:\n\n- `if(data->state.resume_from < 0)` → performs a **STAT**\n- `else if(data->state.resume_from > 0)` → performs a **non-truncating OPEN**\n\n### Attached PoC Scripts\n\n- `race_server.sh`: Server-side PoC to create the race condition.\n- `race_client.sh`: Client-side PoC used to repeatedly trigger the vulnerable logic in curl.\n\n## Impact\n\nThe primary impact is a loss of Integrity. An attacker with authenticated access to an SFTP server can leverage this vulnerability to append arbitrary data to any file that the victim user has write permissions for.\n\nThis can lead to further, more severe impacts depending on the targeted file:\n   * Remote Code Execution (RCE): If the attacker appends malicious commands to a user's startup script (e.g., .bashrc,\n     .profile) or a script executed by a cron job.\n   * Denial of Service (DoS): If the attacker corrupts a critical system or application configuration file.\n   * Log Injection / Tampering: The attacker could inject false log entries to mislead administrators or hide other\n     malicious activity.\n\nThe severity is rated as Medium, as exploitation requires the attacker to have prior authenticated access to the\nserver and relies on winning a race condition.\n\n Suggested Mitigation\n\n The root cause is the lack of verification that the file opened is the same one that was checked. The most robust\n solution is to perform a check after the file is opened.\n\n      1. After libssh2_sftp_open_ex() is called in sftp_upload_init, a subsequent call to libssh2_sftp_fstat_ex() should\n      be made on the returned file handle.\n       2. The attributes from this fstat call (e.g., inode number, if the SFTP server extension provides it) should be\n      compared to the attributes gathered from the initial stat call.\n       3. If the attributes do not match, it indicates the file was swapped. The transfer must be aborted, and an error\n      should be returned to the user.",
+  "weakness": {
+    "id": 105,
+    "name": "Time-of-check Time-of-use (TOCTOU) Race Condition"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 5023270,
+      "file_name": "race_client.sh",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/qtpdh8hwjyqjatzqlsyifz26ch3w?response-content-disposition=attachment%3B%20filename%3D%22race_client.sh%22%3B%20filename%2A%3DUTF-8%27%27race_client.sh&response-content-type=application%2Fx-sh&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195004Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=96978e149807e0415c7b2c926ba3bb928948f32218b6ce841977196d5372da89",
+      "file_size": 936,
+      "type": "application/x-sh",
+      "moderated": null
+    },
+    {
+      "id": 5023271,
+      "file_name": "race_server.sh",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/x14lrkoxny8c4m04vhf2xkucm4it?response-content-disposition=attachment%3B%20filename%3D%22race_server.sh%22%3B%20filename%2A%3DUTF-8%27%27race_server.sh&response-content-type=application%2Fx-sh&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195004Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2d2d1c10fba15ff29f6b37663c2791ef0ddda0c4ad9020009e1630e045e7c686",
+      "file_size": 868,
+      "type": "application/x-sh",
+      "moderated": null
+    },
+    {
+      "id": 5023279,
+      "file_name": "Vulnerable_Code_Flow_Analysis.txt",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bfubn8juvvrpojjdbymm8a1lwgsh?response-content-disposition=attachment%3B%20filename%3D%22Vulnerable_Code_Flow_Analysis.txt%22%3B%20filename%2A%3DUTF-8%27%27Vulnerable_Code_Flow_Analysis.txt&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195004Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=73f766e83e605fcc275b268f3e767724157ca817f4d503f4c7a5b13225c6354f",
+      "file_size": 4111,
+      "type": "text/plain",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 22,
+  "voters": [
+    "2026",
+    "sh3rif0x",
+    "chandrapal_choudhary",
+    "whocare712",
+    "laumv",
+    "fares__",
+    "letchu_pkt",
+    "glitchraith",
+    "silentshade",
+    "ch1llc0d3",
+    "and 12 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

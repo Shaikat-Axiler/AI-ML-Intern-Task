@@ -1,0 +1,111 @@
+{
+  "id": 274997,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNzQ5OTc=",
+  "url": "https://hackerone.com/reports/274997",
+  "title": "Use of uninitialized value in memarea_strdup (src/common/memarea.c:369)",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2017-10-06T09:20:30.540Z",
+  "submitted_at": "2017-10-06T09:20:30.540Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "geeknik",
+    "url": "/geeknik",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/jgjvp6dlesp661w5ashvoami0j3c/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1800,
+    "url": "https://hackerone.com/torproject",
+    "handle": "torproject",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tor",
+      "twitter_handle": "torproject",
+      "website": "https://www.torproject.org/",
+      "about": "Anonymity Online"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-10-25T20:40:43.658Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-10-25T20:40:43.611Z",
+  "team_member_agreed_on_going_public_at": "2017-10-25T20:28:59.716Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Triggered in `51e4748 `, compiled with clang 6.0.0-trunk and -fsanitize=memory.\n\n`./fuzz-hsdescv2 < test001`\n\n```\nUninitialized bytes in __interceptor_strlen at offset 0 inside [0x7fff5525ff80, 51)\n==19693==WARNING: MemorySanitizer: use-of-uninitialized-value\n    #0 0x5570edfe5fbd in memarea_strdup /root/tor/src/common/memarea.c:369:14\n    #1 0x5570edc4d77c in get_next_token /root/tor/src/or/parsecommon.c\n    #2 0x5570edc4a097 in tokenize_string /root/tor/src/or/parsecommon.c:72:11\n    #3 0x5570edda67f7 in rend_parse_v2_service_descriptor /root/tor/src/or/routerparse.c:5197:7\n    #4 0x5570ed946d02 in fuzz_main /root/tor/src/test/fuzz/fuzz_hsdescv2.c:40:10\n    #5 0x5570ed94677a in main /root/tor/src/test/fuzz/fuzzing_common.c:179:3\n    #6 0x7fee60f8a3f0 in __libc_start_main /build/glibc-mXZSwJ/glibc-2.24/csu/../csu/libc-start.c:291\n    #7 0x5570ed8d47d9 in _start (/root/tor/src/test/fuzz/fuzz-hsdescv2+0x717d9)\n\nSUMMARY: MemorySanitizer: use-of-uninitialized-value /root/tor/src/common/memarea.c:369:14 in memarea_strdup\n```",
+  "weakness": {
+    "id": 2,
+    "name": "Memory Corruption - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 226863,
+      "file_name": "test001.gz",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/226/863/9c30a64ff8382a1fa892b59259d5af26d15b8c65/test001.gz?response-content-disposition=attachment%3B%20filename%3D%22test001.gz%22%3B%20filename%2A%3DUTF-8%27%27test001.gz&response-content-type=application%2Fgzip&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031159Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=08c8a3ebe417c5ea79896692b86acf817324fd43d8222357af5d2b19fe0df532",
+      "file_size": 69,
+      "type": "application/gzip",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "geeknik"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

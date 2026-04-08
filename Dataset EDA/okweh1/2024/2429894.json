@@ -1,0 +1,163 @@
+{
+  "id": 2429894,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNDI5ODk0",
+  "url": "https://hackerone.com/reports/2429894",
+  "title": "Libuv: Improper Domain Lookup that potentially leads to SSRF attacks",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2024-03-21T18:47:15.142Z",
+  "submitted_at": "2024-03-21T18:47:15.488Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "hunt1",
+    "url": "/hunt1",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/o9dt5hvaoj8i5vft9vmml9b6grkf/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T204406Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f31ed4c2bca9f10c367989c07ae3720b58011de8e5c1090fbd82e65d519c37ae",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T204406Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=28fcb872fdaebfd50607948cd8b946588f09794467c2c765850431f6b9493cbd"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": true,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2024-24806"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2024-03-29T22:54:22.421Z",
+  "bug_reporter_agreed_on_going_public_at": "2024-03-29T22:54:21.528Z",
+  "team_member_agreed_on_going_public_at": "2024-03-29T16:59:26.536Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I recently encountered a challenge in a CTF competition that led me to discover a vulnerability within Node.js, present in all versions after v10. Upon further investigation and code debugging, it became apparent that the vulnerability originated from its direct dependency, `libuv`.\n\nI submitted a report to the Node.js team via HackerOne, and they subsequently connected me with the libuv team. This collaboration resulted in the identification and resolution of the vulnerability, now recorded as CVE-2024-24806.\n\n## Impact\n\nThis vulnerability could allow an attacker to craft payloads that results in **SSRF** attacks and **Internal API Access**. Full explanation of vulnerability, PoC and sample scenarios are provided within the original report:\nhttps://github.com/libuv/libuv/security/advisories/GHSA-f74f-cvh7-c6q6",
+  "bounty_amount": "4860.0",
+  "formatted_bounty": "$4,860",
+  "weakness": {
+    "id": 68,
+    "name": "Server-Side Request Forgery (SSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2024-04-28T16:59:27.522Z",
+  "allow_singular_disclosure_after": -57296679.12250994,
+  "singular_disclosure_allowed": true,
+  "vote_count": 74,
+  "voters": [
+    "guiji666",
+    "luskabol",
+    "ryuku",
+    "n1m0",
+    "zy9ard3",
+    "mmdz",
+    "h1xploit",
+    "mo7mead",
+    "cyborg_m",
+    "neilx",
+    "and 64 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 627820,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/libuv/libuv",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 425207,
+      "category": "team",
+      "content": "Improper Domain Lookup that potentially leads to SSRF attacks\n\nSummary\nThe uv_getaddrinfo function in src/unix/getaddrinfo.c (and its windows counterpart src/win/getaddrinfo.c), truncates hostnames to 256 characters before calling getaddrinfo. This behavior can be exploited to create addresses like 0x00007f000001, which are considered valid by getaddrinfo and could allow an attacker to craft payloads that resolve to unintended IP addresses, bypassing developer checks.\n\nFull GHSA: https://github.com/libuv/libuv/security/advisories/GHSA-f74f-cvh7-c6q6",
+      "updated_at": "2024-03-29T16:57:25.578Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 904892,
+        "username": "kunderkoffler",
+        "name": "Kayla Underkoffler",
+        "bio": null,
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": null,
+        "created_at": "2020-01-13T19:26:22.339Z",
+        "url": "https://hackerone.com/kunderkoffler",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

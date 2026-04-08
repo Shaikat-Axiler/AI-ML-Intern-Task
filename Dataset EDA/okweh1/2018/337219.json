@@ -1,0 +1,117 @@
+{
+  "id": 337219,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzcyMTk=",
+  "url": "https://hackerone.com/reports/337219",
+  "title": "URL is vulnerable to clickjacking",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2018-04-13T12:51:33.691Z",
+  "submitted_at": "2018-04-13T12:51:33.691Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "hacker_one_one",
+    "url": "/hacker_one_one",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2943,
+    "url": "https://hackerone.com/eternal",
+    "handle": "eternal",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Eternal",
+      "twitter_handle": "Zomato",
+      "website": "https://www.eternal.com",
+      "about": "Eternal is India’s largest new-age tech company by market cap, comprising of 4 businesses (as of now) – Zomato, Blinkit, District, & Hyperpure."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-04-14T12:52:07.378Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-04-14T12:16:38.779Z",
+  "team_member_agreed_on_going_public_at": "2018-04-14T12:52:06.924Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "##The browser has verified the identity:\nSuccessfully implemented in IE browser\n\n##Reproduce steps:\nURLs do not have X-FRAME-OPTIONS set to DENY or SAMEORIGIN, and they are vulnerable to clickjacking.\nRun under the browser's code and you will see that the listed links are vulnerable to clickjacking attacks\n```\n<html>\n\t<frameset cols=\"25%,25%,25%\">\n\t\t<frame src=\"https://www.zomato.com/robots.txt\" />\n\t\t<frame src=\"https://www.zomato.com/users/fan-feng-52680914\" />\n\t\t<frame src=\"https://www.zomato.com/cairns-qld\" />\n\t</frameset>\n</html>\n```\n{F285366}\n\n## Impact\n\nMost of the zomato.com urls were tested and found that most basic urls support iframe display in IE.\n\nE.g:\n* https://www.zomato.com/users/fan-feng-52680914/edit\n* https://www.zomato.com/invite\n* https://www.zomato.com/cairns-qld\n* https://www.zomato.com/cairns-qld/caffiend-cairns?zrp_bid=0&zrp_pid=14\n* https://www.zomato.com/users/fan-feng-52680914/bookmarks\n* https://www.zomato.com/users/fan-feng-52680914/managewallets\n\nThe hacker selected the **UI Redressing (Clickjacking)** weakness. This vulnerability type requires contextual information from the hacker. They provided the following answers:\n\n**URL**\n*.zomato.com\n\n**Can a victim be tricked into unknowingly initiating a specific action?**\nYes\n\n**What specific action can the user be tricked into?**\nE.g: Hackers can lure users into the personal settings page, change data that is useful to hackers, delete accounts...",
+  "weakness": {
+    "id": 74,
+    "name": "UI Redressing (Clickjacking)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 285366,
+      "file_name": "zomatocom.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/285/366/fa3a3e4fbf739d6f17cf9788feab0edf7fab9c94/zomatocom.png?response-content-disposition=attachment%3B%20filename%3D%22zomatocom.png%22%3B%20filename%2A%3DUTF-8%27%27zomatocom.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024407Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2a0568e2b6c1180cc70a7241ec126700ff937cc0553943a16fb6d56bc82e80ac",
+      "file_size": 195351,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 2,
+  "voters": [
+    "jokebookservice1",
+    "umaisbhat321"
+  ],
+  "structured_scope": {
+    "databaseId": 383,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.zomato.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

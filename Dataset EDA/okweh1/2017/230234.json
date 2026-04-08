@@ -1,0 +1,152 @@
+{
+  "id": 230234,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMzAyMzQ=",
+  "url": "https://hackerone.com/reports/230234",
+  "title": "[mercantile.wordpress.org] Reflected XSS via AngularJS Template Injection",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2017-05-20T13:56:49.092Z",
+  "submitted_at": "2017-05-20T13:56:49.092Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "ysx",
+    "url": "/ysx",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 55,
+    "url": "https://hackerone.com/wordpress",
+    "handle": "wordpress",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WordPress",
+      "twitter_handle": "wordpress",
+      "website": "https://wordpress.org/",
+      "about": "Beautiful sites of any kind."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-06-14T18:35:23.938Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-06-14T18:35:23.820Z",
+  "team_member_agreed_on_going_public_at": "2017-06-14T04:53:25.630Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nBy injecting a crafted AngularJS payload into the `search` endpoint on the WordPress Swag Store, it was possible to achieve reflected XSS further to resolved report #221893.\n\nI came across a potential exploitation vector after noticing that a search query for `{{2*2}}` returned `4` in the site title response.\n\n## Conditions Verified In\n* Firefox 52.0.3 – stable\n* Safari 10.1 – stable\n\n## Proof of Concept URL\n```\nhttps://mercantile.wordpress.org/search/{{constructor.constructor('alert(document.domain)')()}}\n```\n\n## Screenshot\n\n{F186517}\n\nThanks!",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 186517,
+      "file_name": "Mercantile_XSS.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/186/517/fdc64e0faa78fa8df575bdbc26515378720d6d59/Mercantile_XSS.png?response-content-disposition=attachment%3B%20filename%3D%22Mercantile_XSS.png%22%3B%20filename%2A%3DUTF-8%27%27Mercantile_XSS.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQU4SJQUQV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD4ky7%2FDHPWY1wjo8jN4BhqrLkNIQ%2BYzLiweN3yRe8BswIgSRDGNUYvOcuOZ9sKhwVooUoKA1y3pgph3mbF20b03DcqugUIpP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDquoL6CLtWhsCuktiqOBSZ07EMaL9FQpuAq1PCVH%2B91Zl2tzoCb%2BXr8DK5Q%2BbQyXbc9byCnITMFXO9G23XgRn%2FEbjgDpG9GNJlogpLF6kDQ15H16A7z%2BkczwbIs14B4V65Cc4MdpER7v3AY83UtD0ajcnW8BxHA%2FcxIDTZDkX9LgE1SJy8SL2SPkqEeFA5cCOmf9FLO%2Bb%2BV8Q3pwjGKqQrKUUlO7yHZfxP%2BKI6k8khD8xyA90gwhgokr%2FjSl67KO91F3VUWUl3K83gWUEgscJmWzGMh%2FkOtiTRRlEM4kTjXTQiE1m6LEoGGY1K1BB4OAGOYoSJl81QafDVYCc1uqCtHur4%2FSUnIi3XgB16Wv8vMQLR5%2BtdaQsg93EyZbkdCoS8FmojLJlfysPnqpgPvs2MUkj4GNv4GaddAqFjNV%2FfOjcFTXVc7P2lpGH68n697mCG6PckjPsEUQOhAeHgVWDBfwt4tbOp70RdbAgHepoB8XauOFeJlLtQwHpDFDEq7AQ%2FvQkBFc8wYLRg4GqL5dqEeLRJ2ouRs5xkxRH%2BWEy4iAzcuyjFXhDZzodWNI2domJYK33neYKQT1hPh2ydIE4Ma0bCVGzvfTTgOvPvjphA0crBf48YbZ%2BbzLIbJq0RUwhHz%2BGhWnUMqrmwZ8yt0CAjd63i2LRs%2FAalsC4ri%2FkVIreg9tUhNuFDWbQerKDhVC8cddAp3eBWNAsPCAtpyKyZuNH6eayGcck5ow5rP4nNmmpjb2ajLpbiHgFA6YP0T57mrrm11ibvAE3XZbHlKpj44v%2BkKCfn3lRl9VLoywx4t9cBiiEeWNtGP6R4lnbyijMiugAdW4t6aheJe7uIPP1H16jlYpQUkU%2BnW7Pbd2k1hrVfKLatHu%2Fn4IlrcPTDlsOTMBjqxAWi%2BnPxb9NbG%2FdeCFdk19u86F2UiZX0ldB4i8Sa529eCxVJ5RRLVGgzRUzctymWeLyw1pf5w97R2%2FO9SkE20MN6xE7HmbIzAgyIIv6tgWR09vF%2BWn4xo6wp6kFJY3LTzn5dEyByK%2BP3QFU65vbg7YW89UsDJehGKkVCckIuQxqB6ZoKrOWPkRs%2FCWnLX2Xep77OMVjFOY%2BSIPbil09PHK%2BV%2BrSbA9SHZbPeS4l2VQCmuBw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4d8ee3ccd6e3d58860ac4668fd506e647cb9cc169ad782086388170a67cae427",
+      "file_size": 31250,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-07-14T04:53:25.665Z",
+  "allow_singular_disclosure_after": -271635689.3191165,
+  "singular_disclosure_allowed": true,
+  "vote_count": 29,
+  "voters": [
+    "jr0ch17",
+    "sp1d3rs",
+    "apapedulimu",
+    "malcolmx",
+    "madrobot",
+    "r3y",
+    "eveeez",
+    "khizer47",
+    "flyingpig",
+    "x1m",
+    "and 19 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 4480,
+      "category": "researcher",
+      "content": "In a follow-up to resolved report #221893, it was possible to achieve reflected XSS on `mercantile.wordpress.org` with an AngularJS injection payload. This was confirmed in the latest stable Firefox and Safari builds.",
+      "updated_at": "2017-06-14T18:33:47.749Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 47082,
+        "username": "ysx",
+        "name": "",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "",
+        "location": "",
+        "created_at": "2015-12-20T12:11:13.354Z",
+        "url": "https://hackerone.com/ysx",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    }
+  ]
+}

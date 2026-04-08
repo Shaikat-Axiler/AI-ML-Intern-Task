@@ -1,0 +1,121 @@
+{
+  "id": 330721,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzA3MjE=",
+  "url": "https://hackerone.com/reports/330721",
+  "title": "Expose relay IP in the debug (The source is different from the rendering)",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2018-03-28T10:22:07.534Z",
+  "submitted_at": "2018-03-28T10:22:07.534Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rbcafe",
+    "url": "/rbcafe",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/uft7o1wpafGAE3ASGWGc39AL/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1800,
+    "url": "https://hackerone.com/torproject",
+    "handle": "torproject",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tor",
+      "twitter_handle": "torproject",
+      "website": "https://www.torproject.org/",
+      "about": "Anonymity Online"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-07-21T17:57:04.911Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-07-12T16:09:09.076Z",
+  "team_member_agreed_on_going_public_at": "2018-07-21T17:57:04.845Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Greetings,\n--\n\nI observed that it was possible to expose the ip of  a relay by doing this :\n\nPoc :\n--\n\n- Go to https://sorry.google.com/sorry/misc/\n- You must observe this visual.\n\n{F279451}\n\n- Open Tor Browser debug\n- You must observe this visual \n\n{F279452}\n\nNote :\n--\n\nYou observe that between the debug and the main window there is no relation between the rendered text and the source code. The text discloses the IP of the client while the source discloses the IP of the relay.\n\nBest regards \n\n@Rbcafe\n\n## Impact\n\n- Get the IP of the relay by changing the ip of the client.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 279451,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/279/451/4e8b177ae3ccf819990108d3d2beddfdfd04b6e7/1.png?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022800Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3b9c71c63eff1bb60da2a878e8308d5412fefed93e128e8f9c9a230d3d11880e",
+      "file_size": 40452,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 279452,
+      "file_name": "2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/279/452/943f4d3f884d24adcefb875f7977158a69e940a7/2.png?response-content-disposition=attachment%3B%20filename%3D%222.png%22%3B%20filename%2A%3DUTF-8%27%272.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022800Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c3462db38cb2acde804cc2d9789b72aee657931d1b048cf4b46340051a5ff10c",
+      "file_size": 122376,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 7,
+  "voters": [
+    "ramsexy",
+    "sameerphad72",
+    "apapedulimu",
+    "hack2tools123",
+    "cryptographer",
+    "rbcafe",
+    "0x08"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

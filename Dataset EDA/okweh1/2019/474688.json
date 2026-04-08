@@ -1,0 +1,119 @@
+{
+  "id": 474688,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80NzQ2ODg=",
+  "url": "https://hackerone.com/reports/474688",
+  "title": "Content spoofing on error pages or text injection",
+  "state": "Closed",
+  "substate": "duplicate",
+  "severity_rating": "low",
+  "readable_substate": "Duplicate",
+  "created_at": "2019-01-04T15:36:29.541Z",
+  "submitted_at": "2019-01-04T15:36:29.541Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "drosofraymaybe",
+    "url": "/drosofraymaybe",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 30500,
+    "url": "https://hackerone.com/cfptime",
+    "handle": "cfptime",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/030/500/9fd002867e821d94e976c3ee9ae8dcfef569dcc4_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/030/500/9fd002867e821d94e976c3ee9ae8dcfef569dcc4_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "CFP Time",
+      "twitter_handle": "cfp_time",
+      "website": "https://www.cfptime.org",
+      "about": "We are CFP Time. We are indexing Call For Papers (CFPs) for Security Conferences around the world!"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-01-08T20:04:04.794Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-01-06T21:22:22.502Z",
+  "team_member_agreed_on_going_public_at": "2019-01-08T20:04:04.738Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "###Poc:\n\n[https://www.cfptime.org/%20is%20not%20available%20anymore%20,%20pls%20go%20to%20WWW.EVIL.COM%20because%20this%20site](https://www.cfptime.org/%20is%20not%20available%20anymore%20,%20pls%20go%20to%20WWW.EVIL.COM%20because%20this%20site).\n\n###Steps to reproduce:\n\n1: Just browse this target on any browser \n2: Target: http://www.cfptime.org/\n3: add any content after For example: this is not available anymore pls check WWW.EVIL.COM because this site\n4: Now browser reflect the content or text .\n\n###Fix :\nUse Predefined 404 page , with fixed error content \nIt can be fixed by adding the following to the web server config:\nErrorDocument 404 \"File not found.\"\n\n## Impact\n\nApplication allows users to inject any content on the 404 not found webpage\nThe issue is not critical , as it is only possible to inject plain text, no links or active content, to the error page.",
+  "original_report_id": 474397,
+  "original_report_url": "https://hackerone.com/reports/474397",
+  "attachments": [
+    {
+      "id": 401012,
+      "file_name": "Capture.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/401/012/17675c5362ab3628dd145ddde30bb49b0f3b4912/Capture.PNG?response-content-disposition=attachment%3B%20filename%3D%22Capture.PNG%22%3B%20filename%2A%3DUTF-8%27%27Capture.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020245Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=78e9c712f96d1c4d4320544faf6bc04760e5c42c8ae695cbf3b1e78988a2ccbb",
+      "file_size": 14675,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 3,
+  "voters": [
+    "cryptographer",
+    "drosofray2",
+    "drosofraymaybe"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 11792,
+    "asset_type": "URL",
+    "asset_identifier": "www.cfptime.org",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "id": 334205,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzQyMDU=",
+  "url": "https://hackerone.com/reports/334205",
+  "title": "Harvesting all private invites using leave program fast-tracked invitation and security@ email forwarding feature",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-04-06T11:26:21.381Z",
+  "submitted_at": "2018-04-06T11:26:21.381Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "japz",
+    "url": "/japz",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-04-18T05:04:38.513Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-04-18T05:04:38.387Z",
+  "team_member_agreed_on_going_public_at": "2018-04-17T19:59:28.869Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi HackerOne,\n\n**Summary:**\n\nI have found a way that it is possible to harvest all private invitation using the new __Leave Program__ feature together with the `security@` email forwarding feature __without any user interaction__.\n\n---\n\n**Description:**\n\nFirst, when the program activated the `security@` email forwarding on hackerone and the hacker sent an email to `security@company.com` which is activated, hackerone system will send an invite to hackers and this invite will allow hackerone to become a participants of private program.\n\nNow, hackers can choose to leave to the program in __exchange__ of another automated invite when the hackers filled-up the leave program survey form using the new __Leave Program__ functionality. (see image below)\n\n{F282541}\n\n\n---\n### Now how to exploit it ? , very easy.. hackerone will do it for you fully automated without any user interaction\n---\n\n### Steps To Reproduce\n\nAssumes that you don't have any invites (as in 0 invites)\n\n  1. First step you have to find program with `security@` email forwarding enabled on hackerone, this is easy just go to https://hackerone.com/bug-bounty-programs, click all the program and send a test email to their declared `security at` email on their public page, if you received a response to submit your bug, then that means `security@` is activated in hackerone.  \n███████\n\n  2. Lets take `███████`, send a test mail to that address\n  3. You will received an invitation email via `security@` email forwarding feature.\n  4. Click the __Submit Vulnerability__ , you are now a participants.\n  5. Now leave the program and fill-up the leave survey then confirm leave.\n  7. You'll be fast-tracked for invites, invitation will come most likely arriving in the next 24 hours as stated.\n  8. __REPEAT STEP 2 to 7__ after getting a new invite came from fast-tracked invites.\n\n__NOTE:__ Ask more information if you are having trouble understanding my submission.__\n\nBut this is easy to exploit, just send an email to: `██████ > get invites > leave to ██████████ > get new invites came from fast-tracked > repeat`\n\n## Impact\n\nAn attacker can harvest all private invitation without any user interaction, in a matter of few months you can have 100+ private invitation by just daily repeating the steps i provided above.\n\n__INVITES ALL YOU CAN__\n\nLet me know if you need more information.\n\nCheers\nJapz",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 282541,
+      "file_name": "invitation_queu.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/282/541/2f4bf702d8935aea470779b5a06f57b17c86f7c0/invitation_queu.JPG?response-content-disposition=attachment%3B%20filename%3D%22invitation_queu.JPG%22%3B%20filename%2A%3DUTF-8%27%27invitation_queu.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQW3246LIE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024344Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDXEO1m0%2FtyUXL8Lpt3kAavzF7XlIgljXmHmCIZAdBPvAiEAiGNQE9MfrOu8GG8Ln2Mq7I0kXvDHt%2F2pgV8g%2BPt3R9EquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDLig3bMV5WIe%2FcSPRSqPBdksTZjgTF59W2N6Lqm3pKfMFkzcPyixalMf77ITyPklHu4BTdjwUX21CmfUaIbqV2wLhmVcVjfxw6vPhrbCywH331hIMwMt8P5FQy7ZMP2gLmQlVzRXWaHCDKPqt5v69p%2BUbgm2UMzoxfwnlHxD7Y2eCPQf%2Fzyz7TSQnvF3jBewXbmFeifRX60pbL0MkzQ5Xv2uQXudCY9bC3EQxoUQrt6AYleFfeqQSe7Xwuarl1pUb11R0qVg%2BzSPYu1%2FULBIrUlhbhY%2BuulCP1A0cmYTceBSJo4GVkx5uYtfw40IhP2GXixfwiDjRuD0iyhpZ79lmYJUnjPhSSXcSIKD%2Bk%2Bn5KcHdwtyKkBnrTOY2EXtE00xr5jTSrk3Ll8TsMJOdKiDVzb8X1fWbSdTVdHwfkLdG7130V5XJuXqcSsJ5IAg7hKbnGRcvz7Ub6YrbfQlt5nVnHhjCqb3E%2BFO16mCMRkqZXxiUSbpzb8k2iv44T9Nn02LI7Ah%2FTiM68I3AzX381tVj9gabobQP5YeDY6XDvRgOJVrDVcLUPCxL1wjOGZ%2Bi%2Fe9umINkOAF1o89k%2BUeYXJN8hD%2BFBcX6OW3QkSIsfugIgSdpJQkOIqZI9hwiqX%2BNV%2Bpa20frmnLNJ7TZAJhntNmaEoq9LycZ8zLweuFI5IDsyNdDYyDIKtCbCAW9lCgLO2aCuxVi64sl9sHb0t9HddwwUDQFYD1b5jsdLJTtKsRQXOqw663luXTET2MQEJC4oT%2B3o%2BfwIwIVWRzGoXHR04%2BVyyGxacyVJXc%2FERGhIYc9ftzeTo6umRtrGFaqAhXeMsoNmaJgR17MflCfnaCRLskX98d%2BYBjNaPEiP%2FOp1WjszhIG2xTQlz3INYU5W7T%2B3owu5jkzAY6sQFypA6jFM3YHpXMwins8CYxqiYjwvLE2Gh1zDMk%2FDwpJP6AZRJ6e3XXYHgXI7TIlatJXfL2HEeLIZ3nqpOkSsZyvN%2FNrpi4L2ybxsMfZ70aFgONHuH66glphZ9y0RDt6MvmoMYcJ2HgFHQtRaSRfo9npn%2BJyuLBDq1NDEOTKF0YfkgXZpnQ8j3v6nncfYyDhFXBFKFrSUJ1m1U08LPkv62FShee7kbUol3MwhY4iePNoy8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=24b801908aadfc19d781f197e72b66e206a912af8585f13eeeac41ceef82612f",
+      "file_size": 49295,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-05-17T19:59:29.031Z",
+  "allow_singular_disclosure_after": -245054655.8439452,
+  "singular_disclosure_allowed": true,
+  "vote_count": 102,
+  "voters": [
+    "k0ns0l",
+    "jokebookservice1",
+    "ezzra",
+    "is-",
+    "n1m0",
+    "sp1d3rs",
+    "muon4",
+    "kapytein",
+    "yumi",
+    "michiel",
+    "and 92 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.1,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 3,
+    "asset_type": "URL",
+    "asset_identifier": "hackerone.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 14006,
+      "category": "researcher",
+      "content": "https://medium.com/japzdivino/harvesting-all-private-invites-using-leave-program-fast-tracked-invitation-and-security-email-a01c8b3ce76f",
+      "updated_at": "2019-02-01T16:01:41.910Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 78347,
+        "username": "japz",
+        "name": "",
+        "bio": "「hawk tuah」",
+        "cleared": false,
+        "verified": true,
+        "website": "https://blog.bugbountyhunter.xyz",
+        "location": "",
+        "created_at": "2016-05-18T03:01:22.121Z",
+        "url": "https://hackerone.com/japz",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/wfc26eevr9f9nurpv2bu9gno3vca/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    }
+  ]
+}

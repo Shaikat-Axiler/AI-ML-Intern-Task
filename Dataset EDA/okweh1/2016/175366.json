@@ -1,0 +1,125 @@
+{
+  "id": 175366,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNzUzNjY=",
+  "url": "https://hackerone.com/reports/175366",
+  "title": "Brave: Admin Panel Access",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2016-10-12T11:27:09.688Z",
+  "submitted_at": "2016-10-12T11:27:09.688Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ranjith16",
+    "url": "/ranjith16",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/089/345/30c7a0709efc5263c0a76a15e48fb804705aed9d_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-08-10T05:11:23.792Z",
+  "bug_reporter_agreed_on_going_public_at": "2016-12-17T19:42:53.804Z",
+  "team_member_agreed_on_going_public_at": "2017-08-10T05:11:23.741Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "** Steps to reproduce**\n\nWhile browsing through the https://blog.brave.com/admin, it is getting redirected to a admin login panel https://brave.ghost.io/ghost/signin/.\n\n**Consequence**\nAn attacker can easily enumerate this admin panel with the url such as https://blog.brave.com/admin\nand with brute force attack this can be bypassed, but I didn't do that. If a known ghost.io vulnerability exists there can be chances of even taking over the sub domain.\n\n**Remediation**\n\n It's recommended to give custom directory names instead of easily guessable names such as \"admin\" for such sensitive directories.\n\nPlease find the attached screenshots.",
+  "weakness": {
+    "id": 57,
+    "name": "Violation of Secure Design Principles"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 127398,
+      "file_name": "1.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/127/398/c546fa82effece45310b01bbbef28178f966c709/1.JPG?response-content-disposition=attachment%3B%20filename%3D%221.JPG%22%3B%20filename%2A%3DUTF-8%27%271.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ5C4ZTUOA%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033218Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC75BG%2BD5gxfbEQ%2FuNrzyJDz8MbEN5FkzEmgB6yRQKrAAIhAL6Fwwy%2BgHQkS3yl0mB1lzEIOKKVmyYPsWrv1QJVjDL6KroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwfhbffJMDMOTDuGrIqjgWratjajauk%2BBIB3CI%2FQOHz8MUIm%2Fi8%2FfnoWMVK8fgUY%2BeDkTz0YSdClV38Ihz5U%2FlgmvDOLapvVygjBAvY%2FBaxt8si4mOHC0QP1ZorCM9CtOHT%2BvJ%2F52k4RHSCERidZMzCH0ZaWOxAbGXiMfViQkAwyGP5iSuPBMjNlOs6j2jvoC4SRH%2FKy52leJOw9shebE61unNU6wtaNAM6zJM34NhlIN1vmEZsMH5QNJFX2PGXpdaqVsm53I68tMs11mQe2i1r4M7HntDxDU2JPREnohRDjz%2F62ZEIldJqx91mRfHQLmpqWpfQ469FXXcfSawB7hrC84LBVerc7pGDQSbN17Ea1QglWK7s8wzHzew55ckeBpuT%2FYnp92kqrl%2BPROxHUcXoPjONr1vjcZRdiQjdfHMaI4U5O3RCQ1CIFgrcLQwBNlsZbanq4hpZd1acUMNQ25H7sP3I5Ib5dnjmGOok0fbMoO%2BwTOQC7qFtaKgP4M7c5zVfc5RW8u29RwaRCedW4ap%2Fjw2hjbXd7yQC25%2FnVq%2FrGx5dT4luGQP4PE%2FpN8tJcTQ%2BSk0OE7iOROUKTsKfFTMwVovYqsCR75xliOBZ8IkCKhGoUETs1HcEMnzkZlb9T5DhsaTmRxz7JGbfbmTmie9%2BBIX6OipFcxHD%2FYKqmh%2Bvlr3N%2FIoGICW5m%2Fut%2B7dINCx6ggshJUektP1IT0zQhGmVwKwLcWmloKsk1HvS%2FB84%2FreQWFbbQbJgtv7kd4qN%2F91CXGihKRmw0a1DKrkJdNKO8swkqmiu6YcB31x5sNJ1Q7RhQLoIpqP8P6JILjywgX9%2BNP2gTzjhDhTc0TDlCdqYtTtS2uL4ZJ%2BTxL2tz7kHggHghnXzHfphgSWK5dgwoqTkzAY6sAGAF4XZ1hpb49%2FdBT8f28NiKtFOo%2FRjaIEsrQCS9vWHI9qh4eMCDkxZanSSfsjhbNtDR1%2FE71aXTqULf44ItMWBM6xlgC3z7rNtNcccJgaoRiygSjmlLp38HZlmcb8%2F1%2BqfXJZuT8%2BDGLGbA7MMFlz2KWgajK5oy9uOw7iDYsgX1MJNvMYmfLYgBt0dxF%2BgSioIQiUVVYprbQZEUsj0TMe0upIPZzt1RMYeNMaYFL6wnw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5c218307fe7a55ccacd69d6fe609087125bab5e050010ebb4eb9e09ca898d473",
+      "file_size": 149937,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 127399,
+      "file_name": "2.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/127/399/4db9680ca9ad1f5b72d00660e854e18af1bb2cc9/2.JPG?response-content-disposition=attachment%3B%20filename%3D%222.JPG%22%3B%20filename%2A%3DUTF-8%27%272.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ5C4ZTUOA%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033218Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC75BG%2BD5gxfbEQ%2FuNrzyJDz8MbEN5FkzEmgB6yRQKrAAIhAL6Fwwy%2BgHQkS3yl0mB1lzEIOKKVmyYPsWrv1QJVjDL6KroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwfhbffJMDMOTDuGrIqjgWratjajauk%2BBIB3CI%2FQOHz8MUIm%2Fi8%2FfnoWMVK8fgUY%2BeDkTz0YSdClV38Ihz5U%2FlgmvDOLapvVygjBAvY%2FBaxt8si4mOHC0QP1ZorCM9CtOHT%2BvJ%2F52k4RHSCERidZMzCH0ZaWOxAbGXiMfViQkAwyGP5iSuPBMjNlOs6j2jvoC4SRH%2FKy52leJOw9shebE61unNU6wtaNAM6zJM34NhlIN1vmEZsMH5QNJFX2PGXpdaqVsm53I68tMs11mQe2i1r4M7HntDxDU2JPREnohRDjz%2F62ZEIldJqx91mRfHQLmpqWpfQ469FXXcfSawB7hrC84LBVerc7pGDQSbN17Ea1QglWK7s8wzHzew55ckeBpuT%2FYnp92kqrl%2BPROxHUcXoPjONr1vjcZRdiQjdfHMaI4U5O3RCQ1CIFgrcLQwBNlsZbanq4hpZd1acUMNQ25H7sP3I5Ib5dnjmGOok0fbMoO%2BwTOQC7qFtaKgP4M7c5zVfc5RW8u29RwaRCedW4ap%2Fjw2hjbXd7yQC25%2FnVq%2FrGx5dT4luGQP4PE%2FpN8tJcTQ%2BSk0OE7iOROUKTsKfFTMwVovYqsCR75xliOBZ8IkCKhGoUETs1HcEMnzkZlb9T5DhsaTmRxz7JGbfbmTmie9%2BBIX6OipFcxHD%2FYKqmh%2Bvlr3N%2FIoGICW5m%2Fut%2B7dINCx6ggshJUektP1IT0zQhGmVwKwLcWmloKsk1HvS%2FB84%2FreQWFbbQbJgtv7kd4qN%2F91CXGihKRmw0a1DKrkJdNKO8swkqmiu6YcB31x5sNJ1Q7RhQLoIpqP8P6JILjywgX9%2BNP2gTzjhDhTc0TDlCdqYtTtS2uL4ZJ%2BTxL2tz7kHggHghnXzHfphgSWK5dgwoqTkzAY6sAGAF4XZ1hpb49%2FdBT8f28NiKtFOo%2FRjaIEsrQCS9vWHI9qh4eMCDkxZanSSfsjhbNtDR1%2FE71aXTqULf44ItMWBM6xlgC3z7rNtNcccJgaoRiygSjmlLp38HZlmcb8%2F1%2BqfXJZuT8%2BDGLGbA7MMFlz2KWgajK5oy9uOw7iDYsgX1MJNvMYmfLYgBt0dxF%2BgSioIQiUVVYprbQZEUsj0TMe0upIPZzt1RMYeNMaYFL6wnw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=38090d8657543020e74adab378e1bed89ce44af04dd28bcb0f7a78613e1bbc32",
+      "file_size": 66050,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 2,
+  "voters": [
+    "karel_origin",
+    "khizer47"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

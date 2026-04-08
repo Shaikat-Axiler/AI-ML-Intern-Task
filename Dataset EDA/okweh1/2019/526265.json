@@ -1,0 +1,168 @@
+{
+  "id": 526265,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC81MjYyNjU=",
+  "url": "https://hackerone.com/reports/526265",
+  "title": "DOM XSS on app.starbucks.com via ReturnUrl",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-04-04T09:06:56.688Z",
+  "submitted_at": "2019-04-04T09:06:56.688Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "gamer7112",
+    "url": "/gamer7112",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1989,
+    "url": "https://hackerone.com/starbucks",
+    "handle": "starbucks",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Starbucks",
+      "twitter_handle": "Starbucks",
+      "website": "http://www.starbucks.com",
+      "about": "Premier purveyor of the finest coffee in the world, inspiring and nurturing the human spirit — one person, one cup and one neighborhood at a time."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-03-17T21:18:33.965Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-03-02T12:27:25.464Z",
+  "team_member_agreed_on_going_public_at": "2020-03-17T21:18:33.848Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** XSS Can be achieved via the ReturnUrl when signing in on app.starbucks.com\n\n**Platform(s) Affected:** app.starbucks.com\n\n## Steps To Reproduce:\n1. Visit https://app.starbucks.com/account/signin?ReturnUrl=%09Jav%09ascript:alert(document.domain)\n2. Sign in\n\n## Supporting Material/References:\n{F461364}\n\n\n## How can the system be exploited with this bug? \nXSS could be used to steal the account of any victim that signs in via the url.\n  \n\n## How did you come across this bug ?\nRetesting report #438240\n\n\n## Recommendations for fix\nImprove the checks on ReturnUrl such as not allowing hex characters 00-1F\n\n## Impact\n\nAs with any xss, it could be used to steal the cookies of the victim to gain access to their account.",
+  "weakness": {
+    "id": 63,
+    "name": "Cross-site Scripting (XSS) - DOM"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 461364,
+      "file_name": "starbucks_xss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/461/364/779475984d119b9d2ea51258fc214debd57130bb/starbucks_xss.png?response-content-disposition=attachment%3B%20filename%3D%22starbucks_xss.png%22%3B%20filename%2A%3DUTF-8%27%27starbucks_xss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4GVNGGV3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004515Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIFc%2F%2Be815b%2F3a4XK5gHNVQduypFAbYUHiBkNDXcsbOS8AiEAmsJrNr8NWpe2agzQ%2F%2Bcg%2BHAhrDDBu%2BZbisV%2BHRjeLgsquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNejpFiblaJptGLDFSqPBVkmR1y4uaHN2wt00AZFXXNzrwZV0YxpaEqQin9PHJ%2FXw%2FYFSSWVbZ5g%2BLdDdL1n4dbqpsMltm%2B8ap9CM%2FlF%2FvifGxOieaWnqaJyAOOgVZLhRQ0HGC65BYiKPEBCJO%2FL3Hb3fLQa6JKZbxZt7sHNZHRZuwBLaxKDME3kyCnfJwRGFBY9sPKojxRC3HaLhXSqra97QOuf5UmsQhM33eNRyw5vsrSFAI8VvqBBR3GBolkLVDN0p6CA3QM2iEALPIkjSjI7N4YAO9dl5ZDTFxT8pNyqQtgYB38D2FHdiwoPmDxeDkhPaVU1ORUGRbDhakgWt4kA6rVE7WOK7v5Zujtz0%2BXly4MujeTABiZGODvjlqkA7hEhyHDXPkE7UrU96HWJPccqBKBBJeZfr%2FsMw3wgkHJWRvqnv3AOZI2jixdJzi2SF0etFaPuOrrJ8%2FtIMZZw%2BVNwDebjH2S6YIqXuMqMOeLpE%2BYwOdKzmroK83SiYmVATZ6%2FElh9ePP8libkTWbCs3Pxy1xC7eSnq%2ByM5n7wbtXSVKnSdlUSl6Srt8sBI%2Fa9l%2BNfQdsl4idpAKTiv5cnh3H6tQvNBRKBoOTB2xpE0EBrbslSE%2BDEDc8HjDxnkMTHYAHi%2FCXsW92rCR1CZjkHQeX9YdY3b9kQs4zlHa%2FQIn7z9P5AbjfX3XLpHyhmu9tadwNH1tgp5WPLqi5%2FToyypZ2NIWsbMZAhIucOCWwIxi9T3lvUV4Rd2pgxiWyGXgUPFkhc7TbyL43RUlWb0Izq81F7P3dvEvH3aOnP%2FezcpmZZbuFi7EcGgd02i9UjkgCoalnzKaJf4orKQjevs29EuVQUtl7ivxeaoAV05jegLlvvRX5GPX8X7I5ypgc56JgwvOjjzAY6sQHg3HQSNMwmY5AZSWemXQAydgrOIb9TzQHQII7t0K23Zs%2BsZjc2aTAhkvf3uHeo5tyJiw1uyVWbTEVOgphBFH8unvPQzv2i1F2ZSXOGv7Sal6fcoPtkPGd9l%2F8uC2EeVUo1xqvfO5hLW4wwzdGO89G6CtiCMpE6kx%2BNPh9x95t%2B3O3AIvFSgCXjGavldHWM6z6vLOIiGeh%2B8iNwVa0mnmubNwFWbTWKKjLhKKav0PkqIAk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=52dc75b925afcc5a62471f666d3d7d7b1cee2ec2f9e96692fc4ed34cc90b08d5",
+      "file_size": 72722,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-04-01T12:27:25.554Z",
+  "allow_singular_disclosure_after": -185890669.9959293,
+  "singular_disclosure_allowed": true,
+  "vote_count": 27,
+  "voters": [
+    "loaymorad",
+    "sebd",
+    "kashsec",
+    "a_d_a_m",
+    "n0x496n",
+    "ali",
+    "tess",
+    "zimmer75",
+    "velizar",
+    "deepakjoshi",
+    "and 17 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.7,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 14543,
+    "asset_type": "URL",
+    "asset_identifier": "app.starbucks.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 20751,
+      "category": "team",
+      "content": "gamer7112 discovered a DOM reflected cross-site scripting vulnerability on app.starbucks.com due to a hex character bypass/blank injections of the ReturnUrl parameter.\n\n@gamer7112 — thank you for reporting this vulnerability.",
+      "updated_at": "2020-03-17T21:18:18.514Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 706273,
+        "username": "agedsumatra",
+        "name": "agedSumatra",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2019-08-12T17:50:49.926Z",
+        "url": "https://hackerone.com/agedsumatra",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/yjUg6PZmutR2o3qPxEP2MT1J/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/yjUg6PZmutR2o3qPxEP2MT1J/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/yjUg6PZmutR2o3qPxEP2MT1J/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "id": 403793,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MDM3OTM=",
+  "url": "https://hackerone.com/reports/403793",
+  "title": "Stored 'undefined' Cross-site Scripting",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "medium",
+  "readable_substate": "Informative",
+  "created_at": "2018-09-01T10:14:55.867Z",
+  "submitted_at": "2018-09-01T10:14:55.867Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rootbakar___",
+    "url": "/rootbakar___",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/284/205/d6a80162d460e2378ea4346e559abbb5cb74e309_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 134,
+    "url": "https://hackerone.com/khanacademy",
+    "handle": "khanacademy",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Khan Academy",
+      "twitter_handle": "",
+      "website": "https://www.khanacademy.org/",
+      "about": "Start learning now. Completely free, forever."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-09-05T16:26:12.709Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-09-05T16:02:58.071Z",
+  "team_member_agreed_on_going_public_at": "2018-09-05T16:26:12.569Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello KhanAcademy Security Team,\n\nI'm **rootbakar**, I found an XSS bug on 'BIO' in the profile, I used payload XSS **\"/><svg/on<script>load=prompt(document.domain);>\"/><svg/on<script>load= prompt (document.cookie);>** after I save it appears there is no trigger from the XSS, but when I try to change one of the values in the profile form and when I save it again an XSS trigger appears but with the words '**undefined**'. Every time I want to change both '**REAL NAME**' and '**LOCATION**' and when I press the save button again and after a few seconds an XSS trigger appears with the words '**undefined**'\n\n**PoC**\nThis is Video Link\nhttps://youtu.be/WGeaclSo_5A\n(Not Public Video)\n\nBest Regards,\n\n**RootBakar**\n\n## Impact\n\n**Displayed 'undefined' XSS after user repeated click SAVE button**",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 340974,
+      "file_name": "2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/340/974/e1da5a3f42ce2453b0d6d7b7a74404878044d5cc/2.png?response-content-disposition=attachment%3B%20filename%3D%222.png%22%3B%20filename%2A%3DUTF-8%27%272.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022245Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=306352a46a3dbdde604a263e6157d13a304d24d96462904d03e7747c00ea886b",
+      "file_size": 36333,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 340975,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/340/975/f55469d003a7c1576d10e21211dde20a61d57998/1.png?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022245Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a21f26ceacc54f855db920d32b8ee6940634c318460e51f88c607809cd0c40db",
+      "file_size": 83663,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 340976,
+      "file_name": "3.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/340/976/0d885e7fe61a4b8be090c5f26009d1627c20b45d/3.png?response-content-disposition=attachment%3B%20filename%3D%223.png%22%3B%20filename%2A%3DUTF-8%27%273.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022245Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fe541164c930a525a7972eba92ccce1680c037251880581dbcaf58a723610941",
+      "file_size": 105774,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 7,
+  "voters": [
+    "haxta4ok00",
+    "eveeez",
+    "trimatra-sec",
+    "cryptographer",
+    "0x08",
+    "insectbacon",
+    "mohamed_salah"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "id": 249234,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNDkyMzQ=",
+  "url": "https://hackerone.com/reports/249234",
+  "title": "Posting to Twitter CSRF on php/post_twitter_authenticate.php",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2017-07-13T11:58:49.259Z",
+  "submitted_at": "2017-07-13T11:58:49.259Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kuromatae",
+    "url": "/kuromatae",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/114/311/ec3036897cf288eaa6f34652e4a092d0a2078e58_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2943,
+    "url": "https://hackerone.com/eternal",
+    "handle": "eternal",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Eternal",
+      "twitter_handle": "Zomato",
+      "website": "https://www.eternal.com",
+      "about": "Eternal is India’s largest new-age tech company by market cap, comprising of 4 businesses (as of now) – Zomato, Blinkit, District, & Hyperpure."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-08-19T08:17:00.859Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-07-20T08:16:48.048Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi !\n\nThis time, i found a CSRF who can lead to arbitrary writing on twitter account of victim if they have added it to zomato :)\n\nCoupled with a stored XSS, it could be very troublesome to you.\n\nIn the page, it seems there is no token check at all.\n\nYou can see in the video the CSRF working and here is the POC i used:\n\n`https://www.zomato.com/php/post_twitter_authenticate.php?type=posttweet&message=Hello Zomato Team :)`\n\nCordially,\n\nKuromatae.",
+  "bounty_amount": "50.0",
+  "formatted_bounty": "$50",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 202800,
+      "file_name": "Poc_CSRF.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/202/800/38fc606cbc35a5a7f06a73e569482124b2a3bb8e/Poc_CSRF.mp4?response-content-disposition=attachment%3B%20filename%3D%22Poc_CSRF.mp4%22%3B%20filename%2A%3DUTF-8%27%27Poc_CSRF.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZZFH4ZWJ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032924Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCebYGLtP1fg6avPiofj0%2FGR4pPM8U0s0q6Zx59sZ0%2FrwIhAKFwzK%2FoQhuaTO54dwwxFCpnL12iyYwAgkqJIZhZwV4XKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy12XWw%2Bc3n4FZYNQwqjwU3wqdrcPph%2BGHkfUoQQ6h9Pz8bTyWmLWYeJnUGWlITbRDRMhSBL6xzoSQD%2Fvki95jS5hopBlvzxJSU5fJrjRzmo%2BUZOY2R%2BZLpIjo5FxV6BCsIucmewquGDjfOKqBtX9kHzs7ApCquRb2c4fTaL8GifKLYAERo2V1sdOGBze%2FpSRxv%2BIe9lum47VccCDF8Ntrh5i5heUlyuRNqIx1Q78aTcb2p%2Bnz%2FraFXMi3C9TtgDJDkPcd4hOOlJRDxxac1VsJFmADepTLAFjmd%2Bd%2BjFYtDkJX65ObUFRz5DP0F9bhOZC%2FELUOx6dJDwxkKVSDAGzP8PX8LYr%2B7kT6PvDtma%2F5sY7T479Nz47koh3N0%2FZcs%2FWTxM7ut%2FrJbb3UKvio98H%2BX8stvrGfT%2Bg2wyUwtZhPmFSEMWlOpt2675FBDqHuocoZgrh7XvL2Qw932K5Ht0mP1tBDchT9bQmNFIsse8aJOu4B7jy59u3I4pV61i%2F6dolvsniFub5T8D4fFLRbalr1%2BXNClpKcWTEqOteAxajKTbeDh3ppQQ3ege5fVFbit4Csyq67ecUZpyivVkBIxqj9UKCWonXMerBkpNMmYgwngHLGwig4eT1%2FSL%2BDRP9lHF9CsJF%2F1LiF926krZbTb6a6LbsjuE5GvaCJ9dGNNPkds2tnvwfquOd7swbcCxpeOB9x8xWrDfMk%2FcoYuDv%2FXvRBiJwO0Xe7UO6m4TionCU7CWLxpb2v2DgNU7bZoQcariFwBhxLxul9z7DnICzz9xQ4iZmpiwCGRGUl52bYp%2FvKDO1lKcub2QBIv9zRCDdv9FjVmwlzOC84SSc2Vk4Z1G6r9o6xjbRgzGYBC3dENvtbfzhVHUoouobUOAW875%2FzfMNLh48wGOrABrizQ6%2F%2BQwOq6j85ZckmE6FKQKsPZmC%2F0Bi%2Beq1b8q5ek4EIaUKTjmKY7BerobUgxWTwEVvzBPNOWTfN1ekdDSrBFlYWrPyMajB3z3vJ51UDooJNUY1dS4PLjV%2FkIyRdeagGo5rREx%2BlHLNPyocsCu6Dkl%2FuSMgXDnH2aQ8JHQWJi0KDfT6gnb5S6XTD5gEBzZFgwuhV0%2BlLbzkc4FlJHlMv72BFOlgam%2B3uVOW24Kew%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=806047ffd222f70a165a145e17f2135800d2534e8294fb8943e53d3453194422",
+      "file_size": 3940663,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-08-19T08:16:48.104Z",
+  "allow_singular_disclosure_after": -268513956.57023656,
+  "singular_disclosure_allowed": true,
+  "vote_count": 15,
+  "voters": [
+    "loaymorad",
+    "cuso4",
+    "hackedbrain",
+    "eveeez",
+    "khizer47",
+    "m16",
+    "mr_r3boot",
+    "japz",
+    "silv3rpoision",
+    "koviri_jagdish",
+    "and 5 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

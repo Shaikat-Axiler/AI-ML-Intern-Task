@@ -1,0 +1,135 @@
+{
+  "id": 301924,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMDE5MjQ=",
+  "url": "https://hackerone.com/reports/301924",
+  "title": "SSRF vulnerability in gitlab.com webhook",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-01-03T09:23:53.250Z",
+  "submitted_at": "2018-01-03T09:23:53.250Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "wuqidashi",
+    "url": "/wuqidashi",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 264,
+    "url": "https://hackerone.com/gitlab",
+    "handle": "gitlab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GitLab",
+      "twitter_handle": "gitlab",
+      "website": "https://about.gitlab.com",
+      "about": "A single application for the entire software development lifecycle."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-04-30T18:14:57.444Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-04-06T11:49:19.936Z",
+  "team_member_agreed_on_going_public_at": "2018-04-30T18:14:57.323Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "1、\nLogin to your GitLab account and create a new project, then go to-->>https://gitlab.com/{username}/{project}}/settings/integrations\n\n2、\nYou can add url to ssrf.following are the steps to reproduce:\n\nIf you enter http://127.0.0.1:80/haha.txt as url,we will get -->>Hook executed successfully but returned HTTP 404 <html> <head><title>404 Not Found</title></head> <body bgcolor=\"white\"> <center><h1>404 Not Found</h1></center> <hr><center>nginx/1.12.1</center> </body> </html>\n\n\n\nIf you enter http://127.0.0.1:9200/haha.txt as url, we will get -->>Hook execution failed: Failed to open TCP connection to 127.0.0.1:9200 (Connection refused - connect(2) for \"127.0.0.1\" port 9200)\n(indicating that the port is actually closed.)\n\nThe test was done on https://gitlab.com/\n\n\bI did not do more test.Thanks\n\n## Impact\n\ncan scan the intranet to get sensitive information.",
+  "weakness": {
+    "id": 68,
+    "name": "Server-Side Request Forgery (SSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 251026,
+      "file_name": "17_14_23__01_03_2018.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/251/026/eab830b962e5f8350b75da0cca4ea44ff987499b/17_14_23__01_03_2018.jpg?response-content-disposition=attachment%3B%20filename%3D%2217_14_23__01_03_2018.jpg%22%3B%20filename%2A%3DUTF-8%27%2717_14_23__01_03_2018.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTUP4YAQL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024000Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCoNd%2BEKEO57Bc1zAzd7ptk1U2zyMcdAtMybHVAMBLgeAIgSK4GDS7Q7e%2F7JDdE4MND15qsBUGmGaJSlHMXssw6UGgquwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDId2PiDogBpC02xGnyqPBd4NOifRDce1DmqNAmDEkHC%2FHfyzN3kIrXhpfhTjujX9Xgl5Xq5P%2B7oUOmivAg0a0%2F9GOMPjPwciI8NSMoZIkOCrWnHVSkDWgODA4gjsjOvzF5yKtRLqBFwU9oLqfh0mlIocVDSmCfZNMPQwwWQjuJydlkNCjcU9D6pZJ4%2F5yFi7YsPw85tKVW96tf9K4p9d7Bln2LQZVQVJtc%2F67CdCpyCkJg%2BsZy9SAJMFN703kNhxsGx6FaTBZPopkG1X5%2Fs0DowLFvjX0IQs8mJH%2F7%2BDOGxOADAY%2BxlXC6ZkNONWsxtfN9TvExJPtCRL6HS6DdGtDWDrQZA9Kf9IC4TnBxvLU79cjVZF1UfpGmp4Inga6lIurvGxeXBiBo7NXfgUq6zZ2btO4fiojaJDCRP5Wx5cfqhHv9jLKWnMchTT%2Ff6LwuabdJaoNTIujqsQsI4%2BD90z6qss82kpQKd1vgpecdFT9FhIEfY2Fm5rjssBqkV%2BfJw5FZimgDcnMvOTXpwABDohERzFvw08f%2BEI%2Fvi9o5yC7OV%2FaUrn1BLXrVfLm4CU4KgQfdnWayDOenj1Dv%2BlzZydBSPaDSxmamrsDjVjG22%2F9qJe1wWUpNqIuvRUSK%2FOk2FczqexcHZQV5Ln8CtpHezYvoWEFlO2RT8QBBHg%2FU7bq7jMKUNtQYpnZ7gvAzPmY42lwymFHpSEaIlL3%2FtZNEreSaahnNz7yvwkhIWUgEMILkTewBwoWgI%2FrdpPRlFdx921iWCf0egkHYWz3nk4%2ByLid55MuO7dv9VOqlwO080zTEnU%2BNDZRrYUWD2%2BGi4KTNaGI0cywWbXEs1vAq0hWciyHxQvkaPp3rLAocr%2FY7tkDHC3HARTdqKWKseIWDyr6oIwu4TkzAY6sQG%2FAi0gnR1%2FRtXHzQfZNPESuk48qNAB48Ynu8Lsc%2FcW%2FwiyyAFK1U%2Ft2WV3yBJ7xKP3hXHMBZ9n5GfT2TtW9hsYM1DdhCunN1NBa7EHRhRc%2FgflzHaQCWcvOrWTeqc9Nuls98npRLoTldVsjn51Z1DE8sTDy3S84tlknlUSb0FemkgDs30VzbhFJnAKWjFLgkxNromstetmWhdgVZoOdl6qfxiXfe8BEe%2BjkGf0%2Bzs0lOI%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2a9e11387a7f4f5db106c165d44465108df1997e537a6f8647dc908ddcb681d7",
+      "file_size": 638728,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 251027,
+      "file_name": "17_15_36__01_03_2018.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/251/027/71eed4cdeaba929db2def9211abb1f5b34a9f34b/17_15_36__01_03_2018.jpg?response-content-disposition=attachment%3B%20filename%3D%2217_15_36__01_03_2018.jpg%22%3B%20filename%2A%3DUTF-8%27%2717_15_36__01_03_2018.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTUP4YAQL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024000Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCoNd%2BEKEO57Bc1zAzd7ptk1U2zyMcdAtMybHVAMBLgeAIgSK4GDS7Q7e%2F7JDdE4MND15qsBUGmGaJSlHMXssw6UGgquwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDId2PiDogBpC02xGnyqPBd4NOifRDce1DmqNAmDEkHC%2FHfyzN3kIrXhpfhTjujX9Xgl5Xq5P%2B7oUOmivAg0a0%2F9GOMPjPwciI8NSMoZIkOCrWnHVSkDWgODA4gjsjOvzF5yKtRLqBFwU9oLqfh0mlIocVDSmCfZNMPQwwWQjuJydlkNCjcU9D6pZJ4%2F5yFi7YsPw85tKVW96tf9K4p9d7Bln2LQZVQVJtc%2F67CdCpyCkJg%2BsZy9SAJMFN703kNhxsGx6FaTBZPopkG1X5%2Fs0DowLFvjX0IQs8mJH%2F7%2BDOGxOADAY%2BxlXC6ZkNONWsxtfN9TvExJPtCRL6HS6DdGtDWDrQZA9Kf9IC4TnBxvLU79cjVZF1UfpGmp4Inga6lIurvGxeXBiBo7NXfgUq6zZ2btO4fiojaJDCRP5Wx5cfqhHv9jLKWnMchTT%2Ff6LwuabdJaoNTIujqsQsI4%2BD90z6qss82kpQKd1vgpecdFT9FhIEfY2Fm5rjssBqkV%2BfJw5FZimgDcnMvOTXpwABDohERzFvw08f%2BEI%2Fvi9o5yC7OV%2FaUrn1BLXrVfLm4CU4KgQfdnWayDOenj1Dv%2BlzZydBSPaDSxmamrsDjVjG22%2F9qJe1wWUpNqIuvRUSK%2FOk2FczqexcHZQV5Ln8CtpHezYvoWEFlO2RT8QBBHg%2FU7bq7jMKUNtQYpnZ7gvAzPmY42lwymFHpSEaIlL3%2FtZNEreSaahnNz7yvwkhIWUgEMILkTewBwoWgI%2FrdpPRlFdx921iWCf0egkHYWz3nk4%2ByLid55MuO7dv9VOqlwO080zTEnU%2BNDZRrYUWD2%2BGi4KTNaGI0cywWbXEs1vAq0hWciyHxQvkaPp3rLAocr%2FY7tkDHC3HARTdqKWKseIWDyr6oIwu4TkzAY6sQG%2FAi0gnR1%2FRtXHzQfZNPESuk48qNAB48Ynu8Lsc%2FcW%2FwiyyAFK1U%2Ft2WV3yBJ7xKP3hXHMBZ9n5GfT2TtW9hsYM1DdhCunN1NBa7EHRhRc%2FgflzHaQCWcvOrWTeqc9Nuls98npRLoTldVsjn51Z1DE8sTDy3S84tlknlUSb0FemkgDs30VzbhFJnAKWjFLgkxNromstetmWhdgVZoOdl6qfxiXfe8BEe%2BjkGf0%2Bzs0lOI%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2733e46263a1564a45ac59c834909ea82afa48d003177f1dc7ee33e70ea743ee",
+      "file_size": 595281,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-05-06T11:49:20.007Z",
+  "allow_singular_disclosure_after": -246034240.24217957,
+  "singular_disclosure_allowed": true,
+  "vote_count": 10,
+  "voters": [
+    "muon4",
+    "bl4de",
+    "eveeez",
+    "khizer47",
+    "sa1tama0",
+    "japz",
+    "sameull",
+    "destinedtohack",
+    "caturipah",
+    "wuqidashi"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "id": 678050,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82NzgwNTA=",
+  "url": "https://hackerone.com/reports/678050",
+  "title": "Invalidate session after password reset",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-08-21T04:31:06.982Z",
+  "submitted_at": "2019-08-21T04:31:06.982Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "nikhil786",
+    "url": "/nikhil786",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 28411,
+    "url": "https://hackerone.com/liberapay",
+    "handle": "liberapay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/t5bperr6a46huf3g9yn98it5zpfz/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Liberapay",
+      "twitter_handle": "",
+      "website": "https://liberapay.com",
+      "about": "An open source platform designed to facilitate recurrent donations."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-11-05T08:37:11.687Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-10-06T08:37:10.547Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Website doesn't invalidate session after the password is reset which can enable attacker to continue using the compromised session.\n\nSteps:\n1) Open same accounts in two different browsers\n2) Change password in one browser and you will see that another browser still validate the session after password change (even after refresh the page ).\n\nRecommendation:\n\nAs per OWASP, it is recommended to terminate all the active sessions when a password is changed and force the user to re-login.\n\n## Impact\n\nLogging in with the new password doesn't invalidate the older session either: I could browse Liberapay using two sessions (in two different browsers) which were initiated using two different passwords.",
+  "weakness": {
+    "id": 57,
+    "name": "Violation of Secure Design Principles"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 560803,
+      "file_name": "Screencast_Wednesday_21_August_2019_09_54_51__IST.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/fdSkWrdAfj2UNu4hwdzs4s6p?response-content-disposition=attachment%3B%20filename%3D%22Screencast_Wednesday_21_August_2019_09_54_51__IST.webm%22%3B%20filename%2A%3DUTF-8%27%27Screencast_Wednesday_21_August_2019_09_54_51__IST.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T011841Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a338b72aec9223dd6ab16c6de692145dc6b54b07e21e5512642b2521ad4630ca",
+      "file_size": 2489371,
+      "type": "video/webm",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-11-05T08:37:10.652Z",
+  "allow_singular_disclosure_after": -198693690.47941637,
+  "singular_disclosure_allowed": true,
+  "vote_count": 10,
+  "voters": [
+    "he4am",
+    "sameerphad72",
+    "tess",
+    "pr0f0x01",
+    "devine_vinayak",
+    "mightyowl",
+    "momo12112",
+    "romeoabhishek",
+    "mrde6u9",
+    "rahimi0t0"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 8926,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.liberapay.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

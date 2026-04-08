@@ -1,0 +1,139 @@
+{
+  "id": 161947,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNjE5NDc=",
+  "url": "https://hackerone.com/reports/161947",
+  "title": "Lack of length validation on user address attribute",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "none",
+  "readable_substate": "Resolved",
+  "created_at": "2016-08-21T15:15:42.421Z",
+  "submitted_at": "2016-08-21T15:15:42.421Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rohitdua",
+    "url": "/rohitdua",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-04-11T08:32:44.950Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-04-11T08:32:44.861Z",
+  "team_member_agreed_on_going_public_at": "2019-04-10T22:55:49.644Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi\n\nThe input fields for adding mailing address for swag delivery in ```https://hackerone.com/settings/swags``` are not restricted in input lengths.\nI was able to add *(and read the contents via my own address page and the team page(who awards the swag))* over **585728 characters** in each of the input fields ```Name, Street, City, State/Province, Postal code, Country, Phone number``` without any restriction or error message.\n\n{F113760}\n\nThis may lead to server side Denial Of Service attack or over memory consumption. You need to decrease input lengths( or add one if missing)\n\nThanks\nRohit Dua\nhttps://github.com/rohit-dua\nhttps://in.linkedin.com/in/rohitdua",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 113760,
+      "file_name": "Screenshot_from_2016-08-21_20-17-27.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/113/760/d6d127e665a6f37e1aebd2fae8e7d71c7e955787/Screenshot_from_2016-08-21_20-17-27.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2016-08-21_20-17-27.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2016-08-21_20-17-27.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYQP6YWPR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015314Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDCY%2BG6LyVug6SlfHpcqOrtUx3GYEUDFHJxlIuZKUxl2gIgNiJ8Xg5P8Gl0%2FsyICoep0u6YY0S0hvTJoKKYDhdK%2F%2FEqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDN9vC2Z3aeGTqu0A7iqOBcWx6C0koAr9RXdcXGkONXf3S3mUPGrP0oi2GjHjCvVn7BrOVLwmn4Y3nb8efhPdEWTFHB9Kr8oHRaJPo8WO4MSUARKgKDAGcjY%2B3PSev%2BpmKovfLKuYC7XSfrSaTkqiQBkXdJ99Jj7xaAdLyl2H1nU4FWss1%2BECfqLbc2JTaYYsiA2DbR3ZQt8ckRSGXDm2v0y9sjK6PmkocRlONFkUsJvz2%2B8PYmvAdJRtQryFKJ7gyujmKs8rlLYsFr3N%2Foo74ArN0Z4kPTb17lmBdaybkQN%2FZzC7ScNQo1%2FFQzoMXLJEj8abxDqUuzoSk6Jtc7iMLV%2BMkTsgLtsIlRcftXlBcsI4p6ZZqVsp1E0HICsL3J1Nsfdf04v8YOoNXMKEW8lO1Eow3TLDI0m3aibZH96d9B5pFYVMBRvo%2FK0fspiS%2BN1qUcRlHBCrcC%2Ffo2BowlCCeXCcxiBGHVRGS3U%2B4p774qsvdUzM2%2Bl%2BCyHAsVamw7pI4TjVvV1ObitahEAI8uMRZcXE3%2F6Dca3JZx5IwkvY15KcvAAEA%2BxV5CqUX6kHY0hpQOKadm93jqVywZ40rcj3VvCUIH6dAWgwwepu0SM5sNH2hEiHH3GTWrbFKpSBnzLTftNIgoMW9Au%2BOAJVJ%2BpX8ZF35CqR24IUtr%2BJpK%2Fpj%2Fuj%2FX0nrwMsTFTP9Ee2esXckPBj6ecV9Ch7%2BhJLsRvi0UGTDYQCpJaWFl9923evj7k4sXbjnpOCLs5%2B%2BFMH7xKQ4VQXZ1NhfSDhxvI2DCE3Mrnid2pufF20A48oWRzP3vPG0fMYfaXEh04QV%2FL4wMULHuEEpInbS3sX50YDs%2FQSZN4xPN732L%2FXo6%2BqVZvO70CeCpQA%2FHo0l44JbYvtzzCviuTMBjqxAT9DP7VncRbkB4cXpbtogN%2Ft7NkQ1BMdMcEPAcc8FV2DlozzZMR6xv4TvV2PJnsuqLEdynkd8UoTaAfvgYS8Q5Q8OlnL4QW2BlpE5jwl3Mix%2F5AnaEGIjIcYWXNF2FaJXSvBVArCBHZt2L0T12aqs4GOB4YzphsPUts4PzITnGdGSjJ54QHM5dmrYUoe7bRtILWBPRYCCMixlXXHNBengJmU1tXPAxhOJISQiOEVv%2BTG0g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1b24bba16d6411952907cf10229da268e6105c818fa9587572a7241a81d5ddbf",
+      "file_size": 210724,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-05-10T22:55:49.762Z",
+  "allow_singular_disclosure_after": -214109845.20057264,
+  "singular_disclosure_allowed": true,
+  "vote_count": 18,
+  "voters": [
+    "ali",
+    "yashrs",
+    "savitar0x01",
+    "khizer47",
+    "pwnie",
+    "123456789uwu",
+    "rohitdua",
+    "cr4xerbik4sh",
+    "japz",
+    "uddes_shopify",
+    "and 8 more..."
+  ],
+  "severity": {
+    "rating": "none",
+    "score": 0.0,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

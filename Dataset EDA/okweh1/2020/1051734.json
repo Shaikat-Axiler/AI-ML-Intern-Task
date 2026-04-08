@@ -1,0 +1,152 @@
+{
+  "id": 1051734,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDUxNzM0",
+  "url": "https://hackerone.com/reports/1051734",
+  "title": "[intensedebate.com] No Rate Limit On The report Functionality Lead To Delete Any Comment When it is enabled",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2020-12-06T17:51:04.757Z",
+  "submitted_at": "2020-12-06T17:51:04.809Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "fuzzme",
+    "url": "/fuzzme",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/F9LSiEs1ckRkcUXxrvznmg2n/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-01-23T10:13:16.191Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-12-24T10:13:10.839Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello\n\n## Summary:\n\nI have found a no rate limit issue on the report functionality.\nWhen you enabled the report functionality on your site, you can set a number of reports before deleting the comment reported.\nBy default, this functionality is unable, but if you enabled this and you set a $x number of reports before deleting the comment, an attacker can spamming this functionality and delete your comment.\n\n\n## Steps To Reproduce:\n\n1)  Login at `https://intensedebate.com`\n2) Create your own site at `https://intensedebate.com/install`, and follow the instructions (use generic install)\n3) After setup your site, go to `https://www.intensedebate.com/user-dashboard`, on click to `Moderate`.\n\n {F1106120}\n\n4) Go to the comment setting by clicking to `Comments`\n\n{F1106122}\n\n5) Setup the Report functionality by checked the `Enable \"Report this comment\" button` and set a number of reports before deleting the comment to `10` and save it\n\n{F1106130}\n\n6) Go to your site and add a comment\n7) With a other account go to your site, and report the comment manually x10 \n8) After spam the Report functionality\n9) Refresh the page, and you will see the comment is deleted\n\n\n## POC \n\nThe video POC `NoRateLimit.mp4`\n\nThank you,\n\nFuzzme.\n\n## Impact\n\nDelete any comment in any site when the report functionality is enabled",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1106120,
+      "file_name": "step.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/cw60tfeyvc50dyure65vui0sn45e?response-content-disposition=attachment%3B%20filename%3D%22step.png%22%3B%20filename%2A%3DUTF-8%27%27step.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233422Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=fdb139a50ca1b68c2e22782ba1817cef01febf1249d75d2cf4bce778b299a96e",
+      "file_size": 172275,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1106122,
+      "file_name": "step1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/nex4t58xel7vcdx37omjj3z3qdap?response-content-disposition=attachment%3B%20filename%3D%22step1.png%22%3B%20filename%2A%3DUTF-8%27%27step1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233422Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=eab35d80118befc0ede4a4abaaa8db796e0dc3e8f0c6420565ad48dc0a6945be",
+      "file_size": 88714,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1106130,
+      "file_name": "step2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/jgvqtkel9rxx6gkh01nbwh4u25d5?response-content-disposition=attachment%3B%20filename%3D%22step2.png%22%3B%20filename%2A%3DUTF-8%27%27step2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233422Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4066c1a6b12b733d8f797656a281bbb32aede0e8b6d52a7b080bac358c2190af",
+      "file_size": 162271,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1106137,
+      "file_name": "NoRateLimit.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bs6hqs23c61mx3la5g7eifwgfzxw?response-content-disposition=attachment%3B%20filename%3D%22NoRateLimit.mp4%22%3B%20filename%2A%3DUTF-8%27%27NoRateLimit.mp4&response-content-type=video%2Fogg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233422Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=31ecfa26a0d61278726bfcc29e7b1c332a60c1fae4440d28ff5a228f80bc454d",
+      "file_size": 15995420,
+      "type": "video/ogg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-01-23T10:13:10.919Z",
+  "allow_singular_disclosure_after": -160233671.52564636,
+  "singular_disclosure_allowed": true,
+  "vote_count": 50,
+  "voters": [
+    "echidonut",
+    "superpan",
+    "xploiterr",
+    "mattberg",
+    "ali",
+    "tess",
+    "mohaned0101",
+    "thalaivar304",
+    "akashhamal0x01",
+    "sudi",
+    "and 40 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

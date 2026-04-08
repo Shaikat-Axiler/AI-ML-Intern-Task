@@ -1,0 +1,122 @@
+{
+  "id": 1350401,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMzUwNDAx",
+  "url": "https://hackerone.com/reports/1350401",
+  "title": "Email Verification Bypass And Get access to user's private invitation.",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "medium",
+  "readable_substate": "N/A",
+  "created_at": "2021-09-24T11:53:38.199Z",
+  "submitted_at": "2021-09-24T11:53:38.349Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "manish_prajapat",
+    "url": "/manish_prajapat",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/948/50e72b8ee58d9adfeb7cdf0a3c58659f803c2b90_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35710,
+    "url": "https://hackerone.com/reddit",
+    "handle": "reddit",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/osci5oey0q0wkiom39bk5onv8p7q/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/osci5oey0q0wkiom39bk5onv8p7q/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Reddit",
+      "twitter_handle": "reddit",
+      "website": "https://www.reddit.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-10-21T19:51:53.477Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-10-15T09:52:07.959Z",
+  "team_member_agreed_on_going_public_at": "2021-10-21T19:51:53.287Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Part 2 of my previous report : https://hackerone.com/reports/1225499\nI am sending this report again because you closed my previous report. i posed new impact of this vulnerability in my previous report but i didn't get any reply. So i reported it again.\n\nFirst Vulnerability : Email verification Bypass-\nSummary:\nIn this vulnerability you can verify any email without verification link. (reddit.com and ads.reddit.com)\n\nSteps To Reproduce:\nEmail that i wants to verify example : security12345@reddit.com\n1. Signup an account with direct “continue with google” with your own email.\n2. Go to User Settings and click on \"Change\" in email section.  it will send you a password reset link before changing email because you signed up an account with google without giving a password. So first you need to reset your account password. (now you can disconnect the google accountif you wants.)\n3. After changing password change the email to any other random email like 12332newtestemail@sstestmail.com.\n4. After it You will get an email message on your email ‘[reddit] your email address has been changed‘ with account recovery link.\n5. Open the link in new incognito tab and enter all details. on email field enter victim’s email that you wants to verify, enter any ramdom password in  current password field and then set new password that you wants to use for this account.\n6. Click on Submit button 4 Times because it will give error on 3 attempt.\n7. You can see your entered email has been verified.\n\nIn Previous report you said its just UI bug but its not only UI bug beacuse  i can use that account(created from above steps) in ads.reddit.com. Normally ads.reddit.com not working with unverified account. But here i can use that account for all of your services as a verified account.\n\n--------------------------------------------------------------------------------------------------------------------------------------------\n\nSecond Vulnerability : Get access to user's private invitations\nDescription :\nin ad account if you invites someone as with admin or other permissions. it will send invite to user in https://ads.reddit.com/account/userid/accounts. it can be access by another account that have same verified email.\nSteps to reproduce :\n1. Make an account and then add victim's email and verify it by using above method.\n2. Then create an ad account with this account.\n3. Open Switch User page(https://ads.reddit.com/account/userid/accounts) and here you can access victim's private invitation. Everytime victim receives an invitation your account also notified.\nHere you can add your account to \"invitation sender's account\" by clicking Accept button.\n\nThanks\n\n## Impact\n\nFirst Bug :\nIt can be used by an attacker to create verified accounts with any Victim's email on ads.reddit.com and reddit.com.\n\nSecond Bug :\nIt can be used to steal user's private invitation and also react on it.",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1459938,
+      "file_name": "Poc_video_email_bypass.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/1diqljtoybwc9blnlrwoyw7uxoow?response-content-disposition=attachment%3B%20filename%3D%22Poc_video_email_bypass.mov%22%3B%20filename%2A%3DUTF-8%27%27Poc_video_email_bypass.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6RGCJK62%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T224048Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDbdQ2rRb%2F%2Fc9ewyQpX22GF1Go%2FOM%2FMyqiFkm0p9eh3LQIgNsy%2BL4zLN5COCdSLInEOsFHG0JNWnmL0bDcn5zO5wZkqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDBID0DdepC%2F1VmNuSqOBUVZQsG8fVaP42YjKhvhfhxm6mHh4EdJdZ0pRSKiOQ%2FwybfbhcDsRqXKADKgMk96u2kU%2FuycwH%2B6SlSg7wAr8ap5tVDBXAdqT9dKy3K6Yg7y1WHCK3SrrFC0mOTXvb7i23z5TXCdr8ATC6L8BFq7Ofku69TqSEXdqFZhRLAbwCOyFKSgT1Biv08C72FrOjgRvirm7%2FG0VKFHHfsGD4CuHrmgTezzXc13Ud6Nf14Nds1XCwwuWihFAKnfr56CNe6OMiGEEj29ZrfOXrsGAf4EFj%2BDSX8eRoSCfDtfrNkY47%2B0DOiZ0J37QjqP5B0uqP%2FxKllrjPTdR0WYwis361Z22sAHIZ9AmwjIYuXbYaZfaJyI2b5W85HxTUkKTfIHDXiVVcpByC569yZJZ3wDNka9P2PH7rfK4EZ3zku8JUcd3kdhVyjhACGdp6WgIWR0a9GVJK4QPX5waAm%2F4G254BIGSZx58khDdfvWJuzZd47lde40%2B5wNtA0WW4WShMN3Ye%2B98wrMECIkbB897m%2BPYdrXUkwzkuYXhUVFSNQwN0SnswWoqGqp%2BT%2BhAwOfjnZuYZfXXsbhX2QNWmfDQOodlMGNs1h7B9SP3VbJw1dCGvnCRQ%2BTNjfrxQA3GpOSeU2R1y2XiL%2FNFypuQG6NCX1L7ExAIUr8%2FtkuLa5mFn5D4xqDUJb7rMtDS41Cu1%2BtcZHSC16hdv3HDTKSmD5RMxNgCWCVJs4kND4K9qVlzEYpsQ2FjjDGjNhG7eLPdi3cn7KUdtjNKdJ63xHh0VCNbz41VZjxgTirzZJ5HZZr2PVjmVNojXqZ5MYavW3nOAjlLhx%2Buv3hkMNYqDFs9NzN3rzAfTNsxPP5FIhmKDtfFNkCYje6gTD7xeLMBjqxAWpPFBwPXbTeXXVr1acQm05%2FSVW%2Brpna%2BNyOH8YXetP4P2qRjtUvsOHrKEbfwmKpJqLwjqNu01CsSbAJQITXEHUyredL%2B6lzpa0Zg1YertOOM7VOxWFxKamzNLtSvWxYPVD53VQebOy3DR16w4T8sQ9K4%2F4Kfxc%2FdjRi32%2FaI4JH5yC900mDbtpUCPvA63bSwcDjeWJ0%2BDtYNudv9cFSMRoiyYmC5uxD5sULB%2FZc6%2BE3lw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7962d20312dfc78e748da53406ffa87dc1d3471c1818c04dbb0424f49a33c257",
+      "file_size": 37603129,
+      "type": "video/quicktime",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 2,
+  "voters": [
+    "pr0f0x01",
+    "emon_reza"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18825,
+    "asset_type": "URL",
+    "asset_identifier": "www.reddit.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

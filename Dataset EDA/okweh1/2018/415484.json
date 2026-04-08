@@ -1,0 +1,141 @@
+{
+  "id": 415484,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MTU0ODQ=",
+  "url": "https://hackerone.com/reports/415484",
+  "title": "Stored xss",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2018-09-27T22:44:43.839Z",
+  "submitted_at": "2018-09-27T22:44:43.839Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "dr_dragon",
+    "url": "/dr_dragon",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/r7Mc1RTnn4g3t5j7eEnogFAr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-11-07T19:09:57.697Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-11-07T19:09:57.581Z",
+  "team_member_agreed_on_going_public_at": "2018-11-07T18:38:05.913Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Description :\nWAF cut html tages but when put <!--> before tages we can bypass it :) .\n\n#Step to reproduce :\n1-Open your store account\n2-Navigate to https://xxx.myshopify.com/admin/settings/general\n3-Put your street address xss payload (xss\"><!--><svg/onload=alert(document.domain)>)\n4-Go to https://xxx.myshopify.com/admin/dashboards/live\n5-XSS alert message\n\n## Impact\n\nXSS attack",
+  "bounty_amount": "1000.0",
+  "formatted_bounty": "$1,000",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 352139,
+      "file_name": "xss2.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/352/139/32dab372cd6511246cd5413581cf5dfcab0f5d79/xss2.PNG?response-content-disposition=attachment%3B%20filename%3D%22xss2.PNG%22%3B%20filename%2A%3DUTF-8%27%27xss2.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6SLF7TOO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021203Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCcD1ikkQf7fRu5k8cwjfQ8u27%2B2IyH475T3p1GnvlIqwIhAOSXDMEortZvPjeteEfFfSYEUreNyrqB0bLkd5UEEOIvKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igz2S15Y%2BKm8clyO1SQqjgUac5D1Is9LmJ7iffDhK2VzTVwUs8pnilG29pHV7pDZO2boh833GFve4OSgwfgqc87kyG33STy7u8HgXl4I4bRVRK9avqiFqmSX6hFMrwj%2Bcvy%2FFD%2F0zLMRBZ0fbpupuSpyjSvLnb158C2vTmUX1bqvh45H03wb6v%2FFW13urvkvFLAqjcn95q%2BbGhermogU9wEXXitdzsB2txSIyp1n9vmnMgOWv63qGdJU4BYcLTV64Iwg1qmBgCaZTfsjr9Spk0GrKsnxAqEEWjezJGm1%2BfS2A3Z7sdLTahYHZuiYbvyDo4R7rzaC%2Bt7J%2BEF%2BPMqnc%2BAnh5eAni0Smzx1s%2BwyDXSKAjxIFIcIlOFqFQ8W0svWGYZ1Igq%2F6yrtDn3sjmObbN6lBl4q%2Bj%2FmuMmfYfbbEOMF7%2B4rCcw%2BZgq%2BjpvfWUS0d9kceXFAwCOuYnKVSS8V9Pe4Ys00UgEelJj%2FIhnV4qT2DsVHF4i2w6L9%2BQJkqq06IfEib%2BrU1Pnsz6wNp06zDAd5OYkUypO%2FgSSGRwH7VpuFefEpddryMG5uS0n7%2BgQSEHrSiKLC%2BmsPbdtbxRpc2jGMsthH7zTTWW61LD6NVTsJnYC22AtxKxo4BYM%2FqDlWNIAuuFaxr6VqdP%2BZ172BiNQHC4OkR0qKc8ohpaD6oE%2BpNF3sGNUy8E2V72hKpUJuWM8wUoXqUuDP2fqcARRgEFJg5efwu%2FNtdWBAJpksHXbNPK3Vs4QX29099MkZextX1Q8q0xa6efzgbpIFA5T9gu1nXXkEN%2FGUNGMM2GL1G586zuWpzgG6Uzpc%2BLqKGgy7py10bWlWQpza25hdOX8licNskax1%2FsW7h9LJc6DT1GOjoyRoTpwH0fd9OKudi0Qwy5HkzAY6sAGTw6w1apdJJiMJEhYXrRbzMI9fQlUmDCcUgtndaHAY0Ony4AnGCK0ySkQr8NWG9fjfXLcNEgvIVSaUgHpYQrZYf4dFRKOOvl9HuWjg57D52qr2NgZ%2FO8MdkGtUHuorW4HZMuLWMVyGJca3Fm%2FZqIPt8BOu7RUB9GK%2BQ40VaaQON9FedgAOFbQlG%2FJoLmadRDI1aqT71uCIgdSZD2mBWFMjkwQ0adxp3d4VrV%2BTyQbjmg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=36e2a39008eef9d8a493a4aa29731f3ab6a8e153a42aa9994c24c4f4d7d241b4",
+      "file_size": 147286,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 352140,
+      "file_name": "xss1.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/352/140/e31909fcd0b8a216863f8f1eed2614ff71164379/xss1.PNG?response-content-disposition=attachment%3B%20filename%3D%22xss1.PNG%22%3B%20filename%2A%3DUTF-8%27%27xss1.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6SLF7TOO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021203Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCcD1ikkQf7fRu5k8cwjfQ8u27%2B2IyH475T3p1GnvlIqwIhAOSXDMEortZvPjeteEfFfSYEUreNyrqB0bLkd5UEEOIvKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igz2S15Y%2BKm8clyO1SQqjgUac5D1Is9LmJ7iffDhK2VzTVwUs8pnilG29pHV7pDZO2boh833GFve4OSgwfgqc87kyG33STy7u8HgXl4I4bRVRK9avqiFqmSX6hFMrwj%2Bcvy%2FFD%2F0zLMRBZ0fbpupuSpyjSvLnb158C2vTmUX1bqvh45H03wb6v%2FFW13urvkvFLAqjcn95q%2BbGhermogU9wEXXitdzsB2txSIyp1n9vmnMgOWv63qGdJU4BYcLTV64Iwg1qmBgCaZTfsjr9Spk0GrKsnxAqEEWjezJGm1%2BfS2A3Z7sdLTahYHZuiYbvyDo4R7rzaC%2Bt7J%2BEF%2BPMqnc%2BAnh5eAni0Smzx1s%2BwyDXSKAjxIFIcIlOFqFQ8W0svWGYZ1Igq%2F6yrtDn3sjmObbN6lBl4q%2Bj%2FmuMmfYfbbEOMF7%2B4rCcw%2BZgq%2BjpvfWUS0d9kceXFAwCOuYnKVSS8V9Pe4Ys00UgEelJj%2FIhnV4qT2DsVHF4i2w6L9%2BQJkqq06IfEib%2BrU1Pnsz6wNp06zDAd5OYkUypO%2FgSSGRwH7VpuFefEpddryMG5uS0n7%2BgQSEHrSiKLC%2BmsPbdtbxRpc2jGMsthH7zTTWW61LD6NVTsJnYC22AtxKxo4BYM%2FqDlWNIAuuFaxr6VqdP%2BZ172BiNQHC4OkR0qKc8ohpaD6oE%2BpNF3sGNUy8E2V72hKpUJuWM8wUoXqUuDP2fqcARRgEFJg5efwu%2FNtdWBAJpksHXbNPK3Vs4QX29099MkZextX1Q8q0xa6efzgbpIFA5T9gu1nXXkEN%2FGUNGMM2GL1G586zuWpzgG6Uzpc%2BLqKGgy7py10bWlWQpza25hdOX8licNskax1%2FsW7h9LJc6DT1GOjoyRoTpwH0fd9OKudi0Qwy5HkzAY6sAGTw6w1apdJJiMJEhYXrRbzMI9fQlUmDCcUgtndaHAY0Ony4AnGCK0ySkQr8NWG9fjfXLcNEgvIVSaUgHpYQrZYf4dFRKOOvl9HuWjg57D52qr2NgZ%2FO8MdkGtUHuorW4HZMuLWMVyGJca3Fm%2FZqIPt8BOu7RUB9GK%2BQ40VaaQON9FedgAOFbQlG%2FJoLmadRDI1aqT71uCIgdSZD2mBWFMjkwQ0adxp3d4VrV%2BTyQbjmg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=07725f5d7060b0aff194b1ea896e13fc09c8cf19dac447357d2a31d90664e5c7",
+      "file_size": 141141,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 52,
+  "voters": [
+    "cxzer0",
+    "smither",
+    "8ayac",
+    "drsniper",
+    "mattberg",
+    "ali",
+    "teknogeek",
+    "spam404",
+    "aryan2808",
+    "skavans",
+    "and 42 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 413,
+    "asset_type": "URL",
+    "asset_identifier": "your-store.myshopify.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

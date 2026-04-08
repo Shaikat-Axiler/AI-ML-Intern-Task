@@ -1,0 +1,162 @@
+{
+  "id": 1404770,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNDA0Nzcw",
+  "url": "https://hackerone.com/reports/1404770",
+  "title": "Stored XSS in \"product type\" field executed via product filters",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-11-18T23:47:51.394Z",
+  "submitted_at": "2021-11-18T23:47:51.475Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "chupa-chups",
+    "url": "/chupa-chups",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ptgii9y5pkpzci78zrcaghlb8vzh/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 50842,
+    "url": "https://hackerone.com/judgeme",
+    "handle": "judgeme",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nlko0t9tbnnnvrnboo0f2qpliu7t/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/nlko0t9tbnnnvrnboo0f2qpliu7t/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Judge.me ",
+      "twitter_handle": "",
+      "website": "https://judge.me",
+      "about": "Judge.me powers the product reviews for e-commerce stores. Our apps help you collect and display reviews on Shopify, WooCommerce and BigCommerce."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2022-04-26T16:11:42.156Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-04-08T00:34:50.176Z",
+  "team_member_agreed_on_going_public_at": "2022-04-26T16:11:42.025Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "HI @judgeme!\nI found Stored XSS!)\nI Install judge.me in Shopify E-Commerce. Step to reproduce:\n1. Log in to our shopify dev store and install \"judgeme\" app.\n2. Create random product in our Shopify store (make it active) and insert XSS playload  \"><img src=x onerror=prompt(document.domain)> in \"PRODUCT TYPE\" field and SAVE\n\n\n{F1518888}\n\n\n3. Then go to our judgeme app https://xxx.myshopify.com/admin/apps/judgeme/products. There is a filter field TYPE . Click on it and select our playload from the list \n{F1518897}\n4. And it works )))\n\n\n\n{F1518898}\n\nI attached video POC\n\n## Impact\n\nSession Hijacking, Cookie Stealing.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1518891,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/vdqtgha7i74bub5fkppvp9hbvvf2?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221356Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1c09bedacd24452d789a49931bdfda5a812bca7ae2fd88848473cfcf317e99cf",
+      "file_size": 21540,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1518897,
+      "file_name": "3.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/2ri0oaeanhu9ql78cq96gp6ema4e?response-content-disposition=attachment%3B%20filename%3D%223.png%22%3B%20filename%2A%3DUTF-8%27%273.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221356Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9dff7115ae2816007804fb49460caf6fcf6a95ad93902c79f0dc1968eef476bb",
+      "file_size": 35532,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1518898,
+      "file_name": "4.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/f3x1g1sg4jmu2w7cz1ndl8ahuz7x?response-content-disposition=attachment%3B%20filename%3D%224.png%22%3B%20filename%2A%3DUTF-8%27%274.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221356Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f2c848c679508148a90ac5d09ead8b3a145b9b444d2fba0e9af1415de3363b5b",
+      "file_size": 90957,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1518901,
+      "file_name": "jud1.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/njsymdkv1rsohavjpu9qhs34eloy?response-content-disposition=attachment%3B%20filename%3D%22jud1.mp4%22%3B%20filename%2A%3DUTF-8%27%27jud1.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221356Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=97585efc613f6ad0c361fff5c4658e5e808e4af2bdb90d5a147ce1bd1ae74a79",
+      "file_size": 2496840,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 30,
+  "voters": [
+    "zy9ard3",
+    "thruster",
+    "shreyaschavhan",
+    "run_win",
+    "at0mq1",
+    "realvivek",
+    "attackerbhai2003",
+    "pacmanx",
+    "0daywolf",
+    "2026",
+    "and 20 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.7,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 57459,
+    "asset_type": "URL",
+    "asset_identifier": "judge.me",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

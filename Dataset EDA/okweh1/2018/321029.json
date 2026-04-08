@@ -1,0 +1,126 @@
+{
+  "id": 321029,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMjEwMjk=",
+  "url": "https://hackerone.com/reports/321029",
+  "title": "HTML Injection inside Slack promotional emails",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-03-01T12:00:30.324Z",
+  "submitted_at": "2018-03-01T12:00:30.324Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "0x0luke",
+    "url": "/0x0luke",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/Vbo4CrJ7Y9bLqt1jQxFxvH6X/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 69,
+    "url": "https://hackerone.com/slack",
+    "handle": "slack",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/069/683fee312381bc46cadc7ea1950abc87944d12c3_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Slack",
+      "twitter_handle": "slackhq",
+      "website": "https://slack.com",
+      "about": "All your team communication in one place, instantly searchable, and available wherever you go."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-07-30T13:50:03.067Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-06-30T13:50:01.921Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nThere's a HTML injection vulnerability present inside emails sent from slack when the FIRST name on the account contains HTML. The html is stored in the backend database and when emails are sent (promotional, etc), the HTML is sent along with the rest of the email.\n\nIn my PoC, which is provided below, i inserted a <img> tag to prove this vulnerability exists. \n\nF268173\n\n## Impact\n\nThis vulnerability can lead to the reformatting/editing of emails from an official slack email address, which can be used in targeted phishing attacks. \n\nThis could lead to users being tricked into giving logins away to malicious attackers.",
+  "bounty_amount": "100.0",
+  "formatted_bounty": "$100",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 268173,
+      "file_name": "Slack_HTML_Injection.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/268/173/580afba92dc27c069ded37fb776481df4ff0dec4/Slack_HTML_Injection.png?response-content-disposition=attachment%3B%20filename%3D%22Slack_HTML_Injection.png%22%3B%20filename%2A%3DUTF-8%27%27Slack_HTML_Injection.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3CTO5VQ6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T022640Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDolm68pgEDt9rFMqD6zhi2IlHJKPEqJIRN3iMHlPmBgwIgYzlUM%2BQ8YOzm8VC1P4vzUjessL4QMtRNSqf3u%2Ff6vOQquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPKmv3lYNac2q1GjvSqPBS%2BVo3yoAwAQ8RXJf3ji8ocQQQAFq8iqOYGWcLgDVrN4x1WuX3yTK2MgPpl2nbtHO6XiPuNwF1LixUyWg%2BCZrZ%2FR0U7ov32F8nNzqOIhQX7%2BB%2FtqgNhbV93C4crR5z0RHGslMHs60ZNgAQa1mTEGXIaek4dOIsYhUUcjfGe1mSYdX9H7YCGDMNRH6bTVpakBY41HCGl9kLIJICWfBbsAjrCiQyKA57hWYJe1s8wgKtlAjCIQYrRBn%2B55G%2BwOgfvkCOJaWAgl28sJlrmRvn4VzfqryoKofSHHSM8MPaNQVlJyp2GCCLW718BjcdDnqvJCvN7JTgqZ%2Fvb8Hq%2B7dg0xzM3Ib1P68kHv3j7L4G97UzXoqyPdKiK%2FKFa4gEyEW%2FrKFfpv%2BYKGyzbnF5IEEGm08Pjf0wv%2FbLtA0Q0wVlX5vwYKldElmP8sgeX2HGhkc3dynBBIs9TefT2d8auyLmSy5PjmuxG2kwnW9UpJGp0pfXxb1wo9w1f8Gn9YFJE3rEZqYTa0Oi9GDgZR7vYivNmlRaHqWLSuDHeUz9nvYw9EYaitTYjNXm2GL%2B3spAp6EFXBMOc%2FKPGwDxtMeUZu1hxSJL52Kd90Ifp4l90%2FWyKQ%2B5og5h0DW%2Fd%2FJzLH1U1seXjwqViGkJgPsUaBtzDgB1meDsTJU4sLRNIsuVgP%2B16Be6%2FjrxGZFSd053uVuHZGyeXzhasCh1APCIFOvBbxW%2BzYUsHf%2FhNMsTG%2BZVgSeJMyeLDWJ8rnJEohllJRM1RDwBHvoGm0J3pZLbpjbpZFuWcEY1VGiw2ODxutNfNkgmrGpQ6xWhO8738dz7FRFWD%2FneGHk9CPlHvJorzEFkXILtjpHLfsLEZIH0iZ8L4pzIAqAP0w7aTkzAY6sQFwPA3N%2FMyNXfwqaP6KRSFrLqGMmSsXmPxq3cIhMKf8qA6vd%2FWv966XIfjTZo%2FYh3lTUSmu7us6TYdbhr%2Flr%2BNa%2FB61%2BEgNnztQFXiWQhCBt6Ue03ZohGNuMm95O4C7fSnoAxJbV1LtYOrCvSNNwWdtH8JXcZKBSO9P%2FEogLArqaluw%2FP6Y1Lwr7sl9ENmZOUK1N7e68%2BvknB5Fa6FMM2Z66b6VXbaconsgB5I811ChX8Q%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f80bf12fffeacd84990b71ed09896f7c1fbc753c83ae1e6193e051d7b48d542e",
+      "file_size": 147568,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-07-30T13:50:02.074Z",
+  "allow_singular_disclosure_after": -238682198.35076565,
+  "singular_disclosure_allowed": true,
+  "vote_count": 12,
+  "voters": [
+    "apapedulimu",
+    "eveeez",
+    "khizer47",
+    "cryptographer",
+    "sameull",
+    "voidcoder",
+    "vishwaratna",
+    "dutiful",
+    "alleyezonme",
+    "meispi",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

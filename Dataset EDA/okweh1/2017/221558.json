@@ -1,0 +1,167 @@
+{
+  "id": 221558,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMjE1NTg=",
+  "url": "https://hackerone.com/reports/221558",
+  "title": "Private Grab Messages on Android App can be accessed and cached by Search Engines",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2017-04-17T12:51:11.969Z",
+  "submitted_at": "2017-04-17T12:51:11.969Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sp1d3rs",
+    "url": "/sp1d3rs",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/079/690/6853ada3e124bdd8616b1be752223b558de38195_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1659,
+    "url": "https://hackerone.com/grab",
+    "handle": "grab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/659/d5a2e407a772cb09a7ef57167580acf021c9c407_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/659/d5a2e407a772cb09a7ef57167580acf021c9c407_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Grab",
+      "twitter_handle": "GrabSG",
+      "website": "https://grab.com",
+      "about": "Grab is Southeast Asia's #1 ride-hailing app, food delivery service and cashless payment solution."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-09-14T02:59:28.642Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-08-21T23:45:19.138Z",
+  "team_member_agreed_on_going_public_at": "2017-09-14T02:59:28.568Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "##Description\nHello. Today i discovered, that Search Engines can access the private users messages (OTP pins, Group invites information etc.)\nIt happens because the `https://grab-attention.grabtaxi.com` host allows search indexing, and can leak the auth_token to the Search Engines which also can lead to privilege escalation.\nWhen vieving \"Notifications\" section on the app, i noticed the unsecure GET request to the `https://grab-attention.grabtaxi.com/passenger/passenger.html?auth_token=[my_token]&view=268435456`. I was surprised, when tried to repeat it in the browser - it gave me access to my messages.\n\n##POC\n{F176465}\n{F176466}\n\n## Steps To Reproduce:\n1. Cheking the private messages of other user (me):\nhttps://grab-attention.grabtaxi.com/passenger/passenger.html?auth_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJQQVNTRU5HRVIiLCJleHAiOjQ2NDUyMzk1NDUsImlhdCI6MTQ5MTYzOTU0NSwianRpIjoiZWI0YmFiMjUtYzA2Yi00MGIzLWJiZTctMzZkYzFmMWRkZTMyIiwibG1lIjoiU1lTVEVNIiwibmFtZSI6IiIsInN1YiI6IjM2NWE0NjY0LTY1MGEtNDBjZC05YWU2LTQ4YWQwN2Q2NGY2OSJ9.eTX2dWnooTxm50Dv1VYoIZanOqCe073_AmVk97VE4p7m4e26mcWtnZzQz5IR1EwuWbs52qJLzzAIZ5KcpWoKCvadu6zuRQzy2xRk8BcFDUXGl8w8doPJbuSIHMY0K-x8Q-█████████ZTdgxLI&view=268435456#/\n2. Checking that search engines can crawl it:\nUse this Google DORK (search text):\n`passenger site:grab-attention.grabtaxi.com`\nand press Search.\nYou will see this cached page with auth_token (actually it was cutted due to big query length) - but it is still a huge information disclosure.\n\n\n## Suggested fix\n1. Disable Search indexing on `https://grab-attention.grabtaxi.com`\n2. For the better security you can change the request method to the `https://grab-attention.grabtaxi.com/passenger/passenger.html` endpoint from GET to POST (or encrypt it) due to that fact that auth_token are leaked in the query parameters.\n",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 176465,
+      "file_name": "test.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/176/465/4b2b436558a9ac8c90a4805e6032c4814210057d/test.PNG?response-content-disposition=attachment%3B%20filename%3D%22test.PNG%22%3B%20filename%2A%3DUTF-8%27%27test.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTXYD53HZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032140Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDFZRX6ps00nDGF69E%2FgaJoIOLEJtmPJOR6uBdMxZprFQIgQCwuArhchyX25JY6Lx6VmWEO7sh3eQ8%2B6k66%2FWZKKiUqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDICy1fpSGKcabzGamSqOBS2%2B7kTdveDG007FDRCHvMEl6D5HKO1SIvMQwup1tER1h6hQOKTD7hhPnZNKpQ0QLq8daX0mvl2EM5RiBbFcGMQJC0mN9FXxWdp2TTUXbKT5Dqqt3I7TCERpcqSKGQg%2FYlBvLbE9xa8qnfHhikmEe93E89IEgyskyXsEcSs%2Bga%2FigHDhpLB7IzVI2w5X5ohtzgfIqIkqN8YH54PKH9wHijH%2FVtH2Y%2FuRGSK%2BzcZ3K%2FvdUxHMcHRRz7dM1k2OPU6IMALSG7FYyRhKZ1iRads2w3CBp63MnSMEVb6RIWDZKvhJZccOt2D%2FCNtGeoPJwTPAD0jjWq2vqCTpmETolOYBmX0R6cpmtz7ywjvrthNuyLaXx3d03Nx8Rv19rxlEN6KJxqk7rXFhNR8haN1BkuZg6VWYz%2BhJkP0QnqhPPAIM4arWIjosBHpK9KiUKsjJTNX4rzXvMind8Caxes95wfFc2z30qW%2FaeGjFjgGlGCSklnFb3BzcnItNxhcAyhejoGqd0YdZO8xi3EJ9Oo7y6RjqZ8kqOKsTnZrKPvlaSYVVGnci0qJJS2AOt6J5B2UEnt5MByCyKV8jd7Eib9o6gq%2FX0OE9B19SO5NMF2vFn2Gxb54G%2BunUI9XP%2ByygqhypODW8RR4fc6x2k4pIMcegIqL2VTCvH%2BkySHtaN6Kb3rRRoqwk7Wc8yzOn6oR5TYNAJl4ok9OvfibdZUyo7RiDWGG76rZKvPTcsV8X3pEBqd8NxJZl55iPBAeEpBACASvMIJnXhCXHVK0Bcf04immChoaANOjUwYMMUkCguG2CC8B3IjVmwG8ubUncqn0a2cXIAretKyAFT%2FidWhEX4Sprkr%2FfxRioz6%2FGGlfZavShgGDjqzD3iuTMBjqxAct4arP9vs3vnU9NacPROX7VQ3irLybbmqiJgFJJLyvI0qPgLg%2BEjhlxA0z4OfNorOJiSWbHei4IXZsIeViOXhwqOImUEI7PaE4aSHkKPVDqI2ORJRl7Hca3MTLDuxZIlB3Q3C8UBaCCk48SvU%2FtNimup2oVdDWd9Qjjmlseh0cNTog8U22MGXHw1DuUpUQR%2FVOOcbleX5x1yDsZe1lQD6a9kMl%2F8Bzkj1dVPoB6E2Vc5g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c257c8d81cc5ccd01175771535485586a729754fe2b1fa2930528ab20c70d5bc",
+      "file_size": 75256,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 176466,
+      "file_name": "test2.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/176/466/3c9830b08c4859b7ef0dfe8baa289aa9a7af6476/test2.PNG?response-content-disposition=attachment%3B%20filename%3D%22test2.PNG%22%3B%20filename%2A%3DUTF-8%27%27test2.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTXYD53HZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032140Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDFZRX6ps00nDGF69E%2FgaJoIOLEJtmPJOR6uBdMxZprFQIgQCwuArhchyX25JY6Lx6VmWEO7sh3eQ8%2B6k66%2FWZKKiUqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDICy1fpSGKcabzGamSqOBS2%2B7kTdveDG007FDRCHvMEl6D5HKO1SIvMQwup1tER1h6hQOKTD7hhPnZNKpQ0QLq8daX0mvl2EM5RiBbFcGMQJC0mN9FXxWdp2TTUXbKT5Dqqt3I7TCERpcqSKGQg%2FYlBvLbE9xa8qnfHhikmEe93E89IEgyskyXsEcSs%2Bga%2FigHDhpLB7IzVI2w5X5ohtzgfIqIkqN8YH54PKH9wHijH%2FVtH2Y%2FuRGSK%2BzcZ3K%2FvdUxHMcHRRz7dM1k2OPU6IMALSG7FYyRhKZ1iRads2w3CBp63MnSMEVb6RIWDZKvhJZccOt2D%2FCNtGeoPJwTPAD0jjWq2vqCTpmETolOYBmX0R6cpmtz7ywjvrthNuyLaXx3d03Nx8Rv19rxlEN6KJxqk7rXFhNR8haN1BkuZg6VWYz%2BhJkP0QnqhPPAIM4arWIjosBHpK9KiUKsjJTNX4rzXvMind8Caxes95wfFc2z30qW%2FaeGjFjgGlGCSklnFb3BzcnItNxhcAyhejoGqd0YdZO8xi3EJ9Oo7y6RjqZ8kqOKsTnZrKPvlaSYVVGnci0qJJS2AOt6J5B2UEnt5MByCyKV8jd7Eib9o6gq%2FX0OE9B19SO5NMF2vFn2Gxb54G%2BunUI9XP%2ByygqhypODW8RR4fc6x2k4pIMcegIqL2VTCvH%2BkySHtaN6Kb3rRRoqwk7Wc8yzOn6oR5TYNAJl4ok9OvfibdZUyo7RiDWGG76rZKvPTcsV8X3pEBqd8NxJZl55iPBAeEpBACASvMIJnXhCXHVK0Bcf04immChoaANOjUwYMMUkCguG2CC8B3IjVmwG8ubUncqn0a2cXIAretKyAFT%2FidWhEX4Sprkr%2FfxRioz6%2FGGlfZavShgGDjqzD3iuTMBjqxAct4arP9vs3vnU9NacPROX7VQ3irLybbmqiJgFJJLyvI0qPgLg%2BEjhlxA0z4OfNorOJiSWbHei4IXZsIeViOXhwqOImUEI7PaE4aSHkKPVDqI2ORJRl7Hca3MTLDuxZIlB3Q3C8UBaCCk48SvU%2FtNimup2oVdDWd9Qjjmlseh0cNTog8U22MGXHw1DuUpUQR%2FVOOcbleX5x1yDsZe1lQD6a9kMl%2F8Bzkj1dVPoB6E2Vc5g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=79858b881167e1298d65fa9b3a5d2d470090f6a7344fa5adfbe7c8f536737c81",
+      "file_size": 32856,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-09-20T23:45:19.176Z",
+  "allow_singular_disclosure_after": -265692980.85172528,
+  "singular_disclosure_allowed": true,
+  "vote_count": 34,
+  "voters": [
+    "bogdantc",
+    "h1bountyoverflow",
+    "thalaivar304",
+    "flashdisk",
+    "2026",
+    "fa1rlight",
+    "apapedulimu",
+    "its_afolic",
+    "cuso4",
+    "mpz",
+    "and 24 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 5133,
+      "category": "researcher",
+      "content": "This issue can be classified as best-practice. The exploitation against other users was very unlikely (possible under rare circumstances), but the team still decided to award me with a bounty - i very appreciate it!\nThe team was very responsible and fixed the issue fast.\n\nI requested to disclose this report to show the impact from search indexing of privileged/sensitive info. The reported issue itself is not very interesting, and not impactful much, but the idea behind it can help the other researchers to find more interesting bugs:) The applications can leak to the Search Engines emails (check it using `allinurl:@<mailbox_domain> site:<target_domain>`), sensitive tokens (same dork, but with 3-4 entropy characters depending on discovered info upon testing), private info of other users, etc. \nMany interesting things and issues can be found just by using Google/Shodan/Censys etc.\n",
+      "updated_at": "2017-09-13T14:04:38.613Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 79690,
+        "username": "sp1d3rs",
+        "name": "Eugene Yakovchuk",
+        "bio": "The world tried to catch me, but it couldn't.",
+        "cleared": true,
+        "verified": true,
+        "website": "https://r1p.xyz",
+        "location": "Canada",
+        "created_at": "2016-05-23T03:07:23.595Z",
+        "url": "https://hackerone.com/sp1d3rs",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/079/690/6853ada3e124bdd8616b1be752223b558de38195_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/079/690/6853ada3e124bdd8616b1be752223b558de38195_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/079/690/6853ada3e124bdd8616b1be752223b558de38195_original.png/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    }
+  ]
+}

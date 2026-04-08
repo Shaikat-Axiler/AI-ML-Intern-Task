@@ -1,0 +1,117 @@
+{
+  "id": 180909,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xODA5MDk=",
+  "url": "https://hackerone.com/reports/180909",
+  "title": "Use-after-free in ArrayObject Deserialization",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2016-11-08T14:00:14.895Z",
+  "submitted_at": "2016-11-08T14:00:14.895Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ryat",
+    "url": "/ryat",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/wfyfjk9cawbuzqqdx88azrvxmqt6/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67?response-content-disposition=inline%3B%20filename%3D%22chtg.jpeg%22%3B%20filename%2A%3DUTF-8%27%27chtg.jpeg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYQP6YWPR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T012459Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDCY%2BG6LyVug6SlfHpcqOrtUx3GYEUDFHJxlIuZKUxl2gIgNiJ8Xg5P8Gl0%2FsyICoep0u6YY0S0hvTJoKKYDhdK%2F%2FEqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDN9vC2Z3aeGTqu0A7iqOBcWx6C0koAr9RXdcXGkONXf3S3mUPGrP0oi2GjHjCvVn7BrOVLwmn4Y3nb8efhPdEWTFHB9Kr8oHRaJPo8WO4MSUARKgKDAGcjY%2B3PSev%2BpmKovfLKuYC7XSfrSaTkqiQBkXdJ99Jj7xaAdLyl2H1nU4FWss1%2BECfqLbc2JTaYYsiA2DbR3ZQt8ckRSGXDm2v0y9sjK6PmkocRlONFkUsJvz2%2B8PYmvAdJRtQryFKJ7gyujmKs8rlLYsFr3N%2Foo74ArN0Z4kPTb17lmBdaybkQN%2FZzC7ScNQo1%2FFQzoMXLJEj8abxDqUuzoSk6Jtc7iMLV%2BMkTsgLtsIlRcftXlBcsI4p6ZZqVsp1E0HICsL3J1Nsfdf04v8YOoNXMKEW8lO1Eow3TLDI0m3aibZH96d9B5pFYVMBRvo%2FK0fspiS%2BN1qUcRlHBCrcC%2Ffo2BowlCCeXCcxiBGHVRGS3U%2B4p774qsvdUzM2%2Bl%2BCyHAsVamw7pI4TjVvV1ObitahEAI8uMRZcXE3%2F6Dca3JZx5IwkvY15KcvAAEA%2BxV5CqUX6kHY0hpQOKadm93jqVywZ40rcj3VvCUIH6dAWgwwepu0SM5sNH2hEiHH3GTWrbFKpSBnzLTftNIgoMW9Au%2BOAJVJ%2BpX8ZF35CqR24IUtr%2BJpK%2Fpj%2Fuj%2FX0nrwMsTFTP9Ee2esXckPBj6ecV9Ch7%2BhJLsRvi0UGTDYQCpJaWFl9923evj7k4sXbjnpOCLs5%2B%2BFMH7xKQ4VQXZ1NhfSDhxvI2DCE3Mrnid2pufF20A48oWRzP3vPG0fMYfaXEh04QV%2FL4wMULHuEEpInbS3sX50YDs%2FQSZN4xPN732L%2FXo6%2BqVZvO70CeCpQA%2FHo0l44JbYvtzzCviuTMBjqxAT9DP7VncRbkB4cXpbtogN%2Ft7NkQ1BMdMcEPAcc8FV2DlozzZMR6xv4TvV2PJnsuqLEdynkd8UoTaAfvgYS8Q5Q8OlnL4QW2BlpE5jwl3Mix%2F5AnaEGIjIcYWXNF2FaJXSvBVArCBHZt2L0T12aqs4GOB4YzphsPUts4PzITnGdGSjJ54QHM5dmrYUoe7bRtILWBPRYCCMixlXXHNBengJmU1tXPAxhOJISQiOEVv%2BTG0g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ca7c5e2bc83a987ec8a52be4a37e0b18822d07cb086f2195ae322d76106af1d8"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYQP6YWPR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T012459Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDCY%2BG6LyVug6SlfHpcqOrtUx3GYEUDFHJxlIuZKUxl2gIgNiJ8Xg5P8Gl0%2FsyICoep0u6YY0S0hvTJoKKYDhdK%2F%2FEqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDN9vC2Z3aeGTqu0A7iqOBcWx6C0koAr9RXdcXGkONXf3S3mUPGrP0oi2GjHjCvVn7BrOVLwmn4Y3nb8efhPdEWTFHB9Kr8oHRaJPo8WO4MSUARKgKDAGcjY%2B3PSev%2BpmKovfLKuYC7XSfrSaTkqiQBkXdJ99Jj7xaAdLyl2H1nU4FWss1%2BECfqLbc2JTaYYsiA2DbR3ZQt8ckRSGXDm2v0y9sjK6PmkocRlONFkUsJvz2%2B8PYmvAdJRtQryFKJ7gyujmKs8rlLYsFr3N%2Foo74ArN0Z4kPTb17lmBdaybkQN%2FZzC7ScNQo1%2FFQzoMXLJEj8abxDqUuzoSk6Jtc7iMLV%2BMkTsgLtsIlRcftXlBcsI4p6ZZqVsp1E0HICsL3J1Nsfdf04v8YOoNXMKEW8lO1Eow3TLDI0m3aibZH96d9B5pFYVMBRvo%2FK0fspiS%2BN1qUcRlHBCrcC%2Ffo2BowlCCeXCcxiBGHVRGS3U%2B4p774qsvdUzM2%2Bl%2BCyHAsVamw7pI4TjVvV1ObitahEAI8uMRZcXE3%2F6Dca3JZx5IwkvY15KcvAAEA%2BxV5CqUX6kHY0hpQOKadm93jqVywZ40rcj3VvCUIH6dAWgwwepu0SM5sNH2hEiHH3GTWrbFKpSBnzLTftNIgoMW9Au%2BOAJVJ%2BpX8ZF35CqR24IUtr%2BJpK%2Fpj%2Fuj%2FX0nrwMsTFTP9Ee2esXckPBj6ecV9Ch7%2BhJLsRvi0UGTDYQCpJaWFl9923evj7k4sXbjnpOCLs5%2B%2BFMH7xKQ4VQXZ1NhfSDhxvI2DCE3Mrnid2pufF20A48oWRzP3vPG0fMYfaXEh04QV%2FL4wMULHuEEpInbS3sX50YDs%2FQSZN4xPN732L%2FXo6%2BqVZvO70CeCpQA%2FHo0l44JbYvtzzCviuTMBjqxAT9DP7VncRbkB4cXpbtogN%2Ft7NkQ1BMdMcEPAcc8FV2DlozzZMR6xv4TvV2PJnsuqLEdynkd8UoTaAfvgYS8Q5Q8OlnL4QW2BlpE5jwl3Mix%2F5AnaEGIjIcYWXNF2FaJXSvBVArCBHZt2L0T12aqs4GOB4YzphsPUts4PzITnGdGSjJ54QHM5dmrYUoe7bRtILWBPRYCCMixlXXHNBengJmU1tXPAxhOJISQiOEVv%2BTG0g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0ecd09048fd0403405bb9320a315ddb26ac864d6f54e5c80cb661fe0b8fe8a6a",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYQP6YWPR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T012459Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDCY%2BG6LyVug6SlfHpcqOrtUx3GYEUDFHJxlIuZKUxl2gIgNiJ8Xg5P8Gl0%2FsyICoep0u6YY0S0hvTJoKKYDhdK%2F%2FEqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDN9vC2Z3aeGTqu0A7iqOBcWx6C0koAr9RXdcXGkONXf3S3mUPGrP0oi2GjHjCvVn7BrOVLwmn4Y3nb8efhPdEWTFHB9Kr8oHRaJPo8WO4MSUARKgKDAGcjY%2B3PSev%2BpmKovfLKuYC7XSfrSaTkqiQBkXdJ99Jj7xaAdLyl2H1nU4FWss1%2BECfqLbc2JTaYYsiA2DbR3ZQt8ckRSGXDm2v0y9sjK6PmkocRlONFkUsJvz2%2B8PYmvAdJRtQryFKJ7gyujmKs8rlLYsFr3N%2Foo74ArN0Z4kPTb17lmBdaybkQN%2FZzC7ScNQo1%2FFQzoMXLJEj8abxDqUuzoSk6Jtc7iMLV%2BMkTsgLtsIlRcftXlBcsI4p6ZZqVsp1E0HICsL3J1Nsfdf04v8YOoNXMKEW8lO1Eow3TLDI0m3aibZH96d9B5pFYVMBRvo%2FK0fspiS%2BN1qUcRlHBCrcC%2Ffo2BowlCCeXCcxiBGHVRGS3U%2B4p774qsvdUzM2%2Bl%2BCyHAsVamw7pI4TjVvV1ObitahEAI8uMRZcXE3%2F6Dca3JZx5IwkvY15KcvAAEA%2BxV5CqUX6kHY0hpQOKadm93jqVywZ40rcj3VvCUIH6dAWgwwepu0SM5sNH2hEiHH3GTWrbFKpSBnzLTftNIgoMW9Au%2BOAJVJ%2BpX8ZF35CqR24IUtr%2BJpK%2Fpj%2Fuj%2FX0nrwMsTFTP9Ee2esXckPBj6ecV9Ch7%2BhJLsRvi0UGTDYQCpJaWFl9923evj7k4sXbjnpOCLs5%2B%2BFMH7xKQ4VQXZ1NhfSDhxvI2DCE3Mrnid2pufF20A48oWRzP3vPG0fMYfaXEh04QV%2FL4wMULHuEEpInbS3sX50YDs%2FQSZN4xPN732L%2FXo6%2BqVZvO70CeCpQA%2FHo0l44JbYvtzzCviuTMBjqxAT9DP7VncRbkB4cXpbtogN%2Ft7NkQ1BMdMcEPAcc8FV2DlozzZMR6xv4TvV2PJnsuqLEdynkd8UoTaAfvgYS8Q5Q8OlnL4QW2BlpE5jwl3Mix%2F5AnaEGIjIcYWXNF2FaJXSvBVArCBHZt2L0T12aqs4GOB4YzphsPUts4PzITnGdGSjJ54QHM5dmrYUoe7bRtILWBPRYCCMixlXXHNBengJmU1tXPAxhOJISQiOEVv%2BTG0g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1568794d624d8d762bb20fe3ffad64f719b1e0311ec6b4f74cb92caa3bacec90"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-10-13T11:11:33.191Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-10-13T11:11:33.148Z",
+  "team_member_agreed_on_going_public_at": "2019-10-13T09:19:37.837Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The bug report at: https://bugs.php.net/bug.php?id=73144\nThe fix commit at: https://github.com/php/php-src/commit/f74d7d92c8bc1edc2505e0b58546217e9e1ecb40",
+  "weakness": {
+    "id": 50,
+    "name": "Use After Free"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2019-11-12T09:19:37.921Z",
+  "allow_singular_disclosure_after": -198086721.75195628,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "smodnix",
+    "ryat",
+    "spetr0x",
+    "unihorn"
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 84120,
+    "asset_type": "OTHER",
+    "asset_identifier": "PHP",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

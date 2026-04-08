@@ -1,0 +1,141 @@
+{
+  "id": 429679,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80Mjk2Nzk=",
+  "url": "https://hackerone.com/reports/429679",
+  "title": "POST-based XSS on apps.shopify.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-10-27T14:27:47.837Z",
+  "submitted_at": "2018-10-27T14:27:47.837Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "chaosbolt",
+    "url": "/chaosbolt",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/d81xKAqqBxYLV8QQn83n3V5d/bed42d272a1818a1eb3af40534cbe7bcf569a39b21efc09eb6567e8302fc07c8"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-03-14T10:50:42.120Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-03-14T10:50:42.015Z",
+  "team_member_agreed_on_going_public_at": "2018-12-06T15:25:47.291Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello Shopify team! I found a post-based XSS which may be shared to other users and occurs in firefox, IE, Edge.\n\nHow to reproduce:\n1. at partners.shopify.com go to apps -> choose one -> more actions -> create shopify app store listing\n2. you will get redirected to url with ?signature parameter. Full copy whole URL.\n3. as App name specify </script><svg onload=alert()>\n4. in incognito tab open URL copied in step 2\n5. click Preview changes\n\nHow to fix: \n\nSanitize parameters which are getting inserted in <script> tag.\n\n## Impact\n\nPOST-based XSS in firefox/ie/edge. probably safari too",
+  "bounty_amount": "500.0",
+  "formatted_bounty": "$500",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 367067,
+      "file_name": "causeofissue.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/367/067/9d71ca3cf5af8f5298b13d9b49ce9c41ee881130/causeofissue.png?response-content-disposition=attachment%3B%20filename%3D%22causeofissue.png%22%3B%20filename%2A%3DUTF-8%27%27causeofissue.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUA5QK5VM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015716Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHm3btGgzlHis%2F9oOvDESSVePwMxPk4gaBS9iNiFviM3AiAPW4u6lqAH6O3yHvm7bIIcgWVWFnqYsbO0u9JBe7yUiyq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMcnYPosg7URHoCiAsKo4FadOTpgQUOQsra9GYh96WIhzwAyOBNd2Vt3Qec%2Fgp%2B%2BaVGBiAlxfSNPk0%2B%2FweLcmJgii%2FHxEMBtCNDKrMUaCY3jeLGrOxGdGHFHjYQ%2FUJkquobacRE1k%2BJThpoeED3m2iXLcBxl9Du3ilY%2FKiM1%2FLXbxvbp9oTVeu02rdo6WYQ%2F0hcawgggpwf7BdaW93ZiAFSGA%2BksIxFjkaMdv59JJtHuZ9xgoR4iinarwKFEGcwr76Ewo9gzOw98MP%2F%2F6BiL6rn48yiqGKW6r9Y1%2Bu%2BbXRQD%2Fh4OE7ZWwMJ9D61y7BcO9GlqvKSD013lVN%2Be8mnjapPA3llc00y13lavGRw1XJ8Yweb5JiEltZLNYD7U97UVkJXQ4qTblffHxiSAQSu3cwynw1NxYipJuPpK8ICludkl3%2F3w95uDuKJCKw6xYQ%2FXWVEtAHmnfRwzLz%2Fg0xdlLrvdgiEl5DImy3dUYnFxKg1esN%2FPHm3EmaEb95rMYIkVNzU0ibZAbq5s%2F7LH4i4%2BVzplxFDT0gt4%2FfqBVYADFq8c7kZhMZS5PZcFpxExJL8ztuU85PQTy7Sngh9zHB4Vr3tpIidd6CYDF8fner5noNOTeTzsDIVVEK1bIk8%2F1t6pt7z%2BPqwk2ormCBJshSUZ8lI0yAGafaEXj1p5LktF6ry161%2FUy1nhHgg0UIZBUJ8HweWcKKTOHlohRrttZTgDRaz8VqzrswkkNsT%2FhGJ6sTmHmyyM4FPMCOobHO9lSPW%2BPmfcO4%2FJcYtJjeJrH684CXmkZ5AScck8adSGeCv0R6BBHWWD7XmbAYtvjKhQDKfBklp%2F8FstDxGlobJdfOHqRp08VYyhx9eE9h1glcQBTJmdRj%2F8vBKDdpydb2gRxAMLiO5MwGOrIBiYUQSOFVSboEO4%2FCyL%2Bphoe1fcxLtPOyCw92kU%2Bs971KDYauREWX6iVasq0gazDHhU4lmu43NhxOAgDU9Nmy8eGu8eMeAs49rQngMUfJpgZ9ANH00W3o89h68qQo3G08UZm5U%2BZIFnekRLGUfq2OlwlVboT4Tjz7Xu3H49YLJZ%2BlqEGjxU1jWst7Bco8nAvwITl21SekSNbSzK0fNDZ1V2mQeqPwPLtJ1mAAw0KGfZsneA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=01340a649d110d92d0c6eae400b5a6a174b73eec5d3a336abee73042cc43b403",
+      "file_size": 49605,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 367068,
+      "file_name": "firefoxalert.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/367/068/c16cf13f35710ea8281536ca05a7c3097bbd4ef4/firefoxalert.png?response-content-disposition=attachment%3B%20filename%3D%22firefoxalert.png%22%3B%20filename%2A%3DUTF-8%27%27firefoxalert.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUA5QK5VM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015716Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHm3btGgzlHis%2F9oOvDESSVePwMxPk4gaBS9iNiFviM3AiAPW4u6lqAH6O3yHvm7bIIcgWVWFnqYsbO0u9JBe7yUiyq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMcnYPosg7URHoCiAsKo4FadOTpgQUOQsra9GYh96WIhzwAyOBNd2Vt3Qec%2Fgp%2B%2BaVGBiAlxfSNPk0%2B%2FweLcmJgii%2FHxEMBtCNDKrMUaCY3jeLGrOxGdGHFHjYQ%2FUJkquobacRE1k%2BJThpoeED3m2iXLcBxl9Du3ilY%2FKiM1%2FLXbxvbp9oTVeu02rdo6WYQ%2F0hcawgggpwf7BdaW93ZiAFSGA%2BksIxFjkaMdv59JJtHuZ9xgoR4iinarwKFEGcwr76Ewo9gzOw98MP%2F%2F6BiL6rn48yiqGKW6r9Y1%2Bu%2BbXRQD%2Fh4OE7ZWwMJ9D61y7BcO9GlqvKSD013lVN%2Be8mnjapPA3llc00y13lavGRw1XJ8Yweb5JiEltZLNYD7U97UVkJXQ4qTblffHxiSAQSu3cwynw1NxYipJuPpK8ICludkl3%2F3w95uDuKJCKw6xYQ%2FXWVEtAHmnfRwzLz%2Fg0xdlLrvdgiEl5DImy3dUYnFxKg1esN%2FPHm3EmaEb95rMYIkVNzU0ibZAbq5s%2F7LH4i4%2BVzplxFDT0gt4%2FfqBVYADFq8c7kZhMZS5PZcFpxExJL8ztuU85PQTy7Sngh9zHB4Vr3tpIidd6CYDF8fner5noNOTeTzsDIVVEK1bIk8%2F1t6pt7z%2BPqwk2ormCBJshSUZ8lI0yAGafaEXj1p5LktF6ry161%2FUy1nhHgg0UIZBUJ8HweWcKKTOHlohRrttZTgDRaz8VqzrswkkNsT%2FhGJ6sTmHmyyM4FPMCOobHO9lSPW%2BPmfcO4%2FJcYtJjeJrH684CXmkZ5AScck8adSGeCv0R6BBHWWD7XmbAYtvjKhQDKfBklp%2F8FstDxGlobJdfOHqRp08VYyhx9eE9h1glcQBTJmdRj%2F8vBKDdpydb2gRxAMLiO5MwGOrIBiYUQSOFVSboEO4%2FCyL%2Bphoe1fcxLtPOyCw92kU%2Bs971KDYauREWX6iVasq0gazDHhU4lmu43NhxOAgDU9Nmy8eGu8eMeAs49rQngMUfJpgZ9ANH00W3o89h68qQo3G08UZm5U%2BZIFnekRLGUfq2OlwlVboT4Tjz7Xu3H49YLJZ%2BlqEGjxU1jWst7Bco8nAvwITl21SekSNbSzK0fNDZ1V2mQeqPwPLtJ1mAAw0KGfZsneA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c491391efbfe2de85c72ecde557db57622f4661391b03b159a8613dc892a65bc",
+      "file_size": 10962,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 68,
+  "voters": [
+    "drsniper",
+    "ali",
+    "sameerphad72",
+    "danila",
+    "dhakal_ananda",
+    "logicmap",
+    "bahlawi89",
+    "javo",
+    "khizer47",
+    "bb00x",
+    "and 58 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 418,
+    "asset_type": "URL",
+    "asset_identifier": "apps.shopify.com",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

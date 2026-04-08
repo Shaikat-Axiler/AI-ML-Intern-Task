@@ -1,0 +1,133 @@
+{
+  "id": 415178,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MTUxNzg=",
+  "url": "https://hackerone.com/reports/415178",
+  "title": "chrome://brave can still be navigated to, leading to RCE",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2018-09-27T06:37:47.407Z",
+  "submitted_at": "2018-09-27T06:37:47.407Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "qab",
+    "url": "/qab",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-10-23T19:12:42.279Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-10-11T18:02:59.101Z",
+  "team_member_agreed_on_going_public_at": "2018-10-23T19:12:42.177Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\n'chrome://brave'  can be navigated to using the middle mouse click (or normal click with CTRL held) IFF coming from a bookmark. I am also using a small bug to actually trick a user into bookmarking our crafted URL through drag and drop.\n\n## Products affected: \nBrave: 0.24.0 \nV8: 6.9.427.23 \nrev: f657f15bf7e0e0c50a2b854c6b05edb59bfc556c \nMuon: 8.1.6 \nOS Release: 10.0.17134 \nUpdate Channel: Release \nOS Architecture: x64 \nOS Platform: Microsoft Windows \nNode.js: 7.9.0 \nBrave Sync: v1.4.2 \nlibchromiumcontent: 69.0.3497.100\n\n## Steps To Reproduce:\n\n1. Host attached PoC in any web\n2. Once opened, you will be instructed to save the html file locally and open it this way\n3. Open the saved PoC from local disk\n4. Click anywhere to open a popup\n5. Drag the anchor tag into the main window bookmark bar (if you never bookmarked anything then just right click and bookmark)\n6. Hold CTRL and click on the new bookmark, or right click and press \"open in new tab\"\n\n## Impact\n\nNavigating to chrome://brave is a bad thing since it can lead to RCE ( https://hackerone.com/reports/395737 )\n \nWe can also use another bug I filed ( https://hackerone.com/reports/415167 ) which can detect local files. If there is a way to drop HTML files into the local disk (cache or some other possibility) we can then try to use bug 415167 to bypass having to know OS username and any potentially salted folders. If this is achievable we can skip the part where we need to download and open PoC locally. \n\nIt would go something like:\n\n1. Open PoC from web\n2. PoC will somehow drop HTML in local disk (I have heard in other reports of possible local file XSS)\n3. Using bug 415167 we try to guess OS username + folder path to dropped HTML file\n4. Use the bookmark trick as described above.\n5. Instruct user to open bookmark with either method described above.",
+  "bounty_amount": "300.0",
+  "formatted_bounty": "$300",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 351744,
+      "file_name": "braveRCE.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/351/744/e2a224e5dbaae38260256ae4ccecfa6517f2bb58/braveRCE.html?response-content-disposition=attachment%3B%20filename%3D%22braveRCE.html%22%3B%20filename%2A%3DUTF-8%27%27braveRCE.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTXYD53HZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T021323Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDFZRX6ps00nDGF69E%2FgaJoIOLEJtmPJOR6uBdMxZprFQIgQCwuArhchyX25JY6Lx6VmWEO7sh3eQ8%2B6k66%2FWZKKiUqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDICy1fpSGKcabzGamSqOBS2%2B7kTdveDG007FDRCHvMEl6D5HKO1SIvMQwup1tER1h6hQOKTD7hhPnZNKpQ0QLq8daX0mvl2EM5RiBbFcGMQJC0mN9FXxWdp2TTUXbKT5Dqqt3I7TCERpcqSKGQg%2FYlBvLbE9xa8qnfHhikmEe93E89IEgyskyXsEcSs%2Bga%2FigHDhpLB7IzVI2w5X5ohtzgfIqIkqN8YH54PKH9wHijH%2FVtH2Y%2FuRGSK%2BzcZ3K%2FvdUxHMcHRRz7dM1k2OPU6IMALSG7FYyRhKZ1iRads2w3CBp63MnSMEVb6RIWDZKvhJZccOt2D%2FCNtGeoPJwTPAD0jjWq2vqCTpmETolOYBmX0R6cpmtz7ywjvrthNuyLaXx3d03Nx8Rv19rxlEN6KJxqk7rXFhNR8haN1BkuZg6VWYz%2BhJkP0QnqhPPAIM4arWIjosBHpK9KiUKsjJTNX4rzXvMind8Caxes95wfFc2z30qW%2FaeGjFjgGlGCSklnFb3BzcnItNxhcAyhejoGqd0YdZO8xi3EJ9Oo7y6RjqZ8kqOKsTnZrKPvlaSYVVGnci0qJJS2AOt6J5B2UEnt5MByCyKV8jd7Eib9o6gq%2FX0OE9B19SO5NMF2vFn2Gxb54G%2BunUI9XP%2ByygqhypODW8RR4fc6x2k4pIMcegIqL2VTCvH%2BkySHtaN6Kb3rRRoqwk7Wc8yzOn6oR5TYNAJl4ok9OvfibdZUyo7RiDWGG76rZKvPTcsV8X3pEBqd8NxJZl55iPBAeEpBACASvMIJnXhCXHVK0Bcf04immChoaANOjUwYMMUkCguG2CC8B3IjVmwG8ubUncqn0a2cXIAretKyAFT%2FidWhEX4Sprkr%2FfxRioz6%2FGGlfZavShgGDjqzD3iuTMBjqxAct4arP9vs3vnU9NacPROX7VQ3irLybbmqiJgFJJLyvI0qPgLg%2BEjhlxA0z4OfNorOJiSWbHei4IXZsIeViOXhwqOImUEI7PaE4aSHkKPVDqI2ORJRl7Hca3MTLDuxZIlB3Q3C8UBaCCk48SvU%2FtNimup2oVdDWd9Qjjmlseh0cNTog8U22MGXHw1DuUpUQR%2FVOOcbleX5x1yDsZe1lQD6a9kMl%2F8Bzkj1dVPoB6E2Vc5g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=10f714d74c9f2339fb0feb0bf0d1fcbfcc2cf095f773d7b5ac4f5ad884d20d36",
+      "file_size": 872,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 12,
+  "voters": [
+    "ali",
+    "sameerphad72",
+    "savitar0x01",
+    "kunal94",
+    "whitesector",
+    "eveeez",
+    "cryptographer",
+    "pofargst",
+    "aikee09",
+    "adolfohaking",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 7933,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/brave/browser-laptop",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

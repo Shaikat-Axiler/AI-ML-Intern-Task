@@ -1,0 +1,136 @@
+{
+  "id": 206650,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMDY2NTA=",
+  "url": "https://hackerone.com/reports/206650",
+  "title": "Broken Authentication - Security token gets captured via man in the middle attack",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2017-02-15T15:12:23.399Z",
+  "submitted_at": "2017-02-15T15:12:23.399Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "saurabhb",
+    "url": "/saurabhb",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/guv3fgchgdb2dk1xb6ldsp78lkaf/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-06-22T14:15:50.376Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-05-23T14:15:49.445Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Product / URL**\n\n`http://en.instagram-brand.com/register/reset/<the security token here>?email=<email address here>`\n\n\n**Description and Impact**\n\nThe password reset links issues by Instagram Brand gets delivered to users inbox with a http scheme and NOT https scheme.\n\nThis causes an attacker stealing those links and performing mass account takeovers and security compromises.\n\nThe link that gets delivered in inbox is:\n`http://mandrillapp.com/track/click/30956340/instagram-brand.com?p=<the very long security token here>`\n\nOn requesting the above link in browser, it sends back the password reset token in clear text: `http://en.instagram-brand.com/register/reset/<the security token here>?email=<the email of user here>`\n\n**Solution:**\nThis issues has a very easy solution. I have myself performed this and it worked !!.\nWhenever the code responsible for sending password reset link makes those links, just add https as scheme instead of http. And you will observe that now all the accounts are safe and data cannot be stolen.\n\n\n**Reproduction Instructions / Proof of Concept**\n\n1. Request for you password reset link.\n2. Go to inbox.\n3. Right click that link and paste it on notepad and observe the scheme.\n4. You can also start Wireshark to capture the traffic and observe that security token can be compromised.\n\nI have attached the screenshot of Wireshark as a proof of concept. F161119",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 161119,
+      "file_name": "InstagramBrandMITM.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/161/119/96b01c02da3a68edc2c863c92063eea72585a5e5/InstagramBrandMITM.png?response-content-disposition=attachment%3B%20filename%3D%22InstagramBrandMITM.png%22%3B%20filename%2A%3DUTF-8%27%27InstagramBrandMITM.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7ULBGLHE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014514Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCXypkG06cSeiV%2BLrJ%2BsW%2BpLHPMj8wXOVStnXk1NGGq%2BQIgJUNF7d5ZzQviioOxFN4Gv4%2FPBOgH6vMpER2s66ys5icquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHhrlptjQeWDC6vfciqPBcw9KQs%2FwdwEm5yK7jqgjJ%2FuGD%2F1QiuiKDcU4zdmZllEGNi7XXtbh%2FqfEfiZM%2FbVOL1HKHkDNuBcRXcYwZNLoL2Ni4xac5qlGwqYYMhWz7IMSTIWE47g2ffUcBx0npiTjztKjrcCmWxd8lclNCoj6%2FoXaUo8cfUSGmcuKTee3x3eWBKJW1MIL%2BmUh1B5KRXHGZme8YuFY09fsBhIwwjfc7fwSKrlUA1A%2F8zcGZtniIL3datKRrWYRfd6ni196A%2FfQ%2BJ7Hg1MzMI3Ezcif095qeOSfGEixTTKiLKCFt2Nc0kESqZZcqqY0Rmno5dgI294wMLfF1cLgpyBGL%2FXvqlXCtFiPrbrL53W5jNByQ2lDy5gRbwdMXf7cWDM0GgLj98T9YJMd99cNHYbxY6ca6CMY%2FhC5K7m57eD4MfUu9GwtFtcNfXL8Wp187PIVpFXdezgcBEe2HVQnHb6NJJXdQELElK3eP7v8cQwgHC6vy1Pgv%2B1lst8ZWDBBr7pMFsNt7HMxKHeJszTjhknT5n7agA3SrGtF6u0Qa6ImSbBVocYfqJUfCwH68R%2F%2F1ECUsaq66iHhHWUfqjqcmV52HCAYa9WweE2DWilDqGvcg6HSf1yp0v1nbirpFQslr0TirQ2kZA4ElIJzs0WbPntnQaKtMj2DgBDj0xCtOB8nqWw0fwfXgICXjDDLbBxT%2FJ4zlceEf4tAV%2B2awwOtkJmcKRNLYFrLHWwwSkjJNSoNLCAPR3oyeprbncIYs%2B6JSjj3ZPWh6qFpocwzI2vM3%2B49bvLVRGDZ8B1%2B%2BqTq%2FZ8iz6O801ndMJdk55S3I4dz2yD%2Fi2phntnVdjag2YFQq2MzUlicXRAz7mTYJk%2B7Dr6SgPrXHlZN2kwzfDjzAY6sQGAsuKmN7hPJ9XdD1AqNk4FR9Ab2HM9mXzDem6f1VdpQJ%2FeWKK6foNSg9a9%2FsjobZlbeBPiRk8LEmG7cM7niwGEQoUovfG8xiurzbwjU7%2Fqy1O4E87uXvzgXQHi%2Bs3Rq%2Fz71xNjnlYB639y8DCm%2BjvhXTfiR%2BmevJY6EXkXpEka7Rdy5T2TaUOBrAYfx48pC5oR%2FTIqTGsQv2d9VtGS%2FUNN07aK5NGfmBAuX6qG8YBi8OQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=be4acaf37d38c4dcb77bd494adafd8dac293988820b52f88ff52ab4687cb199f",
+      "file_size": 147100,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 161120,
+      "file_name": "InstagramBrandMITM.pcapng",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/161/120/82b596893da84ea4945940cc9d18200236483fc2/InstagramBrandMITM.pcapng?response-content-disposition=attachment%3B%20filename%3D%22InstagramBrandMITM.pcapng%22%3B%20filename%2A%3DUTF-8%27%27InstagramBrandMITM.pcapng&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7ULBGLHE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014514Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCXypkG06cSeiV%2BLrJ%2BsW%2BpLHPMj8wXOVStnXk1NGGq%2BQIgJUNF7d5ZzQviioOxFN4Gv4%2FPBOgH6vMpER2s66ys5icquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHhrlptjQeWDC6vfciqPBcw9KQs%2FwdwEm5yK7jqgjJ%2FuGD%2F1QiuiKDcU4zdmZllEGNi7XXtbh%2FqfEfiZM%2FbVOL1HKHkDNuBcRXcYwZNLoL2Ni4xac5qlGwqYYMhWz7IMSTIWE47g2ffUcBx0npiTjztKjrcCmWxd8lclNCoj6%2FoXaUo8cfUSGmcuKTee3x3eWBKJW1MIL%2BmUh1B5KRXHGZme8YuFY09fsBhIwwjfc7fwSKrlUA1A%2F8zcGZtniIL3datKRrWYRfd6ni196A%2FfQ%2BJ7Hg1MzMI3Ezcif095qeOSfGEixTTKiLKCFt2Nc0kESqZZcqqY0Rmno5dgI294wMLfF1cLgpyBGL%2FXvqlXCtFiPrbrL53W5jNByQ2lDy5gRbwdMXf7cWDM0GgLj98T9YJMd99cNHYbxY6ca6CMY%2FhC5K7m57eD4MfUu9GwtFtcNfXL8Wp187PIVpFXdezgcBEe2HVQnHb6NJJXdQELElK3eP7v8cQwgHC6vy1Pgv%2B1lst8ZWDBBr7pMFsNt7HMxKHeJszTjhknT5n7agA3SrGtF6u0Qa6ImSbBVocYfqJUfCwH68R%2F%2F1ECUsaq66iHhHWUfqjqcmV52HCAYa9WweE2DWilDqGvcg6HSf1yp0v1nbirpFQslr0TirQ2kZA4ElIJzs0WbPntnQaKtMj2DgBDj0xCtOB8nqWw0fwfXgICXjDDLbBxT%2FJ4zlceEf4tAV%2B2awwOtkJmcKRNLYFrLHWwwSkjJNSoNLCAPR3oyeprbncIYs%2B6JSjj3ZPWh6qFpocwzI2vM3%2B49bvLVRGDZ8B1%2B%2BqTq%2FZ8iz6O801ndMJdk55S3I4dz2yD%2Fi2phntnVdjag2YFQq2MzUlicXRAz7mTYJk%2B7Dr6SgPrXHlZN2kwzfDjzAY6sQGAsuKmN7hPJ9XdD1AqNk4FR9Ab2HM9mXzDem6f1VdpQJ%2FeWKK6foNSg9a9%2FsjobZlbeBPiRk8LEmG7cM7niwGEQoUovfG8xiurzbwjU7%2Fqy1O4E87uXvzgXQHi%2Bs3Rq%2Fz71xNjnlYB639y8DCm%2BjvhXTfiR%2BmevJY6EXkXpEka7Rdy5T2TaUOBrAYfx48pC5oR%2FTIqTGsQv2d9VtGS%2FUNN07aK5NGfmBAuX6qG8YBi8OQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b4b00a348f4f955c5b887b7979d69125d64008ff4dcb8939c89d484548d75402",
+      "file_size": 1439244,
+      "type": "application/octet-stream",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-06-22T14:15:49.567Z",
+  "allow_singular_disclosure_after": -210425365.07484725,
+  "singular_disclosure_allowed": true,
+  "vote_count": 66,
+  "voters": [
+    "megaknight",
+    "berjimk",
+    "base_64",
+    "ali",
+    "schneidersec",
+    "borrowedbastion",
+    "savitar0x01",
+    "nullsecisroot",
+    "pr0f0x01",
+    "khizer47",
+    "and 56 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

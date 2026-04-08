@@ -1,0 +1,135 @@
+{
+  "id": 2148242,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMTQ4MjQy",
+  "url": "https://hackerone.com/reports/2148242",
+  "title": "CVE-2023-38546: cookie injection with none file",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2023-09-14T14:58:50.358Z",
+  "submitted_at": "2023-09-14T14:58:50.441Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "w0x42",
+    "url": "/w0x42",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-38546"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2023-10-11T06:38:56.283Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2023-10-11T06:25:48.772Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "When `curl_easy_duphandle()` is used to duplicate an easy handle it is possible to inject cookies \ninto that duplicated handle if a file `none` exists in the current working directory.\n\n## PoC / Steps to reproduce:\n1. Open 2 terminals\n1. compile  F2699218\n1. in terminal 1: \n    `nc -l -p 8888 127.0.0.1`\n1. in terminal 2: \n\t* `echo -e \"127.0.0.1\\tTRUE\\t/\\tFALSE\\t0\\tname\\tvalue\" > none`\n\t* `/path/to/poc_cookieinj` \n(`poc_cookieinj` does not have to be in the same directory as the file `none`)\n\n## Supporting Material/References:\n\nThe flaw is in `Curl_cookie_init()`\n```\nif(!inc) {\n    /* we didn't get a struct, create one */\n    c = calloc(1, sizeof(struct CookieInfo));\n    if(!c)\n      return NULL; /* failed to get memory */\n    c->filename = strdup(file?file:\"none\"); /* copy the name just in case */\n    if(!c->filename)\n      goto fail; /* failed to get memory */\n```\n\nand  in `curl_easy_duphandle()` the injection happens\n```\nif(data->cookies) {\n    /* If cookies are enabled in the parent handle, we enable them\n       in the clone as well! */\n    outcurl->cookies = Curl_cookie_init(data,\n                                        data->cookies->filename,\n                                        outcurl->cookies,\n                                        data->set.cookiesession);\n    if(!outcurl->cookies)\n      goto fail;\n  }\n```\n\n## Impact\n\ncookies injection into an http request",
+  "weakness": {
+    "id": 887,
+    "name": "External Control of File Name or Path"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2699218,
+      "file_name": "poc_cookieinj.c",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/d92lzypa36fioon0khn6c4103951?response-content-disposition=attachment%3B%20filename%3D%22poc_cookieinj.c%22%3B%20filename%2A%3DUTF-8%27%27poc_cookieinj.c&response-content-type=text%2Fx-csrc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T210136Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=261db2d2a4f2f5996fc349fa00113911b0f2da2ca7502138d2f8587c8d9884d8",
+      "file_size": 522,
+      "type": "text/x-csrc",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-11-10T06:25:48.903Z",
+  "allow_singular_disclosure_after": -72023748.07245992,
+  "singular_disclosure_allowed": true,
+  "vote_count": 14,
+  "voters": [
+    "rachid_aym",
+    "w0x42",
+    "yakirka",
+    "d0nut",
+    "zy9ard3",
+    "coldfish",
+    "thalaivar304",
+    "eminfidan",
+    "rand0x",
+    "whocare712",
+    "and 4 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

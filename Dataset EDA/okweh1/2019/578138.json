@@ -1,0 +1,160 @@
+{
+  "id": 578138,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC81NzgxMzg=",
+  "url": "https://hackerone.com/reports/578138",
+  "title": "[http_server] Stored XSS in the filename when directories listing",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-05-12T20:10:40.121Z",
+  "submitted_at": "2019-05-12T20:10:40.121Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "lightangel1412",
+    "url": "/lightangel1412",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4oZAFX28euZbstNbBZuSRAvH/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-09-13T10:49:27.689Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-09-13T10:47:05.270Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report Stored XSS in module \"http_server\".\nIt allows to inject malicious scripts in the file name, store them on the server, then execute these scripts in the browser via the XSS vulnerability.\n\n# Module\n- module name: http_server\n- version: 1.0.12\n- npm page: https://www.npmjs.com/package/http_server\n\n## Module Description\n一个静态服务器 means \"a static server\"\n\n## Module Stats\n- [14] downloads in the last week\n- [116] downloads in the last month\n\n# Vulnerability\n##Vulnerability Description\nThis XSS vulnerability occurs due to the module represents filename(s) in HTML without any sanitization in listing directory page. In a result, any malicious scripts which are injected and stored on the server, would be executed in the client's browser.\n\n##Steps To Reproduce:\n- Install the module\n```\nnpm install -g http_server\n```\n- In the directory which will be served via http_server, create file with following names in directories ~/Desktop/:\n\n```\n\" onmouseover=alert(1) \"\n```\n\nor\n\n```\n<img src=x onmouseover=alert(1)>\n```\n\n{F489070}\n- Run 'http_server in \"~/Desktop\" directory :\n\n```\nroot@kali:~/Desktop# http_server\nserver running is :http://localhost:8888\n```\n\n- Open http://localhost:8888/\n{F489069}\n- When mouseover event is triggered on BOTH 2 payloads, a message will be popup via XSS vulnerability.\n{F489071}\n\n##Patch\nUser input should be properly sanitized and filtered both at the client and server side. Dangerous characters such as < > ' \" % ; ) ( & + should either be disallowed or HTML encoded before displaying them on screen.\n\n##Supporting Material/References:\n- Linux kali 4.15.0-kali2-amd64\n- node 10.15.3\n- npm 6.9\n- Firefox ESR 52.7.3 (64-bit)\n\n##Wrap up\n- I contacted the maintainer to let them know: N\n- I opened an issue in the related repository: N\n\n## Impact\n\nIt allows to inject malicious scripts in the file name, store them on the server, then execute these scripts in the browser via the XSS vulnerability.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 489069,
+      "file_name": "http_server_-_XSS1.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/489/069/9b6b13886459017f0f74736ee2af63c0560d0f51/http_server_-_XSS1.PNG?response-content-disposition=attachment%3B%20filename%3D%22http_server_-_XSS1.PNG%22%3B%20filename%2A%3DUTF-8%27%27http_server_-_XSS1.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVFCCH47W%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013317Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAToopva5lchNcpDhUtXEcikBivxeU1G4mbpWNX64bO0AiEA6dUbWaHaKd0Uwd6jItHLp5YmfHixhjL4vYxHM2oqv%2F8qugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDO66W5ewvH6dAEpZGSqOBSHQcIQtIN4ZN8v6RF%2FG2e7GwYnZFoXXdI1PpTRigtqu3k5SL77%2FWPEjEf4s3BZhxQhSThq4rmQskBXiLkuktN%2FaLjLXmPfiuCZkyYfU3dmVp1yY%2Fa0pza%2FlStjLMCPnqy5CDf2WhlcOmncMrwe91OPX1MvvE4pBpXivg3y00423oyy0gvuxKFTHEUI57T6u7tbQgxziBOL2xU64QD1Ibq1vZBHPZJAIAakks%2FMVblTUBKMt3TiYYzQO4NviR0UzirYQ%2BT0gUsH6iJmYgMfoXaK5zx5YiN8wrUEWzwKH9p7iAAYGnt2lv%2FYZzFaNZKYIEMMf4OXx12bOORB25TVd9nOraynGQGWgIHC3LWa2GA0ITJr4Qe7Av3FYf3NssdX0DMf8LbPQga9VIZRCC4JMgcNph9IxF6Fy2nVy0%2B3OjYuG1lpzLvgXiqoLSFE1ev9V%2FSpqd6RLbIN6%2BznP0Z3emFr0rGD8ckQsB7xjSEm2d4WDQ9tqiZdlZfxQaYpBV%2FDh1%2FG6JEkmqioUWa3ijuH2Z12D%2Byz8Gb%2FbZbIMO8Y7c5Ga5BI99ECWpHWPXdpAjUilZD2A5IB2yjn5ZN16vDx1yvHBLJ7jv4WJ3eVQLWAs8eWAFeNOVWxR%2BJYXxlO06yqG8ON4hk2DQ9odNFoouGc2yU2MYRCHHnBwVQv1FB0f6jcQ9vuFEwgefkGUYVvIK3c%2FmObMcoM6l%2FffzwnUDL20ORbFNLMbZVLwh4MraetwEvb%2FmnLdIbgmI8LlM8fWc3KIkRPVsTB6S8EUklcXX7G3xTIXfW%2FljvhYB1SBLyB178uDmt%2FaQZHt4xnxLjfiyEIznGv3X5jQPuTH0qONuZ%2BGS8uSr8sWj9CR4NcaaW7COzCmgeTMBjqxAQXoNSRqMYI7cf%2BXMT47TvSkEZewD5TOmMwniJUNt7u4GEusnLAqTQwhYlfW5voMxM0T7RJdF%2FTChZ2iyO2nnvuZdqJawtlt2IIPKd8%2Fnp55iSS8oprwTkYzpJrJKpVz1%2B7p62Qi8303v9ni%2B1NuF49NNr49eWMUwLYTosXKjEwxTISNqPgyG%2FI564X4daFYJWK%2FhcIQHBG5SAtdFkLtqVFRt43lx9T%2BzmU6ggDfElbtrg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e7c4b476d0c0144c7e289742c5b4f0416a890b8bd8614dcf8cadf17f8b20bc8d",
+      "file_size": 29527,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 489070,
+      "file_name": "http_server_-_XSS0.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/489/070/66a87a81a71eb851f3b1e181f1c179449d61fdac/http_server_-_XSS0.PNG?response-content-disposition=attachment%3B%20filename%3D%22http_server_-_XSS0.PNG%22%3B%20filename%2A%3DUTF-8%27%27http_server_-_XSS0.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVFCCH47W%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013317Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAToopva5lchNcpDhUtXEcikBivxeU1G4mbpWNX64bO0AiEA6dUbWaHaKd0Uwd6jItHLp5YmfHixhjL4vYxHM2oqv%2F8qugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDO66W5ewvH6dAEpZGSqOBSHQcIQtIN4ZN8v6RF%2FG2e7GwYnZFoXXdI1PpTRigtqu3k5SL77%2FWPEjEf4s3BZhxQhSThq4rmQskBXiLkuktN%2FaLjLXmPfiuCZkyYfU3dmVp1yY%2Fa0pza%2FlStjLMCPnqy5CDf2WhlcOmncMrwe91OPX1MvvE4pBpXivg3y00423oyy0gvuxKFTHEUI57T6u7tbQgxziBOL2xU64QD1Ibq1vZBHPZJAIAakks%2FMVblTUBKMt3TiYYzQO4NviR0UzirYQ%2BT0gUsH6iJmYgMfoXaK5zx5YiN8wrUEWzwKH9p7iAAYGnt2lv%2FYZzFaNZKYIEMMf4OXx12bOORB25TVd9nOraynGQGWgIHC3LWa2GA0ITJr4Qe7Av3FYf3NssdX0DMf8LbPQga9VIZRCC4JMgcNph9IxF6Fy2nVy0%2B3OjYuG1lpzLvgXiqoLSFE1ev9V%2FSpqd6RLbIN6%2BznP0Z3emFr0rGD8ckQsB7xjSEm2d4WDQ9tqiZdlZfxQaYpBV%2FDh1%2FG6JEkmqioUWa3ijuH2Z12D%2Byz8Gb%2FbZbIMO8Y7c5Ga5BI99ECWpHWPXdpAjUilZD2A5IB2yjn5ZN16vDx1yvHBLJ7jv4WJ3eVQLWAs8eWAFeNOVWxR%2BJYXxlO06yqG8ON4hk2DQ9odNFoouGc2yU2MYRCHHnBwVQv1FB0f6jcQ9vuFEwgefkGUYVvIK3c%2FmObMcoM6l%2FffzwnUDL20ORbFNLMbZVLwh4MraetwEvb%2FmnLdIbgmI8LlM8fWc3KIkRPVsTB6S8EUklcXX7G3xTIXfW%2FljvhYB1SBLyB178uDmt%2FaQZHt4xnxLjfiyEIznGv3X5jQPuTH0qONuZ%2BGS8uSr8sWj9CR4NcaaW7COzCmgeTMBjqxAQXoNSRqMYI7cf%2BXMT47TvSkEZewD5TOmMwniJUNt7u4GEusnLAqTQwhYlfW5voMxM0T7RJdF%2FTChZ2iyO2nnvuZdqJawtlt2IIPKd8%2Fnp55iSS8oprwTkYzpJrJKpVz1%2B7p62Qi8303v9ni%2B1NuF49NNr49eWMUwLYTosXKjEwxTISNqPgyG%2FI564X4daFYJWK%2FhcIQHBG5SAtdFkLtqVFRt43lx9T%2BzmU6ggDfElbtrg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=93c69e7444aca6b011080b068a4e5989fe63f0e3e621f954d4ba50a382f1dcd6",
+      "file_size": 16287,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 489071,
+      "file_name": "http_server_-_XSS2.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/489/071/db745e43d5f13319860b278f151be092c8f5d198/http_server_-_XSS2.PNG?response-content-disposition=attachment%3B%20filename%3D%22http_server_-_XSS2.PNG%22%3B%20filename%2A%3DUTF-8%27%27http_server_-_XSS2.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVFCCH47W%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013317Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAToopva5lchNcpDhUtXEcikBivxeU1G4mbpWNX64bO0AiEA6dUbWaHaKd0Uwd6jItHLp5YmfHixhjL4vYxHM2oqv%2F8qugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDO66W5ewvH6dAEpZGSqOBSHQcIQtIN4ZN8v6RF%2FG2e7GwYnZFoXXdI1PpTRigtqu3k5SL77%2FWPEjEf4s3BZhxQhSThq4rmQskBXiLkuktN%2FaLjLXmPfiuCZkyYfU3dmVp1yY%2Fa0pza%2FlStjLMCPnqy5CDf2WhlcOmncMrwe91OPX1MvvE4pBpXivg3y00423oyy0gvuxKFTHEUI57T6u7tbQgxziBOL2xU64QD1Ibq1vZBHPZJAIAakks%2FMVblTUBKMt3TiYYzQO4NviR0UzirYQ%2BT0gUsH6iJmYgMfoXaK5zx5YiN8wrUEWzwKH9p7iAAYGnt2lv%2FYZzFaNZKYIEMMf4OXx12bOORB25TVd9nOraynGQGWgIHC3LWa2GA0ITJr4Qe7Av3FYf3NssdX0DMf8LbPQga9VIZRCC4JMgcNph9IxF6Fy2nVy0%2B3OjYuG1lpzLvgXiqoLSFE1ev9V%2FSpqd6RLbIN6%2BznP0Z3emFr0rGD8ckQsB7xjSEm2d4WDQ9tqiZdlZfxQaYpBV%2FDh1%2FG6JEkmqioUWa3ijuH2Z12D%2Byz8Gb%2FbZbIMO8Y7c5Ga5BI99ECWpHWPXdpAjUilZD2A5IB2yjn5ZN16vDx1yvHBLJ7jv4WJ3eVQLWAs8eWAFeNOVWxR%2BJYXxlO06yqG8ON4hk2DQ9odNFoouGc2yU2MYRCHHnBwVQv1FB0f6jcQ9vuFEwgefkGUYVvIK3c%2FmObMcoM6l%2FffzwnUDL20ORbFNLMbZVLwh4MraetwEvb%2FmnLdIbgmI8LlM8fWc3KIkRPVsTB6S8EUklcXX7G3xTIXfW%2FljvhYB1SBLyB178uDmt%2FaQZHt4xnxLjfiyEIznGv3X5jQPuTH0qONuZ%2BGS8uSr8sWj9CR4NcaaW7COzCmgeTMBjqxAQXoNSRqMYI7cf%2BXMT47TvSkEZewD5TOmMwniJUNt7u4GEusnLAqTQwhYlfW5voMxM0T7RJdF%2FTChZ2iyO2nnvuZdqJawtlt2IIPKd8%2Fnp55iSS8oprwTkYzpJrJKpVz1%2B7p62Qi8303v9ni%2B1NuF49NNr49eWMUwLYTosXKjEwxTISNqPgyG%2FI564X4daFYJWK%2FhcIQHBG5SAtdFkLtqVFRt43lx9T%2BzmU6ggDfElbtrg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8d92813b87cda28059b8315d43ace1eb4113420690a74b0bd8cbe3e677f6bb3c",
+      "file_size": 78858,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-10-13T10:47:05.376Z",
+  "allow_singular_disclosure_after": -200673972.3120144,
+  "singular_disclosure_allowed": true,
+  "vote_count": 61,
+  "voters": [
+    "thaivu",
+    "lightangel1412",
+    "sameerphad72",
+    "bl4de",
+    "milankatwal99",
+    "ankitsingh",
+    "thefool45",
+    "scumdestroy",
+    "arwildo",
+    "cyberunit",
+    "and 51 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.9,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 36907,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "http_server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

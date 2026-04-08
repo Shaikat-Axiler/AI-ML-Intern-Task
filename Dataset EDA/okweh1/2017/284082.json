@@ -1,0 +1,150 @@
+{
+  "id": 284082,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODQwODI=",
+  "url": "https://hackerone.com/reports/284082",
+  "title": "Javascript Payload reflected Back in Report Embed Code",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2017-10-30T07:13:24.858Z",
+  "submitted_at": "2017-10-30T07:13:24.858Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "zubair",
+    "url": "/zubair",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/130/928/1c81263e4919b4599c0ac9d4cd394c6484f47bcc_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21745,
+    "url": "https://hackerone.com/infogram",
+    "handle": "infogram",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Infogram",
+      "twitter_handle": "infogram",
+      "website": "http://infogram.com",
+      "about": "Make Infographics and Charts that People Love"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-12-12T14:53:09.069Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-12-12T14:34:00.875Z",
+  "team_member_agreed_on_going_public_at": "2017-12-12T14:53:09.011Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "1)Create new Report template \n2)Spoof its name with payload \"></div> My Report <script type=\"text/javascript\">alert(document.cookie);</script><div id=\"\n3)Visit Back to your library list https://infogram.com/app/#/library\n4)Select The Created report and click view on web,Click the Share Button\n5)Copy & embed the code somewhere in html file you ll triage the Javascript exceution\n\n\nThe Payload is reflected in embed code and can compromise the embed code user's PRivacy.\n\nFix:Report/Project name need to be escaped properly\n\nFor reproduction of issue use:\nhttps://infogram.com/greaterreport-classic-lessdivgreaterlessscriptgreateralerttestlessscriptgreater-1g0gmjzqk1y3p1q\n",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 234036,
+      "file_name": "1.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/234/036/b747a82322c75bacb01b0a241fe20e6a174f564f/1.PNG?response-content-disposition=attachment%3B%20filename%3D%221.PNG%22%3B%20filename%2A%3DUTF-8%27%271.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQU4SJQUQV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030017Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD4ky7%2FDHPWY1wjo8jN4BhqrLkNIQ%2BYzLiweN3yRe8BswIgSRDGNUYvOcuOZ9sKhwVooUoKA1y3pgph3mbF20b03DcqugUIpP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDquoL6CLtWhsCuktiqOBSZ07EMaL9FQpuAq1PCVH%2B91Zl2tzoCb%2BXr8DK5Q%2BbQyXbc9byCnITMFXO9G23XgRn%2FEbjgDpG9GNJlogpLF6kDQ15H16A7z%2BkczwbIs14B4V65Cc4MdpER7v3AY83UtD0ajcnW8BxHA%2FcxIDTZDkX9LgE1SJy8SL2SPkqEeFA5cCOmf9FLO%2Bb%2BV8Q3pwjGKqQrKUUlO7yHZfxP%2BKI6k8khD8xyA90gwhgokr%2FjSl67KO91F3VUWUl3K83gWUEgscJmWzGMh%2FkOtiTRRlEM4kTjXTQiE1m6LEoGGY1K1BB4OAGOYoSJl81QafDVYCc1uqCtHur4%2FSUnIi3XgB16Wv8vMQLR5%2BtdaQsg93EyZbkdCoS8FmojLJlfysPnqpgPvs2MUkj4GNv4GaddAqFjNV%2FfOjcFTXVc7P2lpGH68n697mCG6PckjPsEUQOhAeHgVWDBfwt4tbOp70RdbAgHepoB8XauOFeJlLtQwHpDFDEq7AQ%2FvQkBFc8wYLRg4GqL5dqEeLRJ2ouRs5xkxRH%2BWEy4iAzcuyjFXhDZzodWNI2domJYK33neYKQT1hPh2ydIE4Ma0bCVGzvfTTgOvPvjphA0crBf48YbZ%2BbzLIbJq0RUwhHz%2BGhWnUMqrmwZ8yt0CAjd63i2LRs%2FAalsC4ri%2FkVIreg9tUhNuFDWbQerKDhVC8cddAp3eBWNAsPCAtpyKyZuNH6eayGcck5ow5rP4nNmmpjb2ajLpbiHgFA6YP0T57mrrm11ibvAE3XZbHlKpj44v%2BkKCfn3lRl9VLoywx4t9cBiiEeWNtGP6R4lnbyijMiugAdW4t6aheJe7uIPP1H16jlYpQUkU%2BnW7Pbd2k1hrVfKLatHu%2Fn4IlrcPTDlsOTMBjqxAWi%2BnPxb9NbG%2FdeCFdk19u86F2UiZX0ldB4i8Sa529eCxVJ5RRLVGgzRUzctymWeLyw1pf5w97R2%2FO9SkE20MN6xE7HmbIzAgyIIv6tgWR09vF%2BWn4xo6wp6kFJY3LTzn5dEyByK%2BP3QFU65vbg7YW89UsDJehGKkVCckIuQxqB6ZoKrOWPkRs%2FCWnLX2Xep77OMVjFOY%2BSIPbil09PHK%2BV%2BrSbA9SHZbPeS4l2VQCmuBw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3d1dac5b435f919486954a8beeef9f91bd2349f721eab16e259450cb49aee9b5",
+      "file_size": 97298,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 234037,
+      "file_name": "2.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/234/037/fb6e31b655cacef2f84babfea71e612d724b9697/2.PNG?response-content-disposition=attachment%3B%20filename%3D%222.PNG%22%3B%20filename%2A%3DUTF-8%27%272.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQU4SJQUQV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030017Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD4ky7%2FDHPWY1wjo8jN4BhqrLkNIQ%2BYzLiweN3yRe8BswIgSRDGNUYvOcuOZ9sKhwVooUoKA1y3pgph3mbF20b03DcqugUIpP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDquoL6CLtWhsCuktiqOBSZ07EMaL9FQpuAq1PCVH%2B91Zl2tzoCb%2BXr8DK5Q%2BbQyXbc9byCnITMFXO9G23XgRn%2FEbjgDpG9GNJlogpLF6kDQ15H16A7z%2BkczwbIs14B4V65Cc4MdpER7v3AY83UtD0ajcnW8BxHA%2FcxIDTZDkX9LgE1SJy8SL2SPkqEeFA5cCOmf9FLO%2Bb%2BV8Q3pwjGKqQrKUUlO7yHZfxP%2BKI6k8khD8xyA90gwhgokr%2FjSl67KO91F3VUWUl3K83gWUEgscJmWzGMh%2FkOtiTRRlEM4kTjXTQiE1m6LEoGGY1K1BB4OAGOYoSJl81QafDVYCc1uqCtHur4%2FSUnIi3XgB16Wv8vMQLR5%2BtdaQsg93EyZbkdCoS8FmojLJlfysPnqpgPvs2MUkj4GNv4GaddAqFjNV%2FfOjcFTXVc7P2lpGH68n697mCG6PckjPsEUQOhAeHgVWDBfwt4tbOp70RdbAgHepoB8XauOFeJlLtQwHpDFDEq7AQ%2FvQkBFc8wYLRg4GqL5dqEeLRJ2ouRs5xkxRH%2BWEy4iAzcuyjFXhDZzodWNI2domJYK33neYKQT1hPh2ydIE4Ma0bCVGzvfTTgOvPvjphA0crBf48YbZ%2BbzLIbJq0RUwhHz%2BGhWnUMqrmwZ8yt0CAjd63i2LRs%2FAalsC4ri%2FkVIreg9tUhNuFDWbQerKDhVC8cddAp3eBWNAsPCAtpyKyZuNH6eayGcck5ow5rP4nNmmpjb2ajLpbiHgFA6YP0T57mrrm11ibvAE3XZbHlKpj44v%2BkKCfn3lRl9VLoywx4t9cBiiEeWNtGP6R4lnbyijMiugAdW4t6aheJe7uIPP1H16jlYpQUkU%2BnW7Pbd2k1hrVfKLatHu%2Fn4IlrcPTDlsOTMBjqxAWi%2BnPxb9NbG%2FdeCFdk19u86F2UiZX0ldB4i8Sa529eCxVJ5RRLVGgzRUzctymWeLyw1pf5w97R2%2FO9SkE20MN6xE7HmbIzAgyIIv6tgWR09vF%2BWn4xo6wp6kFJY3LTzn5dEyByK%2BP3QFU65vbg7YW89UsDJehGKkVCckIuQxqB6ZoKrOWPkRs%2FCWnLX2Xep77OMVjFOY%2BSIPbil09PHK%2BV%2BrSbA9SHZbPeS4l2VQCmuBw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=af4feabe21f959a98074bb03a3a1b96a84fbb178db3c950571fa13eee0a191d2",
+      "file_size": 55861,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 234038,
+      "file_name": "3.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/234/038/2cf2ba934389ee4535f8d7e959cf356d66a6af53/3.PNG?response-content-disposition=attachment%3B%20filename%3D%223.PNG%22%3B%20filename%2A%3DUTF-8%27%273.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQU4SJQUQV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030017Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD4ky7%2FDHPWY1wjo8jN4BhqrLkNIQ%2BYzLiweN3yRe8BswIgSRDGNUYvOcuOZ9sKhwVooUoKA1y3pgph3mbF20b03DcqugUIpP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDquoL6CLtWhsCuktiqOBSZ07EMaL9FQpuAq1PCVH%2B91Zl2tzoCb%2BXr8DK5Q%2BbQyXbc9byCnITMFXO9G23XgRn%2FEbjgDpG9GNJlogpLF6kDQ15H16A7z%2BkczwbIs14B4V65Cc4MdpER7v3AY83UtD0ajcnW8BxHA%2FcxIDTZDkX9LgE1SJy8SL2SPkqEeFA5cCOmf9FLO%2Bb%2BV8Q3pwjGKqQrKUUlO7yHZfxP%2BKI6k8khD8xyA90gwhgokr%2FjSl67KO91F3VUWUl3K83gWUEgscJmWzGMh%2FkOtiTRRlEM4kTjXTQiE1m6LEoGGY1K1BB4OAGOYoSJl81QafDVYCc1uqCtHur4%2FSUnIi3XgB16Wv8vMQLR5%2BtdaQsg93EyZbkdCoS8FmojLJlfysPnqpgPvs2MUkj4GNv4GaddAqFjNV%2FfOjcFTXVc7P2lpGH68n697mCG6PckjPsEUQOhAeHgVWDBfwt4tbOp70RdbAgHepoB8XauOFeJlLtQwHpDFDEq7AQ%2FvQkBFc8wYLRg4GqL5dqEeLRJ2ouRs5xkxRH%2BWEy4iAzcuyjFXhDZzodWNI2domJYK33neYKQT1hPh2ydIE4Ma0bCVGzvfTTgOvPvjphA0crBf48YbZ%2BbzLIbJq0RUwhHz%2BGhWnUMqrmwZ8yt0CAjd63i2LRs%2FAalsC4ri%2FkVIreg9tUhNuFDWbQerKDhVC8cddAp3eBWNAsPCAtpyKyZuNH6eayGcck5ow5rP4nNmmpjb2ajLpbiHgFA6YP0T57mrrm11ibvAE3XZbHlKpj44v%2BkKCfn3lRl9VLoywx4t9cBiiEeWNtGP6R4lnbyijMiugAdW4t6aheJe7uIPP1H16jlYpQUkU%2BnW7Pbd2k1hrVfKLatHu%2Fn4IlrcPTDlsOTMBjqxAWi%2BnPxb9NbG%2FdeCFdk19u86F2UiZX0ldB4i8Sa529eCxVJ5RRLVGgzRUzctymWeLyw1pf5w97R2%2FO9SkE20MN6xE7HmbIzAgyIIv6tgWR09vF%2BWn4xo6wp6kFJY3LTzn5dEyByK%2BP3QFU65vbg7YW89UsDJehGKkVCckIuQxqB6ZoKrOWPkRs%2FCWnLX2Xep77OMVjFOY%2BSIPbil09PHK%2BV%2BrSbA9SHZbPeS4l2VQCmuBw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e885f5d62216b6560033e0b84029bf5b0c2565175c756108a8f79922de8be933",
+      "file_size": 19304,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 234039,
+      "file_name": "4.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/234/039/a76e78077ffd209dc7320364a9bb27b84d7fa3a4/4.PNG?response-content-disposition=attachment%3B%20filename%3D%224.PNG%22%3B%20filename%2A%3DUTF-8%27%274.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQU4SJQUQV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030017Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD4ky7%2FDHPWY1wjo8jN4BhqrLkNIQ%2BYzLiweN3yRe8BswIgSRDGNUYvOcuOZ9sKhwVooUoKA1y3pgph3mbF20b03DcqugUIpP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDDquoL6CLtWhsCuktiqOBSZ07EMaL9FQpuAq1PCVH%2B91Zl2tzoCb%2BXr8DK5Q%2BbQyXbc9byCnITMFXO9G23XgRn%2FEbjgDpG9GNJlogpLF6kDQ15H16A7z%2BkczwbIs14B4V65Cc4MdpER7v3AY83UtD0ajcnW8BxHA%2FcxIDTZDkX9LgE1SJy8SL2SPkqEeFA5cCOmf9FLO%2Bb%2BV8Q3pwjGKqQrKUUlO7yHZfxP%2BKI6k8khD8xyA90gwhgokr%2FjSl67KO91F3VUWUl3K83gWUEgscJmWzGMh%2FkOtiTRRlEM4kTjXTQiE1m6LEoGGY1K1BB4OAGOYoSJl81QafDVYCc1uqCtHur4%2FSUnIi3XgB16Wv8vMQLR5%2BtdaQsg93EyZbkdCoS8FmojLJlfysPnqpgPvs2MUkj4GNv4GaddAqFjNV%2FfOjcFTXVc7P2lpGH68n697mCG6PckjPsEUQOhAeHgVWDBfwt4tbOp70RdbAgHepoB8XauOFeJlLtQwHpDFDEq7AQ%2FvQkBFc8wYLRg4GqL5dqEeLRJ2ouRs5xkxRH%2BWEy4iAzcuyjFXhDZzodWNI2domJYK33neYKQT1hPh2ydIE4Ma0bCVGzvfTTgOvPvjphA0crBf48YbZ%2BbzLIbJq0RUwhHz%2BGhWnUMqrmwZ8yt0CAjd63i2LRs%2FAalsC4ri%2FkVIreg9tUhNuFDWbQerKDhVC8cddAp3eBWNAsPCAtpyKyZuNH6eayGcck5ow5rP4nNmmpjb2ajLpbiHgFA6YP0T57mrrm11ibvAE3XZbHlKpj44v%2BkKCfn3lRl9VLoywx4t9cBiiEeWNtGP6R4lnbyijMiugAdW4t6aheJe7uIPP1H16jlYpQUkU%2BnW7Pbd2k1hrVfKLatHu%2Fn4IlrcPTDlsOTMBjqxAWi%2BnPxb9NbG%2FdeCFdk19u86F2UiZX0ldB4i8Sa529eCxVJ5RRLVGgzRUzctymWeLyw1pf5w97R2%2FO9SkE20MN6xE7HmbIzAgyIIv6tgWR09vF%2BWn4xo6wp6kFJY3LTzn5dEyByK%2BP3QFU65vbg7YW89UsDJehGKkVCckIuQxqB6ZoKrOWPkRs%2FCWnLX2Xep77OMVjFOY%2BSIPbil09PHK%2BV%2BrSbA9SHZbPeS4l2VQCmuBw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=72c0476126d32fe4fe749af033b9a5b291020dd0e6c0594465c67daf89b041ff",
+      "file_size": 73730,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-01-11T14:34:00.951Z",
+  "allow_singular_disclosure_after": -255961576.2088366,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "r3y",
+    "eveeez",
+    "zubair",
+    "zubair44044_2222"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 870,
+    "asset_type": "URL",
+    "asset_identifier": "infogram.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

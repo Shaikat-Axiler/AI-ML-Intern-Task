@@ -1,0 +1,155 @@
+{
+  "id": 2923061,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yOTIzMDYx",
+  "url": "https://hackerone.com/reports/2923061",
+  "title": "API Key Exposed in JavaScript File on 1Password Developer Site",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "none",
+  "readable_substate": "N/A",
+  "created_at": "2025-01-06T03:33:44.398Z",
+  "submitted_at": "2025-01-06T03:33:44.755Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sudosu001",
+    "url": "/sudosu001",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ndb6oosrh8eqlra59sv7fgz3vx7v/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 93598,
+    "url": "https://hackerone.com/1password",
+    "handle": "1password",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/at8xr2yecldc110sfqdvc7euvd93/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/at8xr2yecldc110sfqdvc7euvd93/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "1Password - Enterprise Password Manager",
+      "twitter_handle": "",
+      "website": "https://1password.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-07-18T16:23:13.338Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-07-16T01:43:21.275Z",
+  "team_member_agreed_on_going_public_at": "2025-07-18T16:23:13.081Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "An API key has been exposed in the JavaScript file accessible via the public developer documentation for 1Password. This exposure could potentially allow unauthorized access to APIs or services that rely on this key, leading to a range of security issues, including data leakage or unauthorized actions within the affected system.\n\nSteps To Reproduce:\n- Visit the following URL: https://developer.1password.com/assets/js/main.43f8ae7b.js\n- Inspect the contents of the file.\n- Locate the exposed API key (in plain text) embedded within the JavaScript code.\n- Confirm the key's accessibility without any authentication or restriction.\n\nSupporting Material/References:\nDirect link to the exposed file: https://developer.1password.com/assets/js/main.43f8ae7b.js\n\n## Impact\n\nAn attacker can potentially use the exposed API key to:\n\n- Access or manipulate sensitive data from the service it is associated with.\n- Perform unauthorized actions or requests, potentially leading to data breaches or service disruption.\n- Cause reputational damage if the exposed key is linked to critical resources.",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3917270,
+      "file_name": "ev.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/5bej3qhu2v4gbs3f5jwq6zjmpd3t?response-content-disposition=attachment%3B%20filename%3D%22ev.png%22%3B%20filename%2A%3DUTF-8%27%27ev.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6CXBEYJD%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195938Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCPh66AlO5T02mAZYL3fssZAaBB8SZUoBSrrNW0Ju0xGwIgWwtpA9rH3G4mstoWbLMBz4hubv37RklarnHKPLLDDCYqugUImv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMPGAszwqQmKi%2BFnPCqOBXPO6jrBNe%2FahJQgL3GE%2BAm4A%2FxilheK%2F3mPupxT1S5zzO0O%2BXBO0tRnYEE05KCbSRuiw%2B3DiXX1yuJCxoBFlKEIbvTGVdu5fvipMwqDydzMWWV9LcP09K%2By2wuMDWgmtkEKpB4Li88xMF%2FmNPkU7Tmm%2BLwhnB4tjEJw%2Bd4DWshR7UFiCAfjl%2F%2FMkV81sCXD9ODuYZqzYYzmd499C0UlvWqZ14inWJJIdrWMycYPKkfL2JhLW%2B0PbfHpJk8%2BKflA5WMFl%2FN5xgrXPYMddLA%2F4LBDdX4oUDQmXdi1n9ePYMvXWNF7%2FLjHQnEcBULU4mRlpLR78cMtKfUKUVcauTSb5vgyjG94sCeSBT%2BVKv%2FWmSHN3pSuvPcCwDmwGU9h8PYiq8W23UPmnIGwpk%2F%2F%2BkW9DgZSJFXxhDL%2FtAjNN5vduN1efjiOxW6Zh6mtG3nh1FSV3gzF4zm7Utx2EuPVwYcdwbvcq5rR%2FX36bRJBK9%2Fgoh5UIYyPPdHI06fWifToggfu%2BHiZAONZiGmjjahB%2BpKljLT5aGAfCxtCb%2FHaaRB3i%2BzeNUmNjYo9wuVbMzGm7eagw9f5y8h0OkiegJT9SNUejx9sq12qKS2V0upRipB5oL6wbsGY443POSSoVY6M8n62gX49NymtYRDYapvHAE830eLvvD2jBA%2Bbw0jHbbx%2Bpz55CymcPvHYQ9axF0xVKRhTTA9lW5Ry%2BcBdEH4xaphU5sPNHcCZKknOXvPvDryPf7b%2Bq81EQKNDEpyajMKSX1RCHb3YIZyhkXbF3SMyCfp3s2XuHd2OerLNNfPusVNiKhucVLfMfzUwOpkTVZTF0c8WgLbcEaCyzE%2FG040U5VP07Pxl%2By5I27azxC91dUpgazClr%2BLMBjqxAadSPwD2aKA30e3FxlDF6Av92yeZ03zn%2F3WjmKN5LR9n8Bnd8k7ckMSairlI28lfP92kA6szo27%2Ffpieux%2FvJxrrOtK2FrYR920pAavl4TJZwTCvH2n5uNNdzzyD2zL8BoJhELluzs8Jz5QDBfsAw4hapBjZ8rl%2BfNdsRtegrmyTwrKE5drqeWqjKmY%2FapGD8B8lj4fKh5Gy8HhJOHGZbBAEu0OuCm85x8ZtE1RE1WtZcg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=79b315af33b7c3ef0e9a5d960473146fa928df8dc06063ee3843b3ab052d2076",
+      "file_size": 75571,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 59,
+  "voters": [
+    "loaymorad",
+    "k0ns0l",
+    "0xoroot",
+    "mohaned0101",
+    "shubham_srt",
+    "thalaivar304",
+    "jmo740",
+    "khoof",
+    "2026",
+    "anonymous_8848_",
+    "and 49 more..."
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 787125,
+    "asset_type": "OTHER",
+    "asset_identifier": "All other domains, subdomains, and 1Password Accounts that are not owned by you, including accounts where you are a user but not the owner, are out of scope.",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 727805,
+      "category": "team",
+      "content": "The researcher reported an API key exposed within a JavaScript file on our public developer documentation site (`developer.1password.com`). This key is intentionally embedded to enable Algolia-powered search functionality. It is a public, client-side key with strictly limited permissions and does not grant access to any sensitive data or privileged actions.\n\nThis behavior is expected and aligns with Algolia’s recommended integration practices for public-facing search implementations.\n\nAdditionally, `developer.1password.com` is an asset that is explicitly out of scope for our bug bounty program. We encourage all researchers to review our program brief carefully before submitting reports to ensure focus on in-scope targets and high-impact findings.\n\nBased on these factors, the report was closed as `Not Applicable`.",
+      "updated_at": "2025-07-18T16:20:34.939Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 2676280,
+        "username": "agkayvee",
+        "name": "K V",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2023-05-02T02:21:01.546Z",
+        "url": "https://hackerone.com/agkayvee",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

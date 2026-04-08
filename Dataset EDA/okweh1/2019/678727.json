@@ -1,0 +1,138 @@
+{
+  "id": 678727,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82Nzg3Mjc=",
+  "url": "https://hackerone.com/reports/678727",
+  "title": "potential RCE and XSS via file upload requiring user account and default settings",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2019-08-21T19:18:14.807Z",
+  "submitted_at": "2019-08-21T19:18:14.807Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rcejules",
+    "url": "/rcejules",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-04-01T08:50:37.020Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2020-03-02T08:50:35.654Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "#potential RCE and XSS via file upload requiring user account and default settings\n\n##Requirements\n1. User account that can upload files (NO admin)\n2. User account name on creation (usually the same as on creation/displayed name)\n3. data directory inside of nextcloud server folder (suggested by /var/www/nextcloud/config/config.sample.php)\n\n##Tested on\ncurrent release\nVersion 16.0.4.1\nstable\nBuild: '2019-08-14T18:57:27+00:00 a1a245e88202d834f08f4c2e4451dcbe9baee3aa'\n\n##Basic idea\nOn nextcloud php files can be uploaded, but when clicked they are only shown in a text editor. If the URL to our skript is known, we get code execution. \nA RCE will work if the server has set it's data directory inside the nextcloud server folder and the username is known. \n\n##config example\nThe following is located in /var/www/nextcloud/config/config.sample.php:\n[https://github.com/nextcloud/server/blob/master/config/config.sample.php]\n~~~~\n *\n * Default to ``data/`` in the Nextcloud directory.\n */\n'datadirectory' => '/var/www/nextcloud/data',\n~~~~\nIf this config is used, RCE is possible.\n\n##Attack scenario: \nShort video attached.\n(To reproduce use a nextcloud instance and setup a user named attacker. Use any php script called shell.php, and set the datadirectory to /var/www/nextcloud/data)\n\n1. Login to obtained user account (assume his name is \"attacker\")\n2. upload malicious php script. (assume it is called \"shell.php\")\n3. navigate to https://www.ournextclouddomain.com/data/attacker/files/shell.php\n4. see some shells poppin\n\nThis is possible since we know the direct path to our php script.\n\nNote: This can also be used for XSS since we can upload any html file!\n\n##Prevention\n1. user accounts could extend a seed on their foldername like attacker-19320143158015\n2. usage of a custom seed inside the data directory.\n3. different config than on the example\n\n## Impact\n\nRCE, extract ser data or modify config file (if no special permissions are set), take over the server, also XSS is possible",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 561526,
+      "file_name": "nextcloudPOCRCEXSS-2019-08-21_20.01.37.mkv",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/HWkbxGSLpGYNCmCEtpdzucP9?response-content-disposition=attachment%3B%20filename%3D%22nextcloudPOCRCEXSS-2019-08-21_20.01.37.mkv%22%3B%20filename%2A%3DUTF-8%27%27nextcloudPOCRCEXSS-2019-08-21_20.01.37.mkv&response-content-type=video%2Fx-matroska&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVSC3WWJQ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004236Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQChM5Azk%2FdMxyc29hxaAY%2Fmo66isiAsktcjVGzE1oNisgIhAKKCabgHkere%2Fn6765awtwlujM67BR8BePlrPv%2FDV0dNKrsFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxT6pkAVx09JSVGR4EqjwX%2BIIpR2QtUKX4oebSDz%2F5pYv9qRPKmckQVPywyKa6spJazwR7FOTazURduCu0Wrk8ALUcapSJgskuMBDjlW%2FHlrvWlD5ocNYPLDdqs6fVvq3OR147mz9Wuevuh3yz30Cib29QUt8fWqLOfC3lRQET8A9efV2ePT4bqRWRY18nZRiLTcocaV9J5SNu9zmTD1hVCHNNidWfgKc8%2BOGjBO9phpxmlGjR3rg0%2B6F4MZOpAZyS1DGUMVpRFsCMryqhVu4emJISPkfAG8VzmtsSapZY%2F3MFRYYsPG3BHctmDG%2BKtyaoFm6LkpNe6zO2v%2B6%2FnSaFpRLGaSCqY%2BKTdtH41dQMoWK62tjw7tJ%2BIvpyFkjkqxq8wh3alSO4FacZUWi578RZjC%2Fp12IppnuzQ1K87EyqlwqjMUPILJT3WRWvydtHK89SeIuCmOZm2tz80G0SU%2BLfpyJxeNYe8t1oz0qYAYoJ1Hqeef7yJ4naocBSS5Nt1yz6pSaPQ%2Bos%2FNhgk%2Bg%2BcoGDbHUfMhvgbSsYhg8RzlDdnG7Gw57IhKLe6F%2F85jasRPmKxs12dlFjXSkgP49fU2Jqz7iHPzDlWWPg7K%2FXNHh%2FGPkJQlG%2Bu61pSOSTqqATJo%2FRlrO50LMQiFWhsySfkQXYYsHLZAaald6MVtPC3UGTSO2w1RN2DOj50Y7DGAFP4Ju4mXzSfZ98HYbij%2FTkFH0uVQZplJ9ILFOO59Y1WhsS7COAcHuI6qd5Hy2UaoUk%2BemzUHFZ%2BCwc%2FxgIDyLCVY%2FOizStq4YdIJjOZdofTTJJwgbhORJ%2FyT3vwM4iW7UCBCLBO0K7oWfkLL9HUkfFH0FG5XTvglKQo%2FxCdudRad40iZqFyeBGX1arK6FqsUKFnMJP848wGOrABuU8sktc8jLY2H19stS9YLjsPUCg3Cgi19Jt4jG5VlAcaZ%2Bb0PyUuapRAE1VjpEFO5r3vtYLImN3sCfyDtj233JHVKuI8uVajeNWCKwwE9RRTHM5eUed5qGjpvpWX2aVS%2Fvg2ybiO4NDYkZ8C2hEc%2BPWQcXhDAqBQtDU4tqxLivcx6MIGyUCDmMyByGoTOywZT%2FKklVl%2FIzUaqnIlezX34tYs2E6Oylz2zUmc%2BmUJtkE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=44f4f1c6b83a11b8d81ddf06a6936c95b45f98c731d97873c842816f9041b91d",
+      "file_size": 1862815,
+      "type": "video/x-matroska",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-04-01T08:50:35.724Z",
+  "allow_singular_disclosure_after": -185903520.3147216,
+  "singular_disclosure_allowed": true,
+  "vote_count": 5,
+  "voters": [
+    "he4am",
+    "854424",
+    "sudev",
+    "defectstar",
+    "rcejules"
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 8.8,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 13,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "nextcloud/server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

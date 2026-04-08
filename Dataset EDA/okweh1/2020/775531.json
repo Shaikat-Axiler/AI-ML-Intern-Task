@@ -1,0 +1,120 @@
+{
+  "id": 775531,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83NzU1MzE=",
+  "url": "https://hackerone.com/reports/775531",
+  "title": "No valid SPF record found",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "readable_substate": "N/A",
+  "created_at": "2020-01-15T13:48:52.693Z",
+  "submitted_at": "2020-01-15T13:48:52.693Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "aravindn",
+    "url": "/aravindn",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 39386,
+    "url": "https://hackerone.com/kubernetes",
+    "handle": "kubernetes",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/039/386/486f4380e09776d05a912ca9f46be23f72fe8197_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kubernetes",
+      "twitter_handle": "kubernetesio",
+      "website": "https://kubernetes.io/",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-02-04T01:59:12.232Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-01-21T16:25:56.650Z",
+  "team_member_agreed_on_going_public_at": "2020-02-04T01:59:12.144Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Desciprition :\n\nThere is a email spoofing vulnerability.Email spoofing is the forgery of an email header so that the message appears to have originated from someone or somewhere other than the actual source. Email spoofing is a tactic used in phishing and spam campaigns because people are more likely to open an email when they think it has been sent by a legitimate source. The goal of email spoofing is to get recipients to open, and possibly even respond to, a solicitation.\n\nI found :\n\nSPF record lookup and validation for: prow.k8s.io\nSPF records are published in DNS as TXT records.\n\nThe TXT records found for your domain are:\n\n\nChecking to see if there is a valid SPF record.\n\nNo valid SPF record found of either type TXT or type SPF.\n\nRemediation :\n\nReplace ~all with -all to prevent fake email.\n\n## Impact\n\nAn attacker would send a Fake email. The results can be more dangerous. Email spoofing is a tactic used in phishing and spam campaigns because people are more likely to open an email when they think it has been sent by a legitimate source. The goal of email spoofing is to get recipients to open, and possibly even respond to, a solicitation",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 685385,
+      "file_name": "prow.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/oXZSCzwqWvbFQtyDgB1YqAV3?response-content-disposition=attachment%3B%20filename%3D%22prow.png%22%3B%20filename%2A%3DUTF-8%27%27prow.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZUHQDDBU%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005438Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDq9%2B4RAGto8X9IFtGN%2FUICC%2Fo63ftLJNQCsYnDIVEFMgIhAIcdMmUcGL5uSa96zhv2F9zEifJta95dNpaVfxlVMvMEKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy1k%2Felb61VxVZPsL0qjgVnIOqoDZ%2B3Wl3QbE56JwHpdWMct1MaC9JR7O2LSRZgcltWTboD2wpZ4ERdGo3ukus%2Bstq0jQEo%2FlWOXrgJh%2B5w9Mijp8fZC04NZ7qzTNDU7%2BvHI1bJM7aENXsYP%2BZ08waL4oonS12NPeTFvYtK%2FNxpzevYOubcQpHisn5rHp0tdmafeOHCDW2knAlpqITFwqwc3Vvn41LJPjOs6%2BU%2BgCj8wvimfQYLv7AY%2B5QF2xQ%2BQQXOw0Yz9NpvQrqUBkueOCIHCenqOicTyybCb3rNwcEr6UYVnk4CiRl4LhbFinNEpQS3SHWPII1CG0cfueRJXfkmsBOJhsvDI1jsmGlCjcsu7NhxzXedbMu%2F0KRfUrlckjbIVNJmNqgu67VzouSU0%2Fg%2FH5f5xUQt4S4qGN8hf1J3PSmfFvtQaHtv2bCBU%2B5JyzlEDh41P7xrQkRHdRM%2Bbg6kN4VW0dqzVfSuPMt2lbTPY8I%2Bv%2BZomIPEwYNheqTlPln04Fjf8%2BBcTRRLPGE83zugKB4DuOQYu%2Fp2vkg8cb6dRxb1trYaDfV6DUxOBlqzd4ezRlMMDdUPhtBgxOXvf%2FAsHBT1oCoB1fQIqCSCaUbf20n0Xyvj4SsJOWDEk0%2Btt%2B1LA5%2FRuXEvhCtGeTYfbFAIn5xWS1AvYnzOautiQtDlgNCqDzLsR9WzpV1Ugle%2BI8zUYWDQw1Upv1B0yz7MH6ymCQ2I7StKJyUKCfxKliiFWWQshikPtcLWbXReLNy0sjyc0DNZdQb%2B9ixotEitn8pHvcX7XYV%2Ba%2FBsFZ7jmLH0ZMkh2dxo8NL%2FfhIX8f%2BKGTxD6FHi8KiCYqRAjYx1GugkoviNp%2FdMqYeZ6tpJCFSlVoqvOa6QyrEwqjI1mzEws%2B7jzAY6sAEE4SF3zqH7Co%2FE7EJDoly44npupwttbyIlMdu%2FRWwUNnfToUvSUaO2%2FR%2FV4pCKHr1J8brlthLGSCG3qS0i3efVihCMGK5hjr2OTCAukDeKcmusitc1RagUh3tz%2BqPVx7ufFNpZIav9YGIiiKW96aqw%2BsX2COI4Lq7a092H3rXOKxFX%2BON1xi%2F0PVoZJXif7F25BJ7OtjNKkKL0eu8B%2F7wB%2BfIQRAM2pCb0nO4dRtV4mg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7ccd09c39371f08b4804dab6cf0568b45b80a7beeee5a6abc49644c61032b563",
+      "file_size": 40830,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 5,
+  "voters": [
+    "mohamedkhalid",
+    "destinedtohack",
+    "haranhar",
+    "shanmugaraja",
+    "divakardhanush"
+  ],
+  "structured_scope": {
+    "databaseId": 34427,
+    "asset_type": "URL",
+    "asset_identifier": "prow.k8s.io",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

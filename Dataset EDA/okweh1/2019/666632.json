@@ -1,0 +1,143 @@
+{
+  "id": 666632,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82NjY2MzI=",
+  "url": "https://hackerone.com/reports/666632",
+  "title": "Delete direct message history without access the proper conversation_id",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-08-03T02:41:26.953Z",
+  "submitted_at": "2019-08-03T02:41:26.953Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "soareswallace",
+    "url": "/soareswallace",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/yViXHLLp2fpKBkYRbysD3o4d/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-11-20T19:33:04.629Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-11-04T23:54:06.781Z",
+  "team_member_agreed_on_going_public_at": "2020-11-20T19:33:04.543Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "> NOTE! Thanks for submitting a report! Please replace *all* the [square] sections below with the pertinent details. Remember, the more detail you provide, the easier it is for us to triage and respond quickly, so be sure to take your time filling out the report!\n\n**Summary:** [add summary of the vulnerability]\nAn user can invert the user ids from a direct message URL, which is the conversation_id, and delete the whole conversation history without using the proper conversation_id and without a proper feedback to the user.\n\n**Description:** [add more details about this vulnerability]\nBy having a direct message to any user, Twitter creates a specific id to this conversation. The conversation_id. This id is concatenation between the two user ids in this conversation \nseparated by an hyphen . For example:\n\n#1 - user_id = 12345\n#2 - user_id = 45678\nconversation_id=12345-45678\n\nIf an user invert these numbers(e.g: in our example 45678-12345) the user is asked to either accept to receive message from an undefined user or to delete it.(Attached print1). After clicking \"Delete\" the whole conversation history from the original conversation is deleted without ever following the happy path to proper leave a conversation.\n\n## Steps To Reproduce:\n\n(Add details for how we can reproduce the issue)\n\n  1. Have a conversation (Direct Message) between two users.\n  2. Click on the conversation to open the chat window.\n  3. The URL will change and it's going to be something like: https://twitter.com/messages/123456-78910\n  4. Invert those numbers on the conversation_id and the new URL will be like: https://twitter.com/messages/78910-123456 and press enter to go to this URL.\n  5. User will be asked to either Accept or Delete if he want to let an undefined user to message him.  With all the options above as well, like user info. However is an undefined user. The message will be exactly:\n\nDo you want to let  message you? They won’t know you’ve seen their message until you accept.Report conversation\n\nYou can see there is a blank space between the words 'let' and 'message'.\n  6. If the user clicks on 'Delete' the original history from the original conversation is deleted(attached image: after_Deleting.png) and the feedback gave to the user doesn't mention this.\n\n## Impact: [add why this issue matters]\nSince we didn't use the proper conversation_id to delete the conversation this action might create an inconsistence on the conversations database.\n\n## Supporting Material/References:\n\n  * List any additional material (e.g. screenshots, logs, etc.)\n\n## Impact\n\nAn attacker could create an inconsistence on the conversation data since we used a wrong conversation_id to delete the history. Maybe this issue could lead to other exploits since we had a info icon for an undefined user.",
+  "bounty_amount": "560.0",
+  "formatted_bounty": "$560",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 546119,
+      "file_name": "print1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/546/119/deb28abeda928c55e9ab44c1383bf8172ba153e4/print1.png?response-content-disposition=attachment%3B%20filename%3D%22print1.png%22%3B%20filename%2A%3DUTF-8%27%27print1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234909Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b197472b7f5766097ea79ba697389932ac75e136d6dd66376755447d4ac6a5f3",
+      "file_size": 125795,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 546147,
+      "file_name": "after_deleting.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/546/147/b0fa97c2250e5ea940fbc9b21a5977d07dfd04d2/after_deleting.png?response-content-disposition=attachment%3B%20filename%3D%22after_deleting.png%22%3B%20filename%2A%3DUTF-8%27%27after_deleting.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234909Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=61b351900152f639f40921f7a4c7525425d3fb5ce9e4e9dd842ac31e8fc78ac7",
+      "file_size": 135466,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-12-04T23:54:06.883Z",
+  "allow_singular_disclosure_after": -164505302.39840674,
+  "singular_disclosure_allowed": true,
+  "vote_count": 33,
+  "voters": [
+    "th3hidd3nmist",
+    "ezzra",
+    "loaymorad",
+    "xploiterr",
+    "mirhat",
+    "shreyaschavhan",
+    "ali",
+    "mohaned0101",
+    "thalaivar304",
+    "h4x0r_dz",
+    "and 23 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 1062,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.twitter.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "id": 453795,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80NTM3OTU=",
+  "url": "https://hackerone.com/reports/453795",
+  "title": "[harp] Unsafe rendering of Markdown files",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-12-02T10:32:57.942Z",
+  "submitted_at": "2018-12-02T10:32:57.942Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "skyn3t",
+    "url": "/skyn3t",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/224/816/14988b1087907275d769481dc45fe6576ce0d206_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-04-06T17:54:27.270Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-04-06T17:54:15.088Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report Cross Site Scripting vulnerablity in harp module\nIt allows to execute arbitrary JavaScript due to unsafe rendering of markdown files.\nSimilar to [#404126](https://hackerone.com/reports/404126)\n\n# Module\n\n**module name:** harp\n**version:** 0.29.0\n**npm page:** `https://www.npmjs.com/package/harp`\n\n## Module Description\n\nzero-configuration web server with built in pre-processing\n\n\n## Module Stats\n\n3,576 downloads in the last week\n\n# Vulnerability\n\n## Vulnerability Description\n\nHarp uses `marked` in their preprocessor `terraform` for parsing and rendering markdown. By default `marked` does not sanitize html. An uninformed user may assume the output of markdown to be sanitized and thus become vulnerable to XSS by rendering malicious markdown files.\n\nSee https://github.com/sintaxi/terraform/blob/master/lib/template/processors/md.js\n\n```js\nvar TerraformError = require(\"../../error\").TerraformError\nvar marked = require(\"marked\").setOptions({\n  langPrefix: 'language-',\n  headerPrefix: '',\n  gfm: true,\n  tables: true,\n})\nvar renderer = new marked.Renderer()\n...\n```\n\n## Steps To Reproduce:\n\n* Install harpjs\n```\nyarn global add harp\n```\n* Run harp server\n```\nharp server \n```\n* Add malicious markdown file in the server directory (`test.md` attached) and open it in browser.\nEg:. `http://localhost:9000/test` will open `test.md` if it exists in the project directory\n\nRefer http://harpjs.com/docs/development/markdown\n\n## Patch\n\n`marked` provides an option `sanitize` which is set to `false` by default. You can also pass a custom `sanitizer` function through options.\nEither set the `santize` option to `true` in `terraform` while importing `marked`  or inform the user to safely handle markdown files by displaying an appropriate warning.\n\n## Supporting Material/References:\n\n- Ubuntu 16.04\n- node v11.3.0\n- npm 6.4.1\n\n# Wrap up\n\n- I contacted the maintainer to let them know: N\n- I opened an issue in the related repository: N\n\n## Impact\n\nUser is exposed to unsafely rendered markdown files which may lead to execution of arbitrary JS",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 384365,
+      "file_name": "test.md",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/384/365/943208043c52d09da022d1faf6b04db72fec1262/test.md?response-content-disposition=attachment%3B%20filename%3D%22test.md%22%3B%20filename%2A%3DUTF-8%27%27test.md&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVFCCH47W%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015438Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAToopva5lchNcpDhUtXEcikBivxeU1G4mbpWNX64bO0AiEA6dUbWaHaKd0Uwd6jItHLp5YmfHixhjL4vYxHM2oqv%2F8qugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDO66W5ewvH6dAEpZGSqOBSHQcIQtIN4ZN8v6RF%2FG2e7GwYnZFoXXdI1PpTRigtqu3k5SL77%2FWPEjEf4s3BZhxQhSThq4rmQskBXiLkuktN%2FaLjLXmPfiuCZkyYfU3dmVp1yY%2Fa0pza%2FlStjLMCPnqy5CDf2WhlcOmncMrwe91OPX1MvvE4pBpXivg3y00423oyy0gvuxKFTHEUI57T6u7tbQgxziBOL2xU64QD1Ibq1vZBHPZJAIAakks%2FMVblTUBKMt3TiYYzQO4NviR0UzirYQ%2BT0gUsH6iJmYgMfoXaK5zx5YiN8wrUEWzwKH9p7iAAYGnt2lv%2FYZzFaNZKYIEMMf4OXx12bOORB25TVd9nOraynGQGWgIHC3LWa2GA0ITJr4Qe7Av3FYf3NssdX0DMf8LbPQga9VIZRCC4JMgcNph9IxF6Fy2nVy0%2B3OjYuG1lpzLvgXiqoLSFE1ev9V%2FSpqd6RLbIN6%2BznP0Z3emFr0rGD8ckQsB7xjSEm2d4WDQ9tqiZdlZfxQaYpBV%2FDh1%2FG6JEkmqioUWa3ijuH2Z12D%2Byz8Gb%2FbZbIMO8Y7c5Ga5BI99ECWpHWPXdpAjUilZD2A5IB2yjn5ZN16vDx1yvHBLJ7jv4WJ3eVQLWAs8eWAFeNOVWxR%2BJYXxlO06yqG8ON4hk2DQ9odNFoouGc2yU2MYRCHHnBwVQv1FB0f6jcQ9vuFEwgefkGUYVvIK3c%2FmObMcoM6l%2FffzwnUDL20ORbFNLMbZVLwh4MraetwEvb%2FmnLdIbgmI8LlM8fWc3KIkRPVsTB6S8EUklcXX7G3xTIXfW%2FljvhYB1SBLyB178uDmt%2FaQZHt4xnxLjfiyEIznGv3X5jQPuTH0qONuZ%2BGS8uSr8sWj9CR4NcaaW7COzCmgeTMBjqxAQXoNSRqMYI7cf%2BXMT47TvSkEZewD5TOmMwniJUNt7u4GEusnLAqTQwhYlfW5voMxM0T7RJdF%2FTChZ2iyO2nnvuZdqJawtlt2IIPKd8%2Fnp55iSS8oprwTkYzpJrJKpVz1%2B7p62Qi8303v9ni%2B1NuF49NNr49eWMUwLYTosXKjEwxTISNqPgyG%2FI564X4daFYJWK%2FhcIQHBG5SAtdFkLtqVFRt43lx9T%2BzmU6ggDfElbtrg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d37d4f293129d3e7fa4dad2f04319aae527068a56f24af6333e749a000bb097a",
+      "file_size": 118,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-05-06T17:54:15.330Z",
+  "allow_singular_disclosure_after": -214473623.51498353,
+  "singular_disclosure_allowed": true,
+  "vote_count": 2,
+  "voters": [
+    "skyn3t",
+    "midle"
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 18612,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "harp",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

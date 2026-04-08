@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      - name: Check imports
+        run: python -c "from backend.main import app; from backend.models import ModelManager; from backend.storage import StorageManager; print('All imports OK')"
+
+      - name: Run FastAPI startup check
+        run: |
+          python -c "
+          from fastapi.testclient import TestClient
+          from backend.main import app
+          client = TestClient(app)
+          r = client.get('/api/techniques')
+          assert r.status_code == 200
+          r = client.get('/api/models')
+          assert r.status_code == 200
+          print('API checks passed')
+          "

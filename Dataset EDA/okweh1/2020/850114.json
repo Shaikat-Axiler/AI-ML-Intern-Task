@@ -1,0 +1,141 @@
+{
+  "id": 850114,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84NTAxMTQ=",
+  "url": "https://hackerone.com/reports/850114",
+  "title": "SSRF in notifications.server configuration",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-04-15T04:21:16.539Z",
+  "submitted_at": "2020-04-15T04:21:16.539Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "codeprivate",
+    "url": "/codeprivate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/o2dA5gEvRUHtCkpZwAqo3y4p/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 18,
+    "url": "https://hackerone.com/phabricator",
+    "handle": "phabricator",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/018/61446f7e6f0684c8c9f7c36c918b7ecd58183588_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/018/61446f7e6f0684c8c9f7c36c918b7ecd58183588_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Phabricator",
+      "twitter_handle": "phabricator",
+      "website": "http://phacility.com/phabricator/",
+      "about": "Phabricator is a collection of open source web applications that help software companies build better software."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-05-15T14:10:22.270Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2020-04-15T14:10:12.751Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "<mongoose>\n\nModifying the notification server settings so that it connects to a malicious server. An attacker is able to redirect traffic from the vulnerable application to internal or external network resources.\nSteps To Reproduce:\n---------------------\n 1. Open your phabricator installation authenticated with an administrator user.\n 2. Go to Config> Settings> notification.servers\n 3. Copy the values ​​of \"Simple Example\" and replace them in \"Database Value\" with the attacker's data. ( in type admin block )\n\nsomething like that:\n```\n[\n  {\n    \"type\": \"client\",\n    \"host\": \"phabricator.mycompany.com\",\n    \"port\": 22280,\n    \"protocol\": \"https\"\n  },\n  {\n    \"type\": \"admin\",\n    \"host\": \"X.X.X.X\",\n    \"port\": 22281,\n    \"protocol\": \"http\"\n  }\n]\n```\nBeing X.X.X.X is the IP of the malicious server.\n\n4 . The malicious server receives a GET request from the victim server to the path \"/ status\", puts an index.php file in that directory of his server and can redirect the destination of the original request to internal or external assets.\n\nPoC\n```\n<?php\nheader(\"Location: http://anywere.loc/bad_intentions\");\n?>\n```\n\n</mongoose>\n\n## Impact\n\nIn a Server-Side Request Forgery (SSRF) attack, the attacker can abuse functionality on the server to read or update internal resources, and scan for internal ports and get the versions of the services running on the server.\nReferer: https://www.owasp.org/index.php/Server_Side_Request_Forgery\n\nI made a video exploiting this vulnerability in my own phabricator installation. demonstrating the steps to reproduce, and making 2 types of attacks possible with this.\n (F788864)",
+  "bounty_amount": "300.0",
+  "formatted_bounty": "$300",
+  "weakness": {
+    "id": 68,
+    "name": "Server-Side Request Forgery (SSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 788864,
+      "file_name": "SSRF-Phabricator-POC.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/juXzBPMskzmXcXyzCbDq8PKB?response-content-disposition=attachment%3B%20filename%3D%22SSRF-Phabricator-POC.mp4%22%3B%20filename%2A%3DUTF-8%27%27SSRF-Phabricator-POC.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTT5GWDDK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T003321Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCt%2FYhV17hF5nGneJzn6ZBQhAYTE5N%2BpFrhiKy7MHl6AwIhAMcamNmQA7H7GLLLn3nR%2FiXS43k289%2F87buQWL2hn37NKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzRgAAj%2B8YDhj0TfM0qjgX4hv387Gv5lEvwoKmXgNUJQRptmrr9wTKuv85aR9F8XBkjbIoPfqGTunukXVuaWMDL9z091rp7FU30QnsJ%2Btm2cRfJfL4%2BojLxlU6dgCWZbewvYUvS%2Fi3dY2endW0ESnUh%2F%2BZ%2Fdq4FkRp740rJEJwVJIoiqLR%2Flps0FxUgftyV5aBowp0iZVfAWw26ICAZVglrOkT2acZaqUqW70rnF1fjE2yDe%2FZICrEe4teSgFjmG5NyG9rIJJ8W7FneY5fJAlzCybMhP%2BS0bx1EQDX%2BFmMaWyuL63vkNzoJfU96R6vunR2pqtY6%2FLKuNIdX3toCeAQ7%2FtdohazmO3qkZ1mDCLa1U%2FtZYDaGUOvTB15riZWtvxDp9pFRBXgEMHhd%2FObvPg6BfrWHCODvZHdevfFTNUfrhGSdwx3nKrmxe%2BzTbqY43mm63A4Y%2BENEXHmlNYBqZfl1XtHNOwdQqGjLScOQ7K3kHAyaJFwCgGXNhnQtQ2c9hIX4EYCGxPNAVIhvjEZ5Wbq6P%2BZ4499j8N0qmwDN0%2Bpv9%2BW5dwTIu0E32rxc97Ft6j3sseo8RvOre4KQSuNFScw4FxeCIc1PB486Nlyu8VNtiHJFXX7%2FJjlPMe0wpRWlPwJ6zk%2FGIbmqV8WZz3VVvZujZJJiMxomePuAhx%2BIhy%2BGemqahDF26kdt7WMnl1RnJVFCfCTQ5tyW6nybQkpjN%2FKxT%2B7RH6bGkMYgNYhRQjNZ9CIu%2BWfRq9ZNBSRliMiL6HU3heeDWJ37%2FhIZCGh8Oukb639SRo%2BhsU5Qus%2BE4uIR8VgtFt2%2BEOQb5Q4Up9dxgKn1FKSw0%2BnHXQwKLHh7uxoe3WLaM0O6PxJqSWL%2FyFDI9JWIDlxH1Wnn%2B7JZkiEwwNTjzAY6sAHEsEcY4mx2md4mx53hnhRvi%2FvJE6Q7JXau56hn5HEM1dXgChHJZlHpYkYogEJP9xLeosKPp4252xcKpP%2BqMcGnhV010y8smXj5zskG2Vz7GKQzoZgpF2ES55lcIvIToXQpLJ%2FcsVXTsJYaiMIecUDGkb%2FfNUVyAiiz9PNf01OUlGazuOZMnEDdnjpbtEp8jZyCV1nzMUHXrgdO2fo5CU1jKrRIa4Zft%2Bzf4lehg%2BwfuA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=71ef6ef327ba60bd0c55a4bee9a31e44fefd393a9cad630e6c1216e3d7fbce62",
+      "file_size": 15448937,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-05-15T14:10:12.816Z",
+  "allow_singular_disclosure_after": -182082188.44624677,
+  "singular_disclosure_allowed": true,
+  "vote_count": 28,
+  "voters": [
+    "loaymorad",
+    "cxzer0",
+    "pr3da70r",
+    "ali",
+    "mik317",
+    "brahim_boufakri01",
+    "0nlymohammed",
+    "0xdeadbife",
+    "since2003",
+    "twavesx",
+    "and 18 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.7,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "high",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

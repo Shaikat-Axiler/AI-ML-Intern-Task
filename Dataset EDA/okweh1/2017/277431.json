@@ -1,0 +1,121 @@
+{
+  "id": 277431,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNzc0MzE=",
+  "url": "https://hackerone.com/reports/277431",
+  "title": "XSS on app.legalrobot.com",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "none",
+  "readable_substate": "N/A",
+  "created_at": "2017-10-15T15:33:16.894Z",
+  "submitted_at": "2017-10-15T15:33:16.894Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ajithab",
+    "url": "/ajithab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/195/131/79f731192abb8b8ef39e105e9dcf4ec42713dd67_original.jpeg/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1601,
+    "url": "https://hackerone.com/legalrobot",
+    "handle": "legalrobot",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/601/0f164c3d9618b04b006b859517ff032ec57ab42a_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/601/0f164c3d9618b04b006b859517ff032ec57ab42a_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Legal Robot",
+      "twitter_handle": "LegalRobot",
+      "website": "https://www.legalrobot.com",
+      "about": "Automated legal document review using artificial intelligence"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-10-15T22:20:33.722Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2017-10-15T22:20:29.229Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "1. Go to app.legalrobot.com\n2. Open the browser's javascript console\n3. Type   alert(/xss!/)    and press enter\n4. Profit!\n\n",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 229467,
+      "file_name": "Screenshot_from_2017-10-18_03-03-05.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/229/467/2e5cf3a3580323bc1cc380de5e65da4ea5caf4c5/Screenshot_from_2017-10-18_03-03-05.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2017-10-18_03-03-05.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2017-10-18_03-03-05.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4BA6LH4K%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031502Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC1ynwbBlow6qIJK17MRzhN7nr4Cjf%2FdTi3ci6QEaixTAIhAPDBRKtMmnGxlXx0q6Rr48go%2Bq44PR9iyFI%2Ft3c69dteKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzwOcF5Rwb7vGX0WaEqjgUcRJpytZ8L3s805I4QvBK5K2%2BkABMop7h3OuJn37X6AQGLH8zcNCcC7HpUyp3M%2FgW1QvkK2yvm%2FSNW6mPvG%2Buzkvg0aGODPps4i0tBnzT%2Bw8iyd8905PuZVeLfEniPCfPc5gIQRFqQs%2F6gKtPzpVQY3zHxzBdbeI1VYIGaHC6Q5Bqn3oIweODR5KKTl1ep6zukKyKwYs3ejl1%2B%2FaZhpuozx%2BEO9t%2FJ%2FooDTH3sQZ2uemccuzstnJabS%2BxaHJahEr7IhUk6Q6HTZD2o9fyyBUbKaEVr7F%2BNjMdpiPtDWPDrnnFelmty2RVC3ofwlg2N%2FGLfJjoeMDPag7DDig7HgbU%2B%2BoDqNc2rAlAvNSQ3jOJ0ivKaz1%2F8WtjfzPT5OwebhUWXnI0uansE3795z1TC1WgMGXIXJU%2FzpA%2Ba86GgILNbHNL9njwwcBVoler%2F4Bsyt%2F7OKk1i0No%2BE8PeLHyiXhS4TDKttTPuqN4Gzc2%2Fzqehmar0xyFB1sbeo5TCFKpwuAletsl0qLjKmBtbKdPvDf%2BPdJY2pt62j1auUKY2ro0nodOG2ltVUyqU5YOMMs2Vz32ZBabhL3wgCz%2BLSzqMfv7Pczaf6zco45Qk3s7L3oDd2TzkNsas%2F7Avkt2DhjZI2vnmHx0EGInGv1bQtUNTynvMuthECMeNYDTIQBOZ1zPE7%2BZSfwoyB4LmKvxsiCeESwyxPPqPF319iEA5r3vxFKaqQoGAwQYHOX0qxkDEEB4jqOPZ73YdXqvhBsLZvoTiWMG8zQGBGZ%2B8cKzeW6tMyEmuxu9HPZJvjvixvIj4fWTZ5g%2B4npU6DlRNuZUdb0NVbu6%2Bs%2B%2B%2FbgZzXmVO206WC1KgE%2Fo%2F%2Bc2Vpz%2FmqyCa1OowupzkzAY6sAGyAa541VUndav3ezLeFvzyKzzJ7LEaXmrN07X0CKW1pDvhWXXpChx85fwqgBiOl42evi6HvsSa0S%2B59BTHF0oc0FyIE49FgnBpgbeZTUAgXRPTwgTdYeAs8TAh3WF6DC4uI2rLK%2Fyong2kLZai90WpAMVPi1zY958KDCJUFlykfgV8XXz3adlwaaAcA5terCoXSjPkMYTFBV%2Fxkl6Pkc2Su9hT8fVx1QDAeTjTmdGRAg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4d6d65907d5ba24f71c8c931d9549b75a87b103a706056403a503710aa31340e",
+      "file_size": 543306,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "whycee"
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 519,
+    "asset_type": "URL",
+    "asset_identifier": "app.legalrobot.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

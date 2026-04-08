@@ -1,0 +1,162 @@
+{
+  "id": 3401612,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNDAxNjEy",
+  "url": "https://hackerone.com/reports/3401612",
+  "title": "IDOR Vulnerability in Banner Deletion ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2025-10-27T17:29:18.756Z",
+  "submitted_at": "2025-10-27T17:29:19.174Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cyberjoker",
+    "url": "/cyberjoker",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/m8QAvis1NEdKwiqa3zKinxSk/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2367,
+    "url": "https://hackerone.com/revive_adserver",
+    "handle": "revive_adserver",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/367/4f47a5b4a364515d4bbdc17550d67ea5415363cd_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/002/367/4f47a5b4a364515d4bbdc17550d67ea5415363cd_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Revive Adserver",
+      "twitter_handle": "",
+      "website": "https://www.revive-adserver.com",
+      "about": "Revive Adserver is a free open source ad serving system"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2025-52670"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2025-11-19T09:35:06.567Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2025-11-19T09:34:53.964Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\n\nI found an IDOR vulnerability in Revive Adserver's banner deletion endpoint that lets any Manager delete banners belonging to other Managers. The code validates access to the parent campaign but doesn't check if the user owns the specific banner being deleted. This means Manager A can sabotage Manager B's ad campaigns by deleting their banners.\n\n---\n\n## Description\n\nThe `/www/admin/banner-delete.php` endpoint is vulnerable to Insecure Direct Object Reference (IDOR). When I tested it, I could delete another manager's banners by manipulating the `bannerid` parameter while keeping my own valid `clientid` and `campaignid`.\n\nHere's what happens: The endpoint checks if I have access to the client and campaign (lines 30-31), but it never verifies I own the specific banner I'm trying to delete (missing check at line 32). The code then loops through the provided banner IDs and deletes them without any ownership validation (lines 40-48).\n\nI discovered this while comparing similar deletion endpoints. The `campaign-delete.php` file properly validates ownership inside the loop, but `banner-delete.php` doesn't.\n\n---\n\n## Steps to Reproduce\n\n### Prerequisites\n- Two Manager accounts (Manager A - attacker, Manager B - victim)\n- Each manager has their own client, campaign, and banners\n- Revive Adserver 6.0.1 running\n\n### Exploitation Steps\n\n1. **Login as Manager A** (attacker)\n   - Navigate to `http://localhost:8080/www/admin/`\n   - Login with Manager A credentials\n\n{F4938082}\n\n   *Manager A successfully authenticated and viewing dashboard*\n\n2. **Navigate to your campaign's banner page**\n   ```\n   http://localhost:8080/www/admin/campaign-banners.php?clientid=100&campaignid=100\n   ```\n   (Use your own clientid and campaignid)\n\n{F4938090}\n\n   *Manager A viewing their legitimate banner - note the CSRF token in the Deactivate link*\n\n3. **Extract CSRF token**\n   - Open browser DevTools → Network tab\n   - Look for any action link (Deactivate/Delete)\n   - Copy the `token` parameter value (32-character hex string)\n   - Example: `token=9fec0e8e46e9eb237d67d3da6e3e615b`\n\n4. **Identify victim's banner ID**\n   - Banner IDs are sequential integers\n   - You can enumerate them or get them through other means\n   - For this test: victim's banner ID is 2001\n\n5. **Craft malicious deletion URL**\n   ```\n   http://localhost:8080/www/admin/banner-delete.php?token=<YOUR_TOKEN>&clientid=100&campaignid=100&bannerid=2001\n   ```\n   - `token`: Your valid CSRF token (from step 3)\n   - `clientid=100`: YOUR client ID (passes authorization check)\n   - `campaignid=100`: YOUR campaign ID (passes authorization check)\n   - `bannerid=2001`: VICTIM's banner ID (NO check!)\n\n6. **Execute the attack**\n   - Paste the crafted URL into your browser's address bar\n   - Press Enter (within the same session)\n   - You'll get redirected with a \"Banner has been deleted\" confirmation\n\n{F4938094}\n\n   *CRITICAL: Green success message confirms Manager B's banner was deleted by Manager A*\n\n## Impact\n\nThis vulnerability allows horizontal privilege escalation between managers. Here's what an attacker can do:\n\n1. **Campaign Sabotage** - Delete competitors' banners to disrupt their ad campaigns\n2. **Revenue Loss** - Victims lose active advertisements and potential revenue\n3. **Reputation Damage** - Affected clients may lose trust in the platform\n4. **Data Integrity Violation** - Unauthorized deletion bypasses audit controls\n\n### Attack Characteristics\n\n- **Low Privilege Required:** Only needs a Manager account (not Admin)\n- **Easy to Exploit:** Simple parameter manipulation, no special tools needed\n- **Stealthy:** Looks like a legitimate deletion in logs\n- **Scalable:** Can be automated to delete multiple banners\n- **Cross-Context:** Manager in Agency X can attack Manager in Agency Y",
+  "weakness": {
+    "id": 55,
+    "name": "Insecure Direct Object Reference (IDOR)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 4938082,
+      "file_name": "02_manager_a_dashboard.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/zw59xo2wby617g2nol08ralc94e0?response-content-disposition=attachment%3B%20filename%3D%2202_manager_a_dashboard.png%22%3B%20filename%2A%3DUTF-8%27%2702_manager_a_dashboard.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6CXBEYJD%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T194901Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCPh66AlO5T02mAZYL3fssZAaBB8SZUoBSrrNW0Ju0xGwIgWwtpA9rH3G4mstoWbLMBz4hubv37RklarnHKPLLDDCYqugUImv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMPGAszwqQmKi%2BFnPCqOBXPO6jrBNe%2FahJQgL3GE%2BAm4A%2FxilheK%2F3mPupxT1S5zzO0O%2BXBO0tRnYEE05KCbSRuiw%2B3DiXX1yuJCxoBFlKEIbvTGVdu5fvipMwqDydzMWWV9LcP09K%2By2wuMDWgmtkEKpB4Li88xMF%2FmNPkU7Tmm%2BLwhnB4tjEJw%2Bd4DWshR7UFiCAfjl%2F%2FMkV81sCXD9ODuYZqzYYzmd499C0UlvWqZ14inWJJIdrWMycYPKkfL2JhLW%2B0PbfHpJk8%2BKflA5WMFl%2FN5xgrXPYMddLA%2F4LBDdX4oUDQmXdi1n9ePYMvXWNF7%2FLjHQnEcBULU4mRlpLR78cMtKfUKUVcauTSb5vgyjG94sCeSBT%2BVKv%2FWmSHN3pSuvPcCwDmwGU9h8PYiq8W23UPmnIGwpk%2F%2F%2BkW9DgZSJFXxhDL%2FtAjNN5vduN1efjiOxW6Zh6mtG3nh1FSV3gzF4zm7Utx2EuPVwYcdwbvcq5rR%2FX36bRJBK9%2Fgoh5UIYyPPdHI06fWifToggfu%2BHiZAONZiGmjjahB%2BpKljLT5aGAfCxtCb%2FHaaRB3i%2BzeNUmNjYo9wuVbMzGm7eagw9f5y8h0OkiegJT9SNUejx9sq12qKS2V0upRipB5oL6wbsGY443POSSoVY6M8n62gX49NymtYRDYapvHAE830eLvvD2jBA%2Bbw0jHbbx%2Bpz55CymcPvHYQ9axF0xVKRhTTA9lW5Ry%2BcBdEH4xaphU5sPNHcCZKknOXvPvDryPf7b%2Bq81EQKNDEpyajMKSX1RCHb3YIZyhkXbF3SMyCfp3s2XuHd2OerLNNfPusVNiKhucVLfMfzUwOpkTVZTF0c8WgLbcEaCyzE%2FG040U5VP07Pxl%2By5I27azxC91dUpgazClr%2BLMBjqxAadSPwD2aKA30e3FxlDF6Av92yeZ03zn%2F3WjmKN5LR9n8Bnd8k7ckMSairlI28lfP92kA6szo27%2Ffpieux%2FvJxrrOtK2FrYR920pAavl4TJZwTCvH2n5uNNdzzyD2zL8BoJhELluzs8Jz5QDBfsAw4hapBjZ8rl%2BfNdsRtegrmyTwrKE5drqeWqjKmY%2FapGD8B8lj4fKh5Gy8HhJOHGZbBAEu0OuCm85x8ZtE1RE1WtZcg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=730d70e56ac6429489c5ecd83f8939fb1ef66ec97b9b364243837dd855d5051d",
+      "file_size": 128485,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 4938090,
+      "file_name": "04_manager_a_legitimate_banner.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/fw0u54p3ztrnpqptjw8kfwscgsd9?response-content-disposition=attachment%3B%20filename%3D%2204_manager_a_legitimate_banner.png%22%3B%20filename%2A%3DUTF-8%27%2704_manager_a_legitimate_banner.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6CXBEYJD%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T194901Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCPh66AlO5T02mAZYL3fssZAaBB8SZUoBSrrNW0Ju0xGwIgWwtpA9rH3G4mstoWbLMBz4hubv37RklarnHKPLLDDCYqugUImv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMPGAszwqQmKi%2BFnPCqOBXPO6jrBNe%2FahJQgL3GE%2BAm4A%2FxilheK%2F3mPupxT1S5zzO0O%2BXBO0tRnYEE05KCbSRuiw%2B3DiXX1yuJCxoBFlKEIbvTGVdu5fvipMwqDydzMWWV9LcP09K%2By2wuMDWgmtkEKpB4Li88xMF%2FmNPkU7Tmm%2BLwhnB4tjEJw%2Bd4DWshR7UFiCAfjl%2F%2FMkV81sCXD9ODuYZqzYYzmd499C0UlvWqZ14inWJJIdrWMycYPKkfL2JhLW%2B0PbfHpJk8%2BKflA5WMFl%2FN5xgrXPYMddLA%2F4LBDdX4oUDQmXdi1n9ePYMvXWNF7%2FLjHQnEcBULU4mRlpLR78cMtKfUKUVcauTSb5vgyjG94sCeSBT%2BVKv%2FWmSHN3pSuvPcCwDmwGU9h8PYiq8W23UPmnIGwpk%2F%2F%2BkW9DgZSJFXxhDL%2FtAjNN5vduN1efjiOxW6Zh6mtG3nh1FSV3gzF4zm7Utx2EuPVwYcdwbvcq5rR%2FX36bRJBK9%2Fgoh5UIYyPPdHI06fWifToggfu%2BHiZAONZiGmjjahB%2BpKljLT5aGAfCxtCb%2FHaaRB3i%2BzeNUmNjYo9wuVbMzGm7eagw9f5y8h0OkiegJT9SNUejx9sq12qKS2V0upRipB5oL6wbsGY443POSSoVY6M8n62gX49NymtYRDYapvHAE830eLvvD2jBA%2Bbw0jHbbx%2Bpz55CymcPvHYQ9axF0xVKRhTTA9lW5Ry%2BcBdEH4xaphU5sPNHcCZKknOXvPvDryPf7b%2Bq81EQKNDEpyajMKSX1RCHb3YIZyhkXbF3SMyCfp3s2XuHd2OerLNNfPusVNiKhucVLfMfzUwOpkTVZTF0c8WgLbcEaCyzE%2FG040U5VP07Pxl%2By5I27azxC91dUpgazClr%2BLMBjqxAadSPwD2aKA30e3FxlDF6Av92yeZ03zn%2F3WjmKN5LR9n8Bnd8k7ckMSairlI28lfP92kA6szo27%2Ffpieux%2FvJxrrOtK2FrYR920pAavl4TJZwTCvH2n5uNNdzzyD2zL8BoJhELluzs8Jz5QDBfsAw4hapBjZ8rl%2BfNdsRtegrmyTwrKE5drqeWqjKmY%2FapGD8B8lj4fKh5Gy8HhJOHGZbBAEu0OuCm85x8ZtE1RE1WtZcg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=587bc6da2cd6b59ddd1a4605461b7b2f2b7fc79951ba3adac5b2b73eb8ce5ab1",
+      "file_size": 135470,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 4938094,
+      "file_name": "05_IDOR_SUCCESS_banner_deleted.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/x3jio6npgullofrfufwgeqkgimd3?response-content-disposition=attachment%3B%20filename%3D%2205_IDOR_SUCCESS_banner_deleted.png%22%3B%20filename%2A%3DUTF-8%27%2705_IDOR_SUCCESS_banner_deleted.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6CXBEYJD%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T194901Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCPh66AlO5T02mAZYL3fssZAaBB8SZUoBSrrNW0Ju0xGwIgWwtpA9rH3G4mstoWbLMBz4hubv37RklarnHKPLLDDCYqugUImv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDMPGAszwqQmKi%2BFnPCqOBXPO6jrBNe%2FahJQgL3GE%2BAm4A%2FxilheK%2F3mPupxT1S5zzO0O%2BXBO0tRnYEE05KCbSRuiw%2B3DiXX1yuJCxoBFlKEIbvTGVdu5fvipMwqDydzMWWV9LcP09K%2By2wuMDWgmtkEKpB4Li88xMF%2FmNPkU7Tmm%2BLwhnB4tjEJw%2Bd4DWshR7UFiCAfjl%2F%2FMkV81sCXD9ODuYZqzYYzmd499C0UlvWqZ14inWJJIdrWMycYPKkfL2JhLW%2B0PbfHpJk8%2BKflA5WMFl%2FN5xgrXPYMddLA%2F4LBDdX4oUDQmXdi1n9ePYMvXWNF7%2FLjHQnEcBULU4mRlpLR78cMtKfUKUVcauTSb5vgyjG94sCeSBT%2BVKv%2FWmSHN3pSuvPcCwDmwGU9h8PYiq8W23UPmnIGwpk%2F%2F%2BkW9DgZSJFXxhDL%2FtAjNN5vduN1efjiOxW6Zh6mtG3nh1FSV3gzF4zm7Utx2EuPVwYcdwbvcq5rR%2FX36bRJBK9%2Fgoh5UIYyPPdHI06fWifToggfu%2BHiZAONZiGmjjahB%2BpKljLT5aGAfCxtCb%2FHaaRB3i%2BzeNUmNjYo9wuVbMzGm7eagw9f5y8h0OkiegJT9SNUejx9sq12qKS2V0upRipB5oL6wbsGY443POSSoVY6M8n62gX49NymtYRDYapvHAE830eLvvD2jBA%2Bbw0jHbbx%2Bpz55CymcPvHYQ9axF0xVKRhTTA9lW5Ry%2BcBdEH4xaphU5sPNHcCZKknOXvPvDryPf7b%2Bq81EQKNDEpyajMKSX1RCHb3YIZyhkXbF3SMyCfp3s2XuHd2OerLNNfPusVNiKhucVLfMfzUwOpkTVZTF0c8WgLbcEaCyzE%2FG040U5VP07Pxl%2By5I27azxC91dUpgazClr%2BLMBjqxAadSPwD2aKA30e3FxlDF6Av92yeZ03zn%2F3WjmKN5LR9n8Bnd8k7ckMSairlI28lfP92kA6szo27%2Ffpieux%2FvJxrrOtK2FrYR920pAavl4TJZwTCvH2n5uNNdzzyD2zL8BoJhELluzs8Jz5QDBfsAw4hapBjZ8rl%2BfNdsRtegrmyTwrKE5drqeWqjKmY%2FapGD8B8lj4fKh5Gy8HhJOHGZbBAEu0OuCm85x8ZtE1RE1WtZcg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2aef8090ef75c12703c7505a69487bb7ef86a602939ef7ec4e90a5130aaf7599",
+      "file_size": 152940,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": "2025-12-19T09:34:54.518Z",
+  "allow_singular_disclosure_after": -5480046.648296733,
+  "singular_disclosure_allowed": true,
+  "vote_count": 43,
+  "voters": [
+    "0-chrollo-0",
+    "bl4de",
+    "mohaned0101",
+    "thalaivar304",
+    "sisi0x",
+    "0xsheet",
+    "2026",
+    "blurryface69",
+    "m9nxx",
+    "voidnesss",
+    "and 33 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.1,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "high",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 154,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/revive-adserver/revive-adserver",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

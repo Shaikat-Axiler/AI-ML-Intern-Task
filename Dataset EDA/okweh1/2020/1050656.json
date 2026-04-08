@@ -1,0 +1,129 @@
+{
+  "id": 1050656,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDUwNjU2",
+  "url": "https://hackerone.com/reports/1050656",
+  "title": "Bypass Tracking Blocker Protection Using Slashes Without Protocol On The Image Source.",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-12-04T15:33:38.578Z",
+  "submitted_at": "2020-12-04T15:33:38.615Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "demonia",
+    "url": "/demonia",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/sj8r427lwj4ghbt81jbgsc50vdd3/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 67,
+    "url": "https://hackerone.com/basecamp",
+    "handle": "basecamp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/STtZ2opgRsHdKby72xs56KhB/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/STtZ2opgRsHdKby72xs56KhB/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Basecamp",
+      "twitter_handle": "basecamp",
+      "website": "https://basecamp.com/about/policies/security/response",
+      "about": "Basecamp is the leading online project manager and the birthplace of Ruby on Rails. Creators of the HEY email service."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-12-17T17:02:57.685Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-12-17T17:02:57.597Z",
+  "team_member_agreed_on_going_public_at": "2020-12-17T16:49:37.714Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n- Some Way Has Been Discovered To Bypass Image Rewriting On HeyMail Using Slashes Without Protocol `\\/\\www.evil.com` That Allows Bypassing Tracking Blocker And Collect Users Information Via Emails.\n\n## Description:\n- While Searching I Found That The Image Rewriting Function On Heymail Could Be Bypass Using Slashes Since It Seems To Be Depending On A Blacklist. In The Normal Users Are Able To Request External URLs From Images, JS Imports , CSS Imports, ..etc Using Two Slashes Before The Domain. In This Case Users Wasn't Able To Do That Since When The Image Rewriting Function Is Detecting  Two Slashes On The First Two Chars Of The URL Source It Creates An External URL For It On gopher.hey.com. But Due To Some Lack On This Validation Users Are Able To Bypass The Images Rewriting By Inserting Another Slash Between The Two Slashes That Won't Change The URL. In This Case I Used `\\/\\`.\n\n- I Created A Simple Image Tag With This Payload: `<img src=\"\\/\\www.evil.com\">` And I Sended It Into My Testing HeyMail Email And I Got That The Web Browser Sent A GET Request Into `www.evil.com` Directly. \n{F1104089}\n\n## Proof Of Concept:\n- There Isn't Much Stuff Here. But, Here's A Simple Exploit HTML Code You Can Use To Trigger This Issue.\n\n```html\n<h1>Hello World</h1>\n<img src=\"\\/\\www.evil.com\"  >\n<h3>Open The Network Tab</h3>\n```\n\nBest Regards.\n\n## Impact\n\nBypassing Image Rewriting Function Witch Allows Trackers To Collect Users IPs Using Images.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1104089,
+      "file_name": "Mail-Network.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/9f26sni8ynt8uzz201m603li99ml?response-content-disposition=attachment%3B%20filename%3D%22Mail-Network.png%22%3B%20filename%2A%3DUTF-8%27%27Mail-Network.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234357Z&X-Amz-Expires=2676&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=160b366bf3f0e146fbc494e03dcad304ae2bd27f379ab0d0dd4c7dea24c7bb2d",
+      "file_size": 128604,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-01-16T16:49:37.780Z",
+  "allow_singular_disclosure_after": -160815259.8995645,
+  "singular_disclosure_allowed": true,
+  "vote_count": 17,
+  "voters": [
+    "bngrsec",
+    "ezzra",
+    "tinmo",
+    "arist0phanes",
+    "fqdn",
+    "ali",
+    "bibekshah",
+    "dnelsaka",
+    "thalaivar304",
+    "amad3u6",
+    "and 7 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 53959,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.hey.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

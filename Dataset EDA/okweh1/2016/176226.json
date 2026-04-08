@@ -1,0 +1,114 @@
+{
+  "id": 176226,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNzYyMjY=",
+  "url": "https://hackerone.com/reports/176226",
+  "title": "CachingIterator null dereference when convert to string",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2016-10-17T04:23:02.771Z",
+  "submitted_at": "2016-10-17T04:23:02.771Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ahihi",
+    "url": "/ahihi",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/106/056/b44f0450b0a2fca355ff6f460bd05357f4b9912b_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 54349,
+    "url": "https://hackerone.com/ibb",
+    "handle": "ibb",
+    "profile_picture_urls": {
+      "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ47XFCRIG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T011556Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHVPsoF6I6FyRKbsM27XjFKZV31Wx1XIhposHWSsK%2FCbAiBoeC0Lp%2FDUeQtZanQa%2Bf9FnSjjaoV6%2B2iyV4PuFEGnQCq6BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMEVNAQxLxNN%2F4UGfFKo4F2d4YEjoa12AJu7gu0MSjDqsiD3JRFzjiNGCOd8jRt9ClwTz83DdGVy%2B%2FxqyZCMN3602cQkbHbeCLVO8GbNryHTE0ZYcTt4hznVQ%2BV08rsdcmEsV3QOw2G%2FiVSWHK%2B0LNuId%2Bqwjl54mOPclGJlvJSLaZ7kx9%2B%2FvpTRhJBuzh%2FXjax%2FY24aCRGjnsxqxIQq3WdHR3oaZTXKHMskl8jyS4WCA1O5z72ryQmMZrLOH2LnYqjIDS8wOOKFC9rBC3Ko8eq2E4lhYm1CQJQxwzkEtlhMDJhTjzqO884j%2FEVmaKcv44qzcgWEqCSwcX8fb4stSHEFOgtAkbEBxHtQEX57O62riA2lT%2FCK46W339dkNBflZTscRtJL6FG%2FnxVoT5pJkyiGIH%2FEsapaxFnJtAlMEKgUELOzTljfz1JX8Plrdh4IZT2tpIpVDVL9rh%2BslDnGUovn34cLVmrmJexBgAq60PdTrOz%2BgaRkx5En095I6tlclIOsVMQJztHCzIxONpyOrFcMWjr9qGNGcLae3kX69LZYq07B0t12GmsMnXPyywPvgMY4sdG3wn5GYoiQItQXBBVfB%2BeJY8gVnLy0rJziuWuUB2gSJKc7HaMZTxFqS%2B5fqPneWT7b2JyD48Ief9l%2B63usgibOA4vp49ok%2FHNN4jW%2FJLaHsIIduYhRFFRx3ZbB%2BSrvueakqdB%2FsxySl8IuE8tqyMDVDmDd1s3rlSBCVAmtGJ2E9UtPG74sucnraSyc6NVFrNgHOjqMDeGzyD1TLYOzfCl%2FO4btxJMWBiGfNEMzGrKBUPf8bv5prJaaSrzQz4WCgkZ3rNNEu7vGu897yL0Rc27Tr0fNnJDbN0c3Tgb86uQDSEmq8v4D0rLgGxMMvx48wGOrIB2DfT7yr7SRoLEid5f4va96ylQKalm7dmkz9esbG2WPT0m9aeQo8VSilYHyzhmRT10F8JwoEuRDK7cMA0rzFk%2F8uYzAvNvoWJBUdjj89nKXT7%2FC2GiJLKcxplacvvJTPRFk5cWFC8oU13AqzSdhsEuNebfnB9fiWQLx%2BnmI1Urqs%2FYlrFgJ3W8odohEHaMwBV8XDarCqAhhthkQ%2BCn%2BShaN4XNsRFRTOgzQoxDAfBo4Ri7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d2ec2cf732dc9a4bc35022fc9617c986fc5a9574ce5503371540f1fbb51b0d9c",
+      "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/v0qywgoh5hm4cbhuanu8mqdtowhr/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c?response-content-disposition=inline%3B%20filename%3D%22ibb%20revision%205%20copy.png%22%3B%20filename%2A%3DUTF-8%27%27ibb%2520revision%25205%2520copy.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ47XFCRIG%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T011556Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHVPsoF6I6FyRKbsM27XjFKZV31Wx1XIhposHWSsK%2FCbAiBoeC0Lp%2FDUeQtZanQa%2Bf9FnSjjaoV6%2B2iyV4PuFEGnQCq6BQih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMEVNAQxLxNN%2F4UGfFKo4F2d4YEjoa12AJu7gu0MSjDqsiD3JRFzjiNGCOd8jRt9ClwTz83DdGVy%2B%2FxqyZCMN3602cQkbHbeCLVO8GbNryHTE0ZYcTt4hznVQ%2BV08rsdcmEsV3QOw2G%2FiVSWHK%2B0LNuId%2Bqwjl54mOPclGJlvJSLaZ7kx9%2B%2FvpTRhJBuzh%2FXjax%2FY24aCRGjnsxqxIQq3WdHR3oaZTXKHMskl8jyS4WCA1O5z72ryQmMZrLOH2LnYqjIDS8wOOKFC9rBC3Ko8eq2E4lhYm1CQJQxwzkEtlhMDJhTjzqO884j%2FEVmaKcv44qzcgWEqCSwcX8fb4stSHEFOgtAkbEBxHtQEX57O62riA2lT%2FCK46W339dkNBflZTscRtJL6FG%2FnxVoT5pJkyiGIH%2FEsapaxFnJtAlMEKgUELOzTljfz1JX8Plrdh4IZT2tpIpVDVL9rh%2BslDnGUovn34cLVmrmJexBgAq60PdTrOz%2BgaRkx5En095I6tlclIOsVMQJztHCzIxONpyOrFcMWjr9qGNGcLae3kX69LZYq07B0t12GmsMnXPyywPvgMY4sdG3wn5GYoiQItQXBBVfB%2BeJY8gVnLy0rJziuWuUB2gSJKc7HaMZTxFqS%2B5fqPneWT7b2JyD48Ief9l%2B63usgibOA4vp49ok%2FHNN4jW%2FJLaHsIIduYhRFFRx3ZbB%2BSrvueakqdB%2FsxySl8IuE8tqyMDVDmDd1s3rlSBCVAmtGJ2E9UtPG74sucnraSyc6NVFrNgHOjqMDeGzyD1TLYOzfCl%2FO4btxJMWBiGfNEMzGrKBUPf8bv5prJaaSrzQz4WCgkZ3rNNEu7vGu897yL0Rc27Tr0fNnJDbN0c3Tgb86uQDSEmq8v4D0rLgGxMMvx48wGOrIB2DfT7yr7SRoLEid5f4va96ylQKalm7dmkz9esbG2WPT0m9aeQo8VSilYHyzhmRT10F8JwoEuRDK7cMA0rzFk%2F8uYzAvNvoWJBUdjj89nKXT7%2FC2GiJLKcxplacvvJTPRFk5cWFC8oU13AqzSdhsEuNebfnB9fiWQLx%2BnmI1Urqs%2FYlrFgJ3W8odohEHaMwBV8XDarCqAhhthkQ%2BCn%2BShaN4XNsRFRTOgzQoxDAfBo4Ri7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=8f48a0f7e7e7e5a8db55bfee866c60b4cea882c28debafaedd658f275d7d7bef"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Internet Bug Bounty",
+      "twitter_handle": "",
+      "website": "https://www.hackerone.com/internet-bug-bounty",
+      "about": "The Internet Bug Bounty rewards security research into vulnerabilities impacting Open Source Software Projects."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-11-12T09:21:22.718Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-10-13T09:21:21.561Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "https://bugs.php.net/bug.php?id=73073\nPlease feel free to ask for more technical details if necessary.\nThank you for your consideration.",
+  "weakness": {
+    "id": 2,
+    "name": "Memory Corruption - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": "2019-11-12T09:21:21.648Z",
+  "allow_singular_disclosure_after": -198086074.88290894,
+  "singular_disclosure_allowed": true,
+  "vote_count": 1,
+  "voters": [
+    "spetr0x"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 84120,
+    "asset_type": "OTHER",
+    "asset_identifier": "PHP",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

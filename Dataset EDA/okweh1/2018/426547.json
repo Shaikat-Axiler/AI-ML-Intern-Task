@@ -1,0 +1,133 @@
+{
+  "id": 426547,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MjY1NDc=",
+  "url": "https://hackerone.com/reports/426547",
+  "title": "Missing Rate Limitation at /photo_videos/photoset/create",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-10-21T20:00:27.961Z",
+  "submitted_at": "2018-10-21T20:00:27.961Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "m00hdi",
+    "url": "/m00hdi",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 30475,
+    "url": "https://hackerone.com/chaturbate",
+    "handle": "chaturbate",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/030/475/178c32f60a890eb06ce5d698d44b3eafa35ccf8c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Chaturbate",
+      "twitter_handle": "chaturbate",
+      "website": "https://chaturbate.com",
+      "about": "The largest online adult cam site"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-11-24T23:09:33.537Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-10-25T23:09:23.828Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello,I discovered that one is able to create an unlimited number of albums Via /photo_videos/photoset/create/\nSteps To Reproduce:\n1.Login And Go to http://fr.chaturbate.co /photo_videos/photoset/create/\n2.Fill the form\n3.Enable a proxy interception tool (e.g Burp Suite)\n4.Click Save\n5.Send the POST request made to /photo_videos/photoset/create to intruder\n6.Set 500 or more custom inputs and Start attack\n\nI've been able to create many albums without restrictions\n\nReference:\nF364058\n\n## Impact\n\nCreate an unlimited number of albums",
+  "weakness": {
+    "id": 65,
+    "name": "Business Logic Errors"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 364058,
+      "file_name": "Sans_titre.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/364/058/5e7bd7d5e384d542b7e619900498b0436a214fd5/Sans_titre.JPG?response-content-disposition=attachment%3B%20filename%3D%22Sans_titre.JPG%22%3B%20filename%2A%3DUTF-8%27%27Sans_titre.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQW3246LIE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T020925Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDXEO1m0%2FtyUXL8Lpt3kAavzF7XlIgljXmHmCIZAdBPvAiEAiGNQE9MfrOu8GG8Ln2Mq7I0kXvDHt%2F2pgV8g%2BPt3R9EquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDLig3bMV5WIe%2FcSPRSqPBdksTZjgTF59W2N6Lqm3pKfMFkzcPyixalMf77ITyPklHu4BTdjwUX21CmfUaIbqV2wLhmVcVjfxw6vPhrbCywH331hIMwMt8P5FQy7ZMP2gLmQlVzRXWaHCDKPqt5v69p%2BUbgm2UMzoxfwnlHxD7Y2eCPQf%2Fzyz7TSQnvF3jBewXbmFeifRX60pbL0MkzQ5Xv2uQXudCY9bC3EQxoUQrt6AYleFfeqQSe7Xwuarl1pUb11R0qVg%2BzSPYu1%2FULBIrUlhbhY%2BuulCP1A0cmYTceBSJo4GVkx5uYtfw40IhP2GXixfwiDjRuD0iyhpZ79lmYJUnjPhSSXcSIKD%2Bk%2Bn5KcHdwtyKkBnrTOY2EXtE00xr5jTSrk3Ll8TsMJOdKiDVzb8X1fWbSdTVdHwfkLdG7130V5XJuXqcSsJ5IAg7hKbnGRcvz7Ub6YrbfQlt5nVnHhjCqb3E%2BFO16mCMRkqZXxiUSbpzb8k2iv44T9Nn02LI7Ah%2FTiM68I3AzX381tVj9gabobQP5YeDY6XDvRgOJVrDVcLUPCxL1wjOGZ%2Bi%2Fe9umINkOAF1o89k%2BUeYXJN8hD%2BFBcX6OW3QkSIsfugIgSdpJQkOIqZI9hwiqX%2BNV%2Bpa20frmnLNJ7TZAJhntNmaEoq9LycZ8zLweuFI5IDsyNdDYyDIKtCbCAW9lCgLO2aCuxVi64sl9sHb0t9HddwwUDQFYD1b5jsdLJTtKsRQXOqw663luXTET2MQEJC4oT%2B3o%2BfwIwIVWRzGoXHR04%2BVyyGxacyVJXc%2FERGhIYc9ftzeTo6umRtrGFaqAhXeMsoNmaJgR17MflCfnaCRLskX98d%2BYBjNaPEiP%2FOp1WjszhIG2xTQlz3INYU5W7T%2B3owu5jkzAY6sQFypA6jFM3YHpXMwins8CYxqiYjwvLE2Gh1zDMk%2FDwpJP6AZRJ6e3XXYHgXI7TIlatJXfL2HEeLIZ3nqpOkSsZyvN%2FNrpi4L2ybxsMfZ70aFgONHuH66glphZ9y0RDt6MvmoMYcJ2HgFHQtRaSRfo9npn%2BJyuLBDq1NDEOTKF0YfkgXZpnQ8j3v6nncfYyDhFXBFKFrSUJ1m1U08LPkv62FShee7kbUol3MwhY4iePNoy8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=778b220caa1d905b89390fd8d29af03e32887efa4913e93b03e06b9254147352",
+      "file_size": 160994,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-11-24T23:09:23.906Z",
+  "allow_singular_disclosure_after": -228538801.31089267,
+  "singular_disclosure_allowed": true,
+  "vote_count": 20,
+  "voters": [
+    "ganeshbagaria",
+    "ali",
+    "sameerphad72",
+    "mohaned0101",
+    "thalaivar304",
+    "savitar0x01",
+    "eveeez",
+    "khizer47",
+    "japz",
+    "cryptographer",
+    "and 10 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 11722,
+    "asset_type": "URL",
+    "asset_identifier": "chaturbate.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": 231086,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMzEwODY=",
+  "url": "https://hackerone.com/reports/231086",
+  "title": "CSP \"script-src\" includes \"unsafe-inline\" in https://gratipay.com",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2017-05-23T12:57:07.282Z",
+  "submitted_at": "2017-05-23T12:57:07.282Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "d4rk_g1rl",
+    "url": "/d4rk_g1rl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/iu41ya7imiuiazn1v7iq2gpm7q9r/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1868,
+    "url": "https://hackerone.com/gratipay",
+    "handle": "gratipay",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/868/a75c6649c5b4671b3cf44160af884a7da9fd0b67_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/868/a75c6649c5b4671b3cf44160af884a7da9fd0b67_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Gratipay",
+      "twitter_handle": "Gratipay",
+      "website": "https://gratipay.com/",
+      "about": "Gratitude? Gratipay! The easiest way for your company to pay for open source."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-07-10T09:59:44.036Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2017-05-23T14:14:08.075Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "#SUMMARY:\n\nRelated Report: #225833\n\nGratipay is using unsafe-inline in script-src csp headers which allows the use of inline resources, such as inline <script> elements, javascript: URLs, inline event handlers, and inline <style> elements.\nProof Of Concept\n\n#By Using cURL:\n\n      curl -I https://gratipay.com\n\n\nThe results See my attached photo.\n\nAbove CSP headers containing \"script-src: header which have \"unsafe-src\" attribute in it.\n\nThis does not result in an immediate threat, but should be excluded, if possible, as a best practice. For further information, see\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src\n\nRegards,\n",
+  "weakness": {
+    "id": 57,
+    "name": "Violation of Secure Design Principles"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 187355,
+      "file_name": "grati.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/187/355/1991ec2a72ad9ed7b88dbda15b9cdee1b69c02ee/grati.png?response-content-disposition=attachment%3B%20filename%3D%22grati.png%22%3B%20filename%2A%3DUTF-8%27%27grati.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWQH5ODH6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033902Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIB5ishT0L4ISixS9cKndP85gVywcTIQmD0QUaidLUQh2AiAlHN82DTQc23w05M3n6LdkyhLQJDlPY3ZU9KpH%2FXAZoiq6BQij%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMz7lQ%2FoRLBcvAFP5ZKo4Ffd2c6njDfzGofRWAynXjl0CmkrrBFUnVTi6kzs4%2FS1A6gKXNb1GY10Kv0yMvvn2jNVp6JWDe%2Bxgm8ueCwNq9qF5O%2Bp7VLjNufvxUfUNxBFH4k2w6v4aODQNFAGWida7tn5NNgUMOQSst7Skv3cMQIkSwvenkUX1c7XGuE9STRaizQ2rHwSL%2BSdkvR8CtOXnlI%2FfnH%2F1ZDAOYrNNfDjN%2FE%2BEACi3vTK175rA7bS%2BWXvDsaJNXJuFCxwr7HRRrxlAGXYzRqGEuBTy36loy%2BJZNNhaAQOlMXWVo7BAU9SmBa7GQ8jZBRrKhvvQSKYnrDftPMJquZn5gXJKdbCBvgcbyra3wFeQwWGzuOoGhsCOdb5y6bIFLmhfHH6kVacuzMcywUatSuOEcJNXfGz6cK2nsPZhaKHX7%2FxFKCSfaSS0aAk8Q%2FRQChQKWQMaiL9CEjKqTeEvvkJ6scbch6dF65c%2B8nRWUR1TavxjL2Qi3ijbn9hb3PtgvB%2FHh2vbiy4INBOe%2FEED6Mz3ZuTq6yT0BhsXrcVO7aZZUStph6T4m1OA3fBtmNfC44L%2FJrxyLYFU%2FeRrzYAr7yXrLy0AuwU4C6A4SVsy1S8M5%2Fi9tW7wobreiHssXaZOrQIJkmrxX8M36VvaZC7mOcPBthLCo14rdBHsND3dfYO9pTC6bjBjKaLSj4Nu7rBnGPKPNrqqNXl0phXFPLdi5QxmijoEY0IpqJ9dJl5I%2FkbwUInGSzkFn4dzLATKxoWW2968CLNTZpgganeiFN7rFepTOqZMjw%2Bfn1p15yZ5tTK0x1dSgwi8eGVY0SRpfeDZz%2FfC2VNpVEF5o2fZJWagPaeNq5dOKqLdKftLMNyEX5SsMJZk62qKWXllJMKac5MwGOrIBv1oTJ2rOItRemWFwQ6l6ggcjW8muXBWSoIg3xV4hOuQ3bMZgDiDFiLC6UT4mjcywfa82DVpSCaqKPJ5Zj8jx%2Fndcb9nSA2fCbO8LON6n087RTosNKDWnwIBF6OTlQpoQQURLaFw9Z4TBcpHTYHtY%2FzrXydLhLtoxMM6f4Fu8tnRoELXwRyBLpl0ddsuEGF0OeWncIW10MIQ3ce96sEVvH3ue4F2Q0EIaeY6cSmi%2FDWrVRQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f4da3e4e7f17bcbc3006e967587a95fe7a13bf008aa9238f9b151e7fd5cd18d2",
+      "file_size": 614411,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 2,
+  "voters": [
+    "doug18",
+    "j0539h"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

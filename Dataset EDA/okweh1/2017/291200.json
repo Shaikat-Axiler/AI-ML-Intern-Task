@@ -1,0 +1,128 @@
+{
+  "id": 291200,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yOTEyMDA=",
+  "url": "https://hackerone.com/reports/291200",
+  "title": "Hard Coded username and password in registry",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "none",
+  "readable_substate": "Resolved",
+  "created_at": "2017-11-17T14:33:24.774Z",
+  "submitted_at": "2017-11-17T14:33:24.774Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bluedangerforyou",
+    "url": "/bluedangerforyou",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/212/167/d4fe589a65a1733508ddc0a5d29090eeaaf3dbfc_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2379,
+    "url": "https://hackerone.com/kaspersky",
+    "handle": "kaspersky",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/379/d7dc3ce53a84816885872fb423816bfbbbd36390_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/002/379/d7dc3ce53a84816885872fb423816bfbbbd36390_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Kaspersky",
+      "twitter_handle": "kaspersky",
+      "website": "http://www.kaspersky.com",
+      "about": "Kaspersky is the world’s largest privately-held vendor of endpoint protection and cybersecurity solutions for business and consumers."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-05-06T19:51:42.600Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-04-06T19:51:27.450Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I was using a tool called RegShot to take a snap shot of the registry before and after installation in order to see what changes were being made in the registry and I discovered hard-coded credentials\n\nI have attached the full comparison details of the registry changes\n\nbut these are the lines and reg entries where the credentials are stored:\n\n HKLM\\SOFTWARE\\Wow6432Node\\KasperskyLab\\AVP17.0.0\\environment\\dump\\User: \"kavdumps\"\nHKLM\\SOFTWARE\\Wow6432Node\\KasperskyLab\\AVP17.0.0\\environment\\dump\\Password: \"UxzAbKFLufVBSg8Y\"\nHKLM\\SOFTWARE\\Wow6432Node\\KasperskyLab\\AVP17.0.0\\environment\\dump\\FTP: \"kavdumps.kaspersky.com\"\n\nI was able to open browser and navigate to ftp://kavdumps.kaspersky.com which gave me a login prompt.\nI used the username: kavdumps \nand password of: UxzAbKFLufVBSg8Y\n\nI was able to login. The directory was empty however\n\nI have attached a video and the log file\n\nI have seperated the lines so it is easier to find in the file.\n",
+  "weakness": {
+    "id": 64,
+    "name": "Use of Hard-coded Credentials"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 240402,
+      "file_name": "KIS.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/240/402/f35dfc522ee731d66c604116d191380723dc0067/KIS.mp4?response-content-disposition=attachment%3B%20filename%3D%22KIS.mp4%22%3B%20filename%2A%3DUTF-8%27%27KIS.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUW5GLOYL%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023840Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDYhBS%2F5VcfZQoVKPCP3PMIGAnAgr0yok6CFSBuOMKnLAiBgFjLlNJ%2BF3hQIVnvpLOswT4hkSNq%2BMYveyWp595gVSSq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMmvATzICWMZyg%2BEmgKo8F5Rs%2F6%2BZI4d%2BiyJ1BlpX3hCjPJ57heooIh02HBPAicA63RSusijKaMwzlihDFi3T7BZGy7mmijkEUumvngSKnkS93CXMIZE0cVhP90ePkzmj8VZD0z8IBl1TWefYi5eLu%2Fg5gVw7gZK7kqAyAP1eZdDhi23nXCYlQuXnHtDEFaIhdvGt%2F2qI%2FW9iL0w3TpaH8QwgldxlXYxpb4ac7W287ePReyrMFQcR7rNjesOA9U2hl%2BdtF6DKuHABuL0j5KFTc1I8fa89iPJIE%2BHsKhOqPLZkRdCkFyHm5yTmwTgdMh%2FgSxRBul%2FEbpFjPT3WXJCbv6FST9chV15pyQSTTcOo%2FaGg840gaQk8jYUu%2F0wGkHOHJ8I6mPomfdqJGiFgABqCMJ8QmNSOJ9a1C6zYpbvneYomomhlbYUHSiCFOZw3%2FomnozvOSIqId0JtShWDN1RxdwcaELkEqzyZkc7k2SsjxEZ3BOc%2BliQyRD%2FYw7BzBacMSeqb8A2lme0BUlIGNE60JeSikvu4Xx%2FtqxV%2FTgpOAaJlEEIIM%2BecYGbiKDL83kPkWdD6gdm9hYYXdpVHALrDxRvvNiYZsnF77nlrpxD%2FntsIkD3uTsiRPV6scViYtCpVRTP3F4RMosyLsaywbWY%2BVKUDmJ3hjOfhhxsGqwLry195%2FZptXubNA30zes60wzEtc4XEZPxUn5%2B9B0tgiG65QdFm8G4U3L3ZG0dISsJms%2FBXKoeVRHRadA6ZgYcdPXttSj%2F%2FLzp9WzezDg3Dst4Ms6om1CmlROgVpqXTnEo%2BXsRihHsM0WMCetjTYGxbU3wTFuIcYNcgUFIknWZUbMynjn1lu%2F%2FAs4PJHeJgkYNg%2FyjCZ8OMZs5cR8nQ7n0seejDhi%2BTMBjqyAS%2BCDilewSeHJBnHOaD0HVbcYsOfoiQ7T1FEfK0x%2B0s%2FvxJVcDYV6zkuRJaxuKjnYTL%2F5IrQDKjhxHg%2FfzY3AmQya%2B22FKQrGdA3M%2FkYzi34z8fvHlH3zms2HyYhwkA0Wxy0%2FWHnHipSF1ygE22OkH3fCBGtDEr5ZpNmlOmBPd80gGADv2c6gaycfgQtPWaPSxzNPtetgJnErmjXFYPRT%2B283YQvsv3JAfdNy5cQwUrU2%2FY%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ba5f95ad702841a29019773f7af02431f0a52dfc8f3968649d19ccfce952549e",
+      "file_size": 17411415,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-05-06T19:51:27.586Z",
+  "allow_singular_disclosure_after": -246005233.29144257,
+  "singular_disclosure_allowed": true,
+  "vote_count": 17,
+  "voters": [
+    "foobar7",
+    "savitar0x01",
+    "apapedulimu",
+    "eveeez",
+    "lordjerry0x01",
+    "grampae",
+    "japz",
+    "khoata",
+    "c37hun",
+    "sumit7",
+    "and 7 more..."
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

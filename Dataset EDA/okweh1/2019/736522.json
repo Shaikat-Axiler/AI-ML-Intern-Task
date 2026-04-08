@@ -1,0 +1,206 @@
+{
+  "id": 736522,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MzY1MjI=",
+  "url": "https://hackerone.com/reports/736522",
+  "title": "[authmagic-timerange-stateless-core] Improper Authentication",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2019-11-13T02:12:02.597Z",
+  "submitted_at": "2019-11-13T02:12:02.597Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ermilov",
+    "url": "/ermilov",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/066/860/675cf13b580684485fa62b5e472d044d85cbccca_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-09-16T05:07:49.580Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-09-16T05:07:49.527Z",
+  "team_member_agreed_on_going_public_at": "2020-09-12T20:49:58.355Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report Improper Authentication in `authmagic-timerange-stateless-core`\nIt allows to forge user's identity.\n\n# Module\n\n**module name:** authmagic-timerange-stateless-core\n**version:** 0.0.9\n**npm page:** `https://www.npmjs.com/package/authmagic-timerange-stateless-core`\n\n## Module Description\n\nStateless and passwordless authentication core for authmagic (https://github.com/authmagic/authmagic).\n\n## Module Stats\n\n[20] weekly downloads\n\n# Vulnerability\n\n## Vulnerability Description\n\n`authmagic-timerange-stateless-core` is an npm module that runs an API for stateless and passwordless authentication by utilizing JWT tokens. The module is also one of the core dependencies of `authmagic` which is an authorization service.\nThe module defined to handle authentication but does not validate the JWT token sent by the user when reissuing a new token (POST request to `/token` endpoint). Therefore it allows modifying payload within the token and also reissuing new token which will be signed by the system and become valid. This weakness provides an opportunity to forge the user's identity by changing the information inside the token's payload that is used to authenticate the client.\n\n## Steps To Reproduce:\n\nsource code example:\n\nhttps://github.com/authmagic/authmagic-timerange-stateless-core/blob/master/core.js#L11\n\n```javascript\nconst checkRefreshToken = (token, refreshToken, key) => {\n  try {\n    if(jwt.verify(refreshToken, key)) {\n      return jwt.decode(token, {complete: true}).signature === jwt.decode(refreshToken).signature;\n    }\n  } catch(e) {\n    return false;\n  }\n\n  return false;\n};\n```\nwhile comparing signatures in `token` and `refreshToken` only the `refreshToken` is verified, the `token` itself has to include the same sign like the one stored in `refreshToken`'s payload but the validity of the `token` is not checked.\n\nthe `authmagic-timerange-stateless-core` is utilized by `Authmagic` (https://github.com/authmagic/authmagic) so it is handy to use `Authmagic example app` (https://github.com/authmagic/authmagic-getting-started-example) for testing, as it demonstrates the behaviour of the module in a situation that is near to production.\n\n* create directory for testing\n```bash\nmkdir poc\ncd poc/\n```\n\n* install and run authmagic example app\n```bash\nnpm install -g authmagic-cli\nnpm init -y\nauthmagic init -e\nauthmagic install\nauthmagic\n```\n\n```\nNote: make sure name in your package.json is not named as authmagic if you do not want to get an error npm refusing to install as a dependency of itself.\n```\n\n* go to http://localhost:3000\nF632927\n\n* enter email and click `Send authorization link`\n* follow `Preview url` form the console (similar to one on screenshot)\nF632928\n\n* follow `Click here`\nF632929\n```\nNote: next I provide steps to intercept and change jwt token with BurpSuite and its JSON Web Tokens (JWT4B) plugin, as it is the easiest and quick way if more detailed explanation required let me know.\n```\n\n* click 'Refresh token' and intercept its request\nF632930\nF632931\n\n* change payload parameter `u` inside `token` (e.g with `JSON Web Tokens (JWT4B)` plugin)\nF632932\nF632933\n* different email will be displayed\nF632934\n\nWhile testing you can put a breakpoint in `poc/node_modules/authmagic-timerange-stateless-core/core.js` file to line 10:\n```\nconst checkRefreshToken = (token, refreshToken, key) => {\n  try {\n    if(jwt.verify(refreshToken, key)) {\n...\n```\n\nor add a console.log after it like to this \n```javascript\nconsole.log(jwt.decode(token, {complete: true}), jwt.decode(refreshToken));\n```\nto make sure that it is the `authmagic-timerange-stateless-core` responsible for handling token verification\n\n## Patch\n\n## Supporting Material/References:\n\n- OPERATING SYSTEM VERSION: Linux Mint current\n- NODEJS VERSION: 12.7.0\n- NPM VERSION: 6.10.0\n\n# Wrap up\n\n- I contacted the maintainer to let them know: [N]\n- I opened an issue in the related repository: [N]\n\n## Impact\n\nThis weakness provides opportunity to forge user's identity by changing information inside token's payload that is used to verify the client.",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 632927,
+      "file_name": "______________2019-11-08_09-30-14.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/5S7DW3yWHznBpR4FJ5LJCgyr?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-30-14.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-30-14.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9d69cb26a382cacbab55b821b04ef1fe303b1bd43ed4def1527b03da9645d471",
+      "file_size": 35375,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 632928,
+      "file_name": "______________2019-11-08_09-31-02.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/5p5Eod6SLd6cHqbe7e5Bowi4?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-31-02.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-31-02.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c13a0a07d88700bf6498c381e4eaae44ff56933c6dba029772c3a734e0ee3d2e",
+      "file_size": 15787,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 632929,
+      "file_name": "______________2019-11-08_09-31-34.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/5D59nQsH9KBmnxHCrwTbBSzR?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-31-34.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-31-34.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5131a9e8fc84470bfe1249c659832f50f090782539d612bfa6561c857bb536da",
+      "file_size": 59607,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 632930,
+      "file_name": "______________2019-11-08_09-31-49.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/9PdXaW7AdSFfixv341ASLpPT?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-31-49.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-31-49.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=97ffcb7227dbc0bb6403b9c37fccdbd883523729f3162d57dc1ac9f17d63da8e",
+      "file_size": 37923,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 632931,
+      "file_name": "______________2019-11-08_09-32-33.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/k9gsHJq77bBRteFyeQAMwN7m?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-32-33.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-32-33.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f303fdb1c06f35898cbfb759d4ac61e12a5f44af54fce56ab3b847605f346b5d",
+      "file_size": 77599,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 632932,
+      "file_name": "______________2019-11-08_09-32-57.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/8WE7zBepJV3Sambx9q1VHC5L?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-32-57.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-32-57.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=af4d8e3099711957971a344558acece5b26da7a709cc5572a1777aa749b747c8",
+      "file_size": 64272,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 632933,
+      "file_name": "______________2019-11-08_09-33-15.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7ssMJYDxxmiS7s4e5imPNuxz?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-33-15.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-33-15.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5c3903d03af13cb156742dc1792a2b2ce3064e6fdfb7e792cc1d3fc76f0e78cd",
+      "file_size": 64899,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 632934,
+      "file_name": "______________2019-11-08_09-33-32.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/kLNCKSayEBKTtAfLtjdgBWJx?response-content-disposition=attachment%3B%20filename%3D%22______________2019-11-08_09-33-32.png%22%3B%20filename%2A%3DUTF-8%27%27______________2019-11-08_09-33-32.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQT3XPIBTX%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000347Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCe6NP7E3Evd%2FRaoClnJkdPSqvBzav8NNNbp6p14bmYHwIgbkRJJYmU2IjGSnTKnpiDCNxXobPtPuK05PEp%2B0vFP%2FoquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHCy1Rqrk7IPVtlx%2FCqPBeCDfFZVa9nQUZQ75NO4t4x4oQz%2BPgsNots5pll%2FA9%2Bcjhfkx%2FE6pHPcS0QZwlpj3cwouw5m3CwrEsQqzLOt%2Bgnlin%2BvlcBWpWbe5s0OaJPXBE0pbtZhQBKn%2BFtIU83uy7QPcS9ahKRvWBQCPp93f7jTWwMfdUotwp2kH4mLYTj7UrHdWzPzVQJnZ6fAHA9fcIRMz3Gv%2F8%2FpLm4yh%2BUjJKt0N6xtcOkFm77MxtFguyJvf7SXCk090HUL9mvbY%2FfNJCOHW9S6nFtTEQrOMGaKyv7q2ZfsNQeDWtKrMKIJ1YVNdncd1wl3qt%2FDeUATP4K92CwC%2FROXyhnQU4hwoIgtwKUBXW%2FRTwoXnsKWf6iMwBo2c0RWlwb31Y5YZMkpiIn0UXvv1qOpFoD8ms%2BzAsBhuIK7TEgfQ%2BXIgLKMjuuvUcjS21lQGrAb3Wj8Zfm1Ah3i7%2BVnQ8v6jb3%2B1I1Qxy0wrITlpLMFAVHMeCb4j9mCUjqMknyNaCq5KZuBdwv17SL2a%2FR3tBSAXOp5G1V6d1XyCe7VUmRpS4uHYSAtYJxSxXSrs2g6Ecs28YsJLIG743ieG4N7RYUVpi5MsdlBbt%2BD%2BDp6HHdbl3LmJprv122icCFFZMpjB7xJN6%2BLYc%2FejkmzgFvH8YLgt1hXpr%2FUuk1%2F%2FAdvgbtTTcfTJj12XfLdMZm%2FLyvdKRTlEOv%2F9HfSuaew9nXp0%2FTMLzszKbvbLqXC9J7DHe7Jw0AJQa%2BB9XrpLv5SfmU9KfhagFfcM0gQyu0Xs%2Bd%2FM0MosP7fhTM9KrhsEQM%2BWP%2BDvXJhAR%2BX55mnOsUR5mexKgIPYLtbmwyICeL81ZwFtRarcQRbOVI0S4eSe1DAMEd9A3ar3frhejSglmww2NvjzAY6sQEIh6uEq0R1ih%2B%2F7jfl76DFrYe64iB5IWRRHxQl46O2EC95G3T5SHa5mqOMJUl9H2EmYUy7AK5TgItRAk0AhcnYLX7CB5UklQYQhZzO%2BJHbpmvhyxJrI3WAu94ZZzFRU6KIWsLPy9X6p1VzVNGisOjftjn8wBANQhpdtFDDqzuAV9WWhaJ7r7xQFwcafN%2BptJ%2Fh41U7Z3CkR6te9XNn%2FZZVW7WlL4hXPzGQeDxnSF9A8qw%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c3a9518f7a24f3c4887ba71d543902f45b715319d88d28c4ffa8cc7e31fd50e3",
+      "file_size": 35835,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-10-12T20:49:58.459Z",
+  "allow_singular_disclosure_after": -169096429.10722467,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "exbrazily",
+    "pr0f0x01",
+    "destinedtohack",
+    "shrugsec"
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 2986,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "Other module",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 23097,
+      "category": "researcher",
+      "content": "Research based on this and other JWT related H1 reports:\nhttps://r2c.dev/blog/2020/hardcoded-secrets-unverified-tokens-and-other-common-jwt-mistakes/",
+      "updated_at": "2020-06-20T01:50:04.353Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 66860,
+        "username": "ermilov",
+        "name": "Vasilii Ermilov",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "https://ermilov.dev/",
+        "location": "",
+        "created_at": "2016-04-05T10:33:27.242Z",
+        "url": "https://hackerone.com/ermilov",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/000/066/860/675cf13b580684485fa62b5e472d044d85cbccca_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/000/066/860/675cf13b580684485fa62b5e472d044d85cbccca_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/000/066/860/675cf13b580684485fa62b5e472d044d85cbccca_original.jpg/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586"
+        }
+      }
+    }
+  ]
+}

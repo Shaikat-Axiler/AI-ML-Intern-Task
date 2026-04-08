@@ -1,0 +1,131 @@
+{
+  "id": 413655,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80MTM2NTU=",
+  "url": "https://hackerone.com/reports/413655",
+  "title": "Server side includes in https://lgtm-com.pentesting.semmle.net/internal_api/v0.2/savePublicInformation leads to 500 server error and  D-DOS",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "low",
+  "readable_substate": "N/A",
+  "created_at": "2018-09-24T22:43:56.018Z",
+  "submitted_at": "2018-09-24T22:43:56.018Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "zzealsham",
+    "url": "/zzealsham",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/75f0vk5tm4bwvzpgoprep5547mnr/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 27264,
+    "url": "https://hackerone.com/semmle",
+    "handle": "semmle",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/027/264/8af1325fdaccc38beab4451ba68ace24623b248c_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/027/264/8af1325fdaccc38beab4451ba68ace24623b248c_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Semmle",
+      "twitter_handle": "semmle",
+      "website": "https://semmle.com",
+      "about": "Semmle's engineering analytics platform helps leading technology companies and open-source developers build secure, reliable software."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-07-18T12:54:03.810Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-07-14T12:40:58.047Z",
+  "team_member_agreed_on_going_public_at": "2019-07-18T12:54:03.651Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** \nImproper sanitizing of input in one of the input forms in https://lgtm-com.pentesting.semmle.net/internal_api/v0.2/savePublicInformation leads to server side include that causes a 500 internal server error and a possible denial of service.\n\n**Description:** \nAfter login in to semmle , in other to update you personal information a post request is being sent to the endpoint https://lgtm-com.pentesting.semmle.net/internal_api/v0.2/savePublicInformation. inputing the following payload as the value of the location field causes a 500 server error\n## Steps To Reproduce\n1. login  to semmle\n2. goto account settings page\n3. fill the form and hit save\n4. trap the request with proxy like burp\n5. enter the payload <!--#config timefmt=\"A %B %d %Y %r\"--> as the value for location so the body of the form looks like this:\n  {F350625} \n \n## Supporting Material/References:\n{F350626}\n\n## Impact\n\nA user could  send a more harmful command to the server and cause the server to be unavailable for other users, also after entering that payload i could no long access \n       https://lgtm.com.pentesting.semmle.net/settings . it kept on loading forever .",
+  "weakness": {
+    "id": 58,
+    "name": "Command Injection - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 350625,
+      "file_name": "semmle1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/350/625/4a8b155accee045b25ba6c1bd71cad27c4513191/semmle1.png?response-content-disposition=attachment%3B%20filename%3D%22semmle1.png%22%3B%20filename%2A%3DUTF-8%27%27semmle1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUA5QK5VM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014114Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHm3btGgzlHis%2F9oOvDESSVePwMxPk4gaBS9iNiFviM3AiAPW4u6lqAH6O3yHvm7bIIcgWVWFnqYsbO0u9JBe7yUiyq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMcnYPosg7URHoCiAsKo4FadOTpgQUOQsra9GYh96WIhzwAyOBNd2Vt3Qec%2Fgp%2B%2BaVGBiAlxfSNPk0%2B%2FweLcmJgii%2FHxEMBtCNDKrMUaCY3jeLGrOxGdGHFHjYQ%2FUJkquobacRE1k%2BJThpoeED3m2iXLcBxl9Du3ilY%2FKiM1%2FLXbxvbp9oTVeu02rdo6WYQ%2F0hcawgggpwf7BdaW93ZiAFSGA%2BksIxFjkaMdv59JJtHuZ9xgoR4iinarwKFEGcwr76Ewo9gzOw98MP%2F%2F6BiL6rn48yiqGKW6r9Y1%2Bu%2BbXRQD%2Fh4OE7ZWwMJ9D61y7BcO9GlqvKSD013lVN%2Be8mnjapPA3llc00y13lavGRw1XJ8Yweb5JiEltZLNYD7U97UVkJXQ4qTblffHxiSAQSu3cwynw1NxYipJuPpK8ICludkl3%2F3w95uDuKJCKw6xYQ%2FXWVEtAHmnfRwzLz%2Fg0xdlLrvdgiEl5DImy3dUYnFxKg1esN%2FPHm3EmaEb95rMYIkVNzU0ibZAbq5s%2F7LH4i4%2BVzplxFDT0gt4%2FfqBVYADFq8c7kZhMZS5PZcFpxExJL8ztuU85PQTy7Sngh9zHB4Vr3tpIidd6CYDF8fner5noNOTeTzsDIVVEK1bIk8%2F1t6pt7z%2BPqwk2ormCBJshSUZ8lI0yAGafaEXj1p5LktF6ry161%2FUy1nhHgg0UIZBUJ8HweWcKKTOHlohRrttZTgDRaz8VqzrswkkNsT%2FhGJ6sTmHmyyM4FPMCOobHO9lSPW%2BPmfcO4%2FJcYtJjeJrH684CXmkZ5AScck8adSGeCv0R6BBHWWD7XmbAYtvjKhQDKfBklp%2F8FstDxGlobJdfOHqRp08VYyhx9eE9h1glcQBTJmdRj%2F8vBKDdpydb2gRxAMLiO5MwGOrIBiYUQSOFVSboEO4%2FCyL%2Bphoe1fcxLtPOyCw92kU%2Bs971KDYauREWX6iVasq0gazDHhU4lmu43NhxOAgDU9Nmy8eGu8eMeAs49rQngMUfJpgZ9ANH00W3o89h68qQo3G08UZm5U%2BZIFnekRLGUfq2OlwlVboT4Tjz7Xu3H49YLJZ%2BlqEGjxU1jWst7Bco8nAvwITl21SekSNbSzK0fNDZ1V2mQeqPwPLtJ1mAAw0KGfZsneA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cfb0b474d990d111f754bc3ff1126ac2e75f4418fbb53d6b353e900d3e708a41",
+      "file_size": 33936,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 350626,
+      "file_name": "semmle2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/350/626/31a57383ced036e7e175d5a8ce9a46272fe5098c/semmle2.png?response-content-disposition=attachment%3B%20filename%3D%22semmle2.png%22%3B%20filename%2A%3DUTF-8%27%27semmle2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUA5QK5VM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014114Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHm3btGgzlHis%2F9oOvDESSVePwMxPk4gaBS9iNiFviM3AiAPW4u6lqAH6O3yHvm7bIIcgWVWFnqYsbO0u9JBe7yUiyq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMcnYPosg7URHoCiAsKo4FadOTpgQUOQsra9GYh96WIhzwAyOBNd2Vt3Qec%2Fgp%2B%2BaVGBiAlxfSNPk0%2B%2FweLcmJgii%2FHxEMBtCNDKrMUaCY3jeLGrOxGdGHFHjYQ%2FUJkquobacRE1k%2BJThpoeED3m2iXLcBxl9Du3ilY%2FKiM1%2FLXbxvbp9oTVeu02rdo6WYQ%2F0hcawgggpwf7BdaW93ZiAFSGA%2BksIxFjkaMdv59JJtHuZ9xgoR4iinarwKFEGcwr76Ewo9gzOw98MP%2F%2F6BiL6rn48yiqGKW6r9Y1%2Bu%2BbXRQD%2Fh4OE7ZWwMJ9D61y7BcO9GlqvKSD013lVN%2Be8mnjapPA3llc00y13lavGRw1XJ8Yweb5JiEltZLNYD7U97UVkJXQ4qTblffHxiSAQSu3cwynw1NxYipJuPpK8ICludkl3%2F3w95uDuKJCKw6xYQ%2FXWVEtAHmnfRwzLz%2Fg0xdlLrvdgiEl5DImy3dUYnFxKg1esN%2FPHm3EmaEb95rMYIkVNzU0ibZAbq5s%2F7LH4i4%2BVzplxFDT0gt4%2FfqBVYADFq8c7kZhMZS5PZcFpxExJL8ztuU85PQTy7Sngh9zHB4Vr3tpIidd6CYDF8fner5noNOTeTzsDIVVEK1bIk8%2F1t6pt7z%2BPqwk2ormCBJshSUZ8lI0yAGafaEXj1p5LktF6ry161%2FUy1nhHgg0UIZBUJ8HweWcKKTOHlohRrttZTgDRaz8VqzrswkkNsT%2FhGJ6sTmHmyyM4FPMCOobHO9lSPW%2BPmfcO4%2FJcYtJjeJrH684CXmkZ5AScck8adSGeCv0R6BBHWWD7XmbAYtvjKhQDKfBklp%2F8FstDxGlobJdfOHqRp08VYyhx9eE9h1glcQBTJmdRj%2F8vBKDdpydb2gRxAMLiO5MwGOrIBiYUQSOFVSboEO4%2FCyL%2Bphoe1fcxLtPOyCw92kU%2Bs971KDYauREWX6iVasq0gazDHhU4lmu43NhxOAgDU9Nmy8eGu8eMeAs49rQngMUfJpgZ9ANH00W3o89h68qQo3G08UZm5U%2BZIFnekRLGUfq2OlwlVboT4Tjz7Xu3H49YLJZ%2BlqEGjxU1jWst7Bco8nAvwITl21SekSNbSzK0fNDZ1V2mQeqPwPLtJ1mAAw0KGfZsneA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b1508e55f51359f9d78f644d53fba1f3169940c94c1d9c9c8063d93d956ac89e",
+      "file_size": 10341,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 3,
+  "voters": [
+    "k0ns0l",
+    "lesleybw",
+    "tiago-danin"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 8552,
+    "asset_type": "URL",
+    "asset_identifier": "lgtm-com.pentesting.semmle.net",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "id": 446238,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80NDYyMzg=",
+  "url": "https://hackerone.com/reports/446238",
+  "title": "EXIF metadata not stripped from JPG group logos",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-11-17T03:01:12.894Z",
+  "submitted_at": "2018-11-17T03:01:12.894Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "jackb898",
+    "url": "/jackb898",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 264,
+    "url": "https://hackerone.com/gitlab",
+    "handle": "gitlab",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/f0hovtq73f9ap815a0r1w42bocp4/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "GitLab",
+      "twitter_handle": "gitlab",
+      "website": "https://about.gitlab.com",
+      "about": "A single application for the entire software development lifecycle."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": true,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-09-08T14:02:33.063Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-03-03T01:46:28.832Z",
+  "team_member_agreed_on_going_public_at": "2020-09-08T14:02:32.968Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** When uploading JPEG images as group logos on Gitlab, the EXIF metadata is not removed or changed in any way.\n\n**Description:** When setting up a group on Gitlab, you can upload a logo, and if you upload a JPEG with EXIF metadata on it, it isn't stripped. This can lead to disclosure of location where photo was taken or other personal information by the photo uploader if their group is public, as anyone can download the logo and check the metadata.\n\n## Steps To Reproduce:\n\n1. Upload a testing image w any EXIF tags filled in (you can test with the attached download.jpg image on this report)\n2. Make the group public\n3. Visit the group page unauthenticated and download the image\n4. Use Windows properties tool or any EXIF viewer, check the metadata. Whatever was there when uploaded should be there when downloaded, including the exact file name (though the file name part isn't an actual reportable problem, it's good practice to just encode/make it a random file name in case the user uploading forgets to remove personal information in the file name)\n\n## PoC\nCheck out my group: https://gitlab.com/gthgh\nTry downloading the logo. The metadata for it should show \"egginfo\" under Copyright.\n\n## Impact\n\nAn attacker could download public group logos and find sensitive metadata. Some phones attach metadata with the latitude/longitude of where the photo was taken which could leak important information, and it's just best practice as well to strip all metadata from images when uploaded.",
+  "bounty_amount": "500.0",
+  "formatted_bounty": "$500",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 376746,
+      "file_name": "download.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/376/746/f8de4c784e7e33b8a93fdd2d8fd7145290e1cf29/download.jpg?response-content-disposition=attachment%3B%20filename%3D%22download.jpg%22%3B%20filename%2A%3DUTF-8%27%27download.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000508Z&X-Amz-Expires=598&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1d0066f19d63de8ef535d3ec1f30c140a2b4b24a955c0b7b285a0569f59aa18c",
+      "file_size": 12619,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 53,
+  "voters": [
+    "mr-medi",
+    "loaymorad",
+    "thaivu",
+    "p1stachios",
+    "ali",
+    "tess",
+    "bl4de",
+    "dxin301",
+    "2026",
+    "michan",
+    "and 43 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 24342,
+      "category": "team",
+      "content": "Note that this report was submitted 2 ago and reports related to EXIF metadata not being stripped aren't accepted anymore. The policy now states:\n\n> We are aware of ways to bypass the EXIF metadata stripping and intend to improve this, but we don't consider this impactful enough to be eligible for bounty",
+      "updated_at": "2020-09-08T14:00:44.329Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 828614,
+        "username": "dcouture",
+        "name": "Dominic Couture",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2019-11-20T20:16:15.276Z",
+        "url": "https://hackerone.com/dcouture",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/TpSJ356VRAW7GpCzzZ25R8Kb/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/TpSJ356VRAW7GpCzzZ25R8Kb/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/TpSJ356VRAW7GpCzzZ25R8Kb/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "id": 25698,
+      "category": "researcher",
+      "content": "I made a short writeup on Exif metadata disclosure on my blog which can be seen [here](https://medium.com/the-volatile-triad/hacking-always-check-out-the-images-99217e6cea). Thank you to the Hackerone triagers and Gitlab team for a smooth reporting process and resolution.",
+      "updated_at": "2021-01-07T22:43:51.349Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 87732,
+        "username": "jackb898",
+        "name": "Jack Burton",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "https://www.jackburton.dev",
+        "location": "Houston, Texas",
+        "created_at": "2016-06-25T15:29:25.034Z",
+        "url": "https://hackerone.com/jackb898",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/74790fe75ac5dbe8a5140a122388d59ebac913dcfa941f0b3a45e6cad161f9ea",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/fba683f28d17594d98b39d87e2b3aa09acb938c22d49b206f663ae961dc39adc"
+        }
+      }
+    }
+  ]
+}

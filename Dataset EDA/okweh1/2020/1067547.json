@@ -1,0 +1,136 @@
+{
+  "id": 1067547,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDY3NTQ3",
+  "url": "https://hackerone.com/reports/1067547",
+  "title": "Unauthenticated access to webmail at maildev.happytools.dev leading to compromised wordpress site api.happytools.dev [RCE]",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2020-12-28T17:39:22.639Z",
+  "submitted_at": "2020-12-28T17:39:22.701Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "superman85",
+    "url": "/superman85",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/bn2ryz67b6bagah1b0ac9l3hxp3b/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": true,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 111,
+    "url": "https://hackerone.com/automattic",
+    "handle": "automattic",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/111/7f89e1ea233f92916202521a069fdbfe9eced339_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Automattic",
+      "twitter_handle": "",
+      "website": "https://automattic.com",
+      "about": "WordPress.com, WooCommerce, WordPress VIP, Jetpack, Beeper, Texts, Akismet, Gravatar, Crowdsignal, Tumblr and more!"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2021-02-01T15:37:32.327Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-01-02T15:37:21.886Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nDear Team,\n\nToday when I trying to find bugs on happy tools I have found 2 domains below for staging environment\n- https://maildev.happytools.dev\n- https:// api.happytools.dev\n\nTwo websites above ssl certificate was expired. But you can adjust your date-time to 02/02/2020 or before that time to access those sites normally\n\n## Platform(s) Affected:\nhttps:// api.happytools.dev\n\n## Steps To Reproduce:\n\n  1. https://api.happytools.dev/wp-login.php?action=lostpassword and forgot password for user `api`\n  1. Go to https://maildev.happytools.dev to get reset password link and set new password for user `api` (I did not try to do that)\n  1. After changing password for user `api`, we can control wordpress cms and may upload plugins/themes contain backdoor or harmful scripts to this server\n\n## Supporting Material/References:\nSome screen shots PoC\n\n{F1132811}\n\n{F1132810}\n\n████████\n\n## Impact\n\nTakeover wordpress site api.happytools.dev",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1132810,
+      "file_name": "forgot_pass_2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/h6hseclh8pwgi90cz6cxkja2ilkk?response-content-disposition=attachment%3B%20filename%3D%22forgot_pass_2.png%22%3B%20filename%2A%3DUTF-8%27%27forgot_pass_2.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233306Z&X-Amz-Expires=2520&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=677918c19b53232c3080e20fd6f22dc962101e29ed01bbcb115f90bf43d7b895",
+      "file_size": 66688,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 1132811,
+      "file_name": "forgot_pass_1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/yk0024plt3xg26hx2ud074cjfirm?response-content-disposition=attachment%3B%20filename%3D%22forgot_pass_1.png%22%3B%20filename%2A%3DUTF-8%27%27forgot_pass_1.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T233306Z&X-Amz-Expires=2520&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=81c5e4f64d1b61e49188f84b083b79470003dc31d5ffaa18804705e9af719ba6",
+      "file_size": 72520,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-02-01T15:37:21.970Z",
+  "allow_singular_disclosure_after": -159436544.11366388,
+  "singular_disclosure_allowed": true,
+  "vote_count": 71,
+  "voters": [
+    "haxor31337",
+    "bombon",
+    "w31rd0",
+    "yxw21",
+    "thaivu",
+    "discodamone",
+    "mashoud1122",
+    "redhotchilihacker_",
+    "mattberg",
+    "najeh_halawani",
+    "and 61 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

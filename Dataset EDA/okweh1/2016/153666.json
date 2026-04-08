@@ -1,0 +1,123 @@
+{
+  "id": 153666,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNTM2NjY=",
+  "url": "https://hackerone.com/reports/153666",
+  "title": "csp bypass + xss",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2016-07-25T11:37:10.338Z",
+  "submitted_at": "2016-07-25T11:37:10.338Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "b6117130df17feef13481e3",
+    "url": "/b6117130df17feef13481e3",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-07-05T23:53:00.642Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-06-30T17:59:46.338Z",
+  "team_member_agreed_on_going_public_at": "2017-07-05T23:53:00.606Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nOn my previous report (number 126464) I've mentioned that \nanalytics.twitter.com has a CSP bypass which I couldn't exploit that time.\n\nNow, I've found a reflected XSS on careers.twitter.com which again I couldn't exploit by itself. Because you have CSP, and I've combined two of them to successfully trigger XSS.\n\nIf you visit the url:\nhttps://careers.twitter.com/en/jobs-search.html?location=1%22%3E%3Cscript%20src=//analytics.twitter.com/tpm?tpm_cb=alert%28document.domain%29%3E//\n\nyou will see xss triggered. \n\nRegards.",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 107160,
+      "file_name": "ct1.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/107/160/c2844bced43cfd73d77be7d273f8bc7b257d1ecf/ct1.jpg?response-content-disposition=attachment%3B%20filename%3D%22ct1.jpg%22%3B%20filename%2A%3DUTF-8%27%27ct1.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ52XAMDPV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T034018Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCBm3osKehmOa3grQ706i4m3zmrtVcb9dFooTChYPumeQIhAJEjcX%2BWzzbzC8K2Putbp86GRYbsDHH4%2Fyxb92c%2FegrmKrsFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igz9tSzbuKejP0EeCDgqjwXrGyA8X0ofMwGVmBp6R5T91KI1I6ZaL7LpD3Vtd1OwsezX%2Fj8dUP6qfG6ha7X0c3x2VyL4QF5lRJGCI46cnqqaJpGBuxTvICy%2Bn5vtt4qbnSu9NoBKeK32Lm8im1jGU5WCrE5VKpJ%2B3TQdAhAYWM43fjP54yy%2Blp2Pc6NaziXawf5KgMdOAuRnDCZDJmXzFEKeCX5%2BvWwONoygqDCNFZ7xr9CpF4T4mFahDFTtS6dfLgb0Xc2Vqrmajrb83J%2FjLTJHzWCVX2BDDeiZV8lbcd6rmY7qRdef7GCFmVbZkMp2fxepXFmf5anglFIAs%2FOSzXs52DEr79NcLziZWV97Cpa6XkO%2FLizR5bT7SBcmC6c6595WON5nZO41DdyJpjDtZCFOFT1mbDBqP2PGRj2wydljmw8Bs8v77ulXO5fylPWMDXl%2FZYHb4uIV6WfIXP6SU6zP50B5GpihD1KeDNOiU0BU7CPPzf%2BStpMiZf%2BaThSMqW0GNt272L%2BVxx4EU0YuTbCtWqWz7dGLT2ZybvHDYMoN%2Fu1d1lqdm%2BU9yecIS6WC0FeXK2DAkayhFAazSiEDUTUX7ShJL0%2F%2FlHTB238lTnMb42GGkVNCQxF6D7nsmWsa3ThCqJC01Hm4ZOWYtm%2Fvtrr54jZ3%2Fj48ljNiXh0TMbkjv%2B%2F4dKeEZ8eHYAoVw7DVSnpDPhoEIZWuUSp1wuLw4PwTkqyKg8z7ZplMEvu3NAGRbyHzSUjLQY%2Bs9%2BjNcFfnQDA1r9Yd4gvl%2B1Na4ChVrIUZqmjv7nOONYkdBjyOi0QqzfzvfYL5ykNMnkyuJkvfz9SPw7UTsGzj5WMe1Kwt0Q13hfSt%2FjOYchrtz20DPh5dkNn2Nj1VsZ1UBLY4CTnwMK%2Bj5MwGOrAByzeCPEFlUf9oyIxscospbYwrAPBFrun7WT0l7uMYhF3tjZLQrC3tnFvjFJOOevoNyq6eSrepfspi1g7DUcVFPLqqads4NF8X4fotlAZHcLBwhuIGHDH%2Fl4l%2Bw3ghGReiSrWIN2KOPWmGSUo5%2Bk2yY8aou2hwoNsbBa%2BfQ96TPq59XWc6S4tx%2Fb0M870Har6vQQtSrn000xxyiClL3Ghbxfr2QSGi7pdFrofjzRyELbs%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=41d49e00c889bc28115bfe41532808145df95b159f29207f7993ccfd0113196e",
+      "file_size": 193067,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-07-30T17:59:46.385Z",
+  "allow_singular_disclosure_after": -270207632.28463775,
+  "singular_disclosure_allowed": true,
+  "vote_count": 51,
+  "voters": [
+    "jin",
+    "jensec",
+    "drsniper",
+    "sp1d3rs",
+    "mashoud1122",
+    "0xoroot",
+    "bogdantc",
+    "ali",
+    "bl4de",
+    "spam404",
+    "and 41 more..."
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": 300301,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMDAzMDE=",
+  "url": "https://hackerone.com/reports/300301",
+  "title": "[unikrn.com] Profile updated with error\":true,\"success\":false\"",
+  "state": "Closed",
+  "substate": "informative",
+  "readable_substate": "Informative",
+  "created_at": "2017-12-24T07:25:43.434Z",
+  "submitted_at": "2017-12-24T07:25:43.434Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "rbcafe",
+    "url": "/rbcafe",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/uft7o1wpafGAE3ASGWGc39AL/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2672,
+    "url": "https://hackerone.com/unikrn",
+    "handle": "unikrn",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/672/c6c2b32746235b372285a9047457642b7b9bc6a1_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/002/672/c6c2b32746235b372285a9047457642b7b9bc6a1_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Unikrn",
+      "twitter_handle": "unikrnco",
+      "website": "https://unikrn.com",
+      "about": "unikrn offers a world class comprehensive esports betting platform"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-06-12T16:27:00.075Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-07-12T16:10:36.450Z",
+  "team_member_agreed_on_going_public_at": "2019-06-12T16:26:59.974Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Greetings,\n\nWe noticed that even if the https://unikrn.com/apiv2/user/updateprofile gave an answer that the code is on error , the post is proceeded :\n\nPoC :\n--\n\n    curl 'https://unikrn.com/apiv2/user/updateprofile' -XPOST -H 'Referer: https://unikrn.com/profile' -H 'Content-Type: application/json' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7' -H 'Origin: https://unikrn.com' -H 'DNT: 1' -H 'Accept: application/json, text/plain, */*' -H 'Application-Version: v3.9.1-1743-g043d784' --data-binary '{\"firstname\":\"RBCA\",\"lastname\":\"RBCA\",\"nickname\":\"Rbcafe\",\"street\":\"\",\"suburb\":\"\",\"state\":\"\",\"shipcountry\":null,\"postcode\":\"\",\"telephone\":null,\"phone_cc\":\"fr\",\"email\":\"bounty-1@rbcafe.com\",\"city\":\"\",\"avatar\":\"https://www.gravatar.com/avatar/0f2219216ab1e07d370b387d028a6535\",\"session_id\":\"bb6ig4dqkest1cbp3t11g4mpppjka56m\"}'\n\nResult :\n--\n\n    {\"ver\":\"2.0\",\"error\":true,\"success\":false,\"msg\":\"file_wrong\",\"msg_trans\":\"file_wrong\",\"data\":[],\"code\":0,\"flds\":null,\"flds_errors\":null}\n\nVideo :\n--\n\n{F249242}\n\nImpact :\n--\n\nBypass the answer of the post and update a profile.\n\nFix :\n--\n\nIf the answer is success false, the POST should not be proceeded.\n\nBest regards.\n\nRbcafe\n\n## Impact\n\n- Bypass the answer of the post and update a profile.\n- Lack of control.",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 249242,
+      "file_name": "unikrn.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/249/242/87de94af5074fee66cd410c2eb728591082d4957/unikrn.mov?response-content-disposition=attachment%3B%20filename%3D%22unikrn.mov%22%3B%20filename%2A%3DUTF-8%27%27unikrn.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ4QIKACLE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014633Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDR1nLwfbdHd0VuJNzNUpt9kF6nHaUVtqSlcAF7VXHGRwIhALfEK0mbEbZMPAhkW%2BjI3rGNkVZFrqr2DjQt08AG5E%2FXKrsFCKL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgykvhjR%2Btb%2FgrVhp44qjwWwHOBBC4mLj%2FutVDDC6pWuWDu3VndQZ6QD7HvhF1BYv%2FxLsNLsoGWnNFZMTvAsLbg6Dc5zOcA%2FdPwwBF8KoFUPRk5pJgfw1freSb7LjrqjXQGxIDZMOM4Jx5U68U%2BzIxdt4XL2WTd0Ks6qe%2BUykSLmZMPoV8ufkREOe8u1M4NOgyaTRiYkrUgkt3K1CKZL7NFT%2Fz47uQy%2FilqD2FqHe1JxJQS15iPURNnRLz9pms8JySbESYL6%2FcNfxj7U7fjJ8RoWjE%2BUUhujHUi1kvSIuFizS21JqtrbfEn%2BbQUtUXT1M0X%2FVW27acnA%2FIVZDyapm6XXtRox0HSLg%2BcN0oKq%2BBzMQDQ17IUsIoVxz5w4nmxKBNfop8UV78GGozxkw5wXp9cn2vZIy2D3tR6gdjD8xUdbo3w82I7qd4IxnwsEMNGTaQppICkkWhOmmiZmy5BHjkkAXBEgr6ndM9%2FDh551tMfon%2FiwNwX07tlmlAQO%2FckxSRkkCmYGLxeVlyzHz67m%2B67oXXHWfvV42tNe%2FfAHlcigBvmlU8aL9uJCFsFf6WT0UHmKD8uiXJUfLS7Xoct4VvON8YXCijVNdnsFPUHJ7qSZRNggbsciAChHOytj2BavHm%2FnIRB6kK5e5SSdTNq%2BovGafG2s00Z3zkUpZtK7e3p61vY0E8LJuEvSwvVXmf4vmzvGIZ28UxXt1FXXemYPD4tf%2B7axz7E1TPZz%2FISPE8fdr4PCb9fFX5btn9dPQ56bejrJ50DCyD1NgcCISPMHA6DoVu0l8XcVSdyUR9RmWvoAFCvM9QM5pHQ%2Bzdhd5F127eAReLfogLvkUxGQMzYzOWsSs9UcuP%2Bza8dwmurqEH75pgitJxEBKvh%2F2GE5ndChMPmI5MwGOrABh39WmwV9wjWQbtxDYTxgmCNzKHilnintfa1rU01%2FMoEoAJgnVhl8UtChKAHPW%2FZzH%2F2iMLsHFeUu4njLsP0ZX1BMa%2FXLmm%2B%2Bk%2BE0SYk4MDkWoP3AcNUYrUhInTPFMfX13D6zwf7E3l2rEMW6xEFrfaAl2tz2lAURJCibIUQOEX%2FDOL5aupZP0Rz1ec6KWhWQTAuMb5YdIz2xVCukLsFfUvJ%2FqH5aJtk5dOV3s64InWE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a6d63014ba30298a69e85fbe89a2de0d46707417dd07cb01708bc85b318c1873",
+      "file_size": 3191791,
+      "type": "video/quicktime",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 4,
+  "voters": [
+    "sameerphad72",
+    "cryptographer",
+    "rbcafe",
+    "ffff11110000"
+  ],
+  "structured_scope": {
+    "databaseId": 453,
+    "asset_type": "URL",
+    "asset_identifier": "unikrn.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

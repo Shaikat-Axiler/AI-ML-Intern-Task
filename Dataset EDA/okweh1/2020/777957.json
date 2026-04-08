@@ -1,0 +1,152 @@
+{
+  "id": 777957,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83Nzc5NTc=",
+  "url": "https://hackerone.com/reports/777957",
+  "title": "OTP bypass - Unintended disclosure of OTP to client allows attacker to manage users' subscriptions",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-01-19T18:32:44.020Z",
+  "submitted_at": "2020-01-19T18:32:44.020Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": true,
+    "username": "b5bb904ea6b315a566eb691",
+    "url": "/b5bb904ea6b315a566eb691",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 41919,
+    "url": "https://hackerone.com/mtn_group",
+    "handle": "mtn_group",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4e6ikuxrt34g8b14w2bk53c6vyry/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/4e6ikuxrt34g8b14w2bk53c6vyry/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "MTN Group",
+      "twitter_handle": "",
+      "website": "https://www.mtn.com/",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-04-11T19:29:27.770Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-03-12T19:29:22.522Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n███████ authenticates subscribers via OTP before their subscriptions to be changed. However, the request which sends the OTP also returns the OTP in the network response, allowing an attacker to manage a user's usbscriptions.\n\n## Steps To Reproduce:\n  1. Visit ████████ and open network inspector (e.g., in Chrome)\n  2. Type in a subscriber's number (here, I used a random number, 0787765562)\n  3. Type in the `otpKey` in the network response into the OTP prompt field on the website\n  4. The OTP prompt field has been bypassed\n\n## Supporting Material/References:\n\n* F689609 - Example of a network response\n\n## Impact\n\nChange a user's subscriptions. This might also be part of a larger issue if the send-otp/ endpoint is used elsewhere.",
+  "weakness": {
+    "id": 128,
+    "name": "Incorrect Authorization"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 689609,
+      "file_name": "Annotation_2020-01-19_183032.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/P6A1HhfZ57sbJ459HvDY58jX?response-content-disposition=attachment%3B%20filename%3D%22Annotation_2020-01-19_183032.png%22%3B%20filename%2A%3DUTF-8%27%27Annotation_2020-01-19_183032.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7ULBGLHE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004059Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCXypkG06cSeiV%2BLrJ%2BsW%2BpLHPMj8wXOVStnXk1NGGq%2BQIgJUNF7d5ZzQviioOxFN4Gv4%2FPBOgH6vMpER2s66ys5icquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHhrlptjQeWDC6vfciqPBcw9KQs%2FwdwEm5yK7jqgjJ%2FuGD%2F1QiuiKDcU4zdmZllEGNi7XXtbh%2FqfEfiZM%2FbVOL1HKHkDNuBcRXcYwZNLoL2Ni4xac5qlGwqYYMhWz7IMSTIWE47g2ffUcBx0npiTjztKjrcCmWxd8lclNCoj6%2FoXaUo8cfUSGmcuKTee3x3eWBKJW1MIL%2BmUh1B5KRXHGZme8YuFY09fsBhIwwjfc7fwSKrlUA1A%2F8zcGZtniIL3datKRrWYRfd6ni196A%2FfQ%2BJ7Hg1MzMI3Ezcif095qeOSfGEixTTKiLKCFt2Nc0kESqZZcqqY0Rmno5dgI294wMLfF1cLgpyBGL%2FXvqlXCtFiPrbrL53W5jNByQ2lDy5gRbwdMXf7cWDM0GgLj98T9YJMd99cNHYbxY6ca6CMY%2FhC5K7m57eD4MfUu9GwtFtcNfXL8Wp187PIVpFXdezgcBEe2HVQnHb6NJJXdQELElK3eP7v8cQwgHC6vy1Pgv%2B1lst8ZWDBBr7pMFsNt7HMxKHeJszTjhknT5n7agA3SrGtF6u0Qa6ImSbBVocYfqJUfCwH68R%2F%2F1ECUsaq66iHhHWUfqjqcmV52HCAYa9WweE2DWilDqGvcg6HSf1yp0v1nbirpFQslr0TirQ2kZA4ElIJzs0WbPntnQaKtMj2DgBDj0xCtOB8nqWw0fwfXgICXjDDLbBxT%2FJ4zlceEf4tAV%2B2awwOtkJmcKRNLYFrLHWwwSkjJNSoNLCAPR3oyeprbncIYs%2B6JSjj3ZPWh6qFpocwzI2vM3%2B49bvLVRGDZ8B1%2B%2BqTq%2FZ8iz6O801ndMJdk55S3I4dz2yD%2Fi2phntnVdjag2YFQq2MzUlicXRAz7mTYJk%2B7Dr6SgPrXHlZN2kwzfDjzAY6sQGAsuKmN7hPJ9XdD1AqNk4FR9Ab2HM9mXzDem6f1VdpQJ%2FeWKK6foNSg9a9%2FsjobZlbeBPiRk8LEmG7cM7niwGEQoUovfG8xiurzbwjU7%2Fqy1O4E87uXvzgXQHi%2Bs3Rq%2Fz71xNjnlYB639y8DCm%2BjvhXTfiR%2BmevJY6EXkXpEka7Rdy5T2TaUOBrAYfx48pC5oR%2FTIqTGsQv2d9VtGS%2FUNN07aK5NGfmBAuX6qG8YBi8OQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=41490ec16a0c33f87f3c3a3b6bba4fe79df9e7a08c8ac84a0203d473c0004ef9",
+      "file_size": 56028,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 689610,
+      "file_name": "Annotation_2020-01-19_183217.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/zsUdHbyUsTrd89qixfM35dTj?response-content-disposition=attachment%3B%20filename%3D%22Annotation_2020-01-19_183217.png%22%3B%20filename%2A%3DUTF-8%27%27Annotation_2020-01-19_183217.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7ULBGLHE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004059Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCXypkG06cSeiV%2BLrJ%2BsW%2BpLHPMj8wXOVStnXk1NGGq%2BQIgJUNF7d5ZzQviioOxFN4Gv4%2FPBOgH6vMpER2s66ys5icquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDHhrlptjQeWDC6vfciqPBcw9KQs%2FwdwEm5yK7jqgjJ%2FuGD%2F1QiuiKDcU4zdmZllEGNi7XXtbh%2FqfEfiZM%2FbVOL1HKHkDNuBcRXcYwZNLoL2Ni4xac5qlGwqYYMhWz7IMSTIWE47g2ffUcBx0npiTjztKjrcCmWxd8lclNCoj6%2FoXaUo8cfUSGmcuKTee3x3eWBKJW1MIL%2BmUh1B5KRXHGZme8YuFY09fsBhIwwjfc7fwSKrlUA1A%2F8zcGZtniIL3datKRrWYRfd6ni196A%2FfQ%2BJ7Hg1MzMI3Ezcif095qeOSfGEixTTKiLKCFt2Nc0kESqZZcqqY0Rmno5dgI294wMLfF1cLgpyBGL%2FXvqlXCtFiPrbrL53W5jNByQ2lDy5gRbwdMXf7cWDM0GgLj98T9YJMd99cNHYbxY6ca6CMY%2FhC5K7m57eD4MfUu9GwtFtcNfXL8Wp187PIVpFXdezgcBEe2HVQnHb6NJJXdQELElK3eP7v8cQwgHC6vy1Pgv%2B1lst8ZWDBBr7pMFsNt7HMxKHeJszTjhknT5n7agA3SrGtF6u0Qa6ImSbBVocYfqJUfCwH68R%2F%2F1ECUsaq66iHhHWUfqjqcmV52HCAYa9WweE2DWilDqGvcg6HSf1yp0v1nbirpFQslr0TirQ2kZA4ElIJzs0WbPntnQaKtMj2DgBDj0xCtOB8nqWw0fwfXgICXjDDLbBxT%2FJ4zlceEf4tAV%2B2awwOtkJmcKRNLYFrLHWwwSkjJNSoNLCAPR3oyeprbncIYs%2B6JSjj3ZPWh6qFpocwzI2vM3%2B49bvLVRGDZ8B1%2B%2BqTq%2FZ8iz6O801ndMJdk55S3I4dz2yD%2Fi2phntnVdjag2YFQq2MzUlicXRAz7mTYJk%2B7Dr6SgPrXHlZN2kwzfDjzAY6sQGAsuKmN7hPJ9XdD1AqNk4FR9Ab2HM9mXzDem6f1VdpQJ%2FeWKK6foNSg9a9%2FsjobZlbeBPiRk8LEmG7cM7niwGEQoUovfG8xiurzbwjU7%2Fqy1O4E87uXvzgXQHi%2Bs3Rq%2Fz71xNjnlYB639y8DCm%2BjvhXTfiR%2BmevJY6EXkXpEka7Rdy5T2TaUOBrAYfx48pC5oR%2FTIqTGsQv2d9VtGS%2FUNN07aK5NGfmBAuX6qG8YBi8OQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4111a43a4ed12a724f34be912882b5e1c8601da60ee11157ab0f215e904d7f61",
+      "file_size": 34845,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-04-11T19:29:22.572Z",
+  "allow_singular_disclosure_after": -185001096.92461142,
+  "singular_disclosure_allowed": true,
+  "vote_count": 19,
+  "voters": [
+    "ali",
+    "jmo740",
+    "its_afolic",
+    "hundredpercent",
+    "pr0f0x01",
+    "what_web",
+    "r4sh7n_",
+    "danijc3",
+    "rid3a",
+    "akhilkommineni",
+    "and 9 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 34331,
+    "asset_type": "URL",
+    "asset_identifier": "mtnplay.co.za",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

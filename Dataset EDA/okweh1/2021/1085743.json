@@ -1,0 +1,133 @@
+{
+  "id": 1085743,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMDg1NzQz",
+  "url": "https://hackerone.com/reports/1085743",
+  "title": "No error thrown when IDOR attempted while editing address",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2021-01-24T05:06:42.239Z",
+  "submitted_at": "2021-01-24T05:06:42.298Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "merbin",
+    "url": "/merbin",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/vhapo2qnby9w4bvppveji9ffdk8l/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 46502,
+    "url": "https://hackerone.com/openmage",
+    "handle": "openmage",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/gYnpB5DCwUGoEGsybkejTQgs/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/gYnpB5DCwUGoEGsybkejTQgs/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "OpenMage",
+      "twitter_handle": "OpenMageProject",
+      "website": "https://www.openmage.org/",
+      "about": "A community-driven fork of Magento CE"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2021-04-26T05:45:45.249Z",
+  "bug_reporter_agreed_on_going_public_at": "2021-03-27T05:45:44.678Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\ndemo.openmage.org application having features to add, edit and delete addresses. When a user tries to edit the address of another user, the server adds a new address with a new id on the attacker's account. By sending it to an intruder, an attacker may cause Dos.\n\n## Steps To Reproduce:\n\n  1. Create two user accounts demo.openmage.org with different emails\n  2. Add addresses on both accounts\n  3. Edit the address on account 1 and capture the request on burp and send it to the repeater\n  4. Replace the ID of the address on both GET request and referee header with the ID of the address of the account 2\n  5. Submit the request, Now you can see a new address is added on account 1 with a new ID.\n(here, when an attacker try to edit the address of another user, the server should not create new address)\n  6. Now Send the same request to intruder with the id of the address of the victim, and set payload as null byte\n  7. Start attack with min 60 threads\n  8. Now you can see many addresses is added on user account 1. and soon you will see 503 Error code\n\n## Supporting Material/References:\n\n\n  * {F1169693}\n\n## Impact\n\n* It may cause  Dos",
+  "weakness": {
+    "id": 145,
+    "name": "Misconfiguration"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1169693,
+      "file_name": "Kazam_screencast_00000.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/gauornw72y5dxy83t9ipu6g35ce9?response-content-disposition=attachment%3B%20filename%3D%22Kazam_screencast_00000.mp4%22%3B%20filename%2A%3DUTF-8%27%27Kazam_screencast_00000.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQV2I7C47M%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T231422Z&X-Amz-Expires=2760&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCIj68hpPtc9OPN4eK08isaT2yhnAE9j4g7%2BlrVKCPwmwIgbory0DHEjZrfboZ2OJYgRJUGYTRSyAdf8foMDhrdrCMquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNa%2BUUVfVHa4J7owXSqPBctWuIOVhHbhWJLcWVBlZbPs3Q%2FZXOzyJ91N6nAxnyT%2BMcvKHDFvaulWp3dSVsvuXIZY6R61cKHjRRjC1qrpLP4F3T4gadqocP%2FNDARZEkVoYNpMEY4RpxqPfgyt5YhecQL6QjgDdp4dH18Vhyyf2pdvo6bB4aJwpbJ0U4j4uVxclZRBKj4W8ks1YnXj4obXcVMpl2zKJXHB1dcgHYissoSyYyXwiU4GrKu5TTK0Kd6CJzPsR6%2Bov0XpbAWUZSxYgeskbPsenxI4nWLWR9xTbzc%2Fiu212tftg9n2yp8pAqLyaM2sObCw0LWeJLKnqh4KbIawHcI6TZgqSDZzIRpNI%2BPUUeHGQbYKA6XZ2MdT3NZEljHl%2BB0%2Fqq%2B7VpVniIyKKnqosOQul3iNcXnSD9y1zfbEDueZUBv2wUIKr%2F9BV%2B1dYRtD9%2B5d4gk2rc5pgOhT3K59VqIzzw1bA%2BwF%2FigTM8DpbwH8njuwrlzurf9UIeRws9n%2BEzL2mxn%2FwC73nxuPFFUXEfz2DT5DC3R%2FU7E%2BROGdaM%2FX6hB7rTNG35Dk%2Blm6pIRYMq3bhK%2F55kbPRv9QeNw3hPklVng4ys5upjm6ADAlZ82lBE9GwbgxDhlDw9gQhdMBKMtnncp3wmX9g79Kzj6dBoijESxtkKeDIX8De7XZmuaTnbWss6x%2BXOP1hUQT%2BYbDhg9YAcaYLGoSTosaetkxb0K7Q%2FVyqSmDriKgql%2Be9XOR2RCp1Z0RP6LbvAdTPIwly72RMtNUZxSOV0sbnLWqT9AAyFvDI8BdCBo34CVWkZfhg5e4C5m7lZSXToiA5LHIN66tsL9ZOb%2Fy%2BJmrv%2FD%2FrDRSscdFztYbxPez2sQUXFGVZs9yXLy%2Fev1cmB4w5bjizAY6sQErIM2jbwhyfAK6rrrYH%2BedgwDQqaFLCA2ZOWiYrntThLkOJ85Cxj4%2FfQBuM96AZ4RIMOwCfVrNyXqGNJ8Q85aMWD1Zb%2Bult28xjXP2kJ%2B7ktDSzHsVT71wV39ZD%2FlGH8%2FWe3NXekHrxP2nVkRebMRt0zmviELNQ7tJLUFFCAgycfUbSAeu8nYZ047y2OXCMws6LKiFYnYrNMkJJcf1t1%2FY4zuS9wgcPAf9oEtuQC%2B2opk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e0e82c2a91ff6340a804940f5fcd14cac70fc29de7ae0362a715d860d670cfda",
+      "file_size": 8074664,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2021-04-26T05:45:44.738Z",
+  "allow_singular_disclosure_after": -152213317.33166507,
+  "singular_disclosure_allowed": true,
+  "vote_count": 32,
+  "voters": [
+    "arist0phanes",
+    "sw33tlie",
+    "battle_angel",
+    "mattberg",
+    "yassinek3ch",
+    "ali",
+    "akashhamal0x01",
+    "n1ghtmar3_2421",
+    "demonia",
+    "sa1tama0",
+    "and 22 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 57961,
+    "asset_type": "URL",
+    "asset_identifier": "demo.openmage.org",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

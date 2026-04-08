@@ -1,0 +1,174 @@
+{
+  "id": 440963,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80NDA5NjM=",
+  "url": "https://hackerone.com/reports/440963",
+  "title": "Privilege Escalation by abusing non-existent path. (Windows)",
+  "state": "Closed",
+  "substate": "duplicate",
+  "severity_rating": "medium",
+  "readable_substate": "Duplicate",
+  "created_at": "2018-11-14T22:16:09.559Z",
+  "submitted_at": "2018-11-14T22:16:09.559Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "0x09al",
+    "url": "/0x09al",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15252,
+    "url": "https://hackerone.com/portswigger",
+    "handle": "portswigger",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/252/60e8778f4f1fee57ea2b164a7d2ec1e2d2dd7bc8_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "PortSwigger Web Security",
+      "twitter_handle": "Burp_Suite",
+      "website": "https://portswigger.net",
+      "about": "Burp Suite is the leading software for web security testing"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-03-13T08:50:22.266Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-03-12T13:34:46.408Z",
+  "team_member_agreed_on_going_public_at": "2019-03-13T08:50:22.190Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Vulnerability Overview\nWhen Burpsuite runs, it tries to load some DLLs in the path ```C:\\Program%20Files```. Because the folder doesn't exists, it can be created **by a low-privileged user** which can inject arbitrary DLL into the process when another ** privileged user** runs Burpsuite. I have verified the vulnerability in the Pro Version but I'm pretty sure the community version is also affected.\n\n# Vulnerability Description\nMonitoring the BurpSuite application in Process Monitor, we can see that it tries to load 2 DLLs from a directory that does not exist.\n{F375743}\n\nThe interesting thing here is, that on Windows (verified for 7,10,Server 2008 R2 and Server 2012) every authenticated user is allowed to add new folders on the ```C:\\``` drive. This in turn allows an attacker to create the folder structure and inject arbitrary DLLs to Burpsuite.\n\n# Vulnerability Reproduction Steps\n1. Login as a low-privileged user on a system which has Burpsuite installed.\n{F375748}\n2. Create the directory tree as shown in the image below.\n{F375753}\n3. Copy the attached ```sunec.dll``` file to the last directory (amd64).\n4. Simulate the login of a privileged user , run Burpsuite and a message should pop up.\n{F375756}\n\n## Impact\n\nA low privileged user can execute code as a high privileged user.",
+  "weakness": {
+    "id": 75,
+    "name": "Privilege Escalation"
+  },
+  "original_report_id": 257004,
+  "original_report_url": "https://hackerone.com/reports/257004",
+  "attachments": [
+    {
+      "id": 375743,
+      "file_name": "Trying_to_Load_from_DLLs.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/375/743/95cc03a992776f7b2c8eca0cf861d1c6802072c4/Trying_to_Load_from_DLLs.png?response-content-disposition=attachment%3B%20filename%3D%22Trying_to_Load_from_DLLs.png%22%3B%20filename%2A%3DUTF-8%27%27Trying_to_Load_from_DLLs.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSL7NOIQC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015837Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCLSRLO6RFeN%2BGsoJ0LPj400jCFgjuqvvPPDFcsczzGpwIgJ7wyMKCj1fCMyhyGb3e38i72dM0rbWpk1YTQ%2BC%2Bjpo4quwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB5coCYEAEvuOphfUyqPBalUOlgecG%2FdXJOA5qOYfoWKN8AaGmY1u9FJbtTnV3KIO0%2BtMZ8WEVTEzxG9V1zbY%2BxoyNx14yRBpBjxqJgdmjHOLHhO2H%2FCxHgkxv6DhqdDLvnnmdhJM%2FEtu9oSyT4vyFFg4KdyPgeC4zZZAJ%2FcZCc08DXqdY1vWvOIZmt3Wl66ttIlFjclKMmmZ4MYPjzMxwsnmEeXWQeOzw8900Y1YYOXvXRzo%2FWYNBxg6k2SZ48KUhrZklGCJvL12d83irz2yCcL28EGuIvPpbT9D1BKaq8soDKxgeoNBQhs%2FOOQXD49%2BInYxfR2hNUI4zr6dGVpfVbPim6%2Fwog2Yv8FL5V2w8HS9bLO5X28Bugt5cCq3fpUHatWyxb2vmGJ8su7net8K0ZS7e3czsFYCQHs0LhFyFYOC0e73DMqM3%2Fszwd3BSGH89bhStFD4wv2ZNEA%2BCzOXlGUAQ%2BKpUfgQL9EhxI9tLJOUZP84DrCH%2BS1%2FOhAT6QwYTz71JS8FIveNIJmLR%2BsOOLDDPZFz9ETomqDUFuzr7UaAySiVYHBZD5RCuYtnU%2FPVFpMt2BSTGjtQS7iNoRh%2F0IPEHvBDmHvVDFDYGzRR9%2FFxK1CTa8nhmPSob%2B5UaTKs3xPM%2FvCdQj%2BG5cBzFPIMwvi2yfdu%2FXDqeUhIRazfYxLT8FHK3Y6BdDCU7vYTrxYt9zEB3bRhoO250G9HDGrS0zyDcKrw2KhOdP9z5Y%2FbQhUk9E5bdNhLAmvJWT0jZnyN9BFfYCcayb00ijRnnNVcv65HGFfrAkI6AnurwP9et9dlPhd4x86bDKMCzvps697hoUJ%2FczgpN%2B4YV2To3M8%2FfQCgSReQepqOOekzCeuvOyWC%2FE74no6GFy73tSXoVww9vjjzAY6sQG9po0vaBm3uLDJhpqSXK6TnsIjI1Gs1QFWjeEIdlPzDlkJXZD2mLqYH%2BgDzQ2M2PHxzM9aR5CAHO01jiyVnpwzTDeAiOdZzzB5cGdp%2FcSC92QotmG5WCmsXFXJ9k51Da5NUH5Xd07Uc7EeBU8PO8XyrQ2gC%2FE7J9n8aTriB6VR0bqKBZFIBao3CYhjiuTCamDz5M0TcT%2B0pXHQ9gjxgqOMPxmmKY9XtHGxGHrY0kUiB6k%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=085c97181d200ab95a9b965be1b2148e2434062953bd23e160464f2a0a148797",
+      "file_size": 17003,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 375748,
+      "file_name": "low_priv_user.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/375/748/0135d010931bc85832d150bca2964587eb3c39ba/low_priv_user.png?response-content-disposition=attachment%3B%20filename%3D%22low_priv_user.png%22%3B%20filename%2A%3DUTF-8%27%27low_priv_user.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSL7NOIQC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015837Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCLSRLO6RFeN%2BGsoJ0LPj400jCFgjuqvvPPDFcsczzGpwIgJ7wyMKCj1fCMyhyGb3e38i72dM0rbWpk1YTQ%2BC%2Bjpo4quwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB5coCYEAEvuOphfUyqPBalUOlgecG%2FdXJOA5qOYfoWKN8AaGmY1u9FJbtTnV3KIO0%2BtMZ8WEVTEzxG9V1zbY%2BxoyNx14yRBpBjxqJgdmjHOLHhO2H%2FCxHgkxv6DhqdDLvnnmdhJM%2FEtu9oSyT4vyFFg4KdyPgeC4zZZAJ%2FcZCc08DXqdY1vWvOIZmt3Wl66ttIlFjclKMmmZ4MYPjzMxwsnmEeXWQeOzw8900Y1YYOXvXRzo%2FWYNBxg6k2SZ48KUhrZklGCJvL12d83irz2yCcL28EGuIvPpbT9D1BKaq8soDKxgeoNBQhs%2FOOQXD49%2BInYxfR2hNUI4zr6dGVpfVbPim6%2Fwog2Yv8FL5V2w8HS9bLO5X28Bugt5cCq3fpUHatWyxb2vmGJ8su7net8K0ZS7e3czsFYCQHs0LhFyFYOC0e73DMqM3%2Fszwd3BSGH89bhStFD4wv2ZNEA%2BCzOXlGUAQ%2BKpUfgQL9EhxI9tLJOUZP84DrCH%2BS1%2FOhAT6QwYTz71JS8FIveNIJmLR%2BsOOLDDPZFz9ETomqDUFuzr7UaAySiVYHBZD5RCuYtnU%2FPVFpMt2BSTGjtQS7iNoRh%2F0IPEHvBDmHvVDFDYGzRR9%2FFxK1CTa8nhmPSob%2B5UaTKs3xPM%2FvCdQj%2BG5cBzFPIMwvi2yfdu%2FXDqeUhIRazfYxLT8FHK3Y6BdDCU7vYTrxYt9zEB3bRhoO250G9HDGrS0zyDcKrw2KhOdP9z5Y%2FbQhUk9E5bdNhLAmvJWT0jZnyN9BFfYCcayb00ijRnnNVcv65HGFfrAkI6AnurwP9et9dlPhd4x86bDKMCzvps697hoUJ%2FczgpN%2B4YV2To3M8%2FfQCgSReQepqOOekzCeuvOyWC%2FE74no6GFy73tSXoVww9vjjzAY6sQG9po0vaBm3uLDJhpqSXK6TnsIjI1Gs1QFWjeEIdlPzDlkJXZD2mLqYH%2BgDzQ2M2PHxzM9aR5CAHO01jiyVnpwzTDeAiOdZzzB5cGdp%2FcSC92QotmG5WCmsXFXJ9k51Da5NUH5Xd07Uc7EeBU8PO8XyrQ2gC%2FE7J9n8aTriB6VR0bqKBZFIBao3CYhjiuTCamDz5M0TcT%2B0pXHQ9gjxgqOMPxmmKY9XtHGxGHrY0kUiB6k%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=e74174652af7ac5a72c97f125f404f44374bafae15d8da46a6183be99afccf36",
+      "file_size": 26908,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 375753,
+      "file_name": "directory_tree.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/375/753/9773d30ffa7ed200026ee8d4b26e7e686578110d/directory_tree.png?response-content-disposition=attachment%3B%20filename%3D%22directory_tree.png%22%3B%20filename%2A%3DUTF-8%27%27directory_tree.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSL7NOIQC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015837Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCLSRLO6RFeN%2BGsoJ0LPj400jCFgjuqvvPPDFcsczzGpwIgJ7wyMKCj1fCMyhyGb3e38i72dM0rbWpk1YTQ%2BC%2Bjpo4quwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB5coCYEAEvuOphfUyqPBalUOlgecG%2FdXJOA5qOYfoWKN8AaGmY1u9FJbtTnV3KIO0%2BtMZ8WEVTEzxG9V1zbY%2BxoyNx14yRBpBjxqJgdmjHOLHhO2H%2FCxHgkxv6DhqdDLvnnmdhJM%2FEtu9oSyT4vyFFg4KdyPgeC4zZZAJ%2FcZCc08DXqdY1vWvOIZmt3Wl66ttIlFjclKMmmZ4MYPjzMxwsnmEeXWQeOzw8900Y1YYOXvXRzo%2FWYNBxg6k2SZ48KUhrZklGCJvL12d83irz2yCcL28EGuIvPpbT9D1BKaq8soDKxgeoNBQhs%2FOOQXD49%2BInYxfR2hNUI4zr6dGVpfVbPim6%2Fwog2Yv8FL5V2w8HS9bLO5X28Bugt5cCq3fpUHatWyxb2vmGJ8su7net8K0ZS7e3czsFYCQHs0LhFyFYOC0e73DMqM3%2Fszwd3BSGH89bhStFD4wv2ZNEA%2BCzOXlGUAQ%2BKpUfgQL9EhxI9tLJOUZP84DrCH%2BS1%2FOhAT6QwYTz71JS8FIveNIJmLR%2BsOOLDDPZFz9ETomqDUFuzr7UaAySiVYHBZD5RCuYtnU%2FPVFpMt2BSTGjtQS7iNoRh%2F0IPEHvBDmHvVDFDYGzRR9%2FFxK1CTa8nhmPSob%2B5UaTKs3xPM%2FvCdQj%2BG5cBzFPIMwvi2yfdu%2FXDqeUhIRazfYxLT8FHK3Y6BdDCU7vYTrxYt9zEB3bRhoO250G9HDGrS0zyDcKrw2KhOdP9z5Y%2FbQhUk9E5bdNhLAmvJWT0jZnyN9BFfYCcayb00ijRnnNVcv65HGFfrAkI6AnurwP9et9dlPhd4x86bDKMCzvps697hoUJ%2FczgpN%2B4YV2To3M8%2FfQCgSReQepqOOekzCeuvOyWC%2FE74no6GFy73tSXoVww9vjjzAY6sQG9po0vaBm3uLDJhpqSXK6TnsIjI1Gs1QFWjeEIdlPzDlkJXZD2mLqYH%2BgDzQ2M2PHxzM9aR5CAHO01jiyVnpwzTDeAiOdZzzB5cGdp%2FcSC92QotmG5WCmsXFXJ9k51Da5NUH5Xd07Uc7EeBU8PO8XyrQ2gC%2FE7J9n8aTriB6VR0bqKBZFIBao3CYhjiuTCamDz5M0TcT%2B0pXHQ9gjxgqOMPxmmKY9XtHGxGHrY0kUiB6k%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0c3a4b5ef5158aa472decd9f16f99a85e343eecc2a9785459315ff52039a471b",
+      "file_size": 5196,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 375754,
+      "file_name": "sunec.dll",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/375/754/e0e3e158e41fa72a479d68e6eb8af75cebad2040/sunec.dll?response-content-disposition=attachment%3B%20filename%3D%22sunec.dll%22%3B%20filename%2A%3DUTF-8%27%27sunec.dll&response-content-type=application%2Fx-dosexec&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSL7NOIQC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015837Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCLSRLO6RFeN%2BGsoJ0LPj400jCFgjuqvvPPDFcsczzGpwIgJ7wyMKCj1fCMyhyGb3e38i72dM0rbWpk1YTQ%2BC%2Bjpo4quwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB5coCYEAEvuOphfUyqPBalUOlgecG%2FdXJOA5qOYfoWKN8AaGmY1u9FJbtTnV3KIO0%2BtMZ8WEVTEzxG9V1zbY%2BxoyNx14yRBpBjxqJgdmjHOLHhO2H%2FCxHgkxv6DhqdDLvnnmdhJM%2FEtu9oSyT4vyFFg4KdyPgeC4zZZAJ%2FcZCc08DXqdY1vWvOIZmt3Wl66ttIlFjclKMmmZ4MYPjzMxwsnmEeXWQeOzw8900Y1YYOXvXRzo%2FWYNBxg6k2SZ48KUhrZklGCJvL12d83irz2yCcL28EGuIvPpbT9D1BKaq8soDKxgeoNBQhs%2FOOQXD49%2BInYxfR2hNUI4zr6dGVpfVbPim6%2Fwog2Yv8FL5V2w8HS9bLO5X28Bugt5cCq3fpUHatWyxb2vmGJ8su7net8K0ZS7e3czsFYCQHs0LhFyFYOC0e73DMqM3%2Fszwd3BSGH89bhStFD4wv2ZNEA%2BCzOXlGUAQ%2BKpUfgQL9EhxI9tLJOUZP84DrCH%2BS1%2FOhAT6QwYTz71JS8FIveNIJmLR%2BsOOLDDPZFz9ETomqDUFuzr7UaAySiVYHBZD5RCuYtnU%2FPVFpMt2BSTGjtQS7iNoRh%2F0IPEHvBDmHvVDFDYGzRR9%2FFxK1CTa8nhmPSob%2B5UaTKs3xPM%2FvCdQj%2BG5cBzFPIMwvi2yfdu%2FXDqeUhIRazfYxLT8FHK3Y6BdDCU7vYTrxYt9zEB3bRhoO250G9HDGrS0zyDcKrw2KhOdP9z5Y%2FbQhUk9E5bdNhLAmvJWT0jZnyN9BFfYCcayb00ijRnnNVcv65HGFfrAkI6AnurwP9et9dlPhd4x86bDKMCzvps697hoUJ%2FczgpN%2B4YV2To3M8%2FfQCgSReQepqOOekzCeuvOyWC%2FE74no6GFy73tSXoVww9vjjzAY6sQG9po0vaBm3uLDJhpqSXK6TnsIjI1Gs1QFWjeEIdlPzDlkJXZD2mLqYH%2BgDzQ2M2PHxzM9aR5CAHO01jiyVnpwzTDeAiOdZzzB5cGdp%2FcSC92QotmG5WCmsXFXJ9k51Da5NUH5Xd07Uc7EeBU8PO8XyrQ2gC%2FE7J9n8aTriB6VR0bqKBZFIBao3CYhjiuTCamDz5M0TcT%2B0pXHQ9gjxgqOMPxmmKY9XtHGxGHrY0kUiB6k%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=31dd2ad79c43b045bb14398bf61439f4a81f2dabf217f2357a30e25dd75590e5",
+      "file_size": 10752,
+      "type": "application/x-dosexec",
+      "moderated": null
+    },
+    {
+      "id": 375756,
+      "file_name": "dll_Hijack_Successful.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/375/756/2fff16d04a77fedfa9bafa956063276b41009b4a/dll_Hijack_Successful.png?response-content-disposition=attachment%3B%20filename%3D%22dll_Hijack_Successful.png%22%3B%20filename%2A%3DUTF-8%27%27dll_Hijack_Successful.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSL7NOIQC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015837Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCLSRLO6RFeN%2BGsoJ0LPj400jCFgjuqvvPPDFcsczzGpwIgJ7wyMKCj1fCMyhyGb3e38i72dM0rbWpk1YTQ%2BC%2Bjpo4quwUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB5coCYEAEvuOphfUyqPBalUOlgecG%2FdXJOA5qOYfoWKN8AaGmY1u9FJbtTnV3KIO0%2BtMZ8WEVTEzxG9V1zbY%2BxoyNx14yRBpBjxqJgdmjHOLHhO2H%2FCxHgkxv6DhqdDLvnnmdhJM%2FEtu9oSyT4vyFFg4KdyPgeC4zZZAJ%2FcZCc08DXqdY1vWvOIZmt3Wl66ttIlFjclKMmmZ4MYPjzMxwsnmEeXWQeOzw8900Y1YYOXvXRzo%2FWYNBxg6k2SZ48KUhrZklGCJvL12d83irz2yCcL28EGuIvPpbT9D1BKaq8soDKxgeoNBQhs%2FOOQXD49%2BInYxfR2hNUI4zr6dGVpfVbPim6%2Fwog2Yv8FL5V2w8HS9bLO5X28Bugt5cCq3fpUHatWyxb2vmGJ8su7net8K0ZS7e3czsFYCQHs0LhFyFYOC0e73DMqM3%2Fszwd3BSGH89bhStFD4wv2ZNEA%2BCzOXlGUAQ%2BKpUfgQL9EhxI9tLJOUZP84DrCH%2BS1%2FOhAT6QwYTz71JS8FIveNIJmLR%2BsOOLDDPZFz9ETomqDUFuzr7UaAySiVYHBZD5RCuYtnU%2FPVFpMt2BSTGjtQS7iNoRh%2F0IPEHvBDmHvVDFDYGzRR9%2FFxK1CTa8nhmPSob%2B5UaTKs3xPM%2FvCdQj%2BG5cBzFPIMwvi2yfdu%2FXDqeUhIRazfYxLT8FHK3Y6BdDCU7vYTrxYt9zEB3bRhoO250G9HDGrS0zyDcKrw2KhOdP9z5Y%2FbQhUk9E5bdNhLAmvJWT0jZnyN9BFfYCcayb00ijRnnNVcv65HGFfrAkI6AnurwP9et9dlPhd4x86bDKMCzvps697hoUJ%2FczgpN%2B4YV2To3M8%2FfQCgSReQepqOOekzCeuvOyWC%2FE74no6GFy73tSXoVww9vjjzAY6sQG9po0vaBm3uLDJhpqSXK6TnsIjI1Gs1QFWjeEIdlPzDlkJXZD2mLqYH%2BgDzQ2M2PHxzM9aR5CAHO01jiyVnpwzTDeAiOdZzzB5cGdp%2FcSC92QotmG5WCmsXFXJ9k51Da5NUH5Xd07Uc7EeBU8PO8XyrQ2gC%2FE7J9n8aTriB6VR0bqKBZFIBao3CYhjiuTCamDz5M0TcT%2B0pXHQ9gjxgqOMPxmmKY9XtHGxGHrY0kUiB6k%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7ec060c111f4754910743292cd03fe849c42ce1c5b10ccc77c1a73ac291222d3",
+      "file_size": 127681,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 59,
+  "voters": [
+    "mirchr",
+    "foobar7",
+    "kapytein",
+    "ali",
+    "sameerphad72",
+    "healdb",
+    "thalaivar304",
+    "savitar0x01",
+    "newfunction",
+    "tulswani",
+    "and 49 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 6.3,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 169,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "Burp Suite Pro/Community",
+    "max_severity": "high"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

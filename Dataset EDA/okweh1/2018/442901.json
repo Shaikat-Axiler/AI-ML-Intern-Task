@@ -1,0 +1,128 @@
+{
+  "id": 442901,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80NDI5MDE=",
+  "url": "https://hackerone.com/reports/442901",
+  "title": "Take over of accounts created using Google or Facebook",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2018-11-16T20:54:56.443Z",
+  "submitted_at": "2018-11-16T20:54:56.443Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "tomoh",
+    "url": "/tomoh",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 134,
+    "url": "https://hackerone.com/khanacademy",
+    "handle": "khanacademy",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/134/e62a822e39ad039f23a0b89bfaaaf7bf97c5f11f_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Khan Academy",
+      "twitter_handle": "",
+      "website": "https://www.khanacademy.org/",
+      "about": "Start learning now. Completely free, forever."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-05-17T03:36:27.301Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-04-17T03:36:20.796Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "When a user creates an account using Google or Facebook and does not set an additional password, it is possible to set their passwords via CSRF.\nSince the account is created using a social media account, no existing password check is needed and the CSRF check on the endpoint is broken. \nTo reproduce, create an account with Google or Facebook and make account load the attached HTML file. You should now be able to login to the account with password=ATTACKER_PASS.\n\n## Impact\n\nAn attacker can take over of accounts created using Google or Facebook.",
+  "weakness": {
+    "id": 45,
+    "name": "Cross-Site Request Forgery (CSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 376645,
+      "file_name": "khan_password.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/376/645/b1220e7d272f494b5e9af746e925cb310a35a9d5/khan_password.html?response-content-disposition=attachment%3B%20filename%3D%22khan_password.html%22%3B%20filename%2A%3DUTF-8%27%27khan_password.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTXWCUGDC%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014916Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIBeujaUaRjq75nzLXWaFr8QFSFa6gGKR3ZzcjOsHqb1BAiAW8iGqCQTInfXBwaI5UHQ%2FXaW%2BIu9nrkvyPMaHZGcm4iq7BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMUIN%2B%2FNV5EqrBAvmlKo8FnSNPzuRfzPkLq6Q8SxXwin0aOsx439Lzj9qcnkTa%2B64ghLHjKCY2fAQFhEEx1UJG9Poi2nuwfCnbJcBRwyeZ41b03wQVRxrc3FX7xaOYuPkz7cy%2FYrURi6ZCQBl%2FSTtFr%2BvwORjHCjMkrB3YvEU9JXfRXzVTkCrW0iZVR4oa2Ty8b1Gx7%2FXP4jBxjfumRKKFO0BhnqCTIcJSItRgxxs4lwOBh1wWwnTHFfaDalLMEdPdramhnkqJ%2Fq7915%2FIECeCey%2FiyNBYKdKHaifZ891S%2BeHH%2BSNaW6Wot0KfzEU4Yvi%2FXQkSmfXDppIThqy1SBFb5fbB%2FdGHiTjPQN0TuoHm4XDcQ0CWk30rRo6hG%2BBdQFFv8WyPr6LRkGM%2Fy7A1%2FHLzWczcHwCo19OJWExnuDpVKuPpIrdmrrB4uCxKkZh1YClxFFajAoVyJwuQmELFKGGbgCDfTb0TQmjc7ZJnlq0wrlfDawxnJ7r%2F0Jdr2c%2F5LOW%2F4bAjeTqYDQ5YF4a4yBXwt5cETbLlxw5nHrVlls1aDnwtKYq%2BQ3VdedEJ15Wx0BnXDgHHvgUi%2BsaeeBG6NSXX%2BLWxTSsBKoXaYVKvEapR7quP0Eotqaakghsxl9jU%2FNHIPudrynfGaWnS%2BOP%2BEfyXGWPdjJ41I0pIyilD4qlJBEtJ4oJDrgV5mhC%2FNE5zA9GrHjR3c1EzRPvVeNHuYXaxMHpXHgqGNCsVrBMLh2yMtTOhtOQGwYaRR781r7m3%2BXb%2BBtnVsgz2UItu9XPF3qWoTFaU%2F27%2FlsSgvJgFmrIOgedF5ey0FJL3VPs5WNALObmGWnYcjZaJcsZDiVXeSJr70yl%2BBB8QAzq6U%2BC1zzxiVbFwdokMyGlCBOgaBVsfKTC1jOTMBjqyAbmaRZs5FDHJX3yFP0z9LZp63qVHIteGZqtCQM7%2B5%2FqrSN%2FeU0Gg4%2FXZkNWQQyczeYpT2erKG%2Bk2rxew90GaxyF%2BjEEx%2BlEtEvXa5X%2BW2B5fEv34A58jYzAW0zD3LnhSzMBUbYBaD%2Fb89sbPr9db9DZoGfSuaM9YjTgf19K9TLiGHCuClT9ykzpkzt2C%2BnoR8hYKwhUYNQsuGpP3rffBXhgz3JmpMWrBrs97oSqMHUVM2H8%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3c92e9bc8aa52f8ed0123e6d434b0a18ba34b21941e72cce3693a0f7324810a2",
+      "file_size": 439,
+      "type": "text/html",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-05-17T03:36:21.204Z",
+  "allow_singular_disclosure_after": -213574374.9438585,
+  "singular_disclosure_allowed": true,
+  "vote_count": 181,
+  "voters": [
+    "nihj",
+    "spaceraccoon",
+    "base_64",
+    "nnhhaa",
+    "ali",
+    "sameerphad72",
+    "yashrs",
+    "ta8ahi",
+    "dhakal_ananda",
+    "shubham_srt",
+    "and 171 more..."
+  ],
+  "severity": {
+    "rating": "critical",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

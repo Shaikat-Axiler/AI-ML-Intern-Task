@@ -1,0 +1,145 @@
+{
+  "id": 3255707,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMjU1NzA3",
+  "url": "https://hackerone.com/reports/3255707",
+  "title": "Windows Device Names Still Allow Path Traversal in UNC Paths After CVE-2025-27210 Fix",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "high",
+  "readable_substate": "Informative",
+  "created_at": "2025-07-16T11:13:02.869Z",
+  "submitted_at": "2025-07-16T11:13:02.994Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "oblivionsage",
+    "url": "/oblivionsage",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ip4cyu4gxdh9vdw49fk160hphdhf/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22984,
+    "url": "https://hackerone.com/nodejs",
+    "handle": "nodejs",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/022/984/e600648ace4a8553247bce967d461a030aa81d49_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/022/984/e600648ace4a8553247bce967d461a030aa81d49_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js",
+      "twitter_handle": "nodejs",
+      "website": "https://nodejs.org",
+      "about": "The Node.js JavaScript Runtime"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2025-07-28T18:56:39.737Z",
+  "bug_reporter_agreed_on_going_public_at": "2025-07-28T17:59:21.226Z",
+  "team_member_agreed_on_going_public_at": "2025-07-28T18:56:39.432Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\nI found that Windows device names (CON, PRN, AUX, etc.) can still be used for path traversal attacks when working with UNC network paths, even after the CVE-2025-27210 patch. So basically, the fix only covered regular paths but missed the UNC path scenario when using `path.join()`\n\n## Description:\n\nI was testing the recent CVE-2025-27210 fix and noticed something . The patch works fine for regular paths - if I try `path.normalize('CON:../../secret.txt')`, it correctly returns `.\\CON:..\\..\\secret.txt.` Great that's fixed\n\n\n\nBut then I started testing UNC paths (you know, network paths like `\\\\server\\share`) and found the vulnerability still exists there. The issue is that when you use `path.join()` with a UNC path and a device name, the device name gets stripped and the traversal happens\n\n\n\nHere's what I mean:\n\n```javascript\nconst path = require('path');\n\n// This is fixed (regular path)\nconsole.log(path.normalize('CON:../../secret.txt'));\n// Output: .\\CON:..\\..\\secret.txt ✓\n\n// But this is still vulnerable (UNC path)\nconsole.log(path.join('\\\\\\\\server\\\\share\\\\uploads', 'CON:../../secret.txt'));\n// Output: \\\\server\\share\\secret.txt ✗\n// Should be: \\\\server\\share\\uploads\\.\\CON:..\\..\\secret.txt\n```\n\n{F4574346}\n\n\nThis happens because the normalize function inside `path.join()` handles UNC paths differently than regular paths\n\n\n\n## Steps to Reproduce:\n\n1. Use any Node.js version including the latest v24.4.1 (with CVE-2025-27210 fix)\n\n2. Create a simple test file:\n\n```javascript\nconst path = require('path');\n\nfunction getNetworkFile(userInput) {\n  const basePath = '\\\\\\\\\\\\\\\\fileserver\\\\\\\\public\\\\\\\\uploads';\n  return path.join(basePath, userInput);\n}\n\nconsole.log(getNetworkFile('CON:../../../private/passwords.txt'));\n\"\n```\n\n3. Run the code\n\n4. Expected result: `\\\\fileserver\\public\\uploads\\.\\CON:..\\..\\..\\private\\passwords.txt`\n\n5. Actual result: `\\\\fileserver\\public\\private\\passwords.txt` (escaped the uploads directory!)\n\n\n{F4574401}\n\n\n## Why This is Different from CVE-2025-27210:\n\nSo I know what you're thinking - \"didn't we just fix this?\" Well, kinda. CVE-2025-27210 fixed the issue for regular paths by adding the `.\\` prefix when it detects device names. But that fix only applies to direct `normalize()` calls or regular local paths\n\nThe difference:\n\n+ CVE-2025-27210: Fixed `path.normalize('CON:../')` for local paths\n+ This bug: UNC paths like `\\\\server\\share` + device names still vulnerable when using `path.join()`\n\nIt's essentially a bypass of the CVE-2025-27210 fix for network scenarios\n\n## Mitigation:\n\nTo fix this, you should apply the same device name validation logic to UNC paths in the `path.join()` function. Specifically, when joining paths that start with `\\\\,` the code needs to check for device names and add the `.\\` prefix just like it does for regular paths\n\nThe fix probably needs to go in the normalize function's UNC path handling section, around where it processes paths starting with `\\\\.`\n\n## Impact\n\nAn attacker could read files outside the intended directory on Windows network shares :\n\n+ File sharing applications (escape to other users' folders)\n+ Cloud storage systems using UNC paths\n+ Corporate network shares (access sensitive documents)\n+ Any Node.js app that serves files from network locations\n\nAlso, this could lead to lateral movement in corporate networks - imagine escaping from `\\\\webapp\\public` to `\\\\webapp\\C$\\Windows\\System32\\config` or even to other servers like `\\\\adminserver\\C$`.",
+  "weakness": {
+    "id": 19,
+    "name": "Path Traversal"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 4574346,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/n0ak28lmrtxqzbi0fi8408sgzops?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195819Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9eb20572f1899fa082b6226863250fa049fdbefd69a953df38a559e10336ab9c",
+      "file_size": 54026,
+      "type": "image/png",
+      "moderated": false
+    },
+    {
+      "id": 4574401,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/lxr4cg5nrzsga6s2ae5xmdglp7r9?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQWBCQ3S3C%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T195819Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCATTN4ch7JbVrRVuzGIrYLKDviSmzX9uMMBWWEu0dr8gIhAIaDKBXLElSPfbwI3cgfxEQDiye6DpqyiIKFxqAvigD%2BKroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyP%2FFkOL146kCWOhLEqjgXJmtFJQqQy079sIhfhv9KpAlOpDKYTW4IAjuXZsYYrMksEbWbbVP7FIVJ0cZ76CWuf7tWyCOUuLJynGDeiFbe4IWdNPoWUC20FXGD%2BAl2%2FkiqCmu8QdEfMWGGVRGuguYRpRWyn8FeWzrxnO3yeEzn5%2BFT2ffLNxRnpZpDLmwJQBBsDg%2FzisBf1TSsbGr68xBUP2D3%2FYwSvx5pu7fkDLR8buycknP%2FD0aCYmZHlKzdLGyoyzRSbT0KgqwnL%2F5eb%2B3SGDNKcf1FFZb2dp6z9t1tZx%2BcM2vD9fS4F9e8tebUvMZljbAwqn4GLRG45oSJYMyYuhSiF%2BfThMomwiKtn8Q2qViS1RIi3SnCZUAAr5wZo4HW0XhrvgxXzqVPaczhGBEl2NcKQJSsdyomuvOyQNPRAyKrODDT%2B7e0PorMEsWqq667rX%2FqJ5L4h920NI31X3kosPWnwuhQCrMimKuXZLr0EeleZqNYILrtXRWgAYiQM%2Fk5fJDqflN5JHrUynO7qYiDRx047xfUPL3Cwb%2BFGo4fMiWSde84j35txqQV%2Fs5ZXNhLw0hO06mWcHCCmWMIgQugfIDmIh7bPlGpyPnF2kbbhr8LQjoWNvvQ3M%2BH9DPNotrpp5lgcBMBvTBGS%2BmvYUmMmsUOjD1cUpNaovYVgw%2BD7nX7CYBKDtoQE%2B%2BxO3SHG0PbdolVUPMyExV6eQKagew4aXmnhD3y8swafHZmWqqcmMgAcKGVMWtVeYoJLj4V0ukrJEAwO1ZMXovK8UfVYe%2B4VOerSeuNfLzvNCNcOtKrmGFaKiEY%2FllhBLcEqI4Angi%2Fw1FcKTomv7QGqfSDtl1HdIj3wAVPG%2BDP0yf2z3SSZ8qX%2BsZUyEBKo2zeGv34w0MLizAY6sAEG8XrKd%2BZgT93RT3cLKagJFrTy4SSkSfTsG9urJpg%2Bn5xmViomx0ru43X8G9xOYbc%2BCkYn2XOZAQuhBCKeSYUEnJclPH4rrTsh5nDbicN%2BipRy3MOyXJRVWYn0ta6HG30rvKknd7IVtuu%2FjO5yeiCd2yg6MW7eTge8XTe%2BVnv8pbffh0L%2BiadipxYA8RAOdWDz4sygM3YcYhXNsoGcRwxJ8IB%2F6boaGmY6OWXXxA%2FkZw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f0178bc6d6959ed58c97f59be8a94a05e611b481004fa046db742e239200e697",
+      "file_size": 46605,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 38,
+  "voters": [
+    "m4khn0",
+    "porcupineyhairs",
+    "zy9ard3",
+    "thalaivar304",
+    "2026",
+    "oblivionsage",
+    "esberat",
+    "mai91",
+    "bugzen",
+    "kawinduwijewardhane",
+    "and 28 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.5,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "high"
+    }
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

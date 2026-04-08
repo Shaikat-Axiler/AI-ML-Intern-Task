@@ -1,0 +1,124 @@
+{
+  "id": 260938,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNjA5Mzg=",
+  "url": "https://hackerone.com/reports/260938",
+  "title": "Homograph IDNs displayed in Description",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2017-08-17T05:43:53.276Z",
+  "submitted_at": "2017-08-17T05:43:53.276Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "d4rk_g1rl",
+    "url": "/d4rk_g1rl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/iu41ya7imiuiazn1v7iq2gpm7q9r/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1601,
+    "url": "https://hackerone.com/legalrobot",
+    "handle": "legalrobot",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/601/0f164c3d9618b04b006b859517ff032ec57ab42a_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/601/0f164c3d9618b04b006b859517ff032ec57ab42a_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Legal Robot",
+      "twitter_handle": "LegalRobot",
+      "website": "https://www.legalrobot.com",
+      "about": "Automated legal document review using artificial intelligence"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2017-09-16T23:12:32.548Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2017-08-17T23:12:31.044Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The IDN: http://ebаy.com/ is a homograph for the latin ebay.com. if you copy and paste a link, you might think that you are going to ebay.com. in fact, you are going to a homograph url http://xn--eby-7cd.com/\n\nit would be safer to show the punycode version of the url so that it would be apparent that something weird is going on. that is, show http://eb@y.com/ instead of http://ebаy.com/\n\n#STEPS TO REPRODUCE:\n\n1. Login to your account https://app.legalrobot-uat.com\n2. Navigate this URL:\n\n      https://app.legalrobot-uat.com/roadmap\n\n3. Click the \"Add a new idea\" button\n4. Actually their is no problem on Name but in Description.\n5. Put http://ebаy.com/ on Description\n6. Click the \"Add Idea\" Button\n7. Notice that it display http://ebаy.com/ See my attached photo {F213601}\n\nThanks,",
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 213601,
+      "file_name": "homo.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/213/601/1aa77f8c80511bf9c03269ad4f60594dc91cf787/homo.png?response-content-disposition=attachment%3B%20filename%3D%22homo.png%22%3B%20filename%2A%3DUTF-8%27%27homo.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUUFD67B4%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032025Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCt1G8KN4pIV7aQcYtV4iFxBV12oOXv3T61huV11sTk8QIhAJ981uAW%2F7xyQrwsgrg54KD6iD37YwkSht9btvJbtZYoKroFCKT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgylyZcbcTie2dy1Hs0qjgUupXun%2BQcBDvD0nrhQJPWpji4u1uTClHmkJGKhTu5WjdT8kNiO3g8AfVxWOmWlxQqFxC6n35K8OrUZ7hcxG%2FQMn%2Bd3yp3RrGLKRgAfsL4aI%2B4gb%2Fh4pGY5UWn%2FBURutPJp4LSfzXNtXV62Ys6p8OmnzRM4hCYKEkqmJUVmboKNEg0%2Fxw2AfblrN1J%2FpP5QTQUJHEKqeCfXHoME5La%2FyIVnUIZnK7qPuyFzWtmnqd316JtA%2FA4%2BX2jaeHcUOpipNz5mVGecLejT8BsZCutOnStNMkf%2FRjAWBKvMBU9ItlnYyrNCW48B2UgFR6zddnRsZCeN7%2FerRyw%2FqmWKWiDgm%2FdQXahoq7F74o%2FZv%2FZaJM5FhpzaG1BrXprqFQfpVqzmyURg0VDglPJ4oxOgbgXAuNoL1A2o%2BHAdDoM1Wa5W1eGZwPhG7as9ba1wpIlb%2FcNlQniwwsk%2FZj23xgdnr2VKh9%2BMIBgxXn5MnfqbQ2VBVcHQY3jFOkfhJyKBxKq9iyUZ%2Fo3o6a%2FgnIYlLh0XIAD2wR4PSvlSOhsiJCjWj94Ep22LJpu2iUGphI0obTa%2BVt0aF0oqAWCBVj0AmymrJPoVkQYdQjO0t6cJAv%2FcSb%2BfwjfFjlZHMr4tuYQbs8IRB%2B%2FuA02giQ7%2FGCYD2%2BvhYBy1ij0NslJoIzM4BQJ12pep1R3DwaA%2FPYZ%2BIiLS6fZ9xAnJwKcldlPurUSc2ZIG7oT%2FRrIQ8P5lsLU%2BJjNV2NsfpH7pRZXfU%2Bz%2FH3SpxyKBAAzdB6DmXFXmcZ%2FegwRuT2W%2FayNzEs6NFnzF0Dmbuvv3thqSBjmq%2BVOQrTqpoUyTzU%2BvFUv866GPYMgVqZxBesV6kUZsiatbJjZpnGr%2FKJruUgEw3a7kzAY6sAFfKmHACdbctWweyM1jxnRk1Y50FnXaIFpu%2BJo%2BBdEuxmzhpRYDXg7P41hdr09EfOpeJLuRemMxSiADJqwL6HDnhaunABf2SjBEjV9rBHEqyN%2F1DMOSHUV75WmE8jc0h7FNTU5hjBG8Zni6GeIwQ8KwSTFgb%2FAWdUOnQ26uqa%2B0fvwLzDJAAcVO%2BIDNpcpfP6PvnAuHTiCxdGkJgneiGa32kyPGJfr%2Ba6PQFc2B8M961w%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b91f8a83b7b30aa7ffa09dc79495712281686539fcaf51d49eba8b0b6d47bac0",
+      "file_size": 264007,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-09-16T23:12:31.166Z",
+  "allow_singular_disclosure_after": -266040474.27497247,
+  "singular_disclosure_allowed": true,
+  "vote_count": 17,
+  "voters": [
+    "shubham_srt",
+    "2026",
+    "apapedulimu",
+    "brahim_boufakri01",
+    "cuso4",
+    "gamliel",
+    "r3y",
+    "eveeez",
+    "m7mdharoun",
+    "muztahidultan1m",
+    "and 7 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 521,
+    "asset_type": "URL",
+    "asset_identifier": "app.legalrobot-test.com",
+    "max_severity": "none"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

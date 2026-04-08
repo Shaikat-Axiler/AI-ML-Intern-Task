@@ -1,0 +1,120 @@
+{
+  "id": 88508,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC84ODUwOA==",
+  "url": "https://hackerone.com/reports/88508",
+  "title": "XSS when using captions/subtitles on video player based on Flash (requires user interaction)",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2015-09-11T16:55:43.845Z",
+  "submitted_at": "2015-09-11T16:55:43.845Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "stefanovettorazzi",
+    "url": "/stefanovettorazzi",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2udi3vbdhzbpwjlrvhxisg1q29dk/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 56,
+    "url": "https://hackerone.com/vimeo",
+    "handle": "vimeo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/056/c3188aa0fc4a95fd486b5ee1f4b2d0b90da111d3_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/056/c3188aa0fc4a95fd486b5ee1f4b2d0b90da111d3_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Vimeo",
+      "twitter_handle": "vimeo",
+      "website": "https://vimeo.com",
+      "about": "Make life worth watching"
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-08-31T10:27:29.285Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-08-01T10:27:24.173Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "__Description__\r\n\r\nThe video player based on Flash (not the HTML5 one), shows the captions/subtitles without escaping. This allows to upload a file with captions/subtitles with HTML code, because the content of the file is not escaped when it's stored.\r\nThe way to force the use of the Flash player is using the widget Hubnut, because on Chrome for example the default player is the HTML5 one.\r\n\r\n__Proof of concept__\r\n\r\n1. For easy reproduction of the proof of concept, create a new account or delete every video in your account or make every video private.\r\n2. Upload a video or use an existing video.\r\n3. Go to the Settings of the video.\r\n4. Click on the tab _Advanced_.\r\n5. Download the file _English.vtt_ that I attached to the report.\r\n6. In the section \"Add Captions & Subtitles\", click on _Choose file_.\r\n7. Select the file you downloaded in step 5.\r\n8. When the file is uploaded, click on _OFF_ in the column _Status_. The value should change to _ON_.\r\n9. Select _English_ in the column _Language_.\r\n10. Select _Captions_ in the column _Type_.\r\n11. Click on _Save Changes_.\r\n12. Using other account, go to https://player.vimeo.com/hubnut/user/[user_url] (like https://player.vimeo.com/hubnut/user/user36690798).\r\n13. Click on _Play_.\r\n14. Click on _CC_ (at the right bottom of the player) and click on _English_,  to activate the captions.\r\n15. `alert(document.domain)` is executed.\r\n\r\nYou can reproduce the issue using this link https://player.vimeo.com/hubnut/user/user36690798.",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 53542,
+      "file_name": "English.vtt",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/053/542/797a8fe76e0a2c722c9a00379484003b2e6cc4f4/English.vtt?response-content-disposition=attachment%3B%20filename%3D%22English.vtt%22%3B%20filename%2A%3DUTF-8%27%27English.vtt&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ52XAMDPV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T032419Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCBm3osKehmOa3grQ706i4m3zmrtVcb9dFooTChYPumeQIhAJEjcX%2BWzzbzC8K2Putbp86GRYbsDHH4%2Fyxb92c%2FegrmKrsFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igz9tSzbuKejP0EeCDgqjwXrGyA8X0ofMwGVmBp6R5T91KI1I6ZaL7LpD3Vtd1OwsezX%2Fj8dUP6qfG6ha7X0c3x2VyL4QF5lRJGCI46cnqqaJpGBuxTvICy%2Bn5vtt4qbnSu9NoBKeK32Lm8im1jGU5WCrE5VKpJ%2B3TQdAhAYWM43fjP54yy%2Blp2Pc6NaziXawf5KgMdOAuRnDCZDJmXzFEKeCX5%2BvWwONoygqDCNFZ7xr9CpF4T4mFahDFTtS6dfLgb0Xc2Vqrmajrb83J%2FjLTJHzWCVX2BDDeiZV8lbcd6rmY7qRdef7GCFmVbZkMp2fxepXFmf5anglFIAs%2FOSzXs52DEr79NcLziZWV97Cpa6XkO%2FLizR5bT7SBcmC6c6595WON5nZO41DdyJpjDtZCFOFT1mbDBqP2PGRj2wydljmw8Bs8v77ulXO5fylPWMDXl%2FZYHb4uIV6WfIXP6SU6zP50B5GpihD1KeDNOiU0BU7CPPzf%2BStpMiZf%2BaThSMqW0GNt272L%2BVxx4EU0YuTbCtWqWz7dGLT2ZybvHDYMoN%2Fu1d1lqdm%2BU9yecIS6WC0FeXK2DAkayhFAazSiEDUTUX7ShJL0%2F%2FlHTB238lTnMb42GGkVNCQxF6D7nsmWsa3ThCqJC01Hm4ZOWYtm%2Fvtrr54jZ3%2Fj48ljNiXh0TMbkjv%2B%2F4dKeEZ8eHYAoVw7DVSnpDPhoEIZWuUSp1wuLw4PwTkqyKg8z7ZplMEvu3NAGRbyHzSUjLQY%2Bs9%2BjNcFfnQDA1r9Yd4gvl%2B1Na4ChVrIUZqmjv7nOONYkdBjyOi0QqzfzvfYL5ykNMnkyuJkvfz9SPw7UTsGzj5WMe1Kwt0Q13hfSt%2FjOYchrtz20DPh5dkNn2Nj1VsZ1UBLY4CTnwMK%2Bj5MwGOrAByzeCPEFlUf9oyIxscospbYwrAPBFrun7WT0l7uMYhF3tjZLQrC3tnFvjFJOOevoNyq6eSrepfspi1g7DUcVFPLqqads4NF8X4fotlAZHcLBwhuIGHDH%2Fl4l%2Bw3ghGReiSrWIN2KOPWmGSUo5%2Bk2yY8aou2hwoNsbBa%2BfQ96TPq59XWc6S4tx%2Fb0M870Har6vQQtSrn000xxyiClL3Ghbxfr2QSGi7pdFrofjzRyELbs%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=86a464d09c1fa178f67367b4e5f0fc3bb612122a6ec648740bc62994f77f0486",
+      "file_size": 107,
+      "type": "text/plain",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-08-31T10:27:24.282Z",
+  "allow_singular_disclosure_after": -267469014.8550711,
+  "singular_disclosure_allowed": true,
+  "vote_count": 8,
+  "voters": [
+    "flamezzz",
+    "thalaivar304",
+    "r3y",
+    "eveeez",
+    "hacklad",
+    "shivammusic",
+    "nonamehiiden",
+    "mahmoud743"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

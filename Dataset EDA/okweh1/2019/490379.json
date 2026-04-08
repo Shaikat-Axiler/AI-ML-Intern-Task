@@ -1,0 +1,144 @@
+{
+  "id": 490379,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80OTAzNzk=",
+  "url": "https://hackerone.com/reports/490379",
+  "title": "[glance] Access unlisted internal files/folders revealing sensitive information",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2019-02-02T15:32:02.524Z",
+  "submitted_at": "2019-02-02T15:32:02.524Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "skyn3t",
+    "url": "/skyn3t",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/224/816/14988b1087907275d769481dc45fe6576ce0d206_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-02-28T19:25:51.550Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2019-02-28T19:25:19.678Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I would like to report sensitive information disclosure in `glance`.\nSimilar to #486933 in ways\n\n# Module\n\n**module name:** glance\n**version:** 3.0.5\n**npm page:** `https://www.npmjs.com/package/glance`\n\n## Module Description\n\na quick disposable http server for static files\n\n## Module Stats\n\n**weekly downloads**\n41\n\n# Vulnerability\n\n## Vulnerability Description\n\nThe `glance` modules allows directory browsing and to serve static files through the browser.\nThe config option `nodot` can be used to prevent serving sensitive folders such as `.git` or `.DS_Store` \nrefer: https://github.com/jarofghosts/glance#command-line-options\nThis rule can be bypassed using the technique below which can lead to sensitive information disclosure (An interesting example: https://smitka.me/).\n\n## Steps To Reproduce:\n\n- Install `glance`\n```\n$ npm install -g glance\n```\n\n- Inside a project directory, initialise `git`.\n```\n$ git init\n```\n\n- Add rule to ignore dotfiles in `.glance.json`\n```json\n{\n  \"nodot\": true\n}\n```\n\n- Start `glance` in current directory.\n```\n$ glance --verbose\nglance serving /project/directory on port 8080\n```\n\n- Now, current directory will be served by serve with the exception of folder `.git` and file `.gitignore`.\n- If we try to curl .`git` or `.gitignore` we get a Not Found error\n```\n$ curl --path-as-is 127.0.0.1:8080/.git\n...\n<title>File Not Found</title>\n...\n```\n\n- Although if we try to fetch files/folders inside a forbidden [dot]folder there is no problem at all and most of it's content can be extracted successfully  (except dotfiles itself).\n```\n$ curl --path-as-is 127.0.0.1:8080/.git/HEAD      \nref: refs/heads/master\n```\n\n>The structure of git repository is well known, so it is possible to found references to the objects/packs in the repository, download them via direct requests and reconstruct the repository and obtain your files – not only the current ones, but also the past files. \n\n## Supporting Material/References:\n\n- Ubuntu 16.04\n- node v11.3.0\n- npm 6.7.0\n\n# Wrap up\n\n> Select Y or N for the following statements:\n\n- I contacted the maintainer to let them know: [N]\n- I opened an issue in the related repository: [N] \n\n>Hunter's comments and funny memes goes here\n\n{F416786}\n\n## Impact\n\nThe essentially bypasses the `nodot` feature and allows an attacker to read from a directory that the victim has not allowed access to.\n\nReferences:\n- https://github.com/jarofghosts/glance#command-line-options\n- https://smitka.me/",
+  "weakness": {
+    "id": 89,
+    "name": "Information Exposure Through Directory Listing"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 416786,
+      "file_name": "meme.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/416/786/f70750a0c231dd0e1684a0fc4dbca1ce60e8068d/meme.png?response-content-disposition=attachment%3B%20filename%3D%22meme.png%22%3B%20filename%2A%3DUTF-8%27%27meme.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZTCCZMCE%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T015840Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIDdWHzM1zVi2ieW8tAKy9EWL%2BKQ6I0qREICHFdFxhIPsAiAsafrye1dPrV7dfK4hBzUIFPDp8mRqPpftL61ru2sXbCq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMiauz%2FtT7KHRU8nnJKo4FVKyUlCaHOyYNh4q8t26Wcy8wdxooC0kO4pww%2BZH7pQbhiN4nTsBwaKRypTL8yZMEWGocCkSJdE1gY1OOklQYoiz0gqNz3RjNHMKeQmUJwtT4yVg7oZVJGJjzRRJ9nqiToRwNFwM7q2L89dgGF5BczDpUwvZdlT88w%2Bf2PGlT4JptAwnmyaKsrkh2dRfKCDmbESoCROVgmq9Lw3N01hKN332AkXtHJX%2BEk51244%2FrhxmPa%2BEoLa1LTnfxyASvVhJY5o8knwQyTCfdbQOE3dipfg1IFi6H1oCbENr8coPz2EJ1c1hkdLgDB8m%2FloboZP5KfmSbmABwqE8V9YR9xCDbOMICVNQiowXU5gQPSOa66c1pkrAf5XoXXrcyd1kkmV%2Ba20VD3RQHTmR0JieOOudmZPQTZEz6E5%2BKcaHI9lMM5PTEbBgrhBB1HD26R7wWGlPMFeAz3RkA%2BevqO0dWvDL7Qdji%2F%2FPNdEXMbmSUdWfyrgDyzfikftTRPW9hTRU7%2Fr%2BEOZdBaZHsz9hrS4SparO0Okl6bNHQbLYn7QMa4L9yULFiy4NaCtZ17taMct70%2FhWGbvUxmMSL99k7gPnM3DFf8MyP8wyGrl5nbxKr3qEdBbBjYoFNviPxMG5eYpn3gyuX3S3c6xao3o1xajzpZn5A9IDTQq1s76obctusbUT%2Fd7Rhf5Kyk69vHZy9pLJ6Xieiz%2B3m5aHNl4FZdh48%2FgiXwCbtIAmXCBHFD94x%2BykwaNsApyfsv%2Bb4OcSRdwdLg2uddLR646bo7yPhI7b2rrBAefI6SRfOfOL4X4tqOhDKTkFZFJ44vXPjrr2V7TXSXv7zD8Z4zUhCWTGarhUUbjkcMJgT%2BssfTswMNhTx4c5LMLyB5MwGOrIB4X5k4qsSCb6e60TzH03LHsqx0VIzCEC%2ByKzDS9%2BAYgLk8l4pSQjO2mt8n%2FesJmOf7DLVvKoJB9TxmLPSa3kTR4pZNDlLD9Q9%2B8eKFLB17PLYe7kDkSeqYVCaYbxjcJ7goxAyuuZ7XdnGe%2FK1V2myI5JHNZ1KbXJT6NWevzGK0lx44Un8zB13UEu6CfHC68VXf5OfcfcmHS0OIQ%2FWzc8Zweo%2BgRAGCTeJFTf6OJ4X9QQ0xw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=81ee11a51a9e2d84b647ba8e874cea38f25320ec7afe24433b3d0ff140f2e010",
+      "file_size": 103711,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-03-30T19:25:19.855Z",
+  "allow_singular_disclosure_after": -217665201.0925245,
+  "singular_disclosure_allowed": true,
+  "vote_count": 19,
+  "voters": [
+    "ermilov",
+    "bl4de",
+    "skyn3t",
+    "deksterh11",
+    "mrwell1ck",
+    "kabeza",
+    "blaksam",
+    "grepthis",
+    "gosh",
+    "schlueter",
+    "and 9 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.5,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "none",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 6772,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "glance",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

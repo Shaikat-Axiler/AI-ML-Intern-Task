@@ -1,0 +1,144 @@
+{
+  "id": 704266,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83MDQyNjY=",
+  "url": "https://hackerone.com/reports/704266",
+  "title": "DOM XSS at www.forescout.com in Microsoft Edge and IE Browser",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-09-30T13:12:39.890Z",
+  "submitted_at": "2019-09-30T13:12:39.890Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "enesdexh1",
+    "url": "/enesdexh1",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/VBwScoKoGD7pDwyCH2KJrHNc/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 39489,
+    "url": "https://hackerone.com/forescout_technologies",
+    "handle": "forescout_technologies",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/039/489/f946bfc9677084447f98ce6402a3672d680591d8_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/039/489/f946bfc9677084447f98ce6402a3672d680591d8_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "ForeScout Technologies",
+      "twitter_handle": "",
+      "website": "https://forescout.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-04-07T08:37:19.705Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-03-08T08:37:17.888Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\nI've found an DOM Based XSS on homepage \n\n## Steps To Reproduce:\n1.Go to this url and you'll see alert pop\n`https://www.forescout.com/#<img src=x onerror=alert('XSS')>`\n\nBut this will work just on ME/IE browsers because chrome and firefox have default encode system hash url\n\nAnd vulnerable code is on your directly source code within jquery code. As you can see there is no encode in ==window.location.hash== code so when we open the page with #<img src=x onerror=alert(1)> it executes code.\n\n`jQuery(window).load(function() {\n    jQuery('a.fancybox-inline[href=\"' + window.location.hash + '\"]:first').each(function() {\n        jQuery(this).delay(700).trigger('click');\n    });\n});`\n\n## Supporting Material/References:\nI have uploaded a picture to show you POC\n\n\nRegards \nEnesdex\n\n## Impact\n\n--Hacker can execute malicious codes in victim's browser\n--Hacker can redirect user to malicious website\n--Hacker can steal victim's cookies etc.",
+  "weakness": {
+    "id": 63,
+    "name": "Cross-site Scripting (XSS) - DOM"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 595565,
+      "file_name": "DOM_XSS.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/6V5DgmxAt2V5BLmHMCyr22wz?response-content-disposition=attachment%3B%20filename%3D%22DOM_XSS.PNG%22%3B%20filename%2A%3DUTF-8%27%27DOM_XSS.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZYMZR427%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T004115Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIEz7%2B6Fclt0sZGGztCf7hoII%2B29ucpFm48k1NNy9k%2FlfAiAc4kTf7hS7R7RPH6Y5zm077oLXEZ%2B%2BIhXlCxDAUJsSyCq6BQig%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIM%2BHAV6D213XqU0wn9Ko4FwYnHIZn7qYON5mIfTRLuqOsJFi9D3ZrE8Cc23zAXRWSClaDN46AGDvpssicXZQjWGc8nnvl10lUER2pNa1Kr1rYoVG%2BfhyLwlJcFddXFXzdynFNBTZV666To7QWx6gjiOd%2FrpTZs22HYWKXKgyBX74gmkYQF%2B7jrO%2BhK7MBP03ur1l%2FzaOJtDUydRiJEvnYu8nHlSuvmCPJWiA5hZwUX4PyBxgdj3STAyzWM1P2vihP9Se1g%2FokdMzzpL%2FXDMRjKWY6EVR1iidYlQsDtiMeyBGrGIYiEkwY9D2fHzoAbBPLho%2FI3bD3pNxn5M6I%2F2rTSbpmZbQf3SYXt0tupjw3vWsRLNg6O%2FdcSS35vmX%2Fkbnxvv6v%2FW%2FyIE6Y8D1QDZ5%2BABlPQzWgHV1o9UtOz6grnu%2Fc75sJtdzu4S%2FvEjFy9SYrgGeWBCWloUXaMF%2F%2BdO608zdZ9zM1SzorLRpHWDN%2F8iQPTZU7DLD9%2Bri7iS3lbfWFH%2BHHMrXexxWq3z%2Fpc%2B%2BHgePgxzCWAGJBNcwp9dGc4Nhn5N1Fszi%2BuapXmFORKtnASFL0%2BWu1PqiyLEDMUHbrpwld63OJShBfYhr5MedRavSUQb0RGMlStr3xopPPcElCjNKe%2Bpm27vkPVKQGIbOcZpt6c8R9D%2Bn%2FgPaAFlroH1U8sjuniPRr2r8Sklfs164A2thK1JmO1m%2B5KbB3%2B%2F0RIh1zER75O1w3MHhSiL%2FNtEytZljBf6y%2FL0v0o0xoLtCYjAiGP%2B3QEQtvwIyYc4jtfkR0wEwhr2gfKLgUEdfW2SrcNRDb9P4Z0Wju1grX6lcK8JxAHX7JV0%2F8H2ulXCXbJEsgmk%2BBpeGrh52PZsdHFFKZPrezXSOEDsSn5tlATMJ%2FH48wGOrIBQpjt%2B4sfkKbAuf3KC56EsWqsGfdg4pLTCAjRF4tRv8On9oA5s6jGiWb9SJAIPjroL2ZJ7poq78lNvP28N4e1qD6rIgQWmaZLakaYvm29nALWve8IB2R0kZMsGRgArRgsGtss8Qtgh9v13ssW%2BD8c4T7f%2FSb9H0VMibe4qXQQEQCNazAmU1xZzYN%2B8iurGSCZ8PX9d9Nvg%2FDsraWzo1h9qt50YmHkIwEsJV2kw%2F%2FlRDlxFw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b7cabb08c60c9e3989333bd6b2ce664b471b698da4b1bd8ff034d70ea876ae4f",
+      "file_size": 603814,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-04-07T08:37:17.985Z",
+  "allow_singular_disclosure_after": -185385837.70749116,
+  "singular_disclosure_allowed": true,
+  "vote_count": 96,
+  "voters": [
+    "foulenzer",
+    "0xtarun",
+    "a_d_a_m",
+    "rzx007x",
+    "lemonoftroy",
+    "z32",
+    "sameerphad72",
+    "leonishan",
+    "zeroxyele",
+    "themastersunil",
+    "and 86 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.7,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 36920,
+    "asset_type": "URL",
+    "asset_identifier": "www.forescout.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": 782764,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83ODI3NjQ=",
+  "url": "https://hackerone.com/reports/782764",
+  "title": "xss in /users/[id]/set_tier endpoint",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-01-24T19:03:14.075Z",
+  "submitted_at": "2020-01-24T19:03:14.075Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "gabriel-kimiaie",
+    "url": "/gabriel-kimiaie",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/8WtiMMWx91cvzq3PwcWLA5bk/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 26860,
+    "url": "https://hackerone.com/ratelimited",
+    "handle": "ratelimited",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/026/860/4c9a902446bc9aa57b82156df4b7e358bdecd727_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/026/860/4c9a902446bc9aa57b82156df4b7e358bdecd727_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "RATELIMITED",
+      "twitter_handle": "",
+      "website": "https://ratelimited.me",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-01-25T07:27:32.522Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-01-25T07:27:32.479Z",
+  "team_member_agreed_on_going_public_at": "2020-01-25T06:26:56.662Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary:\n[add summary of the vulnerability]\nHello there ! I found an XSS since you forgot to add the json content-type response header right there:\nhttps://github.com/gtsatsis/RLAPI-v3-OOP/blob/508d3c610ccc9076753bdc81151a5e8d76871a3e/src/Controller/UserController.php#L93\nThe tier parameter is therefore returned with the wrong Content-Type (text/html).\nI have been able to verify the existance of the XSS.\nNote that you can bypass the '\\' added to both \" & / by using comments such as:\n## Steps To Reproduce:\n[add details for how we can reproduce the issue]\n\n  1. Deploy to a test instance\n  2. Create one admin user with correct api key filled in the database\n  3. the /users/[id]/set_tier \"tier\" POST parameter is vulnerable to XSS injection.\n\n## Supporting Material/References:\n\n\n  * Selection_033.png =>burp capture attached\n\n## Impact\n\nReflected cross site scripting should be fixed, as an user might be able to steal cookies/escalate privileges.",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 695155,
+      "file_name": "Selection_033.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ujZK14MsJKeX7MXtZtSJond3?response-content-disposition=attachment%3B%20filename%3D%22Selection_033.png%22%3B%20filename%2A%3DUTF-8%27%27Selection_033.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSQYA2ZTM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T005723Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC1BTFBFIGBCfRzJ%2F9qWWUi0%2FwgJ7uKqB0XrqE%2F5tjSGAIhAJJcq9OzWWi%2F0TTpabsKp5oskh3ChbXcqueGSu6e%2B26xKroFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgwtDGoj4s7%2FtZ8VFEAqjgVkdBmUSrTgEiHfOZ8F4NXWUtvY3x22oEl7XRsL3EFY7PjhoTlE0YuHaL2KunlmQnmUegmnzCxn%2BcBHnwJFzGl1r00QnEyYYdX7RI935n3WPvmFZP5Me6G88cbj3Q83umI3Q2TGmncazqN%2B1x9FL4qWYWuH8lc3hr6vWhvF9EfW%2B8Jx0kCbRJHcSHAIc11v9rMK0tNgXYT%2FSIFDGc%2BdXjaLJWyvd00XtZjPWL%2F9H4tbS9n8YyK4YOojT3KhyXwFLBIehPgAzJuoI52tJGpGutcEDPllJG3XYlpYqHLGFsX2iQpyJ2Uuknx%2Fuq5pce96tmlTbrDr6anOlYG3NyvPmmfk1fl63Wp%2BRN5lqdAVnEMcLu6uozMH%2BZcjMBMtMT%2FqBz7sJO4F9tiwS6w%2BGnWTlNSkdAqvYuz1ZbPTrJ4s1qo2DI8Ea9AUPXCO66gVSVNy6V22VB09GCEnM9I0LC8lFQT4Hmwbb2JiFp%2BNcLpQSmO0X8DnLJu0bIjBB0XgFKMFPlcaB%2B5MmBMTyl4FqQaly3wDvnrPL1On92E1%2BotIRXHhkgdsPIX8KsTl3ITwOUhE8wzHoGCD3iU0VVn25nqSZG4IR6zYubSc1VMTn9uz36buQNVGIe6N86WY%2BpX%2FHLTRwcbZ5ak39ZV1FvS5%2BzwJxUurHehXLqdg1%2FdYOsqggMA7SNLk6O8sjp4VEfFVMAD4PqRB0pnNMSOK90NDClJXmX5rgCYfHvVftqVWyWniBSDrJf2skvTl33sAjYSh%2BwVoBe6%2BtH0IHGfUgoGwb7h7d%2FFJS8WSbNXlUpbeYA0hnAsRzoYreA9hFxCXVTybOw809fqVX0wBLLYV8FSxslL%2BjT1z5vCG48AcSS3jLY2pB6AwweXjzAY6sAE0Z9CS9UZCklB7JyXz%2BbggxuAUc0hRJZzjdGvoqoHiV0ozU%2B9joXNeTPKlJqvpM6CnhM0LOa01CGAtKU%2BEpT1b8PuaKPv7MEcWeuCLIVfUBn16VT22G7m0FshJP8XaJNZxK8wLP91IGpbxyTaahsqXChUu6U5eFDZbkh2R60cjISlyWjGWE7Tgk5X2LEWBiaUSpWFiY%2FbPCPAY%2Fn2uJ%2B2aUVSBvwOOjA1RySbjeOp4Cg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=571ddf29f8e01630c85a1e21f9ba3215342167027d0c47c8f54524a23132a441",
+      "file_size": 82464,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-02-24T06:26:56.755Z",
+  "allow_singular_disclosure_after": -189109826.27440763,
+  "singular_disclosure_allowed": true,
+  "vote_count": 11,
+  "voters": [
+    "p1stachios",
+    "base_64",
+    "ali",
+    "shubham_srt",
+    "exception",
+    "cryptographer",
+    "b9372d4605459ca97219795",
+    "elie-rahal",
+    "v13rsba",
+    "zombees",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 33879,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/gtsatsis/RLAPI-v3-OOP",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

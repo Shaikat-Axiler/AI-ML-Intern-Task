@@ -1,0 +1,133 @@
+{
+  "id": 3485826,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zNDg1ODI2",
+  "url": "https://hackerone.com/reports/3485826",
+  "title": "Alt-Svc bypasses credential leak protection (CVE-2018-1000007)",
+  "state": "Closed",
+  "substate": "not-applicable",
+  "severity_rating": "high",
+  "readable_substate": "N/A",
+  "created_at": "2026-01-03T16:30:59.830Z",
+  "submitted_at": "2026-01-03T16:31:00.073Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "amik_f",
+    "url": "/amik_f",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 35663,
+    "url": "https://hackerone.com/curl",
+    "handle": "curl",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/035/663/2faf4c279d437d64bfda6d23d62ce1833813a4d9_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "curl",
+      "twitter_handle": "",
+      "website": "https://curl.se",
+      "about": "cURL is an Open Source project providing a library and command-line tool doing internet transfers"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2018-1000007"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2026-01-04T10:34:02.397Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2026-01-03T21:55:38.801Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Summary\nI found a bug where curl's Alt-Svc implementation fails to strip sensitive authentication headers (Authorization and Cookies) when remapping a connection to a different host or port. This essentially bypasses the security fix for CVE-2018-1000007.\n\nWhile auditing the code, I noticed that Alt-Svc remappings in `lib/url.c` update `conn->conn_to_host.name` and `conn->conn_to_port`, but the authentication guard in `lib/vauth/vauth.c` (the `Curl_auth_allowed_to_host` function) only checks the original `conn->host.name` and `conn->remote_port`.\n\nAdditionally, Alt-Svc remappings do not set the `data->state.this_is_a_follow` flag. Since the auth guard only activates when this flag is TRUE, the entire credential protection logic is skipped for Alt-Svc \"redirects.\"\n\n## Affected version\ncurl 8.17.0 (x86_64-pc-linux-gnu) libcurl/8.17.0 OpenSSL/3.5.4\n(Tested on Kali Linux, but affects all versions with Alt-Svc enabled)\n\n## Steps To Reproduce\nI've attached a reproduction script `final_comparison_poc.py` that demonstrates the issue by comparing a standard 302 redirect (which is secure) against an Alt-Svc remapping (which leaks credentials).\n\n1. Set up a listener on port 8443 (Production) and port 9443 (Attacker).\n2. Request `https://localhost:8443/` with credentials and an Alt-Svc header pointing to `localhost:9443`.\n3. Make a second request to the same URL using the Alt-Svc cache.\n4. Observe that the credentials are sent to port 9443.\n\n## Supporting Material/References\nI've verified the code mismatch in the source:\n\nIn `lib/vauth/vauth.c`:\n```c\nreturn !data->state.this_is_a_follow ||\n       data->set.allow_auth_to_other_hosts ||\n       (data->state.first_host &&\n        curl_strequal(data->state.first_host, conn->host.name) &&\n        (data->state.first_remote_port == conn->remote_port) ...\n```\n\nThe fix should involve checking the effective host/port handled by Alt-Svc, similar to the pattern in `url.c:3235`:\n```c\nconst char *check_host = conn->bits.conn_to_host ?\n                         conn->conn_to_host.name : conn->host.name;\nint check_port = conn->bits.conn_to_port ?\n                 conn->conn_to_port : conn->remote_port;\n```\n\n---\n\n## Impact\n\n## Summary\nAn attacker controlling an HTTPS server can steal sensitive `Authorization` headers and session `Cookies` from clients by serving a malicious `Alt-Svc` header. Since curl caches Alt-Svc entries, this leak is persistent and will affect future requests to the same origin, even if they would otherwise be secure. This is a direct functional bypass of the security boundary established in CVE-2018-1000007.",
+  "weakness": {
+    "id": 113,
+    "name": "Information Exposure Through Sent Data"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 5182224,
+      "file_name": "final_comparison_poc.py",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/p8z0ilckcj9chpjhmitbzlqow3su?response-content-disposition=attachment%3B%20filename%3D%22final_comparison_poc.py%22%3B%20filename%2A%3DUTF-8%27%27final_comparison_poc.py&response-content-type=text%2Fx-python&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQZE5SLRL5%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T194507Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGytusGuUOs%2BXGE%2BmOnlE8GSUI8tHpAOyuZ7X1ZLgiUDAiEA06JbqoUcz3378vb9CcW%2FsKgn9EAZpUrMfr6%2B2lHhA5oquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIr44srZhPCu%2BFbJkiqPBY8tFmcIht%2BNXO1%2Bke0nDdL6tT6Wl%2BXiZI%2B1elyIk0u8A4cqm0erRK0paKn6IZklfEkgu%2BMFrS2wgj%2FZtmiabPKlo%2BlLweGkyiBbGh7Qz0pvJmheQt6n8fZ4dS4CkFWEgEleSZfH%2B7TzhTn52LhDfelcmkRgJvVowl41QUmWWFCCiofh55rBmx92UCZTV27Iu1lx%2F%2BhWu3%2BgrVqUe513oF0GCg5Rs9srYolnuPN7kYqyohaQ08iUCP0yS0t2bGmpBRXjVjFAcKpnXZK1W75uNCIRbxvoblNaKNfDf4yb0DLsa9vzIAotbGrvxfiWkf1GjXF7757J3tb73ipovYZuCMtHt5EXXW3uCbr7re2DnK0%2BGM89znpsyQAJEoXNd8E6RZiLkRrKuPSREqYzXgVAcl2ixm9ptHDYXUyI3Edf9jTONZpqY6%2FXYj7uHhUlqNnJNM6lZpKQNH%2FGDJ5LfQxHDOV0wzskcJsu%2Bm8%2B2rYrBXzGouiYWlmtfGvJrPdH4ETPgn7Ssht6tK68Ux8VynJxk8zGliKXpdMqBs%2F3sf7mpY0SnmRJc7XwTzjnh4odLq%2BKuopahPXZjWC6c0mkSj3TPkuylnUol98vpFUCERBwrI6zP%2FQjpskAVbt8mTlo0pa3pL2PgBWFeClmftVoiwrXb8EIPVrAIPLXgbt3C6Rnk3PmxuNOsuuS6gIRxwZ0A65sAc4AWZ%2BKMq5jPWYjsgzOgSomcFthTDI4A3xJSE2V9kF4EO6LCAdR8nVW%2FvPteid3FqxEhWOCZ0h83ZYa9UWaPKLVKAR2M82dKNLAwgPY%2BAAzbsU4Q%2Fm%2FdVR%2BMOpEgwbT9Ndk%2ByrdrXlF5kSIFWraOl7NLX3x91hZt%2F6UulLohmYwlrXizAY6sQFiU5BItJkkZ1M718A3m16ova71gEURM1cKKI2Pb%2FnPRw85xUtp69rcqoG8d%2F1C9hT%2B2wILFvhC1BtVRr8FUcAUZUvJ9vsU07UQMKJ6DrUZkGHQiX7P2ht1aOYVu37nSZJUumb3vqTYG2Y2qGbO%2BnKggDXeIa2LRWdB3GsAqbyK33bfmOcJsEdGES6QiQYa3IzfFgwnJuhjCojhMLi4S%2B1hLvvfLHJC1VmKd46goOrZ%2F30%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0b430e6f88d3e144f5eb5b80335d3bc1e2277a5626cdd7cf158f4d4a2336a746",
+      "file_size": 2611,
+      "type": "text/x-python",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 12,
+  "voters": [
+    "vaaq",
+    "2026",
+    "johnsonmlbb",
+    "aleksandr129",
+    "loljeuill",
+    "de-c0der",
+    "bxmi",
+    "cherrycosmos",
+    "mshan",
+    "hutterpy",
+    "and 2 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": {
+    "databaseId": 18844,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "https://github.com/curl/curl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

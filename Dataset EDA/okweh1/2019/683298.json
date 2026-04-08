@@ -1,0 +1,154 @@
+{
+  "id": 683298,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82ODMyOTg=",
+  "url": "https://hackerone.com/reports/683298",
+  "title": "XSS and Open Redirect on MoPub Login",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2019-08-27T23:07:07.662Z",
+  "submitted_at": "2019-08-27T23:07:07.662Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "jackb898",
+    "url": "/jackb898",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61,
+    "url": "https://hackerone.com/x",
+    "handle": "x",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/ikx4ept298unt534kpz4am2bd4zs/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "X / xAI",
+      "twitter_handle": "XSecurity",
+      "website": "https://x.com",
+      "about": "X helps you create and share ideas and information instantly, without barriers."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2019-09-24T23:18:02.369Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-09-10T22:04:02.266Z",
+  "team_member_agreed_on_going_public_at": "2019-09-24T23:18:02.289Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** I found open redirect at the MoPub login page, https://app.mopub.com/login?next=https://google.com. It also allows javascript URIs, leading to XSS.\n\n\n**Description:** You can modify the \"next\" URL parameter to redirect to any website upon logging in on MoPub. \n\n## Steps To Reproduce:\n\n1. Take this URL: https://app.mopub.com/login?next=https://google.com\n2. Change \"https://google.com\" to whatever URL you want to redirect to.\n3. Visit the URL and login\n4. You will be redirected to that site\n\n## Impact: Outlined in Impact section below\n\n## Supporting Material/References:\n\nHere's a proof of concept using the URL javascript:alert(\"proof of concept\"):\n{F568245}\n\n## Impact\n\nAn attacker could use this for phishing, cookie jacking, etc. since it allows javascript URIs and therefore XSS vectors. Additionally, they could use URL encoding to hide the URL that the victim is being redirected to.",
+  "bounty_amount": "1540.0",
+  "formatted_bounty": "$1,540",
+  "weakness": {
+    "id": 53,
+    "name": "Open Redirect"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 568245,
+      "file_name": "d075ed6487c103b8c497250d385fe75f.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/dMvQ4UMgch9yc1YtB7fyKFup?response-content-disposition=attachment%3B%20filename%3D%22d075ed6487c103b8c497250d385fe75f.mp4%22%3B%20filename%2A%3DUTF-8%27%27d075ed6487c103b8c497250d385fe75f.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSBE3AKLT%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013201Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIGyieowL3ju9Q62exG%2BDTuChyVOc1Mg7%2BYJ9S8MYBpcKAiEA5C3kcaFuCmE%2F4OWx1FicS2m1oYeV2FUwJGNh7f7fPekqugUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDM3i42xq9%2Fv%2BDD7cCSqOBROdN90KKmq4dqM%2FQ1dbRpgTPSUXomx1swOP2q%2F0KMYHPJ02HBNGs4IvVDBRQk3YMZAy20pCcvff62KM9I%2BkVOpgk5DmSUK2NlOx%2Bu8uiFhvrdoku%2FRDrv6x7b0pq3RX%2BhnUtdfaInGqndlzP6kNRDWq0e4nSumeN9PCFslWQ2Gj8O0E4tDQAKVILesgZiS%2BDaEbHEX%2FnwqmE%2F3RSxh7qZt3dG%2B5Sf5U844qTzpJ2kNI4pQPRAbqPw23MkQBgKhqjNJ9IZQmD1C67skq5HJuPxeEZijHqWSALcC19ZpXWLX1ZHpXFPJfYS4pzhIS1EsUuwto6q0vJxxcDCQzLNRcRfzOHRxSJZaTPS9nN7Njx4bdtQsl1kgL9hPMs3cNJWUHhTqqLoLGi6ei0lctLur0xfzI1ExXYy1OhASR16Lkjne0PkavaqRtTCepwANIMu69ou%2BsuAbDfMrAzS1lGulslOJVUwSICLpi3Ok4CJdlEMMTAZHMA0h0wAWwF7h18u%2F9cLC2sNd8ltip4HfphzHyZD2EsXENSvWeZTAzZyYmKaG8lA2QjgDqWys6gu6QPdlu279ynr5F4B8bF1l%2FkYE1PxZT%2BPTPYRVddjAyMc%2BBpYoquMLVIOjnb72seidOB8bdiMu%2BbdRo1TbRuoPjLUhbYLZvP%2Beg%2BgKcNb4AVlT20PNahH%2BntY1h7QFUorkMUXGqfZDEesX9Eq8Cbi9zm8GdnmhcdK9sgshAugFKOF9Fj984TDn3exa%2FL9%2BAvT8xT4FnIvL5hIRfrzp6BLa9JhE96ZYkGQ7CelGJeRtIjv9TJpCT0%2FkHsj5pBLLOiVHhgDLYAx1J0mXvibP%2BnuH92QhtodPbB%2BX7ulBLzHaC1o9dEzDO5%2BPMBjqxAXQ6THfET1Jf1RRl%2Fh6TXO1%2F03cJJVqg7RWnDkklmj8YAhc9wYE28jwLo3%2FPVxuO%2BIw%2By2Djj7nQtlat2KNVBQJmPdYcK5mHmW3n2bnO0C8eGiA66LPlbeXgbY24S5z7qcsHmEeJvPbuj%2FO3%2Fpam52Wch3o9NQevxQXmsL9upnFphnbfZ%2BpLklPHg94JBDWRbPl6CHUXsCFkc6Dd3EUjFAoOT9BmgSKEMV1sAadePOBN6w%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=0d3e161c9480159764f1718f6dc210bb272ec1ee6b86a793f23538303187258c",
+      "file_size": 73844,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-10-10T22:04:02.352Z",
+  "allow_singular_disclosure_after": -200892478.79421878,
+  "singular_disclosure_allowed": true,
+  "vote_count": 245,
+  "voters": [
+    "orange303",
+    "azizk",
+    "cxzer0",
+    "j0nh4t",
+    "todayisnew-",
+    "yxw21",
+    "mashoud1122",
+    "me9187",
+    "0x0d0",
+    "ali",
+    "and 235 more..."
+  ],
+  "structured_scope": {
+    "databaseId": 1074,
+    "asset_type": "URL",
+    "asset_identifier": "mopub.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "id": 20504,
+      "category": "researcher",
+      "content": "Very simple open redirect made more impactful by the lack of filtering javascript URIs. Thanks again to the Twitter team for a quick response/bounty!",
+      "updated_at": "2021-07-23T19:37:44.012Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 87732,
+        "username": "jackb898",
+        "name": "Jack Burton",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": "https://www.jackburton.dev",
+        "location": "Houston, Texas",
+        "created_at": "2016-06-25T15:29:25.034Z",
+        "url": "https://hackerone.com/jackb898",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67",
+          "medium": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/74790fe75ac5dbe8a5140a122388d59ebac913dcfa941f0b3a45e6cad161f9ea",
+          "xtralarge": "https://profile-photos.hackerone-user-content.com/variants/CBcmZYZbwyyEjGj5BP7AQ4FK/fba683f28d17594d98b39d87e2b3aa09acb938c22d49b206f663ae961dc39adc"
+        }
+      }
+    }
+  ]
+}

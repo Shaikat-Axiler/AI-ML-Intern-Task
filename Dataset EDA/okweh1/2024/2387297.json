@@ -1,0 +1,157 @@
+{
+  "id": 2387297,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yMzg3Mjk3",
+  "url": "https://hackerone.com/reports/2387297",
+  "title": "Bypass Email Verification on Add Email Monitoring",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2024-02-22T20:29:44.642Z",
+  "submitted_at": "2024-02-22T20:29:44.771Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "dotxml",
+    "url": "/dotxml",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/7zzv6ueundfl8p2g56jvqjeki79i/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 61236,
+    "url": "https://hackerone.com/mozilla",
+    "handle": "mozilla",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/0p8e6gg8xoy45dhjxs5wh4iti6k8/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/0p8e6gg8xoy45dhjxs5wh4iti6k8/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Mozilla",
+      "twitter_handle": "",
+      "website": "https://www.mozilla.org",
+      "about": "Mozilla web bug bounty program specific to encouraging security research in Mozilla's products and web services."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2025-01-07T16:57:55.681Z",
+  "bug_reporter_agreed_on_going_public_at": "2024-12-27T14:33:28.940Z",
+  "team_member_agreed_on_going_public_at": "2025-01-07T16:57:55.190Z",
+  "comments_closed?": true,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "## Steps To Reproduce:\n\n1. Login to https://monitor.firefox.com OR https://stage.firefoxmonitor.nonprod.cloudops.mozgcp.net and click **Add email address**\n█████████\n\n2. Fill the victim's email address (I'm use my personal email) and click **Send verification link**\n██████\n\n3. Check the request on your burp suite intercept and turn on **Response intercept** to this request\n████████\n\n4. Wait until we got the response from the server and search the victim's email address, we can get the **verification_token** on the response\n███████\n\n5. For make sure the victim's email address is need a verification.. refresh your browser\n█████\n\n6. Copy and Paste the **verification_token** from the response to this link: `https://stage.firefoxmonitor.nonprod.cloudops.mozgcp.net/api/v1/user/verify-email?token={verification_token}`\n\n7.  Open the link on your browser, Done.. the victim's email address is already verified\n██████\n\n## Impact\n\nAttacker can add the victim's email address without verification. And if attacker choose **Send all breach alerts to primary email address**, attacker will get a notification when victim's email address is leaked\n{F3074332}",
+  "weakness": {
+    "id": 18,
+    "name": "Information Disclosure"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 3074332,
+      "file_name": "impact.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/hx2vtqm80egsf869x4289e0gyrqh?response-content-disposition=attachment%3B%20filename%3D%22impact.png%22%3B%20filename%2A%3DUTF-8%27%27impact.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ546FE6RH%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T201706Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDsL%2FlyHNNouwZwgzNY1t2TYoLKLr5OH8PR5t%2Ba3ZEjXQIgS1HRkzIpQlUkqg6DxQseK4yBa2wb9dP%2FnXdlpqoJQwoquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDD6eloIPhdyAiFxSHyqPBbXVbFurWSTIl4LKL4Lo4MAU3XX%2Fea3nHLPrqj8qFDHZEv5JBJsPwP0LgHhKEbuc52qGYAM2owkskRQv5%2B4qkeQdfpzpmHYHE6nbRIN1WyMEFEv7QUpFdsX4lm1VbDFL6anGLetwJ1k%2Bs15KM6esIZAVANmFBJoNSLnaV5w7iK0BAq5CgMSZE%2F%2FMoj72yakNsPzX%2Frkx1F%2Bh8z34Y4JFkRvmB4SD8Aa6AHc59LIATtCzklGd8tGD%2FPHWN7Q5OFlM20bkKVHOFKBFOqBHaavS9yw01k%2FM18LbMk%2F6gF50nV4Q%2Byi1bSj2pQk%2FXBeATZOHQfFSCmb6YlIVJbi2sHR3Jfv3t0IuZzt%2B7%2BhH8xCM55AZpJNRGzCCBKdm817JdYso2XHhUUABCXI0eCfa7MtOcVAHHeFxDG2%2FKhsCBw75d4ZO8Tkpaw1NfrjUcm9pTHgHZlmIZ15McTWjOkWiM01nXsHMXhsnWm1q0GtjLwzW2WCKibHe3BNGpeO2gPxuUYYImMX0JSLvpX9DatOIIY5VGPZOzP4jeCL9XlgegdzxpTmhERr046%2BNvQe1%2BAo22sdxHQUyROlvgvepin97fsK5u1dehR803Echm6vpQUEK5ngxpGzq1%2FF812ifve1BJhdTZaB8JDkRlCS5B%2Fo13Av13F3ggsdn4mMT8By6KV4RKBXHNGT6YaMvOkw77awHQ6jtCJbrFkPw8ogY8aHLWNSoD0OAUfNR1GG4BfFPSQG6Lau3ZBw0VCoXJBj4lYEhmIwAsfVpZj2u39CFIYw8kucBrr9IQzZ%2FwvTUj5UWfox%2FG5est1hao8UVquQCBRQcqhHrAjb23FdUxjjePY4gMTvZS78hw54x96KjV%2BktpwqtTf4w0sHizAY6sQGwRuB6JMQrnIzGye%2FOXDod0Rtkj6vxm3tL4kSstU2TLYumenZBayJDbs6%2BayzCerWCYwSBi%2FbHRAInBrTpsuqObKcI030KqTl2U1K0WFfmITtQLPY9T%2Be%2Bq5oZey4qjlPeHnw0MPRK7LASbjNkTXuoRrwRgyY9Qs9WTatv36hjOauf53uDVjrpVS3BEEDo792QCtjhLY2ZFDjBn0DQMIiAAUBUKP4QR%2BKEmzeuvY2blOU%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4a955404d390f8b6e51ed77fb2c0260d5fb3370205ad124e7ad5c0eaf1094e00",
+      "file_size": 31683,
+      "type": "image/png",
+      "moderated": false
+    }
+  ],
+  "allow_singular_disclosure_at": "2025-01-26T14:33:29.352Z",
+  "allow_singular_disclosure_after": -33716617.30855293,
+  "singular_disclosure_allowed": true,
+  "vote_count": 90,
+  "voters": [
+    "0-chrollo-0",
+    "ehsimmi",
+    "sagar_kirola",
+    "zy9ard3",
+    "ssherlock1",
+    "nmsr",
+    "d3f7ult",
+    "never_die",
+    "uoqki",
+    "mohaned0101",
+    "and 80 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 616761,
+    "asset_type": "URL",
+    "asset_identifier": "monitor.mozilla.org",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 612101,
+      "category": "team",
+      "content": "A security vulnerability has been identified in the email verification process of Mozilla Monitor. The issue allows an attacker to bypass the email verification step when adding a new email address for monitoring.\n\nThe vulnerability exploits a flaw in the verification mechanism where the verification token is exposed in the server response. By using this token, an attacker can manually verify any email address without having access to the associated inbox. This bypass enables unauthorized addition of email addresses to the monitoring service, leading to denial of service for users.",
+      "updated_at": "2025-01-22T10:01:36.132Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 2465541,
+        "username": "frida-k",
+        "name": "Frida",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2022-09-21T23:39:33.826Z",
+        "url": "https://hackerone.com/frida-k",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "company",
+        "profile_picture_urls": {
+          "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "medium": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png",
+          "xtralarge": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

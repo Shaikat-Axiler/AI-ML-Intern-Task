@@ -1,0 +1,152 @@
+{
+  "id": 745495,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC83NDU0OTU=",
+  "url": "https://hackerone.com/reports/745495",
+  "title": "Unauthenticated users can access all food.grammarly.io user's data",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2019-11-24T23:15:37.689Z",
+  "submitted_at": "2019-11-24T23:15:37.689Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cript0nauta",
+    "url": "/cript0nauta",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/311/573/85004b102bf6cd590bbbd3b80942a6caa574e0a9_original.jpeg/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 22746,
+    "url": "https://hackerone.com/superhuman",
+    "handle": "superhuman",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/23p3otm27f7hjxfsde7xx0ol3jhf/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/23p3otm27f7hjxfsde7xx0ol3jhf/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Superhuman (formerly Grammarly)",
+      "twitter_handle": "",
+      "website": "https://superhuman.com/",
+      "about": "Superhuman (formerly Grammarly) unites Grammarly, Superhuman Mail, Coda, and Go with AI to unlock superhuman potential in everyone."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-08-10T10:10:03.488Z",
+  "bug_reporter_agreed_on_going_public_at": null,
+  "team_member_agreed_on_going_public_at": "2020-08-07T10:56:04.841Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "**Summary:** The food.grammarly.io site uses the Meteor framework, which uses publications and methods to communicate between the backend and frontend. Although the site seems to require being authenticated as a Grammarly employee to use it, most methods and publications work without being authenticated. I was able to list user data including emails, access tokens and admin status just by using the Chrome Developer tools.\n\n**Description:** I discovered that the following Meteor publications work without being authenticated:\n\n* activeUsers\n* allExtraFood\n* allOrders(date)\n* allUsers\n* allUserStats\n* allVendors\n* allVendorsItems\n* extraFoodFromToday\n* foodEventLog\n* foodSettings\n* itemsLimits\n* monthlyTop\n* vendorByName\n* vendorHistoryFromToday\n* vendorItemsByName\n* vendorsHistory\n\nThis means I can access the data stored in the following Meteor collections:\n* Meteor.users\n* ExtraFood\n* OrderItems\n* UserStats\n* Vendors\n* VendorsItems,\n* FoodEventLog\n* FoodSettings\n* VendorsItemsLimits\n* MontlyTopItems\n* VendorsHistory\n\nThe Meteor.users collection includes the email address of 300+ employees of Grammarly, along with their Okta and Google oauth access tokens, a hash of their login tokens, and their admin status. The FoodSettings collection also exposes some Grammarly user emails.\n\nBased on the source code of the app, it seems that most Meteor methods also don't perform any authentication checks. But because they could perform destruction of data, I preferred not no use them when testing.\n\n\n## Browsers Verified In:\n\n  * Chrome\n  * Firefox\n\n## Steps To Reproduce:\n\n(Add details for how we can reproduce the issue)\n\n  1. Visit https://food.grammarly.io and open the Chrome Developer Tools\n  1. In the console, run `Meteor.subscribe('activeUsers')`\n  1. Wait a few seconds, and run `Meteor.users.find().forEach(e => console.log(e))`\n  1. You will see all user's information, as seen in the screenshots\n\n## Supporting Material/References:\n\n  * The [Meteor Security page](https://guide.meteor.com/security.html) explains how this vulnerabilities can be fixed by implementing proper access control in the Meteor methods and publications\n\n## Impact\n\nAn attacker could use this vulnerability to get information about Grammarly employees. He/she could know which employees have admin privileges and target them in other attacks.\n\nI wasn't able to use the Okta and Google tokens for anything of high impact. Also, the hashedLoginToken requires the attacker to reverse a SHA256 hash of a random secret, so exploiting it seems difficult.",
+  "weakness": {
+    "id": 26,
+    "name": "Improper Access Control - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 642832,
+      "file_name": "userlist.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/tdKXt76XsBxv4ZH3AsRntswr?response-content-disposition=attachment%3B%20filename%3D%22userlist.png%22%3B%20filename%2A%3DUTF-8%27%27userlist.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001154Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=f1419b99fb579bb7eb866d6cd32e49381aa24f0a2512f3cd4df97d2aa3c90a1e",
+      "file_size": 49546,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 642833,
+      "file_name": "userdetail.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/BoApwwQszMrRD3dXeqwxSx3Q?response-content-disposition=attachment%3B%20filename%3D%22userdetail.png%22%3B%20filename%2A%3DUTF-8%27%27userdetail.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001154Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=cda73db97381d2035a199fc5a801a25baa79595c940a745db73e696039c124ed",
+      "file_size": 70899,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-09-06T10:56:04.983Z",
+  "allow_singular_disclosure_after": -172242949.28270254,
+  "singular_disclosure_allowed": true,
+  "vote_count": 138,
+  "voters": [
+    "orange303",
+    "daehee",
+    "xdms",
+    "svalkanov",
+    "he4am",
+    "jensec",
+    "drsniper",
+    "yxw21",
+    "trieulieuf9",
+    "foobar7",
+    "and 128 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "score": 3.9,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "high",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 24235,
+    "asset_type": "URL",
+    "asset_identifier": "food.grammarly.io",
+    "max_severity": "low"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "id": 490728,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80OTA3Mjg=",
+  "url": "https://hackerone.com/reports/490728",
+  "title": "[takeapeek] XSS via HTML tag injection in directory lisiting page",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-02-03T17:29:57.570Z",
+  "submitted_at": "2019-02-03T17:29:57.570Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "skyn3t",
+    "url": "/skyn3t",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/224/816/14988b1087907275d769481dc45fe6576ce0d206_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 23949,
+    "url": "https://hackerone.com/nodejs-ecosystem",
+    "handle": "nodejs-ecosystem",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/023/949/3ea3b2ae039a8f955a4a8fe65d99fe85dc817398_original./3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "disabled",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Node.js third-party modules",
+      "twitter_handle": "",
+      "website": "https://nodejs.org/en/security/",
+      "about": "This program was used to handle vulnerabilities in the Node.js ecosystem."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-07-01T08:52:17.316Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-07-01T08:52:17.171Z",
+  "team_member_agreed_on_going_public_at": "2019-06-24T08:24:20.676Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "I was taking a peek at `takeapeek` module and found it is vulnerable to XSS via malicious injection in directory listing.\nIt allows execution of arbitrary JS code.\n\n# Module\n\n**module name:** takeapeek\n**version:** 0.2.2\n**npm page:** `https://www.npmjs.com/package/takeapeek`\n\n## Module Description\n\nA simple static webserver with only one command. Heavily inspired by glance, this is really more of a learning experience then anything.\n\n## Module Stats\n\n**weekly downloads**\n4\n\n# Vulnerability\n\n## Vulnerability Description\n\n`takeapeek` module provides a directory listing feature in it's HTTP server but it doesn't sanitize the filename hence a malicious payload in the filename cane be used to invoke an XSS. For example a file can be strategically named as `javascript:alert(1)` and we can see the XSS executing in the browser on clicking that link.\n\n## Steps To Reproduce:\n\n- Install `takeapeek`\n```\n$ npm install -g takeapeek\n```\n\n- Create a file with name `javascript:alert(1)`\n```\n $ touch 'javascript:alert(1)'\n```\n\n- Start server in current directory\n```\n$ takeapeek\ntakepeek listening at http://localhost:3141\n```\n\n- Visit the address in any browser and click on malicous file link that we created.\n{F417367}\n\n## Supporting Material/References:\n\n- Ubuntu 16.04\n- node v11.3.0\n- npm 6.7.0\n- Chrome 72\n\n# Wrap up\n\n\n- I contacted the maintainer to let them know: N\n- I opened an issue in the related repository: N\n\n## Impact\n\nAn attacker is able to execute malicious JavaScript in context of other user's browser.",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 417367,
+      "file_name": "Screenshot_from_2019-02-03_22-56-26.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/417/367/03acc92cde506b0a5f9255274379cae72973dfc3/Screenshot_from_2019-02-03_22-56-26.png?response-content-disposition=attachment%3B%20filename%3D%22Screenshot_from_2019-02-03_22-56-26.png%22%3B%20filename%2A%3DUTF-8%27%27Screenshot_from_2019-02-03_22-56-26.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUA5QK5VM%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T014357Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHm3btGgzlHis%2F9oOvDESSVePwMxPk4gaBS9iNiFviM3AiAPW4u6lqAH6O3yHvm7bIIcgWVWFnqYsbO0u9JBe7yUiyq6BQii%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDAxMzYxOTI3NDg0OSIMcnYPosg7URHoCiAsKo4FadOTpgQUOQsra9GYh96WIhzwAyOBNd2Vt3Qec%2Fgp%2B%2BaVGBiAlxfSNPk0%2B%2FweLcmJgii%2FHxEMBtCNDKrMUaCY3jeLGrOxGdGHFHjYQ%2FUJkquobacRE1k%2BJThpoeED3m2iXLcBxl9Du3ilY%2FKiM1%2FLXbxvbp9oTVeu02rdo6WYQ%2F0hcawgggpwf7BdaW93ZiAFSGA%2BksIxFjkaMdv59JJtHuZ9xgoR4iinarwKFEGcwr76Ewo9gzOw98MP%2F%2F6BiL6rn48yiqGKW6r9Y1%2Bu%2BbXRQD%2Fh4OE7ZWwMJ9D61y7BcO9GlqvKSD013lVN%2Be8mnjapPA3llc00y13lavGRw1XJ8Yweb5JiEltZLNYD7U97UVkJXQ4qTblffHxiSAQSu3cwynw1NxYipJuPpK8ICludkl3%2F3w95uDuKJCKw6xYQ%2FXWVEtAHmnfRwzLz%2Fg0xdlLrvdgiEl5DImy3dUYnFxKg1esN%2FPHm3EmaEb95rMYIkVNzU0ibZAbq5s%2F7LH4i4%2BVzplxFDT0gt4%2FfqBVYADFq8c7kZhMZS5PZcFpxExJL8ztuU85PQTy7Sngh9zHB4Vr3tpIidd6CYDF8fner5noNOTeTzsDIVVEK1bIk8%2F1t6pt7z%2BPqwk2ormCBJshSUZ8lI0yAGafaEXj1p5LktF6ry161%2FUy1nhHgg0UIZBUJ8HweWcKKTOHlohRrttZTgDRaz8VqzrswkkNsT%2FhGJ6sTmHmyyM4FPMCOobHO9lSPW%2BPmfcO4%2FJcYtJjeJrH684CXmkZ5AScck8adSGeCv0R6BBHWWD7XmbAYtvjKhQDKfBklp%2F8FstDxGlobJdfOHqRp08VYyhx9eE9h1glcQBTJmdRj%2F8vBKDdpydb2gRxAMLiO5MwGOrIBiYUQSOFVSboEO4%2FCyL%2Bphoe1fcxLtPOyCw92kU%2Bs971KDYauREWX6iVasq0gazDHhU4lmu43NhxOAgDU9Nmy8eGu8eMeAs49rQngMUfJpgZ9ANH00W3o89h68qQo3G08UZm5U%2BZIFnekRLGUfq2OlwlVboT4Tjz7Xu3H49YLJZ%2BlqEGjxU1jWst7Bco8nAvwITl21SekSNbSzK0fNDZ1V2mQeqPwPLtJ1mAAw0KGfZsneA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=c0e40adaaef0b80ec965903dd8af03a6e4f317a2af6196313f012b3389be3bab",
+      "file_size": 27950,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-07-24T08:24:20.786Z",
+  "allow_singular_disclosure_after": -207681576.96993807,
+  "singular_disclosure_allowed": true,
+  "vote_count": 21,
+  "voters": [
+    "xehle",
+    "ali",
+    "imran_nisar",
+    "bl4de",
+    "skyn3t",
+    "exception",
+    "tiago-danin",
+    "higurasilevel5",
+    "nonbetter1",
+    "ba89af06bed666d134754de",
+    "and 11 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.2,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "high",
+      "user_interaction": "required",
+      "scope": "changed",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 14209,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "takeapeek",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

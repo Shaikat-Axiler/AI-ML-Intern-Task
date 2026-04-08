@@ -1,0 +1,116 @@
+{
+  "id": 254895,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8yNTQ4OTU=",
+  "url": "https://hackerone.com/reports/254895",
+  "title": "SSL BREACH attack (CVE-2013-3587)",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "low",
+  "readable_substate": "Informative",
+  "created_at": "2017-07-30T08:51:28.106Z",
+  "submitted_at": "2017-07-30T08:51:28.106Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "c0d3fire",
+    "url": "/c0d3fire",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/1E92h9KqBJvJRYTWYzJ7saU4/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1601,
+    "url": "https://hackerone.com/legalrobot",
+    "handle": "legalrobot",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/001/601/0f164c3d9618b04b006b859517ff032ec57ab42a_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/001/601/0f164c3d9618b04b006b859517ff032ec57ab42a_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Legal Robot",
+      "twitter_handle": "LegalRobot",
+      "website": "https://www.legalrobot.com",
+      "about": "Automated legal document review using artificial intelligence"
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2013-3587"
+  ],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-07-30T19:42:47.163Z",
+  "bug_reporter_agreed_on_going_public_at": "2017-07-30T18:45:10.565Z",
+  "team_member_agreed_on_going_public_at": "2017-07-30T19:42:47.118Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hello security team,\n\nThe site legalrobot.com is potentially vulnerable to the BREACH attack.\n\nAllowing an attacker the ability to:\n- Inject partial chosen plaintext into a victim's requests\n- Measure the size of encrypted traffic\n- can leverage information leaked by compression to recover targeted parts of the plaintext.\n\nBREACH (Browser Reconnaissance & Exfiltration via Adaptive Compression of Hypertext) is a category of vulnerabilities and not a specific instance affecting a specific piece of software. To be vulnerable, a web application must:\n\nBe served from a server that uses HTTP-level compression\nReflect user-input in HTTP response bodies\nReflect a secret (such as a CSRF token) in HTTP response bodies\n\nMitigations to fix this include:\n- Disabling HTTP compression\n- Separating secrets from user input\n- Randomizing secrets per request\n- Masking secrets (effectively randomizing by XORing with a random secret per request)\n- Protecting vulnerable pages with CSRF\n- Length hiding (by adding random number of bytes to the responses)\n- Rate-limiting the requests\n\nFor more info on breach attack visit: http://www.breachattack.com/\n\nI have attached an image \"proof_of_vuln.png\" for POC.\n\n",
+  "weakness": {
+    "id": 32,
+    "name": "Cryptographic Issues - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 208239,
+      "file_name": "proof_of_vuln.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/208/239/38459396d0810e331cd9574341b3b6f9c0122c85/proof_of_vuln.png?response-content-disposition=attachment%3B%20filename%3D%22proof_of_vuln.png%22%3B%20filename%2A%3DUTF-8%27%27proof_of_vuln.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSC5JZ6R2%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033507Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDj%2FEQrvKFBhDUTUKi16m7Zu5GoHV13Z524eTUpTa%2FaswIgP2AodeROeO6JZOSvLrGdsjnxhuV4elsxe7w0b4%2FdLIEquwUIpP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDIpHBpfGZDCRScgZ7yqPBXatCWvmdOs98A9mNXz1YJBDUT%2BrXTD4aCFR8wl1Y6TZLf7DecRJULK%2FG4T7dhFRDL5zMdcjDAY7ESlmS1uSwXPMGBMQ%2BCYcf8siCIKJ%2FeVkC4vNXX7Rv77Zc1JCgZTd8nodStvjYUBm4i%2BTKyph6PGYxCsKRVj%2Fv0Ck5cGT8kYILsOcUCaidUSCJUX8MnAdEwEylbTM6E5%2B4Yvo3UAubOsEQkYR3p%2B4ceXQtHuP8ol%2FFlLY7PMuAh3nuH%2F%2BJJMYxKFNA9vjbQnQMrTCLBOqPQ49cnagtCXZOxPYLFrp4z%2BWSYZqxsHkQo%2FTtzmfz8cmzLwCHR48MtWldxClbPOZ%2FddanUS1Tgy7m0aCDtGm34oZfTM4YIM1zwbyX%2FyiU5Ybo8oMLnEeeKSJI9KoYQ79mpSAq3GAU5FOer5VWCjNSkmudWpfTDoxEPTIpYkRdKj2PYCawqTbaoXkz4ACX%2F49ZzRcMFwJlUVLmuCEji2zyHhvsvMw3gyuWKJyWM4KQN%2FApQdhyaU20LmARccX8MlbZwuY40HT9aetkxwnP3zbcw20Xs%2BpWtOBTohBn85lkYfuvofuzRsWS97%2FUGP1ayhIYlJ0tPKMMCR8sTfLQE741oCQ3tpE3TlNd%2FOPZIedV8W%2BIKoOmD46zuJia%2BzPpzWKIrbFql%2FtYujTcrAM3RwcbfgMxnjsN52dKMMDcjKxCCFn10UEFeYxk%2Bqq%2F2eToWv%2Bt6X%2BrkVu4xKOweErsjOEGjl3ZwSvb1UxIZr9bBi3l2WsjN66XZ2f3BOT7X0MHfkYqyh1zeWJH93hXXE0kY5pN1135EgWqDKUZBEDtTH5DXMzriAMtBbvd%2FQ1Hi6tf0DkjXG%2BkQcrSc%2BpqEcV%2Bbm9oOQw27PkzAY6sQHVgGB4d84ptrjCHchoZm6vA2rmu7QYZq3zFeD19hsvrYpOwmMEEqREHLVS9m6AHpFzq7IuFEAeROzxWmsN7Tq33184SHPIkEfs7aidoaK0LE3lXSEZj7iykQ8LZVaKASIgH0sNUZO%2BaIrPJiE9qGDfstPLHY01KeSpNBRtuetIQw%2BKVJWD04MiOYvPR%2B8pJ7ryouLYF7Kr8JwBkKEA95ySXMhIlj7PV9ZtR5rulFyAmTk%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=4611f5f93ceb7c00d47d469ff69325dbb7dc3970f62a625268fb9b8be91a4c6a",
+      "file_size": 586080,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 0,
+  "voters": [],
+  "severity": {
+    "rating": "low",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

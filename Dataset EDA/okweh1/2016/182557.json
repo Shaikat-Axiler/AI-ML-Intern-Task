@@ -1,0 +1,119 @@
+{
+  "id": 182557,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xODI1NTc=",
+  "url": "https://hackerone.com/reports/182557",
+  "title": "links the user may download can be a malicious files",
+  "state": "Closed",
+  "substate": "informative",
+  "severity_rating": "high",
+  "readable_substate": "Informative",
+  "created_at": "2016-11-16T16:34:01.706Z",
+  "submitted_at": "2016-11-16T16:34:01.706Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "seifelsallamy",
+    "url": "/seifelsallamy",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/003/804/747fe8def9e5ba028d0fbf0ac755a88ea4992d3f_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15688,
+    "url": "https://hackerone.com/brave",
+    "handle": "brave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/688/2aad5641af643ee4f4402896e4747293f6e9c5ca_original.png/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Brave Software",
+      "twitter_handle": "brave",
+      "website": "https://brave.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2017-08-10T05:10:18.208Z",
+  "bug_reporter_agreed_on_going_public_at": "2016-11-18T04:39:53.232Z",
+  "team_member_agreed_on_going_public_at": "2017-08-10T05:10:18.156Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\n## Summary:\n\nThis vulnerability is pretty simple and pretty dangerous at the same time \n\nAlmost any link the user tries to download it's extension is set according to the file extension in the path \nif the path is `/` then it download's it according to the domain name  \nEg:\n[1] http://example.com/example.php\nif the user downloaded the link the file type would be `.php`\nthat's not very dangerous though \n\n[2] http://example.com/example.exe\nif the user downloaded the link the file type would be `.exe`\nOkey that's dangerous but it requires a lot of social engineering \n \n[3] http://example.com/\nif the user downloaded the link the file type would be `.com`\nthis requires less social engineering and it's pretty dangerous \nwhy?\nbecause `.com` files are executable files which may can do what `.exe` can do\nhere's links about `.com` files\nhttps://en.wikipedia.org/wiki/COM_file\nand the difference between `.exe` and `.com`\nhttps://blogs.msdn.microsoft.com/oldnewthing/20080324-00/?p=23033\n\nthere's a new many domain names which may can create malicious extensions like `.com`\nas example\n`.com.py`\nwhich can create a python file \n\nany website can make his favorable extension in the domain path and when the user downloads it it will be downloaded by the extension\nas example http://example.com/example.exe\n\n## Products affected: \n\nwindows 10 x64 brave latest version \n\n## Steps To Reproduce:\n\nthere is 3 ways to reproduce \n[1]\nexecute this html \n`<a href=\"http://example.com\" download>http://example.com</a>`\nright click on the link > Save Link as... > Save\n[2]\ngo to http://example.com\nright click > Save Page as... > Save\n[3]\nexecute this html and directly click the link it will download directly \n`<a href=\"http://example.com\" download>http://example.com</a>`\n\n\n####Note : \nThe none exist pages can't be downloaded \n\n----------\nAny link the users tries to download must be `.htm` or `.html`\n\n\n## Supporting Material/References:\nF135079\n\nThanks!",
+  "weakness": {
+    "id": 70,
+    "name": "Code Injection"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 135079,
+      "file_name": "RCE_At_Brave_Browser.jpg",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/135/079/f4864dcaa59badc5e9ea23b8c4e7263f6fca8c16/RCE_At_Brave_Browser.jpg?response-content-disposition=attachment%3B%20filename%3D%22RCE_At_Brave_Browser.jpg%22%3B%20filename%2A%3DUTF-8%27%27RCE_At_Brave_Browser.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQRH3VZDJV%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T033219Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCIGcqy%2FpanjgiVGfLlC1t157G1050IOqEH6pmS03SmegIhAJKIDCBm%2Bi1vIo6s4H2U9Am11p8BhQb58wrZ2mcQmICoKrsFCKT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5Igw4Hr1%2FbNiTEnbQNIUqjwUMxLdrmWwwoHTl5%2BX%2BFWwmOX7aCFL%2BHPI7%2FswhgFdeQ4%2BbRQ3LO3TDSY9Hug6ZNHI4EIzbNG3wrx2TQEylCUNoroTIbTztbG5mj%2FoBio3ko4f%2Frg7XrBfy0IerRbQXjLdfD610OpuB1IraX7jI1RoYm%2Fv%2BE1ZH8RECBtiJY40fF5X6xJVt3VqN4YTH9iW7Ppz%2BUT%2BgvalkIyF3oR4zZ1n34GEzhDv5SPTiO4PjxiMaNtPnsQHlR6eWz%2B0xW98c99kAJ6uvNSPriCJYTds%2Badc86nlFwhc84on8KvnwvcZ%2Bei%2FWrbjgYgU4smQPzRyluP5hs9eOxPpTiFdn782z4XZafUhdqaqqTpogBuQ8gGL%2Ft8TWeSRD4mz2d9y%2BEbSZ2a73aDZfYjoDfXdTBJzMVTkc0s9jGSRZ5wKsuPxsVom8McJZeWkhszO1IT1ObZ1Dpasu9hWXCqdutto5u3gKKuZPNzRaiy1%2BtyLQ9ES5DrWTX40DPy%2BBIpKHxHhR0WWsInIIM1S846f4edTDHM%2BQkaNe3HsPNEVo7vF%2BmwaB4WWJ%2Bynuy%2BSIzw6GbYqw6hTYz0vL6K3FbFLpVNn1JIsP%2BKli1sjUneLwb9XwcLP%2BuYQPwtCHmphBbu%2FkdIV0lOT22oILZX1zHKm7BmQIoy277yyXBm%2Fx98EAbzORZ7sdomv0FUA%2Fvn67w%2FqYpHp4DTyztQFfPFpHStPyRtWCEOD2QAv2bJfstv17JBg2916xDruOO2G7740WPDClB4yB2sDdkjDDZrHY6gs37jnhLLLI7AcFLjEEIEhi71seoapVE6kiu498Jwv985W6TwqkJMEJ%2Bo%2FRTaXzRFEJYrMrtEGfrv2YmiwMbX4sxGzhITvCO1BiMKG%2B5MwGOrABPducPTZeCzuEpsVGp0%2FgWhsEIgauf3zyb%2BEBk2vz6yUdjvLIamGVWOuI0PBP1rSFPstR1a18WQk%2FVh4qJfhBK1My7BC6ivI%2B2sb%2Bbe6FV5%2FdJ0zN6BlXRk55%2FvJqCPMnJ%2BRJsgOWafpidqz3DsLdXehv0H%2Fdw9rFlkASnW7ehX%2FhYoa2kY2wCZR48qWPdTdiJ5BVt2r6SxCHfIPt6ouGXheodSvt%2BBrij5TLYo%2Fw4hU%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=ae09536d1522a67362b750f0ee0ac55e64627c39912888ef30ab17cd072c9842",
+      "file_size": 142159,
+      "type": "image/jpeg",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 4,
+  "voters": [
+    "skansing",
+    "khizer47",
+    "kartiksavaliya",
+    "mr4rik"
+  ],
+  "severity": {
+    "rating": "high",
+    "author_type": "User"
+  },
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

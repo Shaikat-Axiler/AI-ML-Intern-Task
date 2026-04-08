@@ -1,0 +1,121 @@
+{
+  "id": 949295,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85NDkyOTU=",
+  "url": "https://hackerone.com/reports/949295",
+  "title": "Unrestricted File Upload on https://app.dropcontact.io/app/upload/",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2020-08-01T15:56:54.602Z",
+  "submitted_at": "2020-08-01T15:56:54.626Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "omarelfarsaoui",
+    "url": "/omarelfarsaoui",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/2zrt7s1qccyg8fbquh83lasrqzoe/8774a5031fc14b74dc4404da039040c69df8ed41021007c0c2beb9de489fcf66"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 49538,
+    "url": "https://hackerone.com/dropcontact",
+    "handle": "dropcontact",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/foaoaBDyBCt4iPUdvuYESyfe/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/foaoaBDyBCt4iPUdvuYESyfe/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Dropcontact",
+      "twitter_handle": "",
+      "website": "http://www.dropcontact.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-08-11T10:45:15.009Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-11T10:45:14.955Z",
+  "team_member_agreed_on_going_public_at": "2020-08-11T10:37:09.482Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "hi team,\n I found  Unrestricted File Upload Vulnerabilities on  https://app.dropcontact.io/app/upload/.\n\n## Steps To Reproduce:\n\n  1. Create an account in https://app.dropcontact.io/app/\n  1. go to https://app.dropcontact.io/app/upload/\n  1. try to upload html file , you will see message only (: .csv, .txt, .xls, .xlsx) allowed.\n  1. change the HTML file extension to txt and try to upload it again \n  1. it work and the file successfully uploaded\n\n## Supporting Material/References:\nhttps://www.exploit-db.com/docs/english/45074-file-upload-restrictions-bypass.pdf\nhttps://www.opswat.com/blog/file-upload-protection-best-practices\n\n{F932903} \n\n\n## how to fix \nTo avoid these types of file upload attacks: \n1. File type verification\n1. Restrict specific file extensions \n1. add verification in both back-End and front-End\n\n## Impact\n\nthis is not really impact because the app not report the full path for the files uploaded.\nbut if an attacker found a way to get the path . it wil be used to get attackes like xss or even rce .\n\nBest Regards,\n@omarelfarsaoui",
+  "weakness": {
+    "id": 148,
+    "name": "Unrestricted Upload of File with Dangerous Type"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 932903,
+      "file_name": "poc-2020-08-01_17.39.00.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/FkSRjbiXduYRP9HfLmhNimkZ?response-content-disposition=attachment%3B%20filename%3D%22poc-2020-08-01_17.39.00.mp4%22%3B%20filename%2A%3DUTF-8%27%27poc-2020-08-01_17.39.00.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ546FE6RH%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001200Z&X-Amz-Expires=800&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQDsL%2FlyHNNouwZwgzNY1t2TYoLKLr5OH8PR5t%2Ba3ZEjXQIgS1HRkzIpQlUkqg6DxQseK4yBa2wb9dP%2FnXdlpqoJQwoquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDD6eloIPhdyAiFxSHyqPBbXVbFurWSTIl4LKL4Lo4MAU3XX%2Fea3nHLPrqj8qFDHZEv5JBJsPwP0LgHhKEbuc52qGYAM2owkskRQv5%2B4qkeQdfpzpmHYHE6nbRIN1WyMEFEv7QUpFdsX4lm1VbDFL6anGLetwJ1k%2Bs15KM6esIZAVANmFBJoNSLnaV5w7iK0BAq5CgMSZE%2F%2FMoj72yakNsPzX%2Frkx1F%2Bh8z34Y4JFkRvmB4SD8Aa6AHc59LIATtCzklGd8tGD%2FPHWN7Q5OFlM20bkKVHOFKBFOqBHaavS9yw01k%2FM18LbMk%2F6gF50nV4Q%2Byi1bSj2pQk%2FXBeATZOHQfFSCmb6YlIVJbi2sHR3Jfv3t0IuZzt%2B7%2BhH8xCM55AZpJNRGzCCBKdm817JdYso2XHhUUABCXI0eCfa7MtOcVAHHeFxDG2%2FKhsCBw75d4ZO8Tkpaw1NfrjUcm9pTHgHZlmIZ15McTWjOkWiM01nXsHMXhsnWm1q0GtjLwzW2WCKibHe3BNGpeO2gPxuUYYImMX0JSLvpX9DatOIIY5VGPZOzP4jeCL9XlgegdzxpTmhERr046%2BNvQe1%2BAo22sdxHQUyROlvgvepin97fsK5u1dehR803Echm6vpQUEK5ngxpGzq1%2FF812ifve1BJhdTZaB8JDkRlCS5B%2Fo13Av13F3ggsdn4mMT8By6KV4RKBXHNGT6YaMvOkw77awHQ6jtCJbrFkPw8ogY8aHLWNSoD0OAUfNR1GG4BfFPSQG6Lau3ZBw0VCoXJBj4lYEhmIwAsfVpZj2u39CFIYw8kucBrr9IQzZ%2FwvTUj5UWfox%2FG5est1hao8UVquQCBRQcqhHrAjb23FdUxjjePY4gMTvZS78hw54x96KjV%2BktpwqtTf4w0sHizAY6sQGwRuB6JMQrnIzGye%2FOXDod0Rtkj6vxm3tL4kSstU2TLYumenZBayJDbs6%2BayzCerWCYwSBi%2FbHRAInBrTpsuqObKcI030KqTl2U1K0WFfmITtQLPY9T%2Be%2Bq5oZey4qjlPeHnw0MPRK7LASbjNkTXuoRrwRgyY9Qs9WTatv36hjOauf53uDVjrpVS3BEEDo792QCtjhLY2ZFDjBn0DQMIiAAUBUKP4QR%2BKEmzeuvY2blOU%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=3ed3be1961c44d8b3ec2c813b0bdcc4fd33a3852ef384043ad8d0194581904b0",
+      "file_size": 63627327,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 6,
+  "voters": [
+    "loaymorad",
+    "he4am",
+    "sim4n6",
+    "rudra16",
+    "jayexhx01",
+    "info_sec_white"
+  ],
+  "structured_scope": {
+    "databaseId": 50254,
+    "asset_type": "URL",
+    "asset_identifier": "app.dropcontact.io",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

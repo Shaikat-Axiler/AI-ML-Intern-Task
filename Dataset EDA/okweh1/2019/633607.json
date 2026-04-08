@@ -1,0 +1,121 @@
+{
+  "id": 633607,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC82MzM2MDc=",
+  "url": "https://hackerone.com/reports/633607",
+  "title": "Invalid read in `str_replace_partial`",
+  "state": "Closed",
+  "substate": "resolved",
+  "readable_substate": "Resolved",
+  "created_at": "2019-07-02T06:34:49.653Z",
+  "submitted_at": "2019-07-02T06:34:49.653Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "dgaletic",
+    "url": "/dgaletic",
+    "profile_picture_urls": {
+      "small": "/assets/avatars/default-14ffa99f59cd01423c64904352cc130ffcb6a802eadfd11777a54485749e60f2.png"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 15668,
+    "url": "https://hackerone.com/shopify-scripts",
+    "handle": "shopify-scripts",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/015/668/ebbe467de8ef2fc936053593e1289e30f04c3b06_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/015/668/ebbe467de8ef2fc936053593e1289e30f04c3b06_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "paused",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "shopify-scripts",
+      "twitter_handle": "",
+      "website": "",
+      "about": ""
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2019-09-04T13:34:59.341Z",
+  "bug_reporter_agreed_on_going_public_at": "2019-09-03T10:30:25.094Z",
+  "team_member_agreed_on_going_public_at": "2019-09-04T13:34:59.230Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "PoC\n===\nThe attached POC shows an invalid read.\n\nDebug info\n==========\nThe issue happens when `memmove` is called inside `str_replace_partial`.\n\nvalgrind report:\n\n```\n0==27051== Invalid read of size 1\n==27051==    at 0x483FA10: memmove (vg_replace_strmem.c:1270)\n==27051==    by 0x135D60: str_replace_partial (string.c:1193)\n==27051==    by 0x1359CB: mrb_str_aset (string.c:1226)\n==27051==    by 0x131AE8: mrb_str_aset_m (string.c:1255)\n==27051==    by 0x1656FE: mrb_f_send (vm.c:633)\n==27051==    by 0x169C3E: mrb_vm_exec (vm.c:1441)\n==27051==    by 0x166540: mrb_vm_run (vm.c:949)\n==27051==    by 0x17A5C7: mrb_top_run (vm.c:2837)\n==27051==    by 0x153113: mrb_load_exec (parse.y:6318)\n==27051==    by 0x1533E6: mrb_load_file_cxt (parse.y:6327)\n==27051==    by 0x10DC3C: main (mruby.c:270)\n==27051==  Address 0x4da9370 is 176 bytes inside an unallocated block of size 2,796,832 in arena \"client\"\n```\n\ngit bisect shows the issue was introduced in [0d452073](https://github.com/mruby/mruby/commit/0d452073f46fc46496200db610ce785e514cdb65).\n\nTest platform\n=============\n* Arch Linux\n\nThank you,\nDinko Galetic\nDenis Kasak\n\n## Impact\n\nPotential information disclosure.",
+  "bounty_amount": "1000.0",
+  "formatted_bounty": "$1,000",
+  "weakness": {
+    "id": 8,
+    "name": "Out-of-bounds Read"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 520481,
+      "file_name": "poc",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/520/481/02b862e64d0f8a58d7bc71c2225e3d9a9f4f9112/poc?response-content-disposition=attachment%3B%20filename%3D%22poc%22%3B%20filename%2A%3DUTF-8%27%27poc&response-content-type=text%2Fplain&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQXAJSSNGK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T013539Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCUUotFiA0dxoZZ8XwC65AysceqbMP20qvnHVmU9oHf4gIhAMxhhBVOk8jhayE1pSwguoGuhAhEPS8MypnS2jNu1s2EKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxKcrYTA2fcTW8fgyYqjgXG4FOm%2BpppN%2F%2BjMwMLaMKVfsWlCNVO1MYR2Dluc32CKXZKcxqjeQ7vG%2F3DQ7wQMtp5oyiWtF9Jth28ykP%2F0aLahH6UIJjrSZ34l1VtfUNwSUrbHqZzi1ZtYYVpgl6rq6eECazX5XnAnCTluHXBVX%2Bbqgmv1TfKsKX9AznQZszQWKNsZ1RUk9sQofdFEbwPEiorzAop7NUbYr9N64of8NqV9%2F5T2jlnOki8BPjWpUCrNXLbmcRfRv56PKVxNaee9yRRnWJBhVdqIH7B1tFD5KQqdN6CpvWdL67fzcf7GSAvqwDVC0up1FkF11W%2FEVDoHmEOfWK8zBP2XLMO8QB8cfbH4Xp9hVsAAhnH5SaPqzcLS19QwX7yLjNe8vBQy3X%2FpWILsGSIbhhRpl6oq7nwE7iPOrmG9YTd0U59bBWJPiYtI0FhCtuT35jQpH4TDn5qLFaXwDfw%2B%2Byy4Qh5057DwMfyECEAgzp8QlrtAYIvL5EqeSV%2FMCZtWj7HPZlgszr06syTipIXZ%2F2b3xc7ZuMFyKOKjCUb9f9m%2Blf8IvsnXdtoWhtqSZxZQvQmFVCMoizdfIAXkS6UlyWDfkkOsg0PBQe0%2FOcQHns58CJvuZHY2%2BilXDqWEzWve8rxQlZIGz72MkSrRZRRyKNEycEsU8GP3KPluSYczTuEAxteqkeUumFsVZJSqyDQdVs4mwOcHrx9FHyM7Y6aAEsHvUiPPIZl%2FuYSlAkhqvpA%2ByxrfDIGhYsoK2%2BcKyUvXGVTC9BNPZxhqx9CnfP7Sy7ai4gKX8HOnMvs00bsU9DiGspEYoqn2M9hrXyRShzmQb9GiL7IMNfL2TVjztykqQ6WdKMlygM0JfWbY3l2bzJ53yIsKG1CA4ow4dbjzAY6sAHDdN9iniLpi5Yx%2B3AggidSe4FY7k4Bd7o8cs10yJw9b0kUXo9BRdOhXPkqUf4158omr%2FcVIG67QM16rSg5SJhT%2ByzXjWwxqnk9WKbbW3JHu7UAy84ZUxJa7eJ2G7PvY8eMjWqSxP3zzEtsxiftUKrqXwwO70D9sBzVIyOFs08Ae6K1%2BlVBZLm3d1zGXhsCRhCyvWpyLlhrT%2FgH%2BC2WnB6PZiE31A%2Fyc96i%2Ft99a2v4yw%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=bfa30d11d3c7d23089131dd919b24d9c4be516c8f6bae307e39ee80f5df48eec",
+      "file_size": 597,
+      "type": "text/plain",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2019-10-03T10:30:25.159Z",
+  "allow_singular_disclosure_after": -201539114.7240925,
+  "singular_disclosure_allowed": true,
+  "vote_count": 7,
+  "voters": [
+    "ali",
+    "mik317",
+    "cryptographer",
+    "z41b1337_",
+    "quixoticluck",
+    "formerslice",
+    "tej333"
+  ],
+  "structured_scope": null,
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

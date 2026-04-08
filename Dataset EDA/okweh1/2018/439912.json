@@ -1,0 +1,150 @@
+{
+  "id": 439912,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC80Mzk5MTI=",
+  "url": "https://hackerone.com/reports/439912",
+  "title": "Stored XSS on demo app link ",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2018-11-13T12:17:08.575Z",
+  "submitted_at": "2018-11-13T12:17:08.575Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "flashdisk",
+    "url": "/flashdisk",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/106/828/9bcaed498ba440dc30bf6847373261ab145aa7b8_original.png/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 1382,
+    "url": "https://hackerone.com/shopify",
+    "handle": "shopify",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/fjjiC5585s8WoDGHv2M5okbJ/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Shopify",
+      "twitter_handle": "",
+      "website": "https://www.shopify.com",
+      "about": "Shopify is a multi-channel commerce platform that helps people sell online, in-store, and everywhere in between."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": true,
+  "disclosed_at": "2020-06-12T14:15:31.908Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-06-12T14:15:31.773Z",
+  "team_member_agreed_on_going_public_at": "2018-11-30T19:34:39.464Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hi,\n\nI found stored XSS in apps.shopify.com in the `DEMO` URL of the apps you create.\n\n#POC\n\n1. go to your partner account and create a new app\n2. go to DEMO link in https://apps.shopify.com/services/app_submissions/edit# of your app \n\nput the payload you see below:\n\n{F374863}\n\nand when pressing on `preview changes` button and then pressing on `view example store` xss will fire as follows:\n\n{F374865}\n\n\nthanks!\n\n## Impact\n\nStored XSS on apps.shopify.com",
+  "weakness": {
+    "id": 62,
+    "name": "Cross-site Scripting (XSS) - Stored"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 374863,
+      "file_name": "stored1.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/374/863/cdfb3bd56fe83b06d3d99a066e79865b6a4f5802/stored1.PNG?response-content-disposition=attachment%3B%20filename%3D%22stored1.PNG%22%3B%20filename%2A%3DUTF-8%27%27stored1.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTT5GWDDK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002753Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCt%2FYhV17hF5nGneJzn6ZBQhAYTE5N%2BpFrhiKy7MHl6AwIhAMcamNmQA7H7GLLLn3nR%2FiXS43k289%2F87buQWL2hn37NKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzRgAAj%2B8YDhj0TfM0qjgX4hv387Gv5lEvwoKmXgNUJQRptmrr9wTKuv85aR9F8XBkjbIoPfqGTunukXVuaWMDL9z091rp7FU30QnsJ%2Btm2cRfJfL4%2BojLxlU6dgCWZbewvYUvS%2Fi3dY2endW0ESnUh%2F%2BZ%2Fdq4FkRp740rJEJwVJIoiqLR%2Flps0FxUgftyV5aBowp0iZVfAWw26ICAZVglrOkT2acZaqUqW70rnF1fjE2yDe%2FZICrEe4teSgFjmG5NyG9rIJJ8W7FneY5fJAlzCybMhP%2BS0bx1EQDX%2BFmMaWyuL63vkNzoJfU96R6vunR2pqtY6%2FLKuNIdX3toCeAQ7%2FtdohazmO3qkZ1mDCLa1U%2FtZYDaGUOvTB15riZWtvxDp9pFRBXgEMHhd%2FObvPg6BfrWHCODvZHdevfFTNUfrhGSdwx3nKrmxe%2BzTbqY43mm63A4Y%2BENEXHmlNYBqZfl1XtHNOwdQqGjLScOQ7K3kHAyaJFwCgGXNhnQtQ2c9hIX4EYCGxPNAVIhvjEZ5Wbq6P%2BZ4499j8N0qmwDN0%2Bpv9%2BW5dwTIu0E32rxc97Ft6j3sseo8RvOre4KQSuNFScw4FxeCIc1PB486Nlyu8VNtiHJFXX7%2FJjlPMe0wpRWlPwJ6zk%2FGIbmqV8WZz3VVvZujZJJiMxomePuAhx%2BIhy%2BGemqahDF26kdt7WMnl1RnJVFCfCTQ5tyW6nybQkpjN%2FKxT%2B7RH6bGkMYgNYhRQjNZ9CIu%2BWfRq9ZNBSRliMiL6HU3heeDWJ37%2FhIZCGh8Oukb639SRo%2BhsU5Qus%2BE4uIR8VgtFt2%2BEOQb5Q4Up9dxgKn1FKSw0%2BnHXQwKLHh7uxoe3WLaM0O6PxJqSWL%2FyFDI9JWIDlxH1Wnn%2B7JZkiEwwNTjzAY6sAHEsEcY4mx2md4mx53hnhRvi%2FvJE6Q7JXau56hn5HEM1dXgChHJZlHpYkYogEJP9xLeosKPp4252xcKpP%2BqMcGnhV010y8smXj5zskG2Vz7GKQzoZgpF2ES55lcIvIToXQpLJ%2FcsVXTsJYaiMIecUDGkb%2FfNUVyAiiz9PNf01OUlGazuOZMnEDdnjpbtEp8jZyCV1nzMUHXrgdO2fo5CU1jKrRIa4Zft%2Bzf4lehg%2BwfuA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=a95f9754f579523d45a2aa908ae69e6355003e0a938d29595598dc7456c152b3",
+      "file_size": 11696,
+      "type": "image/png",
+      "moderated": null
+    },
+    {
+      "id": 374865,
+      "file_name": "stored2.PNG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/374/865/2588e7d5cdc0437b013ce5eb43ac3845d9ec1200/stored2.PNG?response-content-disposition=attachment%3B%20filename%3D%22stored2.PNG%22%3B%20filename%2A%3DUTF-8%27%27stored2.PNG&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQTT5GWDDK%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T002753Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQCt%2FYhV17hF5nGneJzn6ZBQhAYTE5N%2BpFrhiKy7MHl6AwIhAMcamNmQA7H7GLLLn3nR%2FiXS43k289%2F87buQWL2hn37NKroFCKD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgzRgAAj%2B8YDhj0TfM0qjgX4hv387Gv5lEvwoKmXgNUJQRptmrr9wTKuv85aR9F8XBkjbIoPfqGTunukXVuaWMDL9z091rp7FU30QnsJ%2Btm2cRfJfL4%2BojLxlU6dgCWZbewvYUvS%2Fi3dY2endW0ESnUh%2F%2BZ%2Fdq4FkRp740rJEJwVJIoiqLR%2Flps0FxUgftyV5aBowp0iZVfAWw26ICAZVglrOkT2acZaqUqW70rnF1fjE2yDe%2FZICrEe4teSgFjmG5NyG9rIJJ8W7FneY5fJAlzCybMhP%2BS0bx1EQDX%2BFmMaWyuL63vkNzoJfU96R6vunR2pqtY6%2FLKuNIdX3toCeAQ7%2FtdohazmO3qkZ1mDCLa1U%2FtZYDaGUOvTB15riZWtvxDp9pFRBXgEMHhd%2FObvPg6BfrWHCODvZHdevfFTNUfrhGSdwx3nKrmxe%2BzTbqY43mm63A4Y%2BENEXHmlNYBqZfl1XtHNOwdQqGjLScOQ7K3kHAyaJFwCgGXNhnQtQ2c9hIX4EYCGxPNAVIhvjEZ5Wbq6P%2BZ4499j8N0qmwDN0%2Bpv9%2BW5dwTIu0E32rxc97Ft6j3sseo8RvOre4KQSuNFScw4FxeCIc1PB486Nlyu8VNtiHJFXX7%2FJjlPMe0wpRWlPwJ6zk%2FGIbmqV8WZz3VVvZujZJJiMxomePuAhx%2BIhy%2BGemqahDF26kdt7WMnl1RnJVFCfCTQ5tyW6nybQkpjN%2FKxT%2B7RH6bGkMYgNYhRQjNZ9CIu%2BWfRq9ZNBSRliMiL6HU3heeDWJ37%2FhIZCGh8Oukb639SRo%2BhsU5Qus%2BE4uIR8VgtFt2%2BEOQb5Q4Up9dxgKn1FKSw0%2BnHXQwKLHh7uxoe3WLaM0O6PxJqSWL%2FyFDI9JWIDlxH1Wnn%2B7JZkiEwwNTjzAY6sAHEsEcY4mx2md4mx53hnhRvi%2FvJE6Q7JXau56hn5HEM1dXgChHJZlHpYkYogEJP9xLeosKPp4252xcKpP%2BqMcGnhV010y8smXj5zskG2Vz7GKQzoZgpF2ES55lcIvIToXQpLJ%2FcsVXTsJYaiMIecUDGkb%2FfNUVyAiiz9PNf01OUlGazuOZMnEDdnjpbtEp8jZyCV1nzMUHXrgdO2fo5CU1jKrRIa4Zft%2Bzf4lehg%2BwfuA%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=88ec733c3991b6d56ada046a7f196308ad46285a0426c36b298fbaf9e3b0e2f5",
+      "file_size": 67341,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": null,
+  "vote_count": 37,
+  "voters": [
+    "omarelfarsaoui",
+    "drsniper",
+    "ali",
+    "sameerphad72",
+    "tess",
+    "flashdisk",
+    "brahim_boufakri01",
+    "what_web",
+    "cryptographer",
+    "zimmer75",
+    "and 27 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 4.2,
+    "author_type": "Team",
+    "metrics": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope": "unchanged",
+      "confidentiality": "low",
+      "integrity": "low",
+      "availability": "none"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 418,
+    "asset_type": "URL",
+    "asset_identifier": "apps.shopify.com",
+    "max_severity": "medium"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

